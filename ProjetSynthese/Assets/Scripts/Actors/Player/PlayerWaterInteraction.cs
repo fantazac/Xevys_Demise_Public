@@ -14,7 +14,6 @@ public class PlayerWaterInteraction : MonoBehaviour
         if (collider.GetType() == typeof(BoxCollider2D))
         {
             _player.GetComponent<PlayerMovement>().Speed *= _speedReductionFactor;
-            GameObject.Find("CharacterTouchesGround").GetComponent<BoxCollider2D>().enabled = false;
         }
 
 

@@ -58,10 +58,12 @@ public class PlayerMovement : MonoBehaviour
     private void OnJump()
     {
         if (!IsJumping() && _feetTouchWater && _wearsBoots)
+        {
             ChangePlayerVerticalVelocity(_jumpingSpeed * WATER_ACCELERATION_FACTOR);
+
+        }
         else if (!IsJumping() && _feetTouchWater)
         {
-            GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround = false;
             ChangePlayerVerticalVelocity(_jumpingSpeed / WATER_ACCELERATION_FACTOR);
             if (_isFloating && _feetTouchWater)
                 _feetTouchWater = false;
@@ -109,8 +111,9 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsJumping()
     {
+        Debug.Log(GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround);
         if (_feetTouchWater)
-            return !(_rigidbody.velocity.y == 0);
+            return !(_rigidbody.velocity.y == 0 || GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround);
         else
             return !(GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround || _rigidbody.IsSleeping());
 
