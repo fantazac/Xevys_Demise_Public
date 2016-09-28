@@ -14,7 +14,7 @@ public class InputManager : MonoBehaviour
 
     public delegate void OnStopHandler();
 
-    public delegate void OnAttackHandler();
+    public delegate void OnBasicAttackHandler();
 
     public event OnMoveHandler OnMove;
     public event OnJumpHandler OnJump;
@@ -22,7 +22,7 @@ public class InputManager : MonoBehaviour
     public event OnBootsEquipHandler OnBootsEquip;
     public event OnBootsUnequipHandler OnBootsUnequip;
     public event OnStopHandler OnStop;
-    public event OnAttackHandler OnAttack;
+    public event OnBasicAttackHandler OnBasicAttack;
 
     private void FixedUpdate()
     {
@@ -48,7 +48,7 @@ public class InputManager : MonoBehaviour
             OnBootsUnequip();
 
         if (Input.GetKey(KeyCode.K))      
-            OnAttack();
+            OnBasicAttack();
         
     }
 }
