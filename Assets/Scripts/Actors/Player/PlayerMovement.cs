@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     private const float SPEED_REDUCTION_WHEN_STOPPING = 0.94f;
     private const float WATER_ACCELERATION_FACTOR = 1.4f;
     private const float LINEAR_DRAG = 30f;
+    private const int JUMP_COOLDOWN = 5;
 
     private bool _facingRight = true;
     private float _speed = 7;
@@ -24,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     private bool _isFloating = false;
     private bool _wearsBoots = false;
     private float _waterYSpeed;
+    private int _jumpCDCount;
 
     public float Speed { get { return _speed; } set { _speed = value; } }
     public float JumpingSpeed { get { return _jumpingSpeed; } set { _jumpingSpeed = value; } }
@@ -42,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
         _inputManager.OnStop += OnStop;
 
         _waterYSpeed = INITIAL_WATER_FALLING_SPEED;
+        _jumpCDCount = JUMP_COOLDOWN;
     }
 
     private void OnMove(Vector3 vector, bool goesRight)
@@ -57,19 +60,26 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJump()
     {
-        if (!IsJumping() && _feetTouchWater && _wearsBoots)
+        if(_jumpCDCount >= JUMP_COOLDOWN)
         {
-            ChangePlayerVerticalVelocity(_jumpingSpeed * WATER_ACCELERATION_FACTOR);
-
+            if (!IsJumping() && _feetTouchWater && _wearsBoots)
+            {
+                ChangePlayerVerticalVelocity(_jumpingSpeed * WATER_ACCELERATION_FACTOR);
+                _jumpCDCount = 0;
+            }
+            else if (!IsJumping() && _feetTouchWater)
+            {
+                ChangePlayerVerticalVelocity(_jumpingSpeed / WATER_ACCELERATION_FACTOR);
+                _jumpCDCount = 0;
+                if (_isFloating && _feetTouchWater)
+                    _feetTouchWater = false;
+            }
+            else if (!IsJumping())
+            {
+                ChangePlayerVerticalVelocity(_jumpingSpeed);
+                _jumpCDCount = 0;
+            }
         }
-        else if (!IsJumping() && _feetTouchWater)
-        {
-            ChangePlayerVerticalVelocity(_jumpingSpeed / WATER_ACCELERATION_FACTOR);
-            if (_isFloating && _feetTouchWater)
-                _feetTouchWater = false;
-        }
-        else if (!IsJumping())
-            ChangePlayerVerticalVelocity(_jumpingSpeed);
     }
 
     private void OnUnderwaterControl(bool goesDown)
@@ -120,6 +130,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (_jumpCDCount < JUMP_COOLDOWN)
+            _jumpCDCount++;
+
         if (_wearsBoots)
         {
             if (_feetTouchWater && _isFloating)
@@ -187,6 +200,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ChangePlayerVerticalVelocity(float verticalVelocity)
     {
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, verticalVelocity);
     }
 }
