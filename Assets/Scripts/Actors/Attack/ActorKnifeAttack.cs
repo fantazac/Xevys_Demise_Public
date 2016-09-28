@@ -6,7 +6,7 @@ public class ActorKnifeAttack : MonoBehaviour
 {
 
     [SerializeField]
-    private Rigidbody2D _knife;
+    private GameObject _knife;
 
     private InputManager _inputManager;
 
@@ -22,23 +22,18 @@ public class ActorKnifeAttack : MonoBehaviour
 
     void OnKnifeAttack()
     {
-        Rigidbody2D newKnife;
+        GameObject newKnife;
 
         if (GetComponent<PlayerMovement>().FacingRight)
         {
-            newKnife = (Rigidbody2D)Instantiate(_knife, new Vector3(transform.position.x + KNIFE_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, transform.position.z), transform.rotation);
-            newKnife.velocity = new Vector2(KNIFE_SPEED, 0);
+            newKnife = (GameObject)Instantiate(_knife, new Vector3(transform.position.x + KNIFE_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, transform.position.z), transform.rotation);
+            newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(KNIFE_SPEED, 0);
         }
         else
         {
-            Flip();
-            newKnife = (Rigidbody2D)Instantiate(_knife, new Vector3(transform.position.x - KNIFE_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, transform.position.z), transform.rotation);
-            newKnife.velocity = new Vector2(-KNIFE_SPEED, 0);
+            newKnife = (GameObject)Instantiate(_knife, new Vector3(transform.position.x - KNIFE_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, transform.position.z), transform.rotation);
+            newKnife.GetComponent<SpriteRenderer>().flipX = true;
+            newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(-KNIFE_SPEED, 0);
         }
-    }
-
-    private void Flip()
-    {
-
     }
 }
