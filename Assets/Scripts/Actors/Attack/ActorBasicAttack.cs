@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ActorBasicAttack : MonoBehaviour
 {
-    private const int FRAME_BUFFER = 15;
+    private const int FRAME_BUFFER = 30;
 
     private InputManager _inputManager;
     private SpriteRenderer _spriteRenderer;
@@ -21,7 +21,7 @@ public class ActorBasicAttack : MonoBehaviour
     void Update()
     {
         _count++;
-        if (_count >= FRAME_BUFFER)
+        if (_count >= FRAME_BUFFER / 2)
         {
             _spriteRenderer.enabled = false;
         }
