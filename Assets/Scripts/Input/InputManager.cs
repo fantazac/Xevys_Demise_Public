@@ -14,12 +14,15 @@ public class InputManager : MonoBehaviour
 
     public delegate void OnStopHandler();
 
+    public delegate void OnAttackHandler();
+
     public event OnMoveHandler OnMove;
     public event OnJumpHandler OnJump;
     public event OnUnderwaterControlHandler OnUnderwaterControl;
     public event OnBootsEquipHandler OnBootsEquip;
     public event OnBootsUnequipHandler OnBootsUnequip;
     public event OnStopHandler OnStop;
+    public event OnAttackHandler OnAttack;
 
     private void FixedUpdate()
     {
@@ -43,5 +46,9 @@ public class InputManager : MonoBehaviour
             OnBootsEquip();
         else if (Input.GetKey(KeyCode.U))
             OnBootsUnequip();
+
+        if (Input.GetKey(KeyCode.K))      
+            OnAttack();
+        
     }
 }
