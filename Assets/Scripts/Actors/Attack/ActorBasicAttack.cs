@@ -9,7 +9,6 @@ public class ActorBasicAttack : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private GameObject _attackHitBox;
     private int _count;
-    private bool _isActive;
 
 	void Start ()
 	{
