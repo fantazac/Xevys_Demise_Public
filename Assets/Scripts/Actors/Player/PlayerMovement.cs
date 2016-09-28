@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 
     private InputManager _inputManager;
     private Rigidbody2D _rigidbody;
+    private BoxCollider2D _basicAttackBox;
 
     private const float INITIAL_GRAVITY_SCALE = 5;
     private const float INITIAL_WATER_FALLING_SPEED = 3;
@@ -34,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _inputManager = GetComponent<InputManager>();
+        _basicAttackBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
         _inputManager.OnMove += OnMove;
         _inputManager.OnJump += OnJump;
         _inputManager.OnUnderwaterControl += OnUnderwaterControl;
@@ -47,12 +49,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnMove(Vector3 vector, bool goesRight)
     {
         _rigidbody.velocity = new Vector2(vector.x * _speed, _rigidbody.velocity.y);
-
-        if (goesRight != _facingRight)
-        {
-            _facingRight = goesRight;
-            transform.localScale = new Vector3(-1 * transform.localScale.x, transform.localScale.y, transform.localScale.z);
-        }
+       Flip(goesRight);
     }
 
     private void OnJump()
@@ -181,6 +178,7 @@ public class PlayerMovement : MonoBehaviour
         if (goesRight != _facingRight)
         {
             _facingRight = goesRight;
+            _basicAttackBox.offset = new Vector2(_basicAttackBox.offset.x * -1, _basicAttackBox.offset.y);
             transform.localScale = new Vector3(-1 * transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
     }
