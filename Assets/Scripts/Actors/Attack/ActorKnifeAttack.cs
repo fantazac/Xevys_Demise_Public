@@ -3,13 +3,19 @@ using System.Collections;
 
 public class ActorKnifeAttack : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    private InputManager _inputManager;
+    private Rigidbody2D _rigidbody2D;
+
+    void Start()
+    {
+        _inputManager = GetComponent<InputManager>();
+        _rigidbody2D = GetComponent<Rigidbody2D>();
+
+        _inputManager.OnKnifeAttack += OnKnifeAttack;
+    }
+
+    void OnKnifeAttack()
+    {
+
+    }
 }
