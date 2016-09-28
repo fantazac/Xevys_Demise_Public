@@ -111,7 +111,6 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsJumping()
     {
-        Debug.Log(GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround);
         if (_feetTouchWater)
             return !(_rigidbody.velocity.y == 0 || GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround);
         else
