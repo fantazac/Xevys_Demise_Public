@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.CodeDom;
+using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class InputManager : MonoBehaviour
 
     public delegate void OnAttackHandler();
 
+    public delegate void OnKnifeAttackHandler();
+
     public event OnMoveHandler OnMove;
     public event OnJumpHandler OnJump;
     public event OnUnderwaterControlHandler OnUnderwaterControl;
@@ -23,6 +26,7 @@ public class InputManager : MonoBehaviour
     public event OnBootsUnequipHandler OnBootsUnequip;
     public event OnStopHandler OnStop;
     public event OnAttackHandler OnAttack;
+    public event OnKnifeAttackHandler OnKnifeAttack;
 
     private void FixedUpdate()
     {
@@ -49,6 +53,9 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetKey(KeyCode.K))      
             OnAttack();
-        
+
+        if (Input.GetKey(KeyCode.L))
+            OnKnifeAttack();
+
     }
 }
