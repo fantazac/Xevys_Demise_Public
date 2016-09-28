@@ -17,7 +17,7 @@ public class InputManager : MonoBehaviour
 
     public delegate void OnBasicAttackHandler();
 
-    public delegate void OnKnifeAttackHandler();
+    public delegate void OnThrowAttackHandler();
 
     public event OnMoveHandler OnMove;
     public event OnJumpHandler OnJump;
@@ -26,7 +26,7 @@ public class InputManager : MonoBehaviour
     public event OnBootsUnequipHandler OnBootsUnequip;
     public event OnStopHandler OnStop;
     public event OnBasicAttackHandler OnBasicAttack;
-    public event OnKnifeAttackHandler OnKnifeAttack;
+    public event OnThrowAttackHandler OnThrowAttack;
 
 
     private void FixedUpdate()
@@ -56,6 +56,6 @@ public class InputManager : MonoBehaviour
             OnBasicAttack();
 
         if (Input.GetKey(KeyCode.L))
-            OnKnifeAttack();
+            OnThrowAttack();
     }
 }

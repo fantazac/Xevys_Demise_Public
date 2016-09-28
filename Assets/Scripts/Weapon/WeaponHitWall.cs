@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class KnifeHitWall : MonoBehaviour {
+public class WeaponHitWall : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
