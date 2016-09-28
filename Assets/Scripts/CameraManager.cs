@@ -86,8 +86,6 @@ public class CameraManager : MonoBehaviour {
 
                 if (previousArea == currentArea) { return; }
                 currentArea = previousArea;
-
-                Debug.Log("new area: " + currentArea.ToString());
             }
         }
     }

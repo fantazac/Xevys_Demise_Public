@@ -30,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
     public float JumpingSpeed { get { return _jumpingSpeed; } set { _jumpingSpeed = value; } }
     public bool FeetTouchWater { get { return _feetTouchWater; } set { _feetTouchWater = value; } }
     public bool IsFloating { get { return _isFloating; } set { _isFloating = value; } }
+    public bool FacingRight { get { return _facingRight; } }
 
     private void Start()
     {
