@@ -16,24 +16,27 @@ public class ActorKnifeAttack : MonoBehaviour
     void Start()
     {
         _inputManager = GetComponent<InputManager>();
-
         _inputManager.OnKnifeAttack += OnKnifeAttack;
     }
 
     void OnKnifeAttack()
     {
-        GameObject newKnife;
+        if (!GameObject.Find("Knife(Clone)"))
+        {
+            GameObject newKnife;
 
-        if (GetComponent<PlayerMovement>().FacingRight)
-        {
-            newKnife = (GameObject)Instantiate(_knife, new Vector3(transform.position.x + KNIFE_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, transform.position.z), transform.rotation);
-            newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(KNIFE_SPEED, 0);
+            if (GetComponent<PlayerMovement>().FacingRight)
+            {
+                newKnife = (GameObject)Instantiate(_knife, new Vector3(transform.position.x + KNIFE_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, transform.position.z), transform.rotation);
+                newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(KNIFE_SPEED, 0);
+            }
+            else
+            {
+                newKnife = (GameObject)Instantiate(_knife, new Vector3(transform.position.x - KNIFE_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, transform.position.z), transform.rotation);
+                newKnife.GetComponent<SpriteRenderer>().flipX = true;
+                newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(-KNIFE_SPEED, 0);
+            }
         }
-        else
-        {
-            newKnife = (GameObject)Instantiate(_knife, new Vector3(transform.position.x - KNIFE_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, transform.position.z), transform.rotation);
-            newKnife.GetComponent<SpriteRenderer>().flipX = true;
-            newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(-KNIFE_SPEED, 0);
-        }
+
     }
 }
