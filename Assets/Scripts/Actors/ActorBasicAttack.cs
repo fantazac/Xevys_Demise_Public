@@ -11,15 +11,10 @@ public class ActorBasicAttack : MonoBehaviour
         _inputManager = GetComponent<InputManager>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
 
-	    _inputManager.OnBasicAttack += OnAttack;
+	    _inputManager.OnBasicAttack += OnBasicAttack;
 	}
 
-	void Update ()
-    {
-	    
-	}
-
-    void OnAttack()
+    void OnBasicAttack()
     {
         
     }
