@@ -3,14 +3,17 @@ using System.Collections;
 
 public class ActorBasicAttack : MonoBehaviour
 {
+    private const int FRAME_BUFFER = 30;
+
     private InputManager _inputManager;
     private SpriteRenderer _spriteRenderer;
-    private int _count = 30;
+    private int _count;
 
 	void Start ()
 	{
         _inputManager = GetComponent<InputManager>();
 	    _spriteRenderer = GameObject.Find("CharacterBasicAttackBoxSprite").GetComponent<SpriteRenderer>();
+	    _count = FRAME_BUFFER;
 
 	    _inputManager.OnBasicAttack += OnBasicAttack;
 	}
@@ -18,7 +21,7 @@ public class ActorBasicAttack : MonoBehaviour
     void Update()
     {
         _count++;
-        if (_count >= 30)
+        if (_count >= FRAME_BUFFER / 2)
         {
             _spriteRenderer.enabled = false;
         }
@@ -26,7 +29,7 @@ public class ActorBasicAttack : MonoBehaviour
 
     void OnBasicAttack()
     {
-        if (_count >= 30)
+        if (_count >= FRAME_BUFFER)
         {
             _spriteRenderer.enabled = true;
             _count = 0;

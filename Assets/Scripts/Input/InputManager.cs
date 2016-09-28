@@ -52,7 +52,7 @@ public class InputManager : MonoBehaviour
         else if (Input.GetKey(KeyCode.U))
             OnBootsUnequip();
 
-        if (Input.GetKey(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.K))
             OnBasicAttack();
 
         if (Input.GetKey(KeyCode.L))
