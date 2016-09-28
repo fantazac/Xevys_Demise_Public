@@ -7,6 +7,7 @@ public class ActorBasicAttack : MonoBehaviour
 
     private InputManager _inputManager;
     private SpriteRenderer _spriteRenderer;
+    private GameObject _attackHitBox;
     private int _count;
     private bool _isActive;
 
@@ -14,8 +15,8 @@ public class ActorBasicAttack : MonoBehaviour
 	{
         _inputManager = GetComponent<InputManager>();
 	    _spriteRenderer = GameObject.Find("CharacterBasicAttackBoxSprite").GetComponent<SpriteRenderer>();
+        _attackHitBox = GameObject.Find("CharacterBasicAttackBox");
 	    _count = FRAME_BUFFER;
-	    _isActive = false;
 
 	    _inputManager.OnBasicAttack += OnBasicAttack;
 	}
@@ -26,7 +27,7 @@ public class ActorBasicAttack : MonoBehaviour
         if (_count >= FRAME_BUFFER / 2)
         {
             _spriteRenderer.enabled = false;
-            _isActive = false;
+            _attackHitBox.gameObject.tag = "Untagged";
         }
     }
 
@@ -35,7 +36,7 @@ public class ActorBasicAttack : MonoBehaviour
         if (_count >= FRAME_BUFFER)
         {
             _spriteRenderer.enabled = true;
-            _isActive = true;
+            _attackHitBox.gameObject.tag = "IsActive";
             _count = 0;
         }          
     }
