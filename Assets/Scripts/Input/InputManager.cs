@@ -7,6 +7,8 @@ public class InputManager : MonoBehaviour
 
     public delegate void OnJumpHandler();
 
+    public delegate void OnJumpDownHandler();
+
     public delegate void OnUnderwaterControlHandler(bool goesDown);
 
     public delegate void OnBootsEquipHandler();
@@ -21,6 +23,7 @@ public class InputManager : MonoBehaviour
 
     public event OnMoveHandler OnMove;
     public event OnJumpHandler OnJump;
+    public event OnJumpDownHandler OnJumpDown;
     public event OnUnderwaterControlHandler OnUnderwaterControl;
     public event OnBootsEquipHandler OnBootsEquip;
     public event OnBootsUnequipHandler OnBootsUnequip;
@@ -37,6 +40,9 @@ public class InputManager : MonoBehaviour
             OnMove(Vector3.right, true);
         else
             OnStop();
+
+        if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.Space))
+            OnJumpDown();
 
         if (Input.GetKey(KeyCode.Space))
             OnJump();

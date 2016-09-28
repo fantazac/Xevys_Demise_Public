@@ -40,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
         _basicAttackBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
         _inputManager.OnMove += OnMove;
         _inputManager.OnJump += OnJump;
+        _inputManager.OnJumpDown += OnJumpDown;
         _inputManager.OnUnderwaterControl += OnUnderwaterControl;
         _inputManager.OnBootsEquip += OnBootsEquip;
         _inputManager.OnBootsUnequip += OnBootsUnequip;
@@ -52,12 +53,12 @@ public class PlayerMovement : MonoBehaviour
     private void OnMove(Vector3 vector, bool goesRight)
     {
         _rigidbody.velocity = new Vector2(vector.x * _speed, _rigidbody.velocity.y);
-       Flip(goesRight);
+        Flip(goesRight);
     }
 
     private void OnJump()
     {
-        if(_jumpCDCount >= JUMP_COOLDOWN)
+        if (_jumpCDCount >= JUMP_COOLDOWN)
         {
             if (!IsJumping() && _feetTouchWater && _wearsBoots)
             {
@@ -77,6 +78,13 @@ public class PlayerMovement : MonoBehaviour
                 _jumpCDCount = 0;
             }
         }
+    }
+
+    private void OnJumpDown()
+    {
+        /*Debug.Log("test");
+        if(!IsJumping())
+            ChangePlayerVerticalVelocity(10);*/
     }
 
     private void OnUnderwaterControl(bool goesDown)
@@ -121,12 +129,14 @@ public class PlayerMovement : MonoBehaviour
         if (_feetTouchWater)
             return !(_rigidbody.velocity.y == 0 || GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround);
         else
-            return !(GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround || _rigidbody.IsSleeping());
+            return !((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround || _rigidbody.IsSleeping()) 
+                && !(_rigidbody.velocity.y > 0));
 
     }
 
     private void Update()
     {
+
         if (_jumpCDCount < JUMP_COOLDOWN)
             _jumpCDCount++;
 
