@@ -28,6 +28,7 @@ public class PlayerMovement: MonoBehaviour
     private float _waterYSpeed;
     private int _jumpCDCount;
     private Animator _anim;
+    private Transform _spriteTransform;
 
     public float Speed { get { return _speed; } set { _speed = value; } }
     public float JumpingSpeed { get { return _jumpingSpeed; } set { _jumpingSpeed = value; } }
@@ -38,7 +39,8 @@ public class PlayerMovement: MonoBehaviour
 
     private void Start()
     {
-        _anim = GetComponent<Animator>();
+        _anim = GameObject.Find("CharacterSprite").GetComponent<Animator>();
+        _spriteTransform = _anim.GetComponent<Transform>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _inputManager = GetComponent<InputManager>();
         _basicAttackBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
@@ -211,7 +213,7 @@ public class PlayerMovement: MonoBehaviour
         {
             _facingRight = goesRight;
             _basicAttackBox.offset = new Vector2(_basicAttackBox.offset.x * -1, _basicAttackBox.offset.y);
-            transform.localScale = new Vector3(-1 * transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            _spriteTransform.localScale = new Vector3(-1 * _spriteTransform.localScale.x, _spriteTransform.localScale.y, _spriteTransform.localScale.z);
         }
     }
 
