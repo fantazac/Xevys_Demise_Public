@@ -39,7 +39,7 @@ public class ActorBasicAttack : MonoBehaviour
             _spriteRenderer.enabled = true;
             _attackHitBox.gameObject.tag = "IsActive";
             _count = 0;
+            _audioSource.Play();
         }
-        _audioSource.Play();
     }
 }
