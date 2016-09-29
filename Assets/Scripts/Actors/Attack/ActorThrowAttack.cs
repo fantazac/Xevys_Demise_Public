@@ -59,13 +59,13 @@ public class ActorThrowAttack : MonoBehaviour
 
             if (GetComponent<PlayerMovement>().FacingRight)
             {
-                newAxe = (GameObject)Instantiate(_axe, new Vector3(transform.position.x + WEAPON_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y + AXE_THROWING_HEIGHT, transform.position.z), transform.rotation);
+                newAxe = (GameObject)Instantiate(_axe, new Vector3(transform.position.x, transform.position.y + AXE_THROWING_HEIGHT, transform.position.z), transform.rotation);
                 newAxe.GetComponent<Rigidbody2D>().rotation = AXE_INITIAL_ANGLE;
                 newAxe.GetComponent<Rigidbody2D>().velocity = new Vector2(AXE_SPEED, AXE_THROWING_ANGLE);
             }
             else
             {
-                newAxe = (GameObject)Instantiate(_axe, new Vector3(transform.position.x - WEAPON_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y + AXE_THROWING_HEIGHT, transform.position.z), transform.rotation);
+                newAxe = (GameObject)Instantiate(_axe, new Vector3(transform.position.x, transform.position.y + AXE_THROWING_HEIGHT, transform.position.z), transform.rotation);
                 newAxe.GetComponent<Rigidbody2D>().rotation = AXE_INITIAL_ANGLE;
                 newAxe.GetComponent<SpriteRenderer>().flipX = true;
                 newAxe.GetComponent<Rigidbody2D>().velocity = new Vector2(-AXE_SPEED, AXE_THROWING_ANGLE);
