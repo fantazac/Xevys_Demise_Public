@@ -43,8 +43,7 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.Space))
             OnJumpDown();
-
-        if (Input.GetKey(KeyCode.Space))
+        else if (Input.GetKey(KeyCode.Space))
             OnJump();
 
         if (Input.GetKey(KeyCode.DownArrow))

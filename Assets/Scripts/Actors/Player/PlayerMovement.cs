@@ -82,9 +82,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJumpDown()
     {
-        /*Debug.Log("test");
-        if(!IsJumping())
-            ChangePlayerVerticalVelocity(10);*/
+        //Debug.Log("test");
+        if (!IsJumping() && GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
+            GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().DisablePlatformHitbox();
     }
 
     private void OnUnderwaterControl(bool goesDown)
@@ -136,7 +136,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-
         if (_jumpCDCount < JUMP_COOLDOWN)
             _jumpCDCount++;
 
