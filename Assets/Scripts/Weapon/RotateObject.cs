@@ -5,6 +5,10 @@ public class RotateObject : MonoBehaviour
 {
     void Update()
     {
-        transform.Rotate(new Vector3(0, 0, -5f));
+        if (!GetComponent<SpriteRenderer>().flipY)
+            transform.Rotate(new Vector3(0, 0, -5f));
+        else
+            transform.Rotate(new Vector3(0, 0, 5f));
+
     }
 }
