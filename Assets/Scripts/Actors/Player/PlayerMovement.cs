@@ -35,6 +35,7 @@ public class PlayerMovement: MonoBehaviour
     public bool FeetTouchWater { get { return _feetTouchWater; } set { _feetTouchWater = value; } }
     public bool IsFloating { get { return _isFloating; } set { _isFloating = value; } }
     public bool FacingRight { get { return _facingRight; } }
+    public bool WearsBoots { get { return _wearsBoots; } }
 
     private void Start()
     {
