@@ -72,8 +72,6 @@ public class CameraManager : MonoBehaviour {
 
         // Adjust the camera's position to that of the newly determined position
         transform.position = Vector3.Lerp(transform.position, newPosition, smoothTime);
-
-        CameraControls();
     }
 
     // Method to check what area the player has entered and sets the CurrentArea to this new area
@@ -108,38 +106,6 @@ public class CameraManager : MonoBehaviour {
         }
     }
 
-    #region Camera Zoom
-    // Public methods which can be called from outside the CameraManager. Starting the coroutines for zooming in/out accordingly
-    public void ZoomIn(float _newSize) {
-        StopCoroutine("I_ZoomOut");
-        StartCoroutine("I_ZoomIn", _newSize);
-    }
-    public void ZoomOut(float _newSize) {
-        StopCoroutine("I_ZoomIn");
-        StartCoroutine("I_ZoomOut", _newSize);
-    }
-
-    private IEnumerator I_ZoomIn(float _newSize) {
-        while (Camera.main.orthographicSize > _newSize) {
-            Camera.main.orthographicSize -= Mathf.Min(zoomspeed, Camera.main.orthographicSize - _newSize);
-            yield return new WaitForEndOfFrame();
-        }
-
-        Camera.main.orthographicSize = _newSize;
-        yield return null;
-    }
-
-    private IEnumerator I_ZoomOut(float _newSize) {
-        while (Camera.main.orthographicSize < _newSize) {
-            Camera.main.orthographicSize += Mathf.Min(zoomspeed, _newSize - Camera.main.orthographicSize);
-            yield return new WaitForEndOfFrame();
-        }
-
-        Camera.main.orthographicSize = _newSize;
-        yield return null;
-    }
-    #endregion
-
     // Returns a Rect form of the area given in the parameter _area
     private Rect GetAreaRect(int _area) {
         GameObject n = listAreaNodes[_area];
@@ -172,33 +138,6 @@ public class CameraManager : MonoBehaviour {
             Gizmos.DrawLine(new Vector2(i.position.x, j.position.y), new Vector2(j.position.x, j.position.y));
             Gizmos.DrawLine(new Vector2(i.position.x, i.position.y), new Vector2(i.position.x, j.position.y));
             Gizmos.DrawLine(new Vector2(j.position.x, i.position.y), new Vector2(j.position.x, j.position.y));
-        }
-    }
-
-
-    /* The method CameraControls is implemented for purpose of showing the workings of the CameraManager class. The below used methods/accessors can be
-     * called from outside the class with preferred parameters. The below given parameters are used as an example.
-     * The method can be removed without further problems for own use.
-     */
-    private void CameraControls() {
-        // When pressed the focusPosition changes to that of the current position of the cursor and the camera will move towards this location
-        // FocusPosition (accessor) requires a Vector3 type
-        if (Input.GetKeyDown(KeyCode.Z)) {
-            FocusPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        }
-        // When pressed the camera follows the given object
-        // FocusObject (accessor) requires a GameObject type
-        if (Input.GetKeyDown(KeyCode.X)) {
-            FocusObject = GameObject.Find("Player");
-        }
-        // When pressed the camera zooms in to the value given as parameter which translates to the camera's orthographicsize
-        if (Input.GetKeyDown(KeyCode.C)) {
-            ZoomIn(1);
-        }
-        // When pressed the camera zooms out to the value given as parameter which translates to the camera's orthographicsize
-        // For purpose of showing workings the camera zooms out to its original orthographicsize value (orthographicsize_base)
-        if (Input.GetKeyDown(KeyCode.V)) {
-            ZoomOut(orthographicsize_base);
         }
     }
 }
