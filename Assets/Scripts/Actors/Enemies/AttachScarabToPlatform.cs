@@ -10,9 +10,7 @@ public class AttachScarabToPlatform : MonoBehaviour
     private Vector3 _wallPosition;
     private Vector3 _wallScale;
 
-    private int _currentPoint = 0;
-
-    private bool _rotate = false;
+    private int _currentPoint;
 
     private Vector3 _target;
     private Vector3[] _points;
@@ -31,8 +29,10 @@ public class AttachScarabToPlatform : MonoBehaviour
             _points[2] = new Vector2(_wallPosition.x + _wallScale.x / 2 + transform.localScale.x / 2, _wallPosition.y + _wallScale.y / 2 + transform.localScale.y / 2);
             _points[3] = new Vector2(_wallPosition.x - _wallScale.x / 2 - transform.localScale.x / 2, _wallPosition.y + _wallScale.y / 2 + transform.localScale.y / 2);
 
-            _target = _points[0];
-            transform.position = _points[0];
+            _currentPoint = Random.Range(0, _points.Length-1);
+
+            _target = _points[_currentPoint];
+            transform.position = _points[_currentPoint];
             FindTarget();
         }
 
