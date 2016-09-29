@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement: MonoBehaviour
 {
 
     private InputManager _inputManager;
@@ -140,6 +140,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Update()
+    {
         _anim.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
         _anim.SetBool("IsJumping", IsJumping());
 
