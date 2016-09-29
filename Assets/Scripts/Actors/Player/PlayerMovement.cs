@@ -129,11 +129,12 @@ public class PlayerMovement: MonoBehaviour
 
     private bool IsJumping()
     {
+
         if (_feetTouchWater)
             return !(_rigidbody.velocity.y == 0 || GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround);
         else
-            return !((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround
-                || GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform
+            return !(((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround && !GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
+                || (GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform && _rigidbody.velocity.y == 0)
                 || _rigidbody.IsSleeping())
                 && !(_rigidbody.velocity.y > 0));
 
