@@ -27,14 +27,17 @@ public class PlayerMovement : MonoBehaviour
     private bool _wearsBoots = false;
     private float _waterYSpeed;
     private int _jumpCDCount;
+    private Animator _anim;
 
     public float Speed { get { return _speed; } set { _speed = value; } }
     public float JumpingSpeed { get { return _jumpingSpeed; } set { _jumpingSpeed = value; } }
     public bool FeetTouchWater { get { return _feetTouchWater; } set { _feetTouchWater = value; } }
     public bool IsFloating { get { return _isFloating; } set { _isFloating = value; } }
+    public bool FacingRight { get { return _facingRight; } }
 
     private void Start()
     {
+        _anim = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _inputManager = GetComponent<InputManager>();
         _basicAttackBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
@@ -137,7 +140,9 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Update()
-    { 
+        _anim.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
+        _anim.SetBool("IsJumping", IsJumping());
+
         if (_jumpCDCount < JUMP_COOLDOWN)
             _jumpCDCount++;
 
