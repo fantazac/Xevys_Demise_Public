@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerTouchesFlyingPlatform : MonoBehaviour
 {
-    private const int ENABLE_HITBOX_CD = 12;
+    private const int ENABLE_HITBOX_CD = 20;
 
     private GameObject _flyingPlatform;
     private bool _playerTouchesFlyingPlatform = false;
@@ -15,6 +15,9 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
     {
         if (collider.gameObject.tag == "FlyingPlatform")
         {
+            if (_flyingPlatform != null)
+                EnablePlatformHitbox();
+
             _flyingPlatform = collider.gameObject;
             _playerTouchesFlyingPlatform = true;
         }
@@ -32,6 +35,7 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
         {
             _flyingPlatform.GetComponent<BoxCollider2D>().enabled = false;
             _playerTouchesFlyingPlatform = false;
+            GetComponent<PlayerTouchesGround>().OnGround = false;
             _enableHitboxCount = 0;
         }
             

@@ -129,13 +129,15 @@ public class PlayerMovement : MonoBehaviour
         if (_feetTouchWater)
             return !(_rigidbody.velocity.y == 0 || GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround);
         else
-            return !((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround || _rigidbody.IsSleeping()) 
+            return !((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround
+                || GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform
+                || _rigidbody.IsSleeping())
                 && !(_rigidbody.velocity.y > 0));
 
     }
 
     private void Update()
-    {
+    { 
         if (_jumpCDCount < JUMP_COOLDOWN)
             _jumpCDCount++;
 
