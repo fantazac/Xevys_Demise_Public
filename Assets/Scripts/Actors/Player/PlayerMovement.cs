@@ -131,6 +131,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         _anim.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
+        _anim.SetBool("IsJumping", IsJumping());
 
         if (_jumpCDCount < JUMP_COOLDOWN)
             _jumpCDCount++;
