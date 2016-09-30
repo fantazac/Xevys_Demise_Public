@@ -7,24 +7,14 @@ public class Health: MonoBehaviour
     [SerializeField]
     private float _health = 1000f;
 
-    private List<PlayerDamageManager> _damageManagers;
+    public float HealthPoint { get { return _health; } set { _health = value; } }
 
-    private void Start()
+    //test
+    private void Update()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Scarab");
-
-        for(int i = 0; i < enemies.Length; i++)
+        if (_health == 0)
         {
-            Debug.Log("There is " + enemies.Length + " enemies");
-            enemies[i].GetComponent<PlayerDamageManager>().OnDamage += OnDamage;
-            Debug.Log("Scarab added");
+            Debug.Log("Player Health = " + _health);
         }
-    }
-
-    private void OnDamage(int damage)
-    {
-        _health -= damage;
-        if (_health <= 0)
-            Debug.Log("Dead");
     }
 }
