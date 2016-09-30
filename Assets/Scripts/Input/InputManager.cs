@@ -72,12 +72,11 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
             OnThrowAttackChanged();
 
-        //GamePadInputs();
+        GamePadInputs();
     }
 
     private void GamePadInputs()
     {
-        Debug.Log("lol");
         foreach (PlayerIndex player in Enum.GetValues(typeof(PlayerIndex)))
         {
             //Obtention de l'état du gamepad
@@ -99,14 +98,14 @@ public class InputManager : MonoBehaviour
                 {
                     if (state.Buttons.A == ButtonState.Pressed && state.ThumbSticks.Left.Y < 0)
                         OnJumpDown();
-                        
+
                     if (state.ThumbSticks.Left.Y < 0)
                         OnUnderwaterControl(true);
 
                     if (state.ThumbSticks.Left.Y > 0)
                         OnUnderwaterControl(false);
                 }
-                
+
                 if (state.Buttons.A == ButtonState.Pressed)
                     OnJump();
 
