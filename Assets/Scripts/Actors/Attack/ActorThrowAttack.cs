@@ -27,7 +27,7 @@ public class ActorThrowAttack : MonoBehaviour
     private InputManager _inputManager;
     private AudioSource[] _audioSources;
     private int _knifeThrowCDCount;
-    private int _AxeThrowCDCount;
+    private int _axeThrowCDCount;
 
     private void Start()
     {
@@ -38,7 +38,7 @@ public class ActorThrowAttack : MonoBehaviour
         _audioSources = GetComponents<AudioSource>();
 
         _knifeThrowCDCount = ATTACK_COOLDOWN;
-        _AxeThrowCDCount = ATTACK_COOLDOWN;
+        _axeThrowCDCount = ATTACK_COOLDOWN;
     }
 
     private void Update()
@@ -47,9 +47,9 @@ public class ActorThrowAttack : MonoBehaviour
         {
             _knifeThrowCDCount++;
         }
-        if (_AxeThrowCDCount < ATTACK_COOLDOWN)
+        if (_axeThrowCDCount < ATTACK_COOLDOWN)
         {
-            _AxeThrowCDCount++;
+            _axeThrowCDCount++;
         }
     }
 
@@ -78,7 +78,7 @@ public class ActorThrowAttack : MonoBehaviour
 
     private void OnAxeAttack()
     {
-        if (!GameObject.Find("Axe(Clone)") && _AxeThrowCDCount >= ATTACK_COOLDOWN)
+        if (!GameObject.Find("Axe(Clone)") && _axeThrowCDCount >= ATTACK_COOLDOWN && GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition > 0)
         {
             _audioSources[2].Play();
             GameObject newAxe;
@@ -88,7 +88,8 @@ public class ActorThrowAttack : MonoBehaviour
                 newAxe = (GameObject)Instantiate(_axe, new Vector3(transform.position.x, transform.position.y + AXE_THROWING_HEIGHT, transform.position.z), transform.rotation);
                 newAxe.GetComponent<Rigidbody2D>().rotation = AXE_INITIAL_ANGLE;
                 newAxe.GetComponent<Rigidbody2D>().velocity = new Vector2(AXE_SPEED, AXE_THROWING_ANGLE);
-                _AxeThrowCDCount = 0;
+                _axeThrowCDCount = 0;
+                GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition--;
             }
             else
             {
@@ -96,7 +97,8 @@ public class ActorThrowAttack : MonoBehaviour
                 newAxe.GetComponent<Rigidbody2D>().rotation = AXE_INITIAL_ANGLE;
                 newAxe.GetComponent<SpriteRenderer>().flipY = true;
                 newAxe.GetComponent<Rigidbody2D>().velocity = new Vector2(-AXE_SPEED, AXE_THROWING_ANGLE);
-                _AxeThrowCDCount = 0;
+                _axeThrowCDCount = 0;
+                GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition--;
             }
         }
     }
