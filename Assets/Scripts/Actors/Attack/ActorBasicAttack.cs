@@ -8,7 +8,7 @@ public class ActorBasicAttack : MonoBehaviour
     private InputManager _inputManager;
     private SpriteRenderer _spriteRenderer;
     private GameObject _attackHitBox;
-    private AudioSource _audioSource;
+    private AudioSource[] _audioSources;
     private int _count;
 
 	void Start ()
@@ -16,7 +16,7 @@ public class ActorBasicAttack : MonoBehaviour
         _inputManager = GetComponent<InputManager>();
 	    _spriteRenderer = GameObject.Find("CharacterBasicAttackBoxSprite").GetComponent<SpriteRenderer>();
         _attackHitBox = GameObject.Find("CharacterBasicAttackBox");
-        _audioSource = GetComponent<AudioSource>();
+        _audioSources = GetComponents<AudioSource>();
 	    _count = FRAME_BUFFER;
 
 	    _inputManager.OnBasicAttack += OnBasicAttack;
@@ -39,7 +39,8 @@ public class ActorBasicAttack : MonoBehaviour
             _spriteRenderer.enabled = true;
             _attackHitBox.gameObject.tag = "IsActive";
             _count = 0;
-            _audioSource.Play();
+
+            _audioSources[0].Play();
         }
     }
 }

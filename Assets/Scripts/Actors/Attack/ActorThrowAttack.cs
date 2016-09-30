@@ -23,18 +23,22 @@ public class ActorThrowAttack : MonoBehaviour
     private float AXE_INITIAL_ANGLE = 90f;
 
     private InputManager _inputManager;
+    private AudioSource[] _audioSources;
 
     void Start()
     {
         _inputManager = GetComponent<InputManager>();
         _inputManager.OnThrowAttack += OnKnifeAttack;
         _inputManager.OnThrowAttack += OnAxeAttack;
+
+        _audioSources = GetComponents<AudioSource>();
     }
 
     void OnKnifeAttack()
     {
         if (!GameObject.Find("Knife(Clone)"))
         {
+            _audioSources[1].Play();
             GameObject newKnife;
 
             if (GetComponent<PlayerMovement>().FacingRight)
@@ -55,6 +59,7 @@ public class ActorThrowAttack : MonoBehaviour
     {
         if (!GameObject.Find("Axe(Clone)"))
         {
+            _audioSources[2].Play();
             GameObject newAxe;
 
             if (GetComponent<PlayerMovement>().FacingRight)
