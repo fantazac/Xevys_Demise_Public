@@ -1,32 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Health: MonoBehaviour
 {
     [SerializeField]
     private float _health = 1000f;
 
-    public delegate void OnHealthChangedHandler(float newHealth);
-    public event OnHealthChangedHandler OnHealthChanged;
+    private List<PlayerDamageManager> _damageManagers;
 
-    public float HealthPoints
+    private void Start()
     {
-        get { return _health; }
-        private set { _health = value;
-            if (OnHealthChanged != null)
-            {
-                OnHealthChanged(_health);
-            }
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Scarab");
+
+        for(int i = 0; i < enemies.Length; i++)
+        {
+            Debug.Log("There is " + enemies.Length + " enemies");
+            enemies[i].GetComponent<PlayerDamageManager>().OnDamage += OnDamage;
+            Debug.Log("Scarab added");
         }
     }
 
-    public void Heal(float healPoints)
+    private void OnDamage(int damage)
     {
-        HealthPoints += healPoints;
-    }
-
-    public void Hit(float hitPoints)
-    {
-        HealthPoints -= hitPoints;
+        _health -= damage;
+        if (_health <= 0)
+            Debug.Log("Dead");
     }
 }
