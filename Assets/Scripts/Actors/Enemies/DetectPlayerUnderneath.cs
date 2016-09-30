@@ -3,27 +3,14 @@ using System.Collections;
 
 public class DetectPlayerUnderneath : MonoBehaviour
 {
-
-    private Rigidbody2D _rigidbody;
-
-    // Use this for initialization
-    void Start()
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    void OnTriggerEnter(Collider coll)
-    {
-        if (coll.gameObject.tag == "Player")
+        if(!GetComponentInParent<MoveBatInDelimitedArea>().IsPlayerUnderneath)
         {
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 2);
+            if (collider.gameObject.tag == "Player" && collider is BoxCollider2D)
+            {
+                GetComponentInParent<MoveBatInDelimitedArea>().IsPlayerUnderneath = true;
+            }
         }
-
     }
 }
