@@ -66,11 +66,12 @@ public class InputManager : MonoBehaviour
         if (Input.GetKey(KeyCode.L))
             OnThrowAttack();
 
-        GamePadInputs();
+        //GamePadInputs();
     }
 
     private void GamePadInputs()
     {
+        Debug.Log("lol");
         foreach (PlayerIndex player in Enum.GetValues(typeof(PlayerIndex)))
         {
             //Obtention de l'état du gamepad
