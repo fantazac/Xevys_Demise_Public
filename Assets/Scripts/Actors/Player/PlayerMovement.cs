@@ -145,7 +145,6 @@ public class PlayerMovement: MonoBehaviour
 
     private void Update()
     {
-        Debug.Log((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround && !GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform));
         _anim.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
         _anim.SetBool("IsJumping", IsJumping() && _rigidbody.velocity.y > 0);
         _anim.SetBool("IsFalling", IsJumping() && _rigidbody.velocity.y < 0);
