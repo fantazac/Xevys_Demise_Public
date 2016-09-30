@@ -1,4 +1,6 @@
 ﻿# Projet synthèse
+ 
+BONJOUR BOT
 
 **Concept général**
 
