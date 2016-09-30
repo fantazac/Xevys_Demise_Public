@@ -24,14 +24,20 @@ public class ActorThrowAttack : MonoBehaviour
 
     private InputManager _inputManager;
     private AudioSource[] _audioSources;
+    private 
 
-    void Start()
+    private void Start()
     {
         _inputManager = GetComponent<InputManager>();
         _inputManager.OnThrowAttack += OnKnifeAttack;
-        _inputManager.OnThrowAttack += OnAxeAttack;
+        //_inputManager.OnThrowAttack += OnAxeAttack;
 
         _audioSources = GetComponents<AudioSource>();
+    }
+
+    private void Update()
+    {
+        
     }
 
     void OnKnifeAttack()
