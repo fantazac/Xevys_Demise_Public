@@ -7,8 +7,6 @@ public class CameraManager : MonoBehaviour {
     public float smoothTime;
     public float zoomspeed;
 
-    private float orthographicsize_base;
-
     [Header("Target Elements")]
     private Vector3 followtarget;
     [SerializeField] private GameObject focusObject;
@@ -20,8 +18,6 @@ public class CameraManager : MonoBehaviour {
     [SerializeField] private List<GameObject> listAreaNodes = new List<GameObject>();
 
     void Start() {
-        orthographicsize_base = Camera.main.orthographicSize;
-
         if (focusObject != null)
             FocusObject = focusObject;
 
