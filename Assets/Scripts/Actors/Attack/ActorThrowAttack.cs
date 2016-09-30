@@ -27,7 +27,6 @@ public class ActorThrowAttack : MonoBehaviour
     
     private int _knifeThrowCDCount;
     private int _axeThrowCDCount;
-    private int _AxeThrowCDCount;
 
     private InputManager _inputManager;
     private AudioSource[] _audioSources;
@@ -62,7 +61,7 @@ public class ActorThrowAttack : MonoBehaviour
 
     private void OnKnifeAttack()
     {
-        if (!GameObject.Find("Knife(Clone)") && _knifeThrowCDCount >= ATTACK_COOLDOWN)
+        if (!GameObject.Find("Knife(Clone)") && _knifeThrowCDCount >= ATTACK_COOLDOWN && GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition > 0)
         {
             _audioSources[1].Play();
             GameObject newKnife;
@@ -72,6 +71,7 @@ public class ActorThrowAttack : MonoBehaviour
                 newKnife = (GameObject)Instantiate(_knife, new Vector3(transform.position.x + WEAPON_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, transform.position.z), transform.rotation);
                 newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(KNIFE_SPEED, 0);
                 _knifeThrowCDCount = 0;
+                GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition--;
             }
             else
             {
@@ -79,6 +79,7 @@ public class ActorThrowAttack : MonoBehaviour
                 newKnife.GetComponent<SpriteRenderer>().flipX = true;
                 newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(-KNIFE_SPEED, 0);
                 _knifeThrowCDCount = 0;
+                GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition--;
             }
         }
     }
@@ -127,6 +128,5 @@ public class ActorThrowAttack : MonoBehaviour
         Projectile tmp = _throwableWeapons[0];
         _throwableWeapons[0] = _throwableWeapons[1];
         _throwableWeapons[1] = tmp;
-        Debug.Log(_throwableWeapons[0].ToString());
     }
 }

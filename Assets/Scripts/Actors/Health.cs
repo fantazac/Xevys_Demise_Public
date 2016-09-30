@@ -1,32 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Health: MonoBehaviour
 {
     [SerializeField]
     private float _health = 1000f;
 
-    public delegate void OnHealthChangedHandler(float newHealth);
-    public event OnHealthChangedHandler OnHealthChanged;
+    public float HealthPoint { get { return _health; } set { _health = value; } }
 
-    public float HealthPoints
+    //test
+    private void Update()
     {
-        get { return _health; }
-        private set { _health = value;
-            if (OnHealthChanged != null)
-            {
-                OnHealthChanged(_health);
-            }
+        if (_health == 0)
+        {
+            Debug.Log("Player Health = " + _health);
         }
-    }
-
-    public void Heal(float healPoints)
-    {
-        HealthPoints += healPoints;
-    }
-
-    public void Hit(float hitPoints)
-    {
-        HealthPoints -= hitPoints;
     }
 }
