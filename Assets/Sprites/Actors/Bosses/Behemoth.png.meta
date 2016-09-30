@@ -1,0 +1,1697 @@
+fileFormatVersion: 2
+guid: 62e480f90c202594798d36cce0a18713
+timeCreated: 1475086864
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Behemoth_0
+    21300002: Behemoth_1
+    21300004: Behemoth_2
+    21300006: Behemoth_3
+    21300008: Behemoth_4
+    21300010: Behemoth_5
+    21300012: Behemoth_6
+    21300014: Behemoth_7
+    21300016: Behemoth_8
+    21300018: Behemoth_9
+    21300020: Behemoth_10
+    21300022: Behemoth_11
+    21300024: Behemoth_12
+    21300026: Behemoth_13
+    21300028: Behemoth_14
+    21300030: Behemoth_15
+    21300032: Behemoth_16
+    21300034: Behemoth_17
+    21300036: Behemoth_18
+    21300038: Behemoth_19
+    21300040: Behemoth_20
+    21300042: Behemoth_21
+    21300044: Behemoth_22
+    21300046: Behemoth_23
+    21300048: Behemoth_24
+    21300050: Behemoth_25
+    21300052: Behemoth_26
+    21300054: Behemoth_27
+    21300056: Behemoth_28
+    21300058: Behemoth_29
+    21300060: Behemoth_30
+    21300062: Behemoth_31
+    21300064: Behemoth_32
+    21300066: Behemoth_33
+    21300068: Behemoth_34
+    21300070: Behemoth_35
+    21300072: Behemoth_36
+    21300074: Behemoth_37
+    21300076: Behemoth_38
+    21300078: Behemoth_39
+    21300080: Behemoth_40
+    21300082: Behemoth_41
+    21300084: Behemoth_42
+    21300086: Behemoth_43
+    21300088: Behemoth_44
+    21300090: Behemoth_45
+    21300092: Behemoth_46
+    21300094: Behemoth_47
+    21300096: Behemoth_48
+    21300098: Behemoth_49
+    21300100: Behemoth_50
+    21300102: Behemoth_51
+    21300104: Behemoth_52
+    21300106: Behemoth_53
+    21300108: Behemoth_54
+    21300110: Behemoth_55
+    21300112: Behemoth_56
+    21300114: Behemoth_57
+    21300116: Behemoth_58
+    21300118: Behemoth_59
+    21300120: Behemoth_60
+    21300122: Behemoth_61
+    21300124: Behemoth_62
+    21300126: Behemoth_63
+    21300128: Behemoth_64
+    21300130: Behemoth_65
+    21300132: Behemoth_66
+    21300134: Behemoth_67
+    21300136: Behemoth_68
+    21300138: Behemoth_69
+    21300140: Behemoth_70
+    21300142: Behemoth_71
+    21300144: Behemoth_72
+    21300146: Behemoth_73
+    21300148: Behemoth_74
+    21300150: Behemoth_75
+    21300152: Behemoth_76
+    21300154: Behemoth_77
+    21300156: Behemoth_78
+    21300158: Behemoth_79
+    21300160: Behemoth_80
+    21300162: Behemoth_81
+    21300164: Behemoth_82
+    21300166: Behemoth_83
+    21300168: Behemoth_84
+    21300170: Behemoth_85
+    21300172: Behemoth_86
+    21300174: Behemoth_87
+    21300176: Behemoth_88
+    21300178: Behemoth_89
+    21300180: Behemoth_90
+    21300182: Behemoth_91
+    21300184: Behemoth_92
+    21300186: Behemoth_93
+    21300188: Behemoth_94
+    21300190: Behemoth_95
+    21300192: Behemoth_96
+    21300194: Behemoth_97
+    21300196: Behemoth_98
+    21300198: Behemoth_99
+    21300200: Behemoth_100
+    21300202: Behemoth_101
+    21300204: Behemoth_102
+    21300206: Behemoth_103
+    21300208: Behemoth_104
+    21300210: Behemoth_105
+    21300212: Behemoth_106
+    21300214: Behemoth_107
+    21300216: Behemoth_108
+    21300218: Behemoth_109
+    21300220: Behemoth_110
+    21300222: Behemoth_111
+    21300224: Behemoth_112
+    21300226: Behemoth_113
+    21300228: Behemoth_114
+    21300230: Behemoth_115
+    21300232: Behemoth_116
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Behemoth_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1652
+        width: 185
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_1
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 1653
+        width: 176
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_2
+      rect:
+        serializedVersion: 2
+        x: 382
+        y: 1655
+        width: 175
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_3
+      rect:
+        serializedVersion: 2
+        x: 572
+        y: 1655
+        width: 181
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_4
+      rect:
+        serializedVersion: 2
+        x: 763
+        y: 1655
+        width: 173
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_5
+      rect:
+        serializedVersion: 2
+        x: 947
+        y: 1652
+        width: 174
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1511
+        width: 192
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_7
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 1511
+        width: 189
+        height: 114
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_8
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 1511
+        width: 200
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_9
+      rect:
+        serializedVersion: 2
+        x: 620
+        y: 1511
+        width: 196
+        height: 134
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_10
+      rect:
+        serializedVersion: 2
+        x: 829
+        y: 1511
+        width: 200
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_11
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1367
+        width: 148
+        height: 127
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_12
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 1367
+        width: 113
+        height: 98
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_13
+      rect:
+        serializedVersion: 2
+        x: 317
+        y: 1367
+        width: 175
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_14
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1238
+        width: 188
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_15
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 1238
+        width: 160
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_16
+      rect:
+        serializedVersion: 2
+        x: 383
+        y: 1240
+        width: 160
+        height: 97
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_17
+      rect:
+        serializedVersion: 2
+        x: 923
+        y: 1094
+        width: 148
+        height: 171
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_18
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1094
+        width: 148
+        height: 126
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_19
+      rect:
+        serializedVersion: 2
+        x: 164
+        y: 1094
+        width: 150
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_20
+      rect:
+        serializedVersion: 2
+        x: 331
+        y: 1094
+        width: 154
+        height: 114
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_21
+      rect:
+        serializedVersion: 2
+        x: 499
+        y: 1094
+        width: 191
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_22
+      rect:
+        serializedVersion: 2
+        x: 705
+        y: 1094
+        width: 200
+        height: 127
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_23
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 903
+        width: 144
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_24
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 903
+        width: 122
+        height: 175
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_25
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 903
+        width: 122
+        height: 167
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_26
+      rect:
+        serializedVersion: 2
+        x: 451
+        y: 903
+        width: 110
+        height: 167
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_27
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 745
+        width: 170
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_28
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 745
+        width: 153
+        height: 142
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_29
+      rect:
+        serializedVersion: 2
+        x: 365
+        y: 745
+        width: 213
+        height: 101
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_30
+      rect:
+        serializedVersion: 2
+        x: 594
+        y: 745
+        width: 163
+        height: 143
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_31
+      rect:
+        serializedVersion: 2
+        x: 786
+        y: 741
+        width: 172
+        height: 129
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_32
+      rect:
+        serializedVersion: 2
+        x: 987
+        y: 745
+        width: 150
+        height: 156
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_33
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 563
+        width: 183
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_34
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 563
+        width: 186
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_35
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 563
+        width: 201
+        height: 122
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_36
+      rect:
+        serializedVersion: 2
+        x: 627
+        y: 563
+        width: 213
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_37
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 356
+        width: 172
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_38
+      rect:
+        serializedVersion: 2
+        x: 190
+        y: 361
+        width: 167
+        height: 143
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_39
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 361
+        width: 172
+        height: 167
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_40
+      rect:
+        serializedVersion: 2
+        x: 578
+        y: 361
+        width: 125
+        height: 176
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_41
+      rect:
+        serializedVersion: 2
+        x: 726
+        y: 355
+        width: 169
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_42
+      rect:
+        serializedVersion: 2
+        x: 924
+        y: 354
+        width: 136
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_43
+      rect:
+        serializedVersion: 2
+        x: 1082
+        y: 355
+        width: 142
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_44
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 179
+        width: 123
+        height: 125
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_45
+      rect:
+        serializedVersion: 2
+        x: 141
+        y: 179
+        width: 145
+        height: 153
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_46
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 179
+        width: 118
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_47
+      rect:
+        serializedVersion: 2
+        x: 448
+        y: 179
+        width: 145
+        height: 153
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_48
+      rect:
+        serializedVersion: 2
+        x: 618
+        y: 179
+        width: 148
+        height: 158
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_49
+      rect:
+        serializedVersion: 2
+        x: 791
+        y: 179
+        width: 154
+        height: 159
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_50
+      rect:
+        serializedVersion: 2
+        x: 968
+        y: 179
+        width: 118
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_51
+      rect:
+        serializedVersion: 2
+        x: 1111
+        y: 178
+        width: 119
+        height: 135
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_52
+      rect:
+        serializedVersion: 2
+        x: 1257
+        y: 177
+        width: 120
+        height: 145
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_53
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 26
+        width: 174
+        height: 118
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_54
+      rect:
+        serializedVersion: 2
+        x: 632
+        y: 26
+        width: 175
+        height: 136
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_55
+      rect:
+        serializedVersion: 2
+        x: 875
+        y: 103
+        width: 23
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_56
+      rect:
+        serializedVersion: 2
+        x: 899
+        y: 104
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_57
+      rect:
+        serializedVersion: 2
+        x: 928
+        y: 104
+        width: 13
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_58
+      rect:
+        serializedVersion: 2
+        x: 942
+        y: 104
+        width: 11
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_59
+      rect:
+        serializedVersion: 2
+        x: 953
+        y: 103
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_60
+      rect:
+        serializedVersion: 2
+        x: 974
+        y: 104
+        width: 26
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_61
+      rect:
+        serializedVersion: 2
+        x: 1016
+        y: 103
+        width: 35
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_62
+      rect:
+        serializedVersion: 2
+        x: 1055
+        y: 104
+        width: 11
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_63
+      rect:
+        serializedVersion: 2
+        x: 1068
+        y: 104
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_64
+      rect:
+        serializedVersion: 2
+        x: 1086
+        y: 103
+        width: 19
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_65
+      rect:
+        serializedVersion: 2
+        x: 1105
+        y: 104
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_66
+      rect:
+        serializedVersion: 2
+        x: 1125
+        y: 121
+        width: 8
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_67
+      rect:
+        serializedVersion: 2
+        x: 1131
+        y: 103
+        width: 14
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_68
+      rect:
+        serializedVersion: 2
+        x: 1160
+        y: 104
+        width: 20
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_69
+      rect:
+        serializedVersion: 2
+        x: 1179
+        y: 103
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_70
+      rect:
+        serializedVersion: 2
+        x: 1197
+        y: 104
+        width: 19
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_71
+      rect:
+        serializedVersion: 2
+        x: 1216
+        y: 103
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_72
+      rect:
+        serializedVersion: 2
+        x: 1237
+        y: 104
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_73
+      rect:
+        serializedVersion: 2
+        x: 1255
+        y: 96
+        width: 18
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_74
+      rect:
+        serializedVersion: 2
+        x: 1275
+        y: 103
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_75
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 13
+        width: 204
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_76
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 26
+        width: 185
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_77
+      rect:
+        serializedVersion: 2
+        x: 959
+        y: 61
+        width: 20
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_78
+      rect:
+        serializedVersion: 2
+        x: 981
+        y: 84
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_79
+      rect:
+        serializedVersion: 2
+        x: 1046
+        y: 60
+        width: 18
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_80
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 60
+        width: 17
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_81
+      rect:
+        serializedVersion: 2
+        x: 1126
+        y: 61
+        width: 21
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_82
+      rect:
+        serializedVersion: 2
+        x: 1149
+        y: 84
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_83
+      rect:
+        serializedVersion: 2
+        x: 981
+        y: 61
+        width: 4
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_84
+      rect:
+        serializedVersion: 2
+        x: 989
+        y: 54
+        width: 17
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_85
+      rect:
+        serializedVersion: 2
+        x: 1009
+        y: 54
+        width: 17
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_86
+      rect:
+        serializedVersion: 2
+        x: 1027
+        y: 60
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_87
+      rect:
+        serializedVersion: 2
+        x: 1096
+        y: 54
+        width: 19
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_88
+      rect:
+        serializedVersion: 2
+        x: 1149
+        y: 61
+        width: 4
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_89
+      rect:
+        serializedVersion: 2
+        x: 1157
+        y: 61
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_90
+      rect:
+        serializedVersion: 2
+        x: 1176
+        y: 60
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_91
+      rect:
+        serializedVersion: 2
+        x: 1195
+        y: 60
+        width: 15
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_92
+      rect:
+        serializedVersion: 2
+        x: 880
+        y: 18
+        width: 11
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_93
+      rect:
+        serializedVersion: 2
+        x: 892
+        y: 18
+        width: 13
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_94
+      rect:
+        serializedVersion: 2
+        x: 970
+        y: 17
+        width: 18
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_95
+      rect:
+        serializedVersion: 2
+        x: 1034
+        y: 18
+        width: 4
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_96
+      rect:
+        serializedVersion: 2
+        x: 1146
+        y: 40
+        width: 4
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_97
+      rect:
+        serializedVersion: 2
+        x: 1249
+        y: 17
+        width: 17
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_98
+      rect:
+        serializedVersion: 2
+        x: 1270
+        y: 40
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_99
+      rect:
+        serializedVersion: 2
+        x: 1276
+        y: 17
+        width: 13
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_100
+      rect:
+        serializedVersion: 2
+        x: 917
+        y: 17
+        width: 16
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_101
+      rect:
+        serializedVersion: 2
+        x: 936
+        y: 17
+        width: 14
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_102
+      rect:
+        serializedVersion: 2
+        x: 951
+        y: 17
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_103
+      rect:
+        serializedVersion: 2
+        x: 990
+        y: 11
+        width: 9
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_104
+      rect:
+        serializedVersion: 2
+        x: 1014
+        y: 10
+        width: 17
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_105
+      rect:
+        serializedVersion: 2
+        x: 1040
+        y: 17
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_106
+      rect:
+        serializedVersion: 2
+        x: 1059
+        y: 17
+        width: 17
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_107
+      rect:
+        serializedVersion: 2
+        x: 1079
+        y: 17
+        width: 14
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_108
+      rect:
+        serializedVersion: 2
+        x: 1094
+        y: 17
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_109
+      rect:
+        serializedVersion: 2
+        x: 1125
+        y: 10
+        width: 17
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_110
+      rect:
+        serializedVersion: 2
+        x: 1146
+        y: 18
+        width: 4
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_111
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 18
+        width: 18
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_112
+      rect:
+        serializedVersion: 2
+        x: 1170
+        y: 17
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_113
+      rect:
+        serializedVersion: 2
+        x: 1201
+        y: 17
+        width: 15
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_114
+      rect:
+        serializedVersion: 2
+        x: 1219
+        y: 18
+        width: 11
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_115
+      rect:
+        serializedVersion: 2
+        x: 1230
+        y: 17
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Behemoth_116
+      rect:
+        serializedVersion: 2
+        x: 1270
+        y: 18
+        width: 4
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
