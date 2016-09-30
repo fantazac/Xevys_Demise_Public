@@ -8,7 +8,7 @@ public class AttachScarabToPlatform : MonoBehaviour
     private GameObject _attachedWall;
 
     private const float MAX_ROTATION = 90;
-    private const float ROTATION_SPEED = 2;
+    private const float ROTATION_SPEED = 5;
 
     private Vector3 _wallPosition;
     private Vector3 _wallScale;
@@ -49,7 +49,7 @@ public class AttachScarabToPlatform : MonoBehaviour
         if (_target != transform.position)
         {
             transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _target, 1 * Time.deltaTime);
-            if (Vector3.Distance(_target, transform.position) <= transform.localScale.x / 2)
+            if (Vector3.Distance(_target, transform.position) <= transform.localScale.x / ROTATION_SPEED)
                 _rotate = true;
         }
         else

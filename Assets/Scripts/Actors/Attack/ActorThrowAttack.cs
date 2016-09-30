@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 public class ActorThrowAttack : MonoBehaviour
@@ -22,18 +23,24 @@ public class ActorThrowAttack : MonoBehaviour
     [SerializeField]
     private float AXE_INITIAL_ANGLE = 90f;
     [SerializeField]
-    private const int ATTACK_COOLDOWN = 80;
+    private const int ATTACK_COOLDOWN = 50;
+    
+    private int _knifeThrowCDCount;
+    private int _axeThrowCDCount;
+    private int _AxeThrowCDCount;
 
     private InputManager _inputManager;
     private AudioSource[] _audioSources;
-    private int _knifeThrowCDCount;
-    private int _axeThrowCDCount;
+    
+    public enum Projectile { Knives, Axes };
+    private List<Projectile> _throwableWeapons;
 
     private void Start()
     {
         _inputManager = GetComponent<InputManager>();
+        _throwableWeapons = new List<Projectile> {Projectile.Knives, Projectile.Axes};
         _inputManager.OnThrowAttack += OnKnifeAttack;
-        _inputManager.OnThrowAttack += OnAxeAttack;
+        _inputManager.OnThrowAttackChanged += OnThrowableWeaponChange;
 
         _audioSources = GetComponents<AudioSource>();
 
@@ -101,5 +108,25 @@ public class ActorThrowAttack : MonoBehaviour
                 GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition--;
             }
         }
+    }
+
+    private void OnThrowableWeaponChange()
+    {
+        switch (_throwableWeapons[0])
+        {
+            case Projectile.Knives: default:             
+                _inputManager.OnThrowAttack += OnAxeAttack;
+                _inputManager.OnThrowAttack -= OnKnifeAttack;
+                break;
+            case Projectile.Axes:
+                _inputManager.OnThrowAttack -= OnAxeAttack;
+                _inputManager.OnThrowAttack += OnKnifeAttack;
+                break;
+        }
+
+        Projectile tmp = _throwableWeapons[0];
+        _throwableWeapons[0] = _throwableWeapons[1];
+        _throwableWeapons[1] = tmp;
+        Debug.Log(_throwableWeapons[0].ToString());
     }
 }
