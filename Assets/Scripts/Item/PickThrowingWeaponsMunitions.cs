@@ -10,6 +10,9 @@ public class PickThrowingWeaponsMunitions : MonoBehaviour
     private const int KNIFE_AMOUNT_ON_PICKUP = 5;
     private const int BASE_KNIFE_AMOUNT_ON_PICKUP = 10;
 
+    [SerializeField]
+    private AudioSource _audio;
+
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "Player")
@@ -22,6 +25,8 @@ public class PickThrowingWeaponsMunitions : MonoBehaviour
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition = AXE_AMOUNT_ON_PICKUP;
             else if (gameObject.tag == "BaseAxeItem")
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition = BASE_AXE_AMOUNT_ON_PICKUP;
+
+            _audio.Play();
 
             Destroy(gameObject);
         }
