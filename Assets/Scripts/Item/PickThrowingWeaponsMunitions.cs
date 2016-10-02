@@ -20,11 +20,18 @@ public class PickThrowingWeaponsMunitions : MonoBehaviour
             if (gameObject.tag == "KnifePickableItem")
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition = KNIFE_AMOUNT_ON_PICKUP;
             else if (gameObject.tag == "BaseKnifeItem")
+            {
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition = BASE_KNIFE_AMOUNT_ON_PICKUP;
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+            }   
             else if (gameObject.tag == "AxePickableItem")
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition = AXE_AMOUNT_ON_PICKUP;
             else if (gameObject.tag == "BaseAxeItem")
+            {
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition = BASE_AXE_AMOUNT_ON_PICKUP;
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+            }
+                
 
             _audio.Play();
 
