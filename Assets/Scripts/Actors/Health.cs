@@ -9,12 +9,11 @@ public class Health: MonoBehaviour
 
     public float HealthPoint { get { return _health; } set { _health = value; } }
 
-    //test
-    private void Update()
-    {
-        if (_health == 0)
-        {
-            Debug.Log("Player Health = " + _health);
-        }
-    }
+    //private void Update()
+    //{
+    //    if (_health == 0)
+    //    {
+    //        Debug.Log("Player Health = " + _health);
+    //    }
+    //}
 }
