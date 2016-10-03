@@ -206,6 +206,9 @@ public class PlayerMovement : MonoBehaviour
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, TERMINAL_SPEED);
 
         _waterYSpeed = INITIAL_WATER_FALLING_SPEED;
+
+        if (!_rigidbody.IsSleeping() && _rigidbody.velocity.x == 0 && _rigidbody.velocity.y == 0)
+            _rigidbody.Sleep();
     }
 
     private void Flip(bool goesRight)
