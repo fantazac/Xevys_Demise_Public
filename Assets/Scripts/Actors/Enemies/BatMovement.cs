@@ -18,18 +18,28 @@ public class BatMovement : MonoBehaviour
     private Vector2 _target;
     private Vector2 _initialPosition;
 
-    private const float DISTANCE_BETWEEN_CENTER_AND_EDGE = 3;
+    private float _minX = 0;
+    private float _maxX = 0;
+
+    [SerializeField]
+    private float _leftDistance = 0;
+
+    [SerializeField]
+    private float _rightDistance = 0;
+
     private const float DOWN_SPEED = 5;
     private const float UP_SPEED = 2;
 
     private void Start()
     {
         _initialPosition = transform.position;
+        _minX = _initialPosition.x - _leftDistance;
+        _maxX = _initialPosition.x + _rightDistance;
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "Player" || collider.gameObject.tag == "FlyingPlatform")
+        if ((collider.gameObject.tag == "Wall" || collider.gameObject.tag == "Player" || collider.gameObject.tag == "FlyingPlatform") && !_goingUp)
         {
             _startCooldown = true;
             _goingUp = true;
@@ -38,7 +48,6 @@ public class BatMovement : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(_goingUp);
         _playerDetectionHitbox.transform.position = new Vector2(transform.position.x, _playerDetectionHitbox.transform.position.y);
 
         if (!_goingDown && _isInPosition && _playerDetectionHitbox.GetComponent<DetectPlayer>().DetectedPlayer)
@@ -75,7 +84,7 @@ public class BatMovement : MonoBehaviour
 
     private void FindTarget()
     {
-        _target = new Vector2(_initialPosition.x + Random.Range(-DISTANCE_BETWEEN_CENTER_AND_EDGE, DISTANCE_BETWEEN_CENTER_AND_EDGE), _initialPosition.y);
+        _target = new Vector2(Random.Range(_minX, _maxX), _initialPosition.y);
     }
 
 }
