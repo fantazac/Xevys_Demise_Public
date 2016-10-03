@@ -14,7 +14,7 @@ public class OpenDoorTrigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (_door != null && collider.gameObject.tag == "Axe")
+        if (_door != null && (collider.gameObject.tag == "AxeBlade") || collider.gameObject.tag == "AxeHandle")
         {
             foreach (GameObject wall in _wallsToActivate)
             {
