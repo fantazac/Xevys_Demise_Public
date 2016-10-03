@@ -10,19 +10,29 @@ public class OpenDoorTrigger : MonoBehaviour
     [SerializeField]
     private GameObject[] _wallsToActivate;
 
-    [SerializeField]
-    private AudioSource _audio;
+    private bool _soundPlayed;
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (_door != null && collider.gameObject.tag == "Axe")
         {
             foreach (GameObject wall in _wallsToActivate)
+            {
                 wall.GetComponent<BoxCollider2D>().enabled = true;
-            
-            _audio.Play();
+            }
+
+            GetComponent<AudioSource>().Play();
+            _soundPlayed = true;
+            gameObject.transform.position = new Vector3(-1000, -1000, 0);
 
             Destroy(_door);
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (_soundPlayed && !GetComponent<AudioSource>().isPlaying)
+        {
             Destroy(gameObject);
         }
     }
