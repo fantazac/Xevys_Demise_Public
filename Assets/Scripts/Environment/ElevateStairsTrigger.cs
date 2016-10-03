@@ -7,8 +7,7 @@ public class ElevateStairsTrigger : MonoBehaviour
     [SerializeField]
     private GameObject[] _stairsToElevate;
 
-    [SerializeField]
-    private AudioSource _audio;
+    private bool _soundPlayed;
 
     private const float ELEVATION_AMOUNT = 2.7f;
     private const float ELEVATION_SPEED = 0.05f;
@@ -20,7 +19,9 @@ public class ElevateStairsTrigger : MonoBehaviour
     {
         if (_stairsToElevate.Length > 0 && collider.gameObject.tag == "Knife")
         {
-            _audio.Play();
+            GetComponent<AudioSource>().Play();
+            _soundPlayed = true;
+            gameObject.transform.position = new Vector3(-1000, -1000, 0);
             _elevateStairs = true;
             GetComponent<SpriteRenderer>().enabled = false;
         }
@@ -31,14 +32,21 @@ public class ElevateStairsTrigger : MonoBehaviour
         if (_elevateStairs)
         {
             if (_elevationCount < ELEVATION_AMOUNT)
+            {
                 foreach (GameObject stair in _stairsToElevate)
                 {
                     stair.transform.localScale = new Vector2(stair.transform.localScale.x, stair.transform.localScale.y + ELEVATION_SPEED);
                     stair.transform.position = new Vector2(stair.transform.position.x, stair.transform.position.y + ELEVATION_SPEED / 2);
                     _elevationCount += ELEVATION_SPEED;
                 }
+            }
             else
-                Destroy(gameObject);
+            {
+                if (_soundPlayed && !GetComponent<AudioSource>().isPlaying)
+                {
+                    Destroy(gameObject);
+                }
+            }
         }
     }
 }
