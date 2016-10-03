@@ -74,7 +74,6 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            Debug.Log("non");
             OnThrowAttackChanged();
         }
 

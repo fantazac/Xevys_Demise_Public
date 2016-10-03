@@ -59,7 +59,7 @@ public class ScarabMovement : MonoBehaviour
         }
         else if (_points.Length > 0)
         {
-            _currentPoint = Random.Range(1, _points.Length-1);
+            _currentPoint = Random.Range(0, _points.Length-1);
 
             _target = _points[_currentPoint];
             transform.position = _points[_currentPoint];
