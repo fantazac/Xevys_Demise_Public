@@ -35,8 +35,11 @@ public class InputManager : MonoBehaviour
     public delegate void OnThrowAttackChangedHandler();
     public event OnThrowAttackChangedHandler OnThrowAttackChanged;
 
-    private float joysticksXAxisDeadZone = 0.1f;
-    private float joysticksYAxisDeadZone = 1f;
+    private float _joysticksXAxisDeadZone = 0.1f;
+    private float _joysticksYAxisDeadZone = 1f;
+
+    private bool _leftShoulderReady = true;
+    private bool _rightShoulderReady = true;
 
     private void FixedUpdate()
     {
@@ -70,7 +73,10 @@ public class InputManager : MonoBehaviour
             OnThrowAttack();
 
         if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Debug.Log("non");
             OnThrowAttackChanged();
+        }
 
         GamePadInputs();
     }
@@ -86,7 +92,7 @@ public class InputManager : MonoBehaviour
             if (state.IsConnected)
             {
                 //Déplacement gauche à droite du joueur (utilisez les events)
-                if (Math.Abs(state.ThumbSticks.Left.X) > joysticksXAxisDeadZone)
+                if (Math.Abs(state.ThumbSticks.Left.X) > _joysticksXAxisDeadZone)
                 {
                     if (state.ThumbSticks.Left.X < 0)
                         OnMove(Vector3.left, false);
@@ -94,7 +100,7 @@ public class InputManager : MonoBehaviour
                         OnMove(Vector3.right, true);
                 }
 
-                if (Math.Abs(state.ThumbSticks.Left.Y) == joysticksYAxisDeadZone)
+                if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
                 {
                     if (state.Buttons.A == ButtonState.Pressed && state.ThumbSticks.Left.Y < 0)
                         OnJumpDown();
@@ -119,6 +125,14 @@ public class InputManager : MonoBehaviour
 
                 if (state.Buttons.B == ButtonState.Pressed)
                     OnThrowAttack();
+
+                if (state.Buttons.LeftShoulder == ButtonState.Pressed && _leftShoulderReady)
+                {
+                    _leftShoulderReady = false;
+                    OnThrowAttackChanged();
+                }
+                if (state.Buttons.LeftShoulder == ButtonState.Released && !_leftShoulderReady)
+                    _leftShoulderReady = true;
 
                 //Faire vibrer le gamepad en fonction des triggers
                 //GamePad.SetVibration(player, state.Triggers.Left, state.Triggers.Right);
