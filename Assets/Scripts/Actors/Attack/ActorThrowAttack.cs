@@ -9,7 +9,9 @@ public class ActorThrowAttack : MonoBehaviour
     [SerializeField]
     private GameObject _knife;
     [SerializeField]
-    private GameObject _axe;
+    private GameObject _axeFacingLeft;
+    [SerializeField]
+    private GameObject _axeFacingRight;
     [SerializeField]
     private float WEAPON_SPAWN_DISTANCE_FROM_PLAYER = 0.7f;
     [SerializeField]
@@ -24,7 +26,9 @@ public class ActorThrowAttack : MonoBehaviour
     private float AXE_INITIAL_ANGLE = 90f;
     [SerializeField]
     private const int ATTACK_COOLDOWN = 50;
-    
+    [SerializeField]
+    private const int WEAPON_Z_POSITION = 2;
+
     private int _knifeThrowCDCount;
     private int _axeThrowCDCount;
 
@@ -68,14 +72,14 @@ public class ActorThrowAttack : MonoBehaviour
 
             if (GetComponent<PlayerMovement>().FacingRight)
             {
-                newKnife = (GameObject)Instantiate(_knife, new Vector3(transform.position.x + WEAPON_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, transform.position.z), transform.rotation);
+                newKnife = (GameObject)Instantiate(_knife, new Vector3(transform.position.x + WEAPON_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, WEAPON_Z_POSITION), transform.rotation);
                 newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(KNIFE_SPEED, 0);
                 _knifeThrowCDCount = 0;
                 GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition--;
             }
             else
             {
-                newKnife = (GameObject)Instantiate(_knife, new Vector3(transform.position.x - WEAPON_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, transform.position.z), transform.rotation);
+                newKnife = (GameObject)Instantiate(_knife, new Vector3(transform.position.x - WEAPON_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, WEAPON_Z_POSITION), transform.rotation);
                 newKnife.GetComponent<SpriteRenderer>().flipX = true;
                 newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(-KNIFE_SPEED, 0);
                 _knifeThrowCDCount = 0;
@@ -93,7 +97,7 @@ public class ActorThrowAttack : MonoBehaviour
 
             if (GetComponent<PlayerMovement>().FacingRight)
             {
-                newAxe = (GameObject)Instantiate(_axe, new Vector3(transform.position.x, transform.position.y + AXE_THROWING_HEIGHT, transform.position.z), transform.rotation);
+                newAxe = (GameObject)Instantiate(_axeFacingRight, new Vector3(transform.position.x, transform.position.y + AXE_THROWING_HEIGHT, WEAPON_Z_POSITION), transform.rotation);
                 newAxe.GetComponent<Rigidbody2D>().rotation = AXE_INITIAL_ANGLE;
                 newAxe.GetComponent<Rigidbody2D>().velocity = new Vector2(AXE_SPEED, AXE_THROWING_ANGLE);
                 _axeThrowCDCount = 0;
@@ -101,7 +105,7 @@ public class ActorThrowAttack : MonoBehaviour
             }
             else
             {
-                newAxe = (GameObject)Instantiate(_axe, new Vector3(transform.position.x, transform.position.y + AXE_THROWING_HEIGHT, transform.position.z), transform.rotation);
+                newAxe = (GameObject)Instantiate(_axeFacingLeft, new Vector3(transform.position.x, transform.position.y + AXE_THROWING_HEIGHT, WEAPON_Z_POSITION), transform.rotation);
                 newAxe.GetComponent<Rigidbody2D>().rotation = AXE_INITIAL_ANGLE;
                 newAxe.GetComponent<SpriteRenderer>().flipY = true;
                 newAxe.GetComponent<Rigidbody2D>().velocity = new Vector2(-AXE_SPEED, AXE_THROWING_ANGLE);

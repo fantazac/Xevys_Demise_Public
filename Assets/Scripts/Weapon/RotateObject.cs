@@ -5,10 +5,16 @@ public class RotateObject : MonoBehaviour
 {
     void Update()
     {
-        if (!GetComponent<SpriteRenderer>().flipY)
-            transform.Rotate(new Vector3(0, 0, -5f));
-        else
-            transform.Rotate(new Vector3(0, 0, 5f));
-
+        if (GetComponentInChildren<PolygonCollider2D>().isTrigger && GetComponentInChildren<PolygonCollider2D>().isTrigger)
+        {
+            if (!GetComponent<SpriteRenderer>().flipY)
+            {
+                transform.Rotate(new Vector3(0, 0, -5f));
+            }
+            else
+            {
+                transform.Rotate(new Vector3(0, 0, 5f));
+            }
+        }
     }
 }
