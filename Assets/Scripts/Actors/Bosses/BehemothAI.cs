@@ -13,6 +13,7 @@ public class BehemothAI : MonoBehaviour
 
     private Rigidbody2D _rigidbody;
     private GameObject _aimedWall;
+    private Animator _animator;
 
     [SerializeField]
     private float SPEED = 25;
@@ -34,6 +35,7 @@ public class BehemothAI : MonoBehaviour
     void Start ()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
     }
 	
 	// Update is called once per frame
@@ -63,7 +65,7 @@ public class BehemothAI : MonoBehaviour
                 if (_timeLeft < 2)
                 {
                     GetComponent<SpriteRenderer>().color = Color.red;
-                    //Set 'about-to-charge' animation
+                    _animator.SetInteger("State", 1);
                 }
             }
             else
@@ -98,6 +100,7 @@ public class BehemothAI : MonoBehaviour
                 _timeLeft -= Time.fixedDeltaTime;
                 GetComponent<SpriteRenderer>().color = Color.yellow;
                 _rigidbody.velocity = new Vector2(SPEED / 10 * Orientation, _rigidbody.velocity.y);
+                _animator.SetInteger("State", 2);
             }
             else
             {
@@ -110,6 +113,7 @@ public class BehemothAI : MonoBehaviour
         {
             GetComponent<SpriteRenderer>().color = Color.blue;
             _timeLeft -= Time.fixedDeltaTime;
+            _animator.SetInteger("State", 3);
             if (_timeLeft < 0)
             {
                 SetWaitStatus();
@@ -121,6 +125,7 @@ public class BehemothAI : MonoBehaviour
     private void SetWaitStatus()
     {
         GetComponent<SpriteRenderer>().color = Color.white;
+        _animator.SetInteger("State", 0);
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
         _status = Status.wait;
         _timeLeft = _rng.Next(5,10);
