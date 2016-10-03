@@ -16,6 +16,9 @@ public class ScarabMovement : MonoBehaviour
     [SerializeField]
     private GameObject _attachedWall;
 
+    [SerializeField]
+    private ScarabDirection[] _initialDirections;
+
     private Vector3 _wallPosition;
     private Vector3 _wallScale;
 
@@ -47,7 +50,7 @@ public class ScarabMovement : MonoBehaviour
             _points[2] = new Vector2(_wallPosition.x + _wallScale.x / 2 + transform.localScale.x / 2, _wallPosition.y + _wallScale.y / 2 + transform.localScale.y / 2);
             _points[3] = new Vector2(_wallPosition.x - _wallScale.x / 2 - transform.localScale.x / 2, _wallPosition.y + _wallScale.y / 2 + transform.localScale.y / 2);
 
-            _currentPoint = Random.Range(0, _points.Length - 1);
+            _currentPoint = Random.Range(0, _points.Length);
 
             _target = _points[_currentPoint];
             transform.position = _points[_currentPoint];
@@ -56,7 +59,7 @@ public class ScarabMovement : MonoBehaviour
         }
         else if (_points.Length > 0)
         {
-            _currentPoint = Random.Range(0, _points.Length - 1);
+            _currentPoint = Random.Range(1, _points.Length-1);
 
             _target = _points[_currentPoint];
             transform.position = _points[_currentPoint];
@@ -129,55 +132,68 @@ public class ScarabMovement : MonoBehaviour
 
     private void FindTarget()
     {
-        if(_attachedWall != null)
-        {
-            if (_target == transform.position)
-                _target = _points[(++_currentPoint) % _points.Length];
-        }
-        else
-        {
-            if (_target == transform.position)
-                if (allowBacktracking)
-                    if (goesBackwards)
+        if (_target == transform.position)
+            if (allowBacktracking)
+                if (goesBackwards)
+                {
+                    if (_currentPoint == 0)
+                    {
+                        GetComponent<SpriteRenderer>().flipX = !GetComponent<SpriteRenderer>().flipX;
+                        goesBackwards = false;
+                        _target = _points[++_currentPoint];
+                    }
+                    else
                     {
                         _target = _points[--_currentPoint];
-                        if (_currentPoint == 0)
-                            goesBackwards = false;
+                    }
+                    
+                }
+                else
+                {
+                    if (_currentPoint == _points.Length - 1)
+                    {
+                        GetComponent<SpriteRenderer>().flipX = !GetComponent<SpriteRenderer>().flipX;
+                        goesBackwards = true;
+                        _target = _points[--_currentPoint];
                     }
                     else
                     {
                         _target = _points[++_currentPoint];
-                        if (_currentPoint == _points.Length - 1)
-                            goesBackwards = true;
                     }
-                else
-                    _target = _points[(++_currentPoint) % _points.Length];
-        }
+                }
+            else
+                _target = _points[(++_currentPoint) % _points.Length];
     }
 
     public void SetSpriteDirection()
     {
-        if (_target.x == transform.position.x)
+        if(_attachedWall != null)
         {
-            if (_target.y > transform.position.y)
-            {
-                GetComponent<SpriteRenderer>().flipY = true;
-            }
-            else
-            {
-                GetComponent<SpriteRenderer>().flipX = true;
-            }
+            transform.Rotate(Vector3.forward * 90 * (_currentPoint + 1));
         }
-        else if (_target.y == transform.position.y)
+        else
         {
-            if (_target.x > transform.position.x)
+            if(_initialDirections[_currentPoint] == ScarabDirection.Down)
             {
-                GetComponent<SpriteRenderer>().flipY = true;
+                transform.Rotate(Vector3.forward * 90);
             }
-            else
+            else if (_initialDirections[_currentPoint] == ScarabDirection.Up)
             {
-                GetComponent<SpriteRenderer>().flipX = true;
+                transform.Rotate(Vector3.forward * -90);
+            }
+            else if (_initialDirections[_currentPoint] == ScarabDirection.Right)
+            {
+                transform.Rotate(Vector3.forward * 180);
             }
         }
     }
+}
+
+public enum ScarabDirection
+{
+    Up,
+    Left,
+    Down,
+    Right,
+    Empty,
 }
