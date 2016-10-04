@@ -17,7 +17,7 @@ public class ActorThrowAttack : MonoBehaviour
     [SerializeField]
     private float AXE_THROWING_HEIGHT = 1f;
     [SerializeField]
-    private float KNIFE_SPEED = 9f;
+    private float KNIFE_SPEED = 15f;
     [SerializeField]
     private float AXE_SPEED = 6f;
     [SerializeField]
