@@ -12,8 +12,11 @@ public class DestroyWeapon : MonoBehaviour
 
     void Start()
     {
-        _touchesGround = GetComponentInChildren<AxeHandleHitWall>().TouchesGround;
-        Debug.Log("start" + _touchesGround);
+        if (gameObject.tag != "Knife")
+        {
+            _touchesGround = GetComponentInChildren<AxeHandleHitWall>().TouchesGround;
+        }
+
         _destroyCD = 0;
     }
 
