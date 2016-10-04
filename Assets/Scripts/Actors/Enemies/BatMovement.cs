@@ -15,8 +15,8 @@ public class BatMovement : MonoBehaviour
     private const int COOLDOWN_BEFORE_GOING_UP = 35;
     private int _cooldownCount = 0;
 
-    private Vector2 _target;
-    private Vector2 _initialPosition;
+    private Vector3 _target;
+    private Vector3 _initialPosition;
 
     private float _minX = 0;
     private float _maxX = 0;
@@ -27,7 +27,10 @@ public class BatMovement : MonoBehaviour
     [SerializeField]
     private float _rightDistance = 0;
 
-    private const float DOWN_SPEED = 5;
+    [SerializeField]
+    private float _lowestY = 0;
+
+    private const float DOWN_SPEED = 4;
     private const float UP_SPEED = 2;
 
     private void Start()
@@ -39,7 +42,7 @@ public class BatMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if ((collider.gameObject.tag == "Wall" || collider.gameObject.tag == "Player" || collider.gameObject.tag == "FlyingPlatform") && !_goingUp)
+        if (collider.gameObject.tag == "Player" && !_goingUp)
         {
             _startCooldown = true;
             _goingUp = true;
@@ -48,14 +51,21 @@ public class BatMovement : MonoBehaviour
 
     private void Update()
     {
-        _playerDetectionHitbox.transform.position = new Vector2(transform.position.x, _playerDetectionHitbox.transform.position.y);
+        if (transform.position.y < _lowestY)
+        {
+            transform.position = new Vector3(transform.position.x, _lowestY, transform.position.z);
+            _startCooldown = true;
+            _goingUp = true;
+        }
+
+        _playerDetectionHitbox.transform.position = new Vector3(transform.position.x, _playerDetectionHitbox.transform.position.y, transform.position.z);
 
         if (!_goingDown && _isInPosition && _playerDetectionHitbox.GetComponent<DetectPlayer>().DetectedPlayer)
             _goingDown = true;
 
         if (!_isInPosition && !_goingDown && !_startCooldown)
         {
-            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _target, UP_SPEED * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(new Vector3(transform.position.x, transform.position.y, transform.position.z), _target, UP_SPEED * Time.deltaTime);
             if (transform.position.y == _target.y)
             {
                 _isInPosition = true;
@@ -67,7 +77,7 @@ public class BatMovement : MonoBehaviour
             if (_isInPosition)
                 _isInPosition = false;
 
-            transform.position = new Vector2(transform.position.x, transform.position.y - (DOWN_SPEED * Time.deltaTime));
+            transform.position = new Vector3(transform.position.x, transform.position.y - (DOWN_SPEED * Time.deltaTime), transform.position.z);
         }
 
         if (_startCooldown && _cooldownCount < COOLDOWN_BEFORE_GOING_UP)
@@ -84,7 +94,7 @@ public class BatMovement : MonoBehaviour
 
     private void FindTarget()
     {
-        _target = new Vector2(Random.Range(_minX, _maxX), _initialPosition.y);
+        _target = new Vector3(Random.Range(_minX, _maxX), _initialPosition.y, _initialPosition.z);
     }
 
 }

@@ -10,7 +10,6 @@ public class AxeHandleHitWall : MonoBehaviour
     {
         if (collider.gameObject.tag == "Wall" || (collider.gameObject.tag == "FlyingPlatform" && transform.parent.GetComponent<Rigidbody2D>().velocity.y < 0))
         {
-            Debug.Log("Box");
             GetComponent<PolygonCollider2D>().isTrigger = false;
             transform.parent.GetComponentInChildren<PolygonCollider2D>().isTrigger = false;
             transform.parent.GetComponent<Rigidbody2D>().drag = BASE_AXE_DRAG;
