@@ -6,14 +6,24 @@ public class Health: MonoBehaviour
 {
     [SerializeField]
     private float _health = 1000f;
+    private int testCounter = 0;
 
     public float HealthPoint { get { return _health; } set { _health = value; } }
 
-    //private void Update()
-    //{
-    //    if (_health == 0)
-    //    {
-    //        Debug.Log("Player Health = " + _health);
-    //    }
-    //}
+    public delegate void HealthChangedHandler(int hitPoint);
+    public event HealthChangedHandler OnHealthChanged;
+
+    private void Update()
+    {
+        testCounter++;
+        if (testCounter >= 30)
+        {
+            if (OnHealthChanged != null)
+            {
+                OnHealthChanged(10);
+                testCounter = 0;
+            }
+            
+        }
+    }
 }
