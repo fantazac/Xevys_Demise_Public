@@ -5,6 +5,9 @@ public class AxeHandleHitWall : MonoBehaviour
 {
 
     private const float BASE_AXE_DRAG = 5f;
+    private bool _touchesGround = false;
+
+    public bool TouchesGround { get { return _touchesGround; } set { _touchesGround = value; } }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
@@ -13,6 +16,7 @@ public class AxeHandleHitWall : MonoBehaviour
             GetComponent<PolygonCollider2D>().isTrigger = false;
             transform.parent.GetComponentInChildren<PolygonCollider2D>().isTrigger = false;
             transform.parent.GetComponent<Rigidbody2D>().drag = BASE_AXE_DRAG;
+            _touchesGround = true;
             transform.parent.GetComponent<DestroyWeapon>().TouchesGround = true;
         }
     }

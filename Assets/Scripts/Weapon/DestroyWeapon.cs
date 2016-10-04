@@ -8,11 +8,12 @@ public class DestroyWeapon : MonoBehaviour
 
     private bool _touchesGround;
 
-    public bool TouchesGround { set { _touchesGround = value; } }
+    public bool TouchesGround { get { return _touchesGround; } set { _touchesGround = value; } }
 
     void Start()
     {
-        _touchesGround = false;
+        _touchesGround = GetComponentInChildren<AxeHandleHitWall>().TouchesGround;
+        Debug.Log("start" + _touchesGround);
         _destroyCD = 0;
     }
 
