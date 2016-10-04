@@ -11,18 +11,25 @@ public class BehemothAI : MonoBehaviour
         stun,
     }
 
+    private const int STUN_TIME = 3;
+    private const float FEIGN_TIME = 0.33f;
+    private const int CHARGE_TIME = 5;
     private Rigidbody2D _rigidbody;
+    [SerializeField]
+    private GameObject _leftWall;
+    [SerializeField]
+    private GameObject _rightWall;
     private GameObject _aimedWall;
     private Animator _animator;
 
     [SerializeField]
-    private float SPEED = 25;
+    private float _speed = 25;
     private System.Random _rng = new System.Random();
     private Status _status = Status.wait;
-    private float _timeLeft = 5;
+    private float _timeLeft = CHARGE_TIME;
     private bool _isCharging;
     //In upcoming development, it would be wise to implement this variable and property into a Component.
-    private bool _isFacingLeft = false;
+    private bool _isFacingLeft;
     private int Orientation
     {
         get
@@ -41,6 +48,7 @@ public class BehemothAI : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+        //Wait allows Behemoth to face the player and 
         if (_status == Status.wait)
         {
             if (GameObject.Find("Character").transform.position.x > transform.position.x)
@@ -64,27 +72,34 @@ public class BehemothAI : MonoBehaviour
                 _timeLeft -= Time.fixedDeltaTime;
                 if (_timeLeft < 2)
                 {
-                    GetComponent<SpriteRenderer>().color = Color.red;
                     _animator.SetInteger("State", 1);
                 }
             }
+            //Upon countdown expired, Behemoth either feigns charging or charges.
+            //The time charging depends from seconds specified in FEIGN_TIME or this amount of time plus the amount specified in CHARGE_TIME;
             else
             {
+                _animator.SetInteger("State", 2);
                 _isCharging = (_rng.Next() % 2 == 0 ? true : false);
-                _timeLeft = 0.33f + (_isCharging ? 5 : 0);
+                _timeLeft = FEIGN_TIME + (_isCharging ? CHARGE_TIME : 0);
                 _status = Status.charge;
-                _aimedWall = (_isFacingLeft? GameObject.Find("Left Wall"): GameObject.Find("Right Wall"));
+                _aimedWall = (_isFacingLeft ? _leftWall : _rightWall);
             }
         }
+        //Charge status makes Behemoth aims for the wall for the amount of time in seconds decided above.
+        //Notice that Behemoth feigning really close to the wall makes him directly crash into it instead.
         else if (_status == Status.charge)
         {
             _timeLeft -= Time.fixedDeltaTime;
             if (_timeLeft > 0)
             {
-                _rigidbody.velocity = new Vector2(-SPEED * Orientation, _rigidbody.velocity.y);
-                if (_isFacingLeft ? _aimedWall.transform.position.x + _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x/2 >= transform.position.x - GetComponent<SpriteRenderer>().bounds.size.x/2 : _aimedWall.transform.position.x - _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 <= transform.position.x + GetComponent<SpriteRenderer>().bounds.size.x/2)
+                _rigidbody.velocity = new Vector2(-_speed * Orientation, _rigidbody.velocity.y);
+                if (_isFacingLeft ?
+                    _aimedWall.transform.position.x + _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x/2 >= transform.position.x - GetComponent<SpriteRenderer>().bounds.size.x/2 :
+                    _aimedWall.transform.position.x - _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x/2 <= transform.position.x + GetComponent<SpriteRenderer>().bounds.size.x/2)
                 {
                     _timeLeft = 1;
+                    _animator.SetInteger("State", 3);
                     _status = Status.struck;
                 }
             }
@@ -93,27 +108,26 @@ public class BehemothAI : MonoBehaviour
                 SetWaitStatus();
             }
         }
+        //Stuck is a status of one second during which Behemoth backs off and then goes into the Stun status.
         else if (_status == Status.struck)
         {
             if (_timeLeft > 0)
             {
                 _timeLeft -= Time.fixedDeltaTime;
-                GetComponent<SpriteRenderer>().color = Color.yellow;
-                _rigidbody.velocity = new Vector2(SPEED / 10 * Orientation, _rigidbody.velocity.y);
-                _animator.SetInteger("State", 2);
+                _rigidbody.velocity = new Vector2(_speed / 10 * Orientation, _rigidbody.velocity.y);
             }
             else
             {
                 _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-                _timeLeft = 3;
+                _timeLeft = STUN_TIME;
+                _animator.SetInteger("State", 4);
                 _status = Status.stun;
             }
         }
+        //Stun status allows the player to attack Behemoth for the amount of seconds specified in STUN_TIME.
         else if (_status == Status.stun)
         {
-            GetComponent<SpriteRenderer>().color = Color.blue;
             _timeLeft -= Time.fixedDeltaTime;
-            _animator.SetInteger("State", 3);
             if (_timeLeft < 0)
             {
                 SetWaitStatus();
@@ -121,10 +135,11 @@ public class BehemothAI : MonoBehaviour
         }
         
     }
-
+    /// <summary>
+    /// Resets the timer, orientation and status of Behemoth for default.
+    /// </summary>
     private void SetWaitStatus()
     {
-        GetComponent<SpriteRenderer>().color = Color.white;
         _animator.SetInteger("State", 0);
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
         _status = Status.wait;
