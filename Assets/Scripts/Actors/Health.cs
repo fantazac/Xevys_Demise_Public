@@ -16,7 +16,7 @@ public class Health : MonoBehaviour
     private void Update()
     {
         testCounter++;
-        if (testCounter >= 30)
+        if (testCounter >= 90)
         {
             if (OnHealthChanged != null)
             {
