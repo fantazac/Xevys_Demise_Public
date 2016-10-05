@@ -7,10 +7,10 @@ public class ElevateStairsTrigger : MonoBehaviour
     [SerializeField]
     private GameObject[] _stairsToElevate;
 
-    private bool _soundPlayed;
-
     private const float ELEVATION_AMOUNT = 2.7f;
     private const float ELEVATION_SPEED = 0.05f;
+
+    private bool _soundPlayed;
 
     private bool _elevateStairs = false;
     private float _elevationCount = 0;

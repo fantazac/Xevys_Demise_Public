@@ -8,24 +8,34 @@ public class ActorThrowAttack : MonoBehaviour
 
     [SerializeField]
     private GameObject _knife;
+
     [SerializeField]
     private GameObject _axeFacingLeft;
+
     [SerializeField]
     private GameObject _axeFacingRight;
+
     [SerializeField]
     private float WEAPON_SPAWN_DISTANCE_FROM_PLAYER = 0.7f;
+
     [SerializeField]
     private float AXE_THROWING_HEIGHT = 1f;
+
     [SerializeField]
     private float KNIFE_SPEED = 15f;
+
     [SerializeField]
     private float AXE_SPEED = 6f;
+
     [SerializeField]
     private float AXE_THROWING_ANGLE = 14.5f;
+
     [SerializeField]
     private float AXE_INITIAL_ANGLE = 90f;
+
     [SerializeField]
     private const int ATTACK_COOLDOWN = 50;
+
     [SerializeField]
     private const int WEAPON_Z_POSITION = 2;
 
@@ -34,14 +44,14 @@ public class ActorThrowAttack : MonoBehaviour
 
     private InputManager _inputManager;
     private AudioSource[] _audioSources;
-    
+
     public enum Projectile { Knives, Axes };
     private List<Projectile> _throwableWeapons;
 
     private void Start()
     {
         _inputManager = GetComponent<InputManager>();
-        _throwableWeapons = new List<Projectile> {Projectile.Knives, Projectile.Axes};
+        _throwableWeapons = new List<Projectile> { Projectile.Knives, Projectile.Axes };
         _inputManager.OnThrowAttack += OnKnifeAttack;
         _inputManager.OnThrowAttackChanged += OnThrowableWeaponChange;
 
@@ -119,7 +129,8 @@ public class ActorThrowAttack : MonoBehaviour
     {
         switch (_throwableWeapons[0])
         {
-            case Projectile.Knives: default:             
+            case Projectile.Knives:
+            default:
                 _inputManager.OnThrowAttack += OnAxeAttack;
                 _inputManager.OnThrowAttack -= OnKnifeAttack;
                 break;
