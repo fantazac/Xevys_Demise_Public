@@ -8,7 +8,7 @@ public class KnifeHitWall : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "FlyingPlatform")
+        if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "LevelWall" || collider.gameObject.tag == "FlyingPlatform")
         {
             GetComponent<Rigidbody2D>().isKinematic = true;
             GetComponent<DestroyWeapon>().TouchesGround = true;
