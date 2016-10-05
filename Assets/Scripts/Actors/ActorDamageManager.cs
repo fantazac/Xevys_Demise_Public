@@ -42,6 +42,11 @@ public class ActorDamageManager : MonoBehaviour
                 collider.GetComponent<Health>().Hit((int)collider.GetComponent<Health>().HealthPoint);
             }
 
+            if(_receiverTag == "Player")
+            {
+                collider.GetComponent<KnockbackOnDamageTaken>().KnockbackPlayer(transform.position);
+            }
+
             _damageTimer = _baseDamageTimer;
         }
     }

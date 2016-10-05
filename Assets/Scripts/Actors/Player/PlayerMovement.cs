@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     private const float WATER_ACCELERATION_FACTOR = 1.4f;
     private const float LINEAR_DRAG = 30f;
     private const int JUMP_COOLDOWN = 5;
+    private const float KNOCKBACK_DURATION = 15;
 
     private bool _facingRight = true;
     private float _speed = 7;
@@ -25,6 +26,8 @@ public class PlayerMovement : MonoBehaviour
     private bool _feetTouchWater = false;
     private bool _isFloating = false;
     private bool _wearsBoots = false;
+    private bool _isKnockedBack = false;
+    private float _knockbackCount = 0;
     private float _waterYSpeed;
     private int _jumpCDCount;
     private Animator _anim;
@@ -36,6 +39,8 @@ public class PlayerMovement : MonoBehaviour
     public bool IsFloating { get { return _isFloating; } set { _isFloating = value; } }
     public bool FacingRight { get { return _facingRight; } }
     public bool WearsBoots { get { return _wearsBoots; } }
+    public bool IsKnockedBack { get { return _isKnockedBack; } set { _isKnockedBack = value; } }
+    public float TerminalSpeed { get { return TERMINAL_SPEED; } }
 
     private void Start()
     {
@@ -58,13 +63,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnMove(Vector3 vector, bool goesRight)
     {
-        _rigidbody.velocity = new Vector2(vector.x * _speed, _rigidbody.velocity.y);
-        Flip(goesRight);
+        if (!_isKnockedBack)
+        {
+            _rigidbody.velocity = new Vector2(vector.x * _speed, _rigidbody.velocity.y);
+            Flip(goesRight);
+        }
     }
 
     private void OnJump()
     {
-        if (_jumpCDCount >= JUMP_COOLDOWN)
+        if (_jumpCDCount >= JUMP_COOLDOWN && !_isKnockedBack)
         {
             if (!IsJumping() && _feetTouchWater && _wearsBoots)
             {
@@ -90,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJumpDown()
     {
-        if (!IsJumping() && GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
+        if (!IsJumping() && !_isKnockedBack && GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
         {
             GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().DisablePlatformHitbox();
         }
@@ -127,25 +135,28 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnStop()
     {
-        if (_rigidbody.velocity.x < 1 && _facingRight || _rigidbody.velocity.x > -1 && !_facingRight)
+        if (!_isKnockedBack)
         {
-            _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-        } 
-        else
-        {
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x * SPEED_REDUCTION_WHEN_STOPPING, _rigidbody.velocity.y);
-            if (_facingRight)
+            if (_rigidbody.velocity.x < 1 && _facingRight || _rigidbody.velocity.x > -1 && !_facingRight)
             {
-                _rigidbody.AddForce(new Vector2(-LINEAR_DRAG, 0));
+                _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
             }
             else
             {
-                _rigidbody.AddForce(new Vector2(LINEAR_DRAG, 0));
-            } 
+                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x * SPEED_REDUCTION_WHEN_STOPPING, _rigidbody.velocity.y);
+                if (_facingRight)
+                {
+                    _rigidbody.AddForce(new Vector2(-LINEAR_DRAG, 0));
+                }
+                else
+                {
+                    _rigidbody.AddForce(new Vector2(LINEAR_DRAG, 0));
+                }
+            }
         }
     }
 
-    private bool IsJumping()
+    public bool IsJumping()
     {
 
         if (_feetTouchWater)
@@ -166,6 +177,16 @@ public class PlayerMovement : MonoBehaviour
         _anim.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
         _anim.SetBool("IsJumping", IsJumping() && _rigidbody.velocity.y > 0);
         _anim.SetBool("IsFalling", IsJumping() && _rigidbody.velocity.y < 0);
+
+        if(_isKnockedBack && _knockbackCount == KNOCKBACK_DURATION)
+        {
+            _isKnockedBack = false;
+            _knockbackCount = 0;
+        }
+        else if (_isKnockedBack)
+        {
+            _knockbackCount++;
+        }
 
         if (_jumpCDCount < JUMP_COOLDOWN)
         {
@@ -263,7 +284,7 @@ public class PlayerMovement : MonoBehaviour
         _waterYSpeed = INITIAL_WATER_FALLING_SPEED;
     }
 
-    private void Flip(bool goesRight)
+    public void Flip(bool goesRight)
     {
         if (goesRight != _facingRight)
         {
