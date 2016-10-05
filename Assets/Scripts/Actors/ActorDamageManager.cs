@@ -16,7 +16,7 @@ public class ActorDamageManager : MonoBehaviour
     private void Start()
     {
         _attackerTag = gameObject.tag;
-        _enemiesTags = new string[] { "Scarab", "Bat" };
+        _enemiesTags = new string[] { "Scarab", "Bat", "Behemoth" };
 
         if (_attackerTag == "BasicAttackHitbox")
         {
@@ -29,10 +29,18 @@ public class ActorDamageManager : MonoBehaviour
         _damageTimer = _baseDamageTimer;
     }
 
+    private void FixedUpdate()
+    {
+        _damageTimer--;
+        if (_damageTimer == 0)
+        {
+            Debug.Log(_attackerTag + " timer reached 0");
+        }
+    }
+
     private void OnTriggerStay2D(Collider2D collider)
     {
         _receiverTag = collider.gameObject.tag;
-        _damageTimer--;
 
         if (((_attackerTag == "BasicAttackHitbox" && (_enemiesTags.Contains(_receiverTag))
             || (_enemiesTags.Contains(_attackerTag)) && _receiverTag == "Player")) && _damageTimer <= 0)
