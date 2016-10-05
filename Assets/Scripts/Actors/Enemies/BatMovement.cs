@@ -16,8 +16,8 @@ public class BatMovement : MonoBehaviour
     [SerializeField]
     private float _lowestY = 0;
 
-    private const float DOWN_SPEED = 4;
-    private const float UP_SPEED = 2;
+    private const float DOWN_SPEED = 6;
+    private const float UP_SPEED = 3;
     private const int COOLDOWN_BEFORE_GOING_UP = 35;
 
     private bool _isInPosition = true;
@@ -39,14 +39,14 @@ public class BatMovement : MonoBehaviour
         _maxX = _initialPosition.x + _rightDistance;
     }
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    /*private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "Player" && !_goingUp)
         {
             _startCooldown = true;
             _goingUp = true;
         }
-    }
+    }*/
 
     private void Update()
     {
