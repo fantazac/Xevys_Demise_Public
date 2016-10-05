@@ -20,7 +20,7 @@ public class Health: MonoBehaviour
         {
             if (OnHealthChanged != null)
             {
-                OnHealthChanged(10);
+                OnHealthChanged(25);
                 testCounter = 0;
             }
             
