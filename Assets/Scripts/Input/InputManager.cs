@@ -178,6 +178,14 @@ public class InputManager : MonoBehaviour
                     _leftShoulderReady = true;
                 }
 
+                if (state.Buttons.RightShoulder == ButtonState.Pressed && _rightShoulderReady)
+                {
+                    _rightShoulderReady = false;
+                    OnThrowAttackChanged();
+                }
+                if (state.Buttons.RightShoulder == ButtonState.Released && !_rightShoulderReady)
+                    _rightShoulderReady = true;
+
                 //Faire vibrer le gamepad en fonction des triggers
                 //GamePad.SetVibration(player, state.Triggers.Left, state.Triggers.Right);
             }

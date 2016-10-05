@@ -156,7 +156,7 @@ public class PlayerMovement : MonoBehaviour
         {
             return !(((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround && !GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
                 || (GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform && _rigidbody.velocity.y == 0)
-                || _rigidbody.IsSleeping())
+                || _rigidbody.velocity == Vector2.zero)
                 && !(_rigidbody.velocity.y > 0));
         }
     }
@@ -261,11 +261,6 @@ public class PlayerMovement : MonoBehaviour
         } 
 
         _waterYSpeed = INITIAL_WATER_FALLING_SPEED;
-
-        if (!_rigidbody.IsSleeping() && _rigidbody.velocity.x == 0 && _rigidbody.velocity.y == 0)
-        {
-            _rigidbody.Sleep();
-        }
     }
 
     private void Flip(bool goesRight)
