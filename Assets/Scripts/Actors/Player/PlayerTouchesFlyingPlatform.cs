@@ -16,7 +16,9 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
         if (collider.gameObject.tag == "FlyingPlatform")
         {
             if (_flyingPlatform != null)
+            {
                 EnablePlatformHitbox();
+            }
 
             _flyingPlatform = collider.gameObject;
             _playerTouchesFlyingPlatform = true;
@@ -26,19 +28,21 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "FlyingPlatform")
+        {
             _playerTouchesFlyingPlatform = false;
+        }
     }
 
     public void DisablePlatformHitbox()
     {
-        if(_flyingPlatform != null)
+        if (_flyingPlatform != null)
         {
             _flyingPlatform.GetComponent<BoxCollider2D>().enabled = false;
             _playerTouchesFlyingPlatform = false;
             GetComponent<PlayerTouchesGround>().OnGround = false;
             _enableHitboxCount = 0;
         }
-            
+
     }
 
     private void EnablePlatformHitbox()
@@ -49,7 +53,7 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
             _flyingPlatform = null;
             _enableHitboxCount = ENABLE_HITBOX_CD + 1;
         }
-            
+
     }
 
     private void Start()
@@ -59,10 +63,13 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
 
     private void Update()
     {
-        //Debug.Log(_flyingPlatform != null);
         if (_flyingPlatform != null && !_playerTouchesFlyingPlatform && _enableHitboxCount == ENABLE_HITBOX_CD)
+        {
             EnablePlatformHitbox();
+        }
         else if (_enableHitboxCount < ENABLE_HITBOX_CD)
+        {
             _enableHitboxCount++;
+        }  
     }
 }

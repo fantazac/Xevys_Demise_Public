@@ -15,12 +15,16 @@ public class RetractHoverPad : MonoBehaviour
     private void Update()
     {
         if (_retract)
+        {
             if (_retractCount < RETRACT_AMOUNT)
             {
                 transform.position = new Vector3(transform.position.x, transform.position.y - RETRACT_SPEED, transform.position.z);
                 _retractCount += RETRACT_SPEED;
             }
             else
+            {
                 Destroy(gameObject);
+            }  
+        }
     }
 }
