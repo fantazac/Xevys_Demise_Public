@@ -11,16 +11,16 @@ public class ActorBasicAttack : MonoBehaviour
     private AudioSource[] _audioSources;
     private int _count;
 
-	void Start ()
-	{
+    void Start()
+    {
         _inputManager = GetComponent<InputManager>();
-	    _spriteRenderer = GameObject.Find("CharacterBasicAttackBoxSprite").GetComponent<SpriteRenderer>();
+        _spriteRenderer = GameObject.Find("CharacterBasicAttackBoxSprite").GetComponent<SpriteRenderer>();
         _attackHitBox = GameObject.Find("CharacterBasicAttackBox");
         _audioSources = GetComponents<AudioSource>();
-	    _count = FRAME_BUFFER;
+        _count = FRAME_BUFFER;
 
-	    _inputManager.OnBasicAttack += OnBasicAttack;
-	}
+        _inputManager.OnBasicAttack += OnBasicAttack;
+    }
 
     void Update()
     {

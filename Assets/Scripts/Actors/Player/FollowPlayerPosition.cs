@@ -10,6 +10,8 @@ public class FollowPlayerPosition : MonoBehaviour
     void Update()
     {
         if (_player != null)
+        {
             GetComponent<Transform>().position = _player.GetComponent<Transform>().position;
+        }
     }
 }

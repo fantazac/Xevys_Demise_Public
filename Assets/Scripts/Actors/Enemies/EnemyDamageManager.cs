@@ -23,7 +23,6 @@ public class EnemyDamageManager : MonoBehaviour
             }
 
             _damageTimer = 50;
-            Debug.Log(collider.gameObject.tag + " hit!");
         }
     }
 }

@@ -1,31 +1,35 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class SkeltalBehaviour : MonoBehaviour {
+public abstract class SkeltalBehaviour : MonoBehaviour
+{
+    [SerializeField]
+    protected float _leftLimit;
+
+    [SerializeField]
+    protected float _rightLimit;
 
     protected const float ATTACK_TIME = 3;
     protected const float SPEED = 5;
-    [SerializeField]
-    protected float _leftLimit;
-    [SerializeField]
-    protected float _rightLimit;
+
     protected float _initialHeight;
     protected bool _isAttacking;
     protected float _attackTimeLeft;
+
     //In the upcoming development, it would be wise to implement this variable into a component.
     protected bool _isFacingRight;
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         _initialHeight = transform.position.y;
         _isFacingRight = false;
         _isAttacking = false;
         _attackTimeLeft = ATTACK_TIME;
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
         if (!_isAttacking)
         {

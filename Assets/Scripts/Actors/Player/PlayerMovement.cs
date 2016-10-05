@@ -76,7 +76,9 @@ public class PlayerMovement : MonoBehaviour
                 ChangePlayerVerticalVelocity(_jumpingSpeed / WATER_ACCELERATION_FACTOR);
                 _jumpCDCount = 0;
                 if (_isFloating && _feetTouchWater)
+                {
                     _feetTouchWater = false;
+                }
             }
             else if (!IsJumping())
             {
@@ -88,23 +90,30 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJumpDown()
     {
-        //Debug.Log("test");
         if (!IsJumping() && GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
+        {
             GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().DisablePlatformHitbox();
+        }
     }
 
     private void OnUnderwaterControl(bool goesDown)
     {
         if ((goesDown && _wearsBoots) || (!goesDown && !_wearsBoots))
+        {
             _waterYSpeed = INITIAL_WATER_FALLING_SPEED * WATER_ACCELERATION_FACTOR;
+        }
         else
+        {
             _waterYSpeed = INITIAL_WATER_FALLING_SPEED / WATER_ACCELERATION_FACTOR;
+        }   
     }
 
     private void OnBootsEquip()
     {
         if (!_wearsBoots)
+        {
             _wearsBoots = true;
+        } 
     }
 
     private void OnBootsUnequip()
@@ -119,14 +128,20 @@ public class PlayerMovement : MonoBehaviour
     private void OnStop()
     {
         if (_rigidbody.velocity.x < 1 && _facingRight || _rigidbody.velocity.x > -1 && !_facingRight)
+        {
             _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+        } 
         else
         {
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x * SPEED_REDUCTION_WHEN_STOPPING, _rigidbody.velocity.y);
             if (_facingRight)
+            {
                 _rigidbody.AddForce(new Vector2(-LINEAR_DRAG, 0));
+            }
             else
+            {
                 _rigidbody.AddForce(new Vector2(LINEAR_DRAG, 0));
+            } 
         }
     }
 
@@ -134,13 +149,16 @@ public class PlayerMovement : MonoBehaviour
     {
 
         if (_feetTouchWater)
+        {
             return !(_rigidbody.velocity.y == 0 || GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround);
+        }
         else
+        {
             return !(((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround && !GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
                 || (GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform && _rigidbody.velocity.y == 0)
-                || _rigidbody.IsSleeping())
+                || _rigidbody.velocity == Vector2.zero)
                 && !(_rigidbody.velocity.y > 0));
-
+        }
     }
 
     private void Update()
@@ -150,65 +168,99 @@ public class PlayerMovement : MonoBehaviour
         _anim.SetBool("IsFalling", IsJumping() && _rigidbody.velocity.y < 0);
 
         if (_jumpCDCount < JUMP_COOLDOWN)
+        {
             _jumpCDCount++;
+        }  
 
         if (_wearsBoots)
         {
             if (_feetTouchWater && _isFloating)
+            {
                 if (_rigidbody.velocity.y > MINIMUM_SPEED_TO_CONTINUE_JUMPING)
                 {
                     ChangePlayerVerticalVelocity(_rigidbody.velocity.y - MINIMUM_SPEED_TO_CONTINUE_JUMPING - PRECISION_MARGIN);
                     if (_isFloating && _feetTouchWater)
+                    {
                         _feetTouchWater = false;
+                    }  
                 }
+            }    
 
             if (_feetTouchWater && _rigidbody.velocity.y < 0)
+            {
                 _rigidbody.gravityScale = 0;
+            }  
             else if (_feetTouchWater)
+            {
                 _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE / GRAVITY_DIVISION_FACTOR_ON_GROUND_UNDERWATER;
+            }
             else
+            {
                 _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
+            }  
 
             if (_feetTouchWater && _rigidbody.gravityScale == 0)
+            {
                 if (_rigidbody.velocity.y > (-_waterYSpeed + PRECISION_MARGIN))
+                {
                     ChangePlayerVerticalVelocity(_rigidbody.velocity.y - PRECISION_MARGIN);
+                }  
                 else if (_rigidbody.velocity.y < (-_waterYSpeed - PRECISION_MARGIN))
+                {
                     ChangePlayerVerticalVelocity(_rigidbody.velocity.y + PRECISION_MARGIN);
+                }
                 else
+                {
                     ChangePlayerVerticalVelocity(_rigidbody.velocity.y);
+                } 
+            }  
         }
         else
         {
             if (_feetTouchWater)
+            {
                 _rigidbody.gravityScale = 0;
+            }
             else
+            {
                 _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
+            } 
 
             if (_feetTouchWater && _isFloating)
+            {
                 if (_rigidbody.velocity.y > MINIMUM_SPEED_TO_CONTINUE_JUMPING)
                 {
                     ChangePlayerVerticalVelocity(_rigidbody.velocity.y - MINIMUM_SPEED_TO_CONTINUE_JUMPING - PRECISION_MARGIN);
                     if (_isFloating && _feetTouchWater)
+                    {
                         _feetTouchWater = false;
+                    }  
                 }
                 else
+                {
                     ChangePlayerVerticalVelocity(0);
+                }   
+            }   
             else if (_feetTouchWater && _rigidbody.velocity.y > (_waterYSpeed + (PRECISION_MARGIN * 2)))
+            {
                 ChangePlayerVerticalVelocity(_rigidbody.velocity.y - (PRECISION_MARGIN * 5));
+            } 
             else if (_feetTouchWater && _rigidbody.velocity.y < (_waterYSpeed - (PRECISION_MARGIN * 2)))
+            {
                 ChangePlayerVerticalVelocity(_rigidbody.velocity.y + (PRECISION_MARGIN * 5));
+            }
             else if (_feetTouchWater)
+            {
                 ChangePlayerVerticalVelocity(_waterYSpeed);
-
+            }
         }
 
         if (!_feetTouchWater && _rigidbody.velocity.y < TERMINAL_SPEED)
+        {
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, TERMINAL_SPEED);
+        } 
 
         _waterYSpeed = INITIAL_WATER_FALLING_SPEED;
-
-        if (!_rigidbody.IsSleeping() && _rigidbody.velocity.x == 0 && _rigidbody.velocity.y == 0)
-            _rigidbody.Sleep();
     }
 
     private void Flip(bool goesRight)
