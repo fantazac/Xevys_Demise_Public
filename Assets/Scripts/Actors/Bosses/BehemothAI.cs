@@ -11,42 +11,41 @@ public class BehemothAI : MonoBehaviour
         stun,
     }
 
-    private const int STUN_TIME = 3;
-    private const float FEIGN_TIME = 0.33f;
-    private const int CHARGE_TIME = 5;
-    private Rigidbody2D _rigidbody;
     [SerializeField]
     private GameObject _leftWall;
+
     [SerializeField]
     private GameObject _rightWall;
-    private GameObject _aimedWall;
-    private Animator _animator;
 
     [SerializeField]
     private float _speed = 25;
+
+    private const int STUN_TIME = 3;
+    private const float FEIGN_TIME = 0.33f;
+    private const int CHARGE_TIME = 5;
+
+    private Rigidbody2D _rigidbody;
+    private GameObject _aimedWall;
+    private Animator _animator;
+
     private System.Random _rng = new System.Random();
     private Status _status = Status.wait;
     private float _timeLeft = CHARGE_TIME;
     private bool _isCharging;
+
     //In upcoming development, it would be wise to implement this variable and property into a Component.
     private bool _isFacingLeft;
-    private int Orientation
-    {
-        get
-        {
-            return (_isFacingLeft ? 1 : -1);
-        }
-    }
+    private int Orientation { get { return (_isFacingLeft ? 1 : -1); } }
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
         //Wait allows Behemoth to face the player and 
         if (_status == Status.wait)
@@ -60,7 +59,7 @@ public class BehemothAI : MonoBehaviour
             }
             else if (GameObject.Find("Character").transform.position.x < transform.position.x)
             {
-                if(!_isFacingLeft)
+                if (!_isFacingLeft)
                 {
                     Flip();
                 }
@@ -95,8 +94,8 @@ public class BehemothAI : MonoBehaviour
             {
                 _rigidbody.velocity = new Vector2(-_speed * Orientation, _rigidbody.velocity.y);
                 if (_isFacingLeft ?
-                    _aimedWall.transform.position.x + _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x/2 >= transform.position.x - GetComponent<SpriteRenderer>().bounds.size.x/2 :
-                    _aimedWall.transform.position.x - _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x/2 <= transform.position.x + GetComponent<SpriteRenderer>().bounds.size.x/2)
+                    _aimedWall.transform.position.x + _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 >= transform.position.x - GetComponent<SpriteRenderer>().bounds.size.x / 2 :
+                    _aimedWall.transform.position.x - _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 <= transform.position.x + GetComponent<SpriteRenderer>().bounds.size.x / 2)
                 {
                     _timeLeft = 1;
                     _animator.SetInteger("State", 3);
@@ -133,7 +132,7 @@ public class BehemothAI : MonoBehaviour
                 SetWaitStatus();
             }
         }
-        
+
     }
     /// <summary>
     /// Resets the timer, orientation and status of Behemoth for default.
@@ -143,7 +142,7 @@ public class BehemothAI : MonoBehaviour
         _animator.SetInteger("State", 0);
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
         _status = Status.wait;
-        _timeLeft = _rng.Next(5,10);
+        _timeLeft = _rng.Next(5, 10);
     }
 
     //In upcoming development, it would be wise to implement this method into a Component.

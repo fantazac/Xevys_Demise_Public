@@ -5,9 +5,11 @@ public class PickThrowingWeaponsMunitions : MonoBehaviour
 {
     [SerializeField]
     private const int AXE_AMOUNT_ON_PICKUP = 5;
-    private const int BASE_AXE_AMOUNT_ON_PICKUP = 10;
+
     [SerializeField]
     private const int KNIFE_AMOUNT_ON_PICKUP = 5;
+
+    private const int BASE_AXE_AMOUNT_ON_PICKUP = 10;
     private const int BASE_KNIFE_AMOUNT_ON_PICKUP = 10;
 
     private bool _soundPlayed;
@@ -24,7 +26,7 @@ public class PickThrowingWeaponsMunitions : MonoBehaviour
             {
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition += BASE_KNIFE_AMOUNT_ON_PICKUP;
                 GetComponent<ActivateHoverRetract>().ActivateRetract();
-            }   
+            }
             else if (gameObject.tag == "AxePickableItem")
             {
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition += AXE_AMOUNT_ON_PICKUP;
@@ -43,7 +45,7 @@ public class PickThrowingWeaponsMunitions : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(_soundPlayed && !GetComponent<AudioSource>().isPlaying)
+        if (_soundPlayed && !GetComponent<AudioSource>().isPlaying)
         {
             Destroy(gameObject);
         }
