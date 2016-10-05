@@ -65,7 +65,7 @@ public class ActorThrowAttack : MonoBehaviour
 
     private void OnKnifeAttack()
     {
-        if (!GameObject.Find("Knife(Clone)") && _knifeThrowCDCount >= ATTACK_COOLDOWN && GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition > 0)
+        if (_knifeThrowCDCount >= ATTACK_COOLDOWN && GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition > 0)
         {
             _audioSources[1].Play();
             GameObject newKnife;
@@ -90,7 +90,7 @@ public class ActorThrowAttack : MonoBehaviour
 
     private void OnAxeAttack()
     {
-        if ((!GameObject.Find("AxeFacingRight(Clone)") && !GameObject.Find("AxeFacingLeft(Clone)")) && _axeThrowCDCount >= ATTACK_COOLDOWN && GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition > 0)
+        if (_axeThrowCDCount >= ATTACK_COOLDOWN && GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition > 0)
         {
             _audioSources[2].Play();
             GameObject newAxe;
