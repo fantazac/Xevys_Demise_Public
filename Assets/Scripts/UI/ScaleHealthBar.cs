@@ -8,10 +8,10 @@ public class ScaleHealthBar : MonoBehaviour
     public const int MAX_HEALTH = 1000;
 
     private float _initialRectangleX;
+    private bool _healthBarIsScaling = false;
     private Transform _healthBar;
     private Image _healthBarImage;
-    private Health _health;
-    private bool _healthBarIsScaling = false;
+    private Health _health; 
 
 	private void Start ()
 	{
@@ -51,12 +51,10 @@ public class ScaleHealthBar : MonoBehaviour
             {
                 _healthBarImage.color = new Color(_healthBarImage.color.r + (float)(hitPoints * 0.0020), 1, 0, 1);
             }
-
             else
             {
                 _healthBarImage.color = new Color(1, _healthBarImage.color.g - (float)(hitPoints * 0.0020), 0, 1);
             }
         }    
-        _health.HealthPoint -= hitPoints;
     }
 }

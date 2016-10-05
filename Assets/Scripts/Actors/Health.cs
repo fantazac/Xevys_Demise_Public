@@ -11,4 +11,18 @@ public class Health : MonoBehaviour
 
     public delegate void HealthChangedHandler(int hitPoint);
     public event HealthChangedHandler OnHealthChanged;
+
+    public void Heal(int healPoints)
+    {
+        HealthPoint += healPoints;
+    }
+
+    public void Hit(int hitPoints)
+    {
+        if (OnHealthChanged != null)
+        {
+            OnHealthChanged(hitPoints);
+        }
+        HealthPoint -= hitPoints;
+    }
 }
