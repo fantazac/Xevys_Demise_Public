@@ -9,7 +9,6 @@ public class ItemHover : MonoBehaviour
 
     private float _sinCount = 0;
 
-
     private float _initialYPosition;
 
     private void Start()

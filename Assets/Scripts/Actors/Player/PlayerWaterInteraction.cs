@@ -12,8 +12,9 @@ public class PlayerWaterInteraction : MonoBehaviour
     public void OnWaterEnter(Collider2D collider)
     {
         if (collider is BoxCollider2D)
+        {
             _player.GetComponent<PlayerMovement>().Speed *= _speedReductionFactor;
-
+        }
 
         if (collider is CircleCollider2D)
         {
@@ -33,6 +34,8 @@ public class PlayerWaterInteraction : MonoBehaviour
         }
 
         if (collider is CircleCollider2D)
+        {
             _player.GetComponent<PlayerMovement>().IsFloating = true;
+        }  
     }
 }

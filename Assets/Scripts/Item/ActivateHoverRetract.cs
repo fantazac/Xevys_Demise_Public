@@ -10,6 +10,8 @@ public class ActivateHoverRetract : MonoBehaviour
     public void ActivateRetract()
     {
         if(_hoverPad != null)
+        {
             _hoverPad.GetComponent<RetractHoverPad>().Retract = true;
+        }
     }
 }

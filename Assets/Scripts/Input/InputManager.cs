@@ -44,33 +44,55 @@ public class InputManager : MonoBehaviour
     private void FixedUpdate()
     {
         if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow))
+        {
             OnMove(Vector3.left, false);
+        }
         else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow))
+        {
             OnMove(Vector3.right, true);
+        }
         else
+        {
             OnStop();
+        }  
 
         if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.Space))
+        {
             OnJumpDown();
+        }
         else if (Input.GetKey(KeyCode.Space))
+        {
             OnJump();
+        }
 
         if (Input.GetKey(KeyCode.DownArrow))
+        {
             OnUnderwaterControl(true);
-
+        }
+           
         if (Input.GetKey(KeyCode.UpArrow))
+        {
             OnUnderwaterControl(false);
+        } 
 
         if (Input.GetKey(KeyCode.E))
+        {
             OnBootsEquip();
+        }
         else if (Input.GetKey(KeyCode.U))
+        {
             OnBootsUnequip();
+        }
 
         if (Input.GetKeyDown(KeyCode.K))
+        {
             OnBasicAttack();
+        }
 
         if (Input.GetKey(KeyCode.L))
+        {
             OnThrowAttack();
+        } 
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -94,44 +116,75 @@ public class InputManager : MonoBehaviour
                 if (Math.Abs(state.ThumbSticks.Left.X) > _joysticksXAxisDeadZone)
                 {
                     if (state.ThumbSticks.Left.X < 0)
+                    {
                         OnMove(Vector3.left, false);
+                    }
                     else
+                    {
                         OnMove(Vector3.right, true);
+                    } 
                 }
 
                 if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
                 {
                     if (state.Buttons.A == ButtonState.Pressed && state.ThumbSticks.Left.Y < 0)
+                    {
                         OnJumpDown();
+                    }
 
                     if (state.ThumbSticks.Left.Y < 0)
+                    {
                         OnUnderwaterControl(true);
+                    }
 
                     if (state.ThumbSticks.Left.Y > 0)
+                    {
                         OnUnderwaterControl(false);
+                    }  
                 }
 
                 if (state.Buttons.A == ButtonState.Pressed)
+                {
                     OnJump();
-
+                }
+                  
                 if (state.Buttons.RightStick == ButtonState.Pressed)
+                {
                     OnBootsEquip();
+                }
                 else if (GameObject.Find("Character").GetComponent<PlayerMovement>().WearsBoots)
+                {
                     OnBootsUnequip();
+                } 
 
                 if (state.Buttons.X == ButtonState.Pressed)
+                {
                     OnBasicAttack();
+                } 
 
                 if (state.Buttons.B == ButtonState.Pressed)
+                {
                     OnThrowAttack();
+                }  
 
                 if (state.Buttons.LeftShoulder == ButtonState.Pressed && _leftShoulderReady)
                 {
                     _leftShoulderReady = false;
                     OnThrowAttackChanged();
                 }
+
                 if (state.Buttons.LeftShoulder == ButtonState.Released && !_leftShoulderReady)
+                {
                     _leftShoulderReady = true;
+                }
+
+                if (state.Buttons.RightShoulder == ButtonState.Pressed && _rightShoulderReady)
+                {
+                    _rightShoulderReady = false;
+                    OnThrowAttackChanged();
+                }
+                if (state.Buttons.RightShoulder == ButtonState.Released && !_rightShoulderReady)
+                    _rightShoulderReady = true;
 
                 //Faire vibrer le gamepad en fonction des triggers
                 //GamePad.SetVibration(player, state.Triggers.Left, state.Triggers.Right);

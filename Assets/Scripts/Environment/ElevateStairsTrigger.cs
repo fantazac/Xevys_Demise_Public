@@ -7,10 +7,12 @@ public class ElevateStairsTrigger : MonoBehaviour
     [SerializeField]
     private GameObject[] _stairsToElevate;
 
-    private bool _soundPlayed;
-
     private const float ELEVATION_AMOUNT = 2.7f;
     private const float ELEVATION_SPEED = 0.05f;
+    private const int MAIN_CAMERA_BASE_KNIFE_ITEM_AREA = 3;
+    private const int BASE_KNIFE_AMOUNT_ON_PICKUP = 10;
+
+    private bool _soundPlayed;
 
     private bool _elevateStairs = false;
     private float _elevationCount = 0;
@@ -47,6 +49,10 @@ public class ElevateStairsTrigger : MonoBehaviour
                     Destroy(gameObject);
                 }
             }
+        }
+        else if (GameObject.Find("Main Camera").GetComponent<CameraManager>().CurrentArea == MAIN_CAMERA_BASE_KNIFE_ITEM_AREA && GameObject.Find("Character").GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition < 1 && !GameObject.Find("Base Knife Item"))
+        {
+            GameObject.Find("Character").GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition += BASE_KNIFE_AMOUNT_ON_PICKUP;
         }
     }
 }

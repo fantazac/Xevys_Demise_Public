@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Health: MonoBehaviour
+public class Health : MonoBehaviour
 {
     [SerializeField]
     private float _health = 1000f;
@@ -23,7 +23,7 @@ public class Health: MonoBehaviour
                 OnHealthChanged(10);
                 testCounter = 0;
             }
-            
+
         }
     }
 }

@@ -10,8 +10,8 @@ public class FollowAttackHitbox : MonoBehaviour
         _hitbox = GetComponentInParent<BoxCollider2D>();
     }
 
-	void Update ()
+    void Update()
     {
-	    transform.position = new Vector3(_hitbox.transform.position.x + _hitbox.offset.x, _hitbox.transform.position.y + _hitbox.offset.y, _hitbox.transform.position.z);
-	}
+        transform.position = new Vector3(_hitbox.transform.position.x + _hitbox.offset.x, _hitbox.transform.position.y + _hitbox.offset.y, _hitbox.transform.position.z);
+    }
 }
