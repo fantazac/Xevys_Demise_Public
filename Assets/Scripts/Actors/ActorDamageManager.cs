@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class ActorDamageManager : MonoBehaviour
 {
@@ -10,15 +11,18 @@ public class ActorDamageManager : MonoBehaviour
 
     private string _attackerTag;
     private string _receiverTag;
+    private string[] _enemiesTags;
 
     private void Start()
     {
         _attackerTag = gameObject.tag;
-        if(_attackerTag == "BasicAttackHitbox")
+        _enemiesTags = new string[] { "Scarab", "Bat" };
+
+        if (_attackerTag == "BasicAttackHitbox")
         {
             _baseDamageTimer = 50;
         }
-        else if(_attackerTag == "Scarab" || _attackerTag == "Bat")
+        else if(_enemiesTags.Contains(_attackerTag))
         {
             _baseDamageTimer = 200;
         }
@@ -30,8 +34,8 @@ public class ActorDamageManager : MonoBehaviour
         _receiverTag = collider.gameObject.tag;
         _damageTimer--;
 
-        if (((_attackerTag == "BasicAttackHitbox" && (_receiverTag == "Scarab" || _receiverTag == "Bat"))
-            || ((_attackerTag == "Scarab" || _attackerTag == "Bat") && _receiverTag == "Player")) && _damageTimer <= 0)
+        if (((_attackerTag == "BasicAttackHitbox" && (_enemiesTags.Contains(_receiverTag))
+            || (_enemiesTags.Contains(_attackerTag)) && _receiverTag == "Player")) && _damageTimer <= 0)
         {
             if (collider.GetComponent<Health>().HealthPoint >= 100)
             {
@@ -43,6 +47,7 @@ public class ActorDamageManager : MonoBehaviour
             }
 
             _damageTimer = _baseDamageTimer;
+            Debug.Log(_attackerTag + " attacked " + _receiverTag + "!");
         }
     }
 }
