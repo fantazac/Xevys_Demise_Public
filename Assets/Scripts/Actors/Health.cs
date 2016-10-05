@@ -6,24 +6,23 @@ public class Health : MonoBehaviour
 {
     [SerializeField]
     private float _health = 1000f;
-    private int testCounter = 0;
 
     public float HealthPoint { get { return _health; } set { _health = value; } }
 
     public delegate void HealthChangedHandler(int hitPoint);
     public event HealthChangedHandler OnHealthChanged;
 
-    private void Update()
+    public void Heal(int healPoints)
     {
-        testCounter++;
-        if (testCounter >= 90)
-        {
-            if (OnHealthChanged != null)
-            {
-                OnHealthChanged(25);
-                testCounter = 0;
-            }
+        HealthPoint += healPoints;
+    }
 
+    public void Hit(int hitPoints)
+    {
+        if (OnHealthChanged != null)
+        {
+            OnHealthChanged(hitPoints);
         }
+        HealthPoint -= hitPoints;
     }
 }

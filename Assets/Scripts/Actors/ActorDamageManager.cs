@@ -39,11 +39,11 @@ public class ActorDamageManager : MonoBehaviour
         {
             if (collider.GetComponent<Health>().HealthPoint >= 100)
             {
-                collider.GetComponent<Health>().HealthPoint -= _baseDamage;
+                collider.GetComponent<Health>().Hit(_baseDamage);
             }
             else if (collider.GetComponent<Health>().HealthPoint < 100)
             {
-                collider.GetComponent<Health>().HealthPoint -= collider.GetComponent<Health>().HealthPoint;
+                collider.GetComponent<Health>().Hit((int)collider.GetComponent<Health>().HealthPoint);
             }
 
             _damageTimer = _baseDamageTimer;

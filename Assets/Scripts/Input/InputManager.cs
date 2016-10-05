@@ -40,6 +40,7 @@ public class InputManager : MonoBehaviour
 
     private bool _leftShoulderReady = true;
     private bool _rightShoulderReady = true;
+    private bool _xButtonReady = true;
 
     private void FixedUpdate()
     {
@@ -54,7 +55,7 @@ public class InputManager : MonoBehaviour
         else
         {
             OnStop();
-        }  
+        }
 
         if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.Space))
         {
@@ -69,11 +70,11 @@ public class InputManager : MonoBehaviour
         {
             OnUnderwaterControl(true);
         }
-           
+
         if (Input.GetKey(KeyCode.UpArrow))
         {
             OnUnderwaterControl(false);
-        } 
+        }
 
         if (Input.GetKey(KeyCode.E))
         {
@@ -92,7 +93,7 @@ public class InputManager : MonoBehaviour
         if (Input.GetKey(KeyCode.L))
         {
             OnThrowAttack();
-        } 
+        }
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -122,9 +123,9 @@ public class InputManager : MonoBehaviour
                     else
                     {
                         OnMove(Vector3.right, true);
-                    } 
+                    }
                 }
-
+                
                 if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
                 {
                     if (state.Buttons.A == ButtonState.Pressed && state.ThumbSticks.Left.Y < 0)
@@ -140,14 +141,13 @@ public class InputManager : MonoBehaviour
                     if (state.ThumbSticks.Left.Y > 0)
                     {
                         OnUnderwaterControl(false);
-                    }  
+                    }
                 }
-
-                if (state.Buttons.A == ButtonState.Pressed)
+                else if (state.Buttons.A == ButtonState.Pressed)
                 {
                     OnJump();
                 }
-                  
+
                 if (state.Buttons.RightStick == ButtonState.Pressed)
                 {
                     OnBootsEquip();
@@ -155,17 +155,22 @@ public class InputManager : MonoBehaviour
                 else if (GameObject.Find("Character").GetComponent<PlayerMovement>().WearsBoots)
                 {
                     OnBootsUnequip();
-                } 
+                }
 
-                if (state.Buttons.X == ButtonState.Pressed)
+                if (state.Buttons.X == ButtonState.Pressed && _xButtonReady)
                 {
+                    _xButtonReady = false;
                     OnBasicAttack();
-                } 
+                }
+                if (state.Buttons.X == ButtonState.Released && !_xButtonReady)
+                {
+                    _xButtonReady = true;
+                }
 
                 if (state.Buttons.B == ButtonState.Pressed)
                 {
                     OnThrowAttack();
-                }  
+                }
 
                 if (state.Buttons.LeftShoulder == ButtonState.Pressed && _leftShoulderReady)
                 {
@@ -184,7 +189,10 @@ public class InputManager : MonoBehaviour
                     OnThrowAttackChanged();
                 }
                 if (state.Buttons.RightShoulder == ButtonState.Released && !_rightShoulderReady)
+                {
                     _rightShoulderReady = true;
+                }
+
 
                 //Faire vibrer le gamepad en fonction des triggers
                 //GamePad.SetVibration(player, state.Triggers.Left, state.Triggers.Right);
