@@ -28,7 +28,7 @@ public class ActorBasicAttack : MonoBehaviour
         if (_count >= FRAME_BUFFER / 2)
         {
             _spriteRenderer.enabled = false;
-            _attackHitBox.gameObject.tag = "Untagged";
+            _attackHitBox.GetComponent<BoxCollider2D>().enabled = false;
         }
     }
 
@@ -37,7 +37,7 @@ public class ActorBasicAttack : MonoBehaviour
         if (_count >= FRAME_BUFFER)
         {
             _spriteRenderer.enabled = true;
-            _attackHitBox.gameObject.tag = "IsActive";
+            _attackHitBox.GetComponent<BoxCollider2D>().enabled = true;
             _count = 0;
 
             _audioSources[0].Play();

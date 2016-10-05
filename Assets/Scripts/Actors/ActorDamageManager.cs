@@ -14,7 +14,7 @@ public class ActorDamageManager : MonoBehaviour
     private void Start()
     {
         _attackerTag = gameObject.tag;
-        if(_attackerTag == "PlayerAttackHitbox")
+        if(_attackerTag == "BasicAttackHitbox")
         {
             _baseDamageTimer = 50;
         }
@@ -30,7 +30,7 @@ public class ActorDamageManager : MonoBehaviour
         _receiverTag = collider.gameObject.tag;
         _damageTimer--;
 
-        if (((_attackerTag == "PlayerAttackHitbox" && (_receiverTag == "Scarab" || _receiverTag == "Bat"))
+        if (((_attackerTag == "BasicAttackHitbox" && (_receiverTag == "Scarab" || _receiverTag == "Bat"))
             || ((_attackerTag == "Scarab" || _attackerTag == "Bat") && _receiverTag == "Player")) && _damageTimer <= 0)
         {
             if (collider.GetComponent<Health>().HealthPoint >= 100)
