@@ -138,10 +138,12 @@ public class ActorThrowAttack : MonoBehaviour
             default:
                 _inputManager.OnThrowAttack += OnAxeAttack;
                 _inputManager.OnThrowAttack -= OnKnifeAttack;
+                _showEquippedWeapons.OnAxeSelected();
                 break;
             case Projectile.Axes:
                 _inputManager.OnThrowAttack -= OnAxeAttack;
                 _inputManager.OnThrowAttack += OnKnifeAttack;
+                _showEquippedWeapons.OnKnifeSelected();
                 break;
         }
 
