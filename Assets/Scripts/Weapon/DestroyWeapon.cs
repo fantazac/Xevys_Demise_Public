@@ -35,7 +35,6 @@ public class DestroyWeapon : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
         if(_destroyNowCD < 1 && _destroyNow)
         {
             _destroyNowCD++;
