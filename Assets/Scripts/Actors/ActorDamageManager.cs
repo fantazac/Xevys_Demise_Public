@@ -19,7 +19,7 @@ public class ActorDamageManager : MonoBehaviour
     {
         _attackerTag = gameObject.tag;
         _playerTags = new string[] { "BasicAttackHitbox", "Knife", "Axe" };
-        _enemiesTags = new string[] { "Scarab", "Bat", "Behemoth" };
+        _enemiesTags = new string[] { "Scarab", "Bat", "Skeltal", "Behemoth", "SkeltalSwordHitbox" };
 
         if (_playerTags.Contains(_attackerTag))
         {
@@ -32,8 +32,15 @@ public class ActorDamageManager : MonoBehaviour
     }
 
     private void FixedUpdate()
-    { 
-        _damageTimer--;
+    {
+        if (_damageTimer == 0)
+        {
+            _damageTimer--;
+        }
+        else
+        {
+            _damageTimer--;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collider)
