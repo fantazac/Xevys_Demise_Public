@@ -7,10 +7,10 @@ public class MoveWalkerSkeltal : SkeltalBehaviour
     protected override bool UpdateSkeltal()
     {
         transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y),
-            new Vector2((_isFacingRight ? _rightLimit : _leftLimit),
+            new Vector2(_initialPosition.x + (_isFacingRight ? _rightLimit : -_leftLimit),
             transform.position.y), SPEED * Time.deltaTime);
 
-        if ((_isFacingRight && transform.position.x == _rightLimit) || (!_isFacingRight && transform.position.x == _leftLimit))
+        if ((_isFacingRight && transform.position.x == _initialPosition.x + _rightLimit) || (!_isFacingRight && transform.position.x == _initialPosition.x - _leftLimit))
         {
             return true;
         }
