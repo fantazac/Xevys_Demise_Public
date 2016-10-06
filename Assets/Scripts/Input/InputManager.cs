@@ -148,6 +148,17 @@ public class InputManager : MonoBehaviour
                     OnJump();
                 }
 
+                #region Cheat
+
+                if (state.Buttons.LeftStick == ButtonState.Pressed)
+                {
+                    GameObject.Find("Character").GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition++;
+                    GameObject.Find("Character").GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition++;
+                }
+
+                #endregion
+                
+
                 if (state.Buttons.RightStick == ButtonState.Pressed)
                 {
                     OnBootsEquip();
