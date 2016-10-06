@@ -5,7 +5,7 @@ public class DestroyWeapon : MonoBehaviour
 {
 
     private const float DESTROY_DELAY_AFTER_HIT_WALL = 0.833f;
-    private const float ONE_FRAME_DELAY = 0.016f;
+    private const float ONE_FRAME_DELAY = 0.022f;
 
     private bool _touchesGround;
     private bool _destroyNow;
