@@ -38,7 +38,7 @@ public class ElevateStairsTrigger : MonoBehaviour
                 foreach (GameObject stair in _stairsToElevate)
                 {
                     stair.transform.localScale = new Vector2(stair.transform.localScale.x, stair.transform.localScale.y + ELEVATION_SPEED);
-                    stair.transform.position = new Vector2(stair.transform.position.x, stair.transform.position.y + ELEVATION_SPEED / 2);
+                    stair.transform.position = new Vector3(stair.transform.position.x, stair.transform.position.y + ELEVATION_SPEED / 2, stair.transform.position.z);
                     _elevationCount += ELEVATION_SPEED;
                 }
             }
