@@ -30,24 +30,24 @@ public class PickThrowingWeaponsMunitions : MonoBehaviour
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition += BASE_KNIFE_AMOUNT_ON_PICKUP;
                 GetComponent<ActivateHoverRetract>().ActivateRetract();
                 _showEquippedWeapons.OnKnifeAmmoChanged(collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
+                collider.GetComponent<InventoryManager>().EnableKnife();
             }
             else if (gameObject.tag == "BaseAxeItem")
             {
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition += BASE_AXE_AMOUNT_ON_PICKUP;
                 GetComponent<ActivateHoverRetract>().ActivateRetract();
                 _showEquippedWeapons.OnAxeAmmoChanged(collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
+                collider.GetComponent<InventoryManager>().EnableAxe();
             }
             else if (gameObject.tag == "KnifePickableItem")
             {
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition += KNIFE_AMOUNT_ON_PICKUP;
                 _showEquippedWeapons.OnKnifeAmmoChanged(collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
-                collider.GetComponent<InventoryManager>().EnableKnife();
             }
             else if (gameObject.tag == "AxePickableItem")
             {
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition += AXE_AMOUNT_ON_PICKUP;
                 _showEquippedWeapons.OnAxeAmmoChanged(collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
-                collider.GetComponent<InventoryManager>().EnableAxe();
             }
             
 
