@@ -17,6 +17,7 @@ public class BatMovement : MonoBehaviour
     private float _lowestY = 0;
 
     private AudioSource _audio;
+    private Animator _animator;
 
     private const float DOWN_SPEED = 6;
     private const float UP_SPEED = 3;
@@ -38,7 +39,8 @@ public class BatMovement : MonoBehaviour
         _initialPosition = transform.position;
         _minX = _initialPosition.x - _leftDistance;
         _maxX = _initialPosition.x + _rightDistance;
-        _audio = gameObject.GetComponent<AudioSource>();
+        _audio = GetComponent<AudioSource>();
+        _animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -55,6 +57,8 @@ public class BatMovement : MonoBehaviour
         {
             _goingDown = true;
             _audio.Play();
+            _animator.SetBool("IsFlying", true);
+            Debug.Log("IsFlying is now true");
         }
 
         if (!_isInPosition && !_goingDown && !_startCooldown)
@@ -64,6 +68,7 @@ public class BatMovement : MonoBehaviour
             {
                 _isInPosition = true;
                 _audio.Stop();
+                _animator.SetBool("IsFlying", false);
             }
         }
         else if (!_startCooldown && _goingDown)
