@@ -5,7 +5,7 @@ public class MoveBouncySkeltal : SkeltalBehaviour
 {
     float _newHeight;
 
-    protected override bool MoveSkeltal()
+    protected override bool UpdateSkeltal()
     {
         _newHeight = -((transform.position.x - _leftLimit) * (transform.position.x - _rightLimit)) + _initialHeight;
         transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y),
