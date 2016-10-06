@@ -3,7 +3,6 @@ using System.Collections;
 
 public class DestroyOnDeath : MonoBehaviour
 {
-
     private Health _health;
 
     private void Start()
