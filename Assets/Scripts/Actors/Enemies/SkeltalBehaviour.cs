@@ -39,8 +39,6 @@ public abstract class SkeltalBehaviour : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        _skeltalSwordSpriteRenderer.enabled = false;
-        _skeltalSword.GetComponent<BoxCollider2D>().enabled = false;
         if (!_isAttacking)
         {
             _isAttacking = UpdateSkeltal();
@@ -52,7 +50,6 @@ public abstract class SkeltalBehaviour : MonoBehaviour
             {
                 _skeltalSwordSpriteRenderer.enabled = true;
                 _skeltalSword.GetComponent<BoxCollider2D>().enabled = true;
-                _skeltalSword.GetComponent<BoxCollider2D>().isTrigger = true;
             }
             else if (_attackTimeLeft <= 0)
             {
@@ -60,9 +57,10 @@ public abstract class SkeltalBehaviour : MonoBehaviour
                 _isAttacking = false;
                 Flip();
             }
-            else if (_attackTimeLeft < 1)
+            else
             {
-                _skeltalSword.GetComponent<BoxCollider2D>().isTrigger = false;
+                _skeltalSwordSpriteRenderer.enabled = false;
+                _skeltalSword.GetComponent<BoxCollider2D>().enabled = false;
             }
         }
     }
