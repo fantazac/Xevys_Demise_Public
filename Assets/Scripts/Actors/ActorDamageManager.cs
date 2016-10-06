@@ -37,10 +37,6 @@ public class ActorDamageManager : MonoBehaviour
         {
             _damageTimer--;
         }
-        else
-        {
-            _damageTimer--;
-        }
     }
 
     private void OnTriggerStay2D(Collider2D collider)
