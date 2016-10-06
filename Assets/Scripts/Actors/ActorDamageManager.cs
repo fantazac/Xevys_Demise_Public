@@ -7,7 +7,8 @@ public class ActorDamageManager : MonoBehaviour
     [SerializeField]
     private int _baseDamage = 100;
     private int _baseDamageTimer;
-    private int _damageTimer;
+
+    private int _damageTimer = 0;
 
     private string _attackerTag;
     private string _receiverTag;
@@ -24,17 +25,20 @@ public class ActorDamageManager : MonoBehaviour
         }
         else if(_enemiesTags.Contains(_attackerTag))
         {
-            _baseDamageTimer = 200;
+            _baseDamageTimer = (int)GameObject.Find("Character").GetComponent<InvincibilityAfterBeingHit>().InvincibilityTime;
         }
-        _damageTimer = _baseDamageTimer;
     }
 
     private void FixedUpdate()
     {
-        _damageTimer--;
         if (_damageTimer == 0)
         {
             Debug.Log(_attackerTag + " timer reached 0");
+            _damageTimer--;
+        }
+        else
+        {
+            _damageTimer--;
         }
     }
 
@@ -57,6 +61,7 @@ public class ActorDamageManager : MonoBehaviour
             if(_receiverTag == "Player")
             {
                 collider.GetComponent<KnockbackOnDamageTaken>().KnockbackPlayer(transform.position);
+                collider.GetComponent<InvincibilityAfterBeingHit>().StartFlicker();
             }
 
             _damageTimer = _baseDamageTimer;
