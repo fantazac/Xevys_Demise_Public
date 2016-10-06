@@ -17,7 +17,7 @@ public class MoveJumpySkeltal : SkeltalBehaviour
     protected override bool UpdateSkeltal()
     {
         transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), new Vector2(transform.position.x, 9001), _currentJumpForce * Time.deltaTime);
-        transform.position = new Vector2(transform.position.x, Mathf.Max(_initialHeight, transform.position.y));
+        transform.position = new Vector2(transform.position.x, Mathf.Max(_initialPosition.y, transform.position.y));
 
         if (_currentJumpForce > 0.1f)
         {
@@ -32,7 +32,7 @@ public class MoveJumpySkeltal : SkeltalBehaviour
             _currentJumpForce *= 1.1f;
         }
 
-        if (transform.position.y <= _initialHeight)
+        if (transform.position.y <= _initialPosition.y)
         {
             _currentJumpForce = _jumpForce;
             return true;
