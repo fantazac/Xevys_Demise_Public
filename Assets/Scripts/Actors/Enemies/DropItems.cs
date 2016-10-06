@@ -32,7 +32,7 @@ public class DropItems : MonoBehaviour
                 break;
             }
             GameObject item = (GameObject)Instantiate(_itemsToDrop[j], transform.position, new Quaternion());
-            item.GetComponent<OnItemDrop>().Initialise(_itemsDroppedCount, j);
+            item.GetComponent<OnItemDrop>().Initialise(_itemsDroppedCount, j, GetComponent<Collider2D>());
         }
     }
 }
