@@ -58,7 +58,6 @@ public class BatMovement : MonoBehaviour
             _goingDown = true;
             _audio.Play();
             _animator.SetBool("IsFlying", true);
-            Debug.Log("IsFlying is now true");
         }
 
         if (!_isInPosition && !_goingDown && !_startCooldown)
