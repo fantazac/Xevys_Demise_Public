@@ -43,7 +43,6 @@ public class ShowEquippedWeapons : MonoBehaviour
         {
             _axeSpriteRenderer.enabled = true;
             _axeText.enabled = true;
-            OnAxeSelected();
         }
         _axeText.text = total.ToString();
     }
@@ -54,7 +53,8 @@ public class ShowEquippedWeapons : MonoBehaviour
         {
             _selectedWeaponHighlight.enabled = true;
         }
-        _selectedWeaponHighlight.transform.position = new Vector3(_knifeSpriteRenderer.transform.position.x, _knifeSpriteRenderer.transform.position.y, _knifeSpriteRenderer.transform.position.z + 5);
+        _selectedWeaponHighlight.transform.position = new Vector3(_knifeSpriteRenderer.transform.position.x,
+            _knifeSpriteRenderer.transform.position.y, _knifeSpriteRenderer.transform.position.z + 5);
     }
 
     public void OnAxeSelected()
@@ -63,7 +63,8 @@ public class ShowEquippedWeapons : MonoBehaviour
         {
             _selectedWeaponHighlight.enabled = true;
         }
-        _selectedWeaponHighlight.transform.position = new Vector3(_axeSpriteRenderer.transform.position.x, _axeSpriteRenderer.transform.position.y, _axeSpriteRenderer.transform.position.z + 5);
+        _selectedWeaponHighlight.transform.position = new Vector3(_axeSpriteRenderer.transform.position.x,
+            _axeSpriteRenderer.transform.position.y, _axeSpriteRenderer.transform.position.z + 5);
     }
 
 }

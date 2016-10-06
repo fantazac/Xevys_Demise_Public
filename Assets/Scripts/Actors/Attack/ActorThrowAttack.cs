@@ -136,19 +136,29 @@ public class ActorThrowAttack : MonoBehaviour
         {
             case Projectile.Knives:
             default:
-                _inputManager.OnThrowAttack += OnAxeAttack;
-                _inputManager.OnThrowAttack -= OnKnifeAttack;
-                _showEquippedWeapons.OnAxeSelected();
+                if (GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition > 0)
+                {
+                    _inputManager.OnThrowAttack += OnAxeAttack;
+                    _inputManager.OnThrowAttack -= OnKnifeAttack;
+                    _showEquippedWeapons.OnAxeSelected();
+
+                    Projectile tmp = _throwableWeapons[0];
+                    _throwableWeapons[0] = _throwableWeapons[1];
+                    _throwableWeapons[1] = tmp;
+                }             
                 break;
             case Projectile.Axes:
-                _inputManager.OnThrowAttack -= OnAxeAttack;
-                _inputManager.OnThrowAttack += OnKnifeAttack;
-                _showEquippedWeapons.OnKnifeSelected();
+                if (GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition > 0)
+                {
+                    _inputManager.OnThrowAttack -= OnAxeAttack;
+                    _inputManager.OnThrowAttack += OnKnifeAttack;
+                    _showEquippedWeapons.OnKnifeSelected();
+
+                    Projectile tmp = _throwableWeapons[0];
+                    _throwableWeapons[0] = _throwableWeapons[1];
+                    _throwableWeapons[1] = tmp;
+                }             
                 break;
         }
-
-        Projectile tmp = _throwableWeapons[0];
-        _throwableWeapons[0] = _throwableWeapons[1];
-        _throwableWeapons[1] = tmp;
     }
 }
