@@ -31,7 +31,7 @@ public class ActorThrowAttack : MonoBehaviour
     private float AXE_THROWING_ANGLE = 14.5f;
 
     [SerializeField]
-    private float AXE_INITIAL_ANGLE = 100f;
+    private float AXE_INITIAL_ANGLE = 90f;
 
     [SerializeField]
     private const int ATTACK_COOLDOWN = 50;
