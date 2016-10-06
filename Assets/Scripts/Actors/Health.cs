@@ -6,11 +6,19 @@ public class Health : MonoBehaviour
 {
     [SerializeField]
     private float _health = 1000f;
+    [SerializeField]
+    private int _hitSoundIndex = -1;
+    private AudioSource[] _audioSources;
 
     public float HealthPoint { get { return _health; } set { _health = value; } }
 
     public delegate void HealthChangedHandler(int hitPoint);
     public event HealthChangedHandler OnHealthChanged;
+
+    void Start()
+    {
+        _audioSources = GetComponents<AudioSource>();
+    }
 
     public void Heal(int healPoints)
     {
@@ -24,5 +32,10 @@ public class Health : MonoBehaviour
             OnHealthChanged(hitPoints);
         }
         HealthPoint -= hitPoints;
+
+        if(_hitSoundIndex > -1)
+        {
+            _audioSources[_hitSoundIndex].Play();
+        }
     }
 }

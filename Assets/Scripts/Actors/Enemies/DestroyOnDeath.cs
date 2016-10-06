@@ -15,6 +15,7 @@ public class DestroyOnDeath : MonoBehaviour
     {
         if (_health.HealthPoint <= 0)
         {
+            GetComponent<DropItems>().Drop();
             Destroy(gameObject);
         }
     }
