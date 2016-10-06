@@ -16,6 +16,8 @@ public class BatMovement : MonoBehaviour
     [SerializeField]
     private float _lowestY = 0;
 
+    private AudioSource _audio;
+
     private const float DOWN_SPEED = 6;
     private const float UP_SPEED = 3;
     private const int COOLDOWN_BEFORE_GOING_UP = 35;
@@ -36,6 +38,7 @@ public class BatMovement : MonoBehaviour
         _initialPosition = transform.position;
         _minX = _initialPosition.x - _leftDistance;
         _maxX = _initialPosition.x + _rightDistance;
+        _audio = gameObject.GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -51,6 +54,7 @@ public class BatMovement : MonoBehaviour
         if (!_goingDown && _isInPosition && _playerDetectionHitbox.GetComponent<DetectPlayer>().DetectedPlayer)
         {
             _goingDown = true;
+            _audio.Play();
         }
 
         if (!_isInPosition && !_goingDown && !_startCooldown)
@@ -59,6 +63,7 @@ public class BatMovement : MonoBehaviour
             if (transform.position.y == _target.y)
             {
                 _isInPosition = true;
+                _audio.Stop();
             }
         }
         else if (!_startCooldown && _goingDown)

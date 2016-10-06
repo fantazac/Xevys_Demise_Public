@@ -13,13 +13,15 @@ public class ActorDamageManager : MonoBehaviour
     private string _attackerTag;
     private string _receiverTag;
     private string[] _enemiesTags;
+    private string[] _playerTags;
 
     private void Start()
     {
         _attackerTag = gameObject.tag;
+        _playerTags = new string[] { "BasicAttackHitbox", "Knife", "Axe" };
         _enemiesTags = new string[] { "Scarab", "Bat", "Behemoth" };
 
-        if (_attackerTag == "BasicAttackHitbox")
+        if (_playerTags.Contains(_attackerTag))
         {
             _baseDamageTimer = 50;
         }
@@ -33,7 +35,6 @@ public class ActorDamageManager : MonoBehaviour
     {
         if (_damageTimer == 0)
         {
-            Debug.Log(_attackerTag + " timer reached 0");
             _damageTimer--;
         }
         else
@@ -46,7 +47,7 @@ public class ActorDamageManager : MonoBehaviour
     {
         _receiverTag = collider.gameObject.tag;
 
-        if (((_attackerTag == "BasicAttackHitbox" && (_enemiesTags.Contains(_receiverTag))
+        if (((_playerTags.Contains(_attackerTag) && (_enemiesTags.Contains(_receiverTag))
             || (_enemiesTags.Contains(_attackerTag)) && _receiverTag == "Player" && !collider.GetComponent<InvincibilityAfterBeingHit>().IsFlickering))
             && _damageTimer <= 0)
         {
@@ -66,7 +67,6 @@ public class ActorDamageManager : MonoBehaviour
             }
 
             _damageTimer = _baseDamageTimer;
-            Debug.Log(_attackerTag + " attacked " + _receiverTag + "!");
         }
     }
 }
