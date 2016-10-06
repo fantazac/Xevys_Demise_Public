@@ -4,8 +4,8 @@ using System.Collections;
 public class DestroyWeapon : MonoBehaviour
 {
 
-    private int _destroyCD;
-    private int _destroyNowCD;
+    private const float DESTROY_DELAY_AFTER_HIT_WALL = 0.833f;
+    private const float ONE_FRAME_DELAY = 0.016f;
 
     private bool _touchesGround;
     private bool _destroyNow;
@@ -21,28 +21,17 @@ public class DestroyWeapon : MonoBehaviour
         }
 
         _destroyNow = false;
-        _destroyCD = 0;
-        _destroyNowCD = 0;
     }
 
     void Update()
     {
-        if (_destroyCD < 50 && _touchesGround)
+        if (_touchesGround)
         {
-            _destroyCD++;
+            Destroy(gameObject, DESTROY_DELAY_AFTER_HIT_WALL);
         }
-        else if (_destroyCD >= 50)
+        else if (_destroyNow)
         {
-            Destroy(gameObject);
-        }
-
-        if(_destroyNowCD < 1 && _destroyNow)
-        {
-            _destroyNowCD++;
-        }
-        else if(_destroyNowCD >= 1)
-        {
-            Destroy(gameObject);
+            Destroy(gameObject, ONE_FRAME_DELAY);
         }
     }
 }
