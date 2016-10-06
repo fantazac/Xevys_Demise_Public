@@ -7,8 +7,10 @@ public class DestroyWeapon : MonoBehaviour
     private int _destroyCD;
 
     private bool _touchesGround;
+    private bool _destroyNow;
 
     public bool TouchesGround { get { return _touchesGround; } set { _touchesGround = value; } }
+    public bool DestroyNow { set { _destroyNow = value; } }
 
     void Start()
     {
@@ -17,6 +19,7 @@ public class DestroyWeapon : MonoBehaviour
             _touchesGround = GetComponentInChildren<AxeHandleHitWall>().TouchesGround;
         }
 
+        _destroyNow = false;
         _destroyCD = 0;
     }
 
@@ -26,7 +29,7 @@ public class DestroyWeapon : MonoBehaviour
         {
             _destroyCD++;
         }
-        else if (_destroyCD >= 50)
+        else if (_destroyCD >= 50 || _destroyNow)
         {
             Destroy(gameObject);
         }
