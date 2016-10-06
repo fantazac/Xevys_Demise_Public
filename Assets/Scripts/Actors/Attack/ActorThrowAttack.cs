@@ -48,6 +48,8 @@ public class ActorThrowAttack : MonoBehaviour
     public enum Projectile { Knives, Axes };
     private List<Projectile> _throwableWeapons;
 
+    private ShowEquippedWeapons _showEquippedWeapons;
+
     private void Start()
     {
         _inputManager = GetComponent<InputManager>();
@@ -56,6 +58,7 @@ public class ActorThrowAttack : MonoBehaviour
         _inputManager.OnThrowAttackChanged += OnThrowableWeaponChange;
 
         _audioSources = GetComponents<AudioSource>();
+        _showEquippedWeapons = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowEquippedWeapons>();
 
         _knifeThrowCDCount = ATTACK_COOLDOWN;
         _axeThrowCDCount = ATTACK_COOLDOWN;
@@ -95,6 +98,7 @@ public class ActorThrowAttack : MonoBehaviour
                 _knifeThrowCDCount = 0;
                 GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition--;
             }
+            _showEquippedWeapons.OnKnifeAmmoChanged(GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
         }
     }
 
@@ -122,6 +126,7 @@ public class ActorThrowAttack : MonoBehaviour
                 _axeThrowCDCount = 0;
                 GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition--;
             }
+            _showEquippedWeapons.OnAxeAmmoChanged(GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
         }
     }
 
@@ -133,10 +138,12 @@ public class ActorThrowAttack : MonoBehaviour
             default:
                 _inputManager.OnThrowAttack += OnAxeAttack;
                 _inputManager.OnThrowAttack -= OnKnifeAttack;
+                _showEquippedWeapons.OnAxeSelected();
                 break;
             case Projectile.Axes:
                 _inputManager.OnThrowAttack -= OnAxeAttack;
                 _inputManager.OnThrowAttack += OnKnifeAttack;
+                _showEquippedWeapons.OnKnifeSelected();
                 break;
         }
 

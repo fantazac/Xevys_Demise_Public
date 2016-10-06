@@ -127,7 +127,7 @@ public class BehemothAI : MonoBehaviour
         else if (_status == Status.stun)
         {
             _timeLeft -= Time.fixedDeltaTime;
-            if (_timeLeft < 0)
+            if (_timeLeft <= 0)
             {
                 SetWaitStatus();
             }
