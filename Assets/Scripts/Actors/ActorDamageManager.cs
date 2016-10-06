@@ -32,8 +32,11 @@ public class ActorDamageManager : MonoBehaviour
     }
 
     private void FixedUpdate()
-    { 
-        _damageTimer--;
+    {
+        if (_damageTimer == 0)
+        {
+            _damageTimer--;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collider)
