@@ -16,7 +16,7 @@ public class ActorThrowAttack : MonoBehaviour
     private GameObject _axeFacingRight;
 
     [SerializeField]
-    private float WEAPON_SPAWN_DISTANCE_FROM_PLAYER = 0.7f;
+    private float WEAPON_SPAWN_DISTANCE_FROM_PLAYER = 0f;
 
     [SerializeField]
     private float AXE_THROWING_HEIGHT = 1f;
@@ -37,7 +37,7 @@ public class ActorThrowAttack : MonoBehaviour
     private const int ATTACK_COOLDOWN = 50;
 
     [SerializeField]
-    private const int WEAPON_Z_POSITION = 2;
+    private const int WEAPON_Z_POSITION = 0;
 
     private int _knifeThrowCDCount;
     private int _axeThrowCDCount;
