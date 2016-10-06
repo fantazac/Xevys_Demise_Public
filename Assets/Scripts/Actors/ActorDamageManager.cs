@@ -23,7 +23,7 @@ public class ActorDamageManager : MonoBehaviour
         {
             _baseDamageTimer = 50;
         }
-        else if(_enemiesTags.Contains(_attackerTag))
+        else if (_enemiesTags.Contains(_attackerTag))
         {
             _baseDamageTimer = (int)GameObject.Find("Character").GetComponent<InvincibilityAfterBeingHit>().InvincibilityTime;
         }
@@ -47,7 +47,8 @@ public class ActorDamageManager : MonoBehaviour
         _receiverTag = collider.gameObject.tag;
 
         if (((_attackerTag == "BasicAttackHitbox" && (_enemiesTags.Contains(_receiverTag))
-            || (_enemiesTags.Contains(_attackerTag)) && _receiverTag == "Player")) && _damageTimer <= 0)
+            || (_enemiesTags.Contains(_attackerTag)) && _receiverTag == "Player" && !collider.GetComponent<InvincibilityAfterBeingHit>().IsFlickering))
+            && _damageTimer <= 0)
         {
             if (collider.GetComponent<Health>().HealthPoint >= 100)
             {
@@ -58,7 +59,7 @@ public class ActorDamageManager : MonoBehaviour
                 collider.GetComponent<Health>().Hit((int)collider.GetComponent<Health>().HealthPoint);
             }
 
-            if(_receiverTag == "Player")
+            if (_receiverTag == "Player")
             {
                 collider.GetComponent<KnockbackOnDamageTaken>().KnockbackPlayer(transform.position);
                 collider.GetComponent<InvincibilityAfterBeingHit>().StartFlicker();

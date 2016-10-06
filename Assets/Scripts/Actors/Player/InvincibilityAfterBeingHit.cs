@@ -11,6 +11,7 @@ public class InvincibilityAfterBeingHit : MonoBehaviour
     private bool _flickerSprite = false;
 
     public float InvincibilityTime { get { return INVINCIBILITY_TIME; } }
+    public bool IsFlickering { get { return _flickerSprite; } }
 
     private void FixedUpdate()
     {
