@@ -33,7 +33,6 @@ public class ActorDamageManager : MonoBehaviour
     {
         if (_damageTimer == 0)
         {
-            Debug.Log(_attackerTag + " timer reached 0");
             _damageTimer--;
         }
         else
@@ -66,7 +65,6 @@ public class ActorDamageManager : MonoBehaviour
             }
 
             _damageTimer = _baseDamageTimer;
-            Debug.Log(_attackerTag + " attacked " + _receiverTag + "!");
         }
     }
 }
