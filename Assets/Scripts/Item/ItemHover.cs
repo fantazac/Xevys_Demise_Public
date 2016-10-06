@@ -3,8 +3,9 @@ using System.Collections;
 
 public class ItemHover : MonoBehaviour
 {
+    [SerializeField]
+    private float _speed = 0.11f;
 
-    private const float SPEED = 0.11f;
     private const float WAVE_LENGTH = 0.08f;
 
     private float _sinCount = 0;
@@ -19,6 +20,6 @@ public class ItemHover : MonoBehaviour
     private void Update()
     {
         transform.position = new Vector2(transform.position.x, _initialYPosition + WAVE_LENGTH * Mathf.Sin(_sinCount));
-        _sinCount += SPEED;
+        _sinCount += _speed;
     }
 }
