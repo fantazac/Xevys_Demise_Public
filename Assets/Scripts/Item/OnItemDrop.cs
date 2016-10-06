@@ -8,7 +8,7 @@ public class OnItemDrop : MonoBehaviour
     private GameObject _pickableItem;
 
     private const float TERMINAL_SPEED = -10;
-    private const float INITIAL_SPEED = 8;
+    private const float INITIAL_SPEED = 5.5f;
     private const float ROTATE_SPEED = 10;
 
     private Vector3 _target = Vector3.zero;
@@ -18,12 +18,15 @@ public class OnItemDrop : MonoBehaviour
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _rigidbody.velocity = new Vector2(0, INITIAL_SPEED);
+    }
+
+    public void Initialise(float amountToDrop, float id)
+    {
+        GetComponent<Rigidbody2D>().velocity = new Vector2(((amountToDrop - 1) / (-2) + id), INITIAL_SPEED);
     }
 
     private void Update()
     {
-        Debug.Log(transform.rotation.eulerAngles.z);
         if (_target == Vector3.zero && _rigidbody.velocity.y < TERMINAL_SPEED)
         {
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, TERMINAL_SPEED);
@@ -31,7 +34,7 @@ public class OnItemDrop : MonoBehaviour
 
         if (_target != Vector3.zero && _target == transform.position)
         {
-            GameObject newItem = (GameObject)Instantiate(_pickableItem, transform.position, new Quaternion());
+            GameObject.Instantiate(_pickableItem, transform.position, new Quaternion());
             Destroy(gameObject);
         }
 
@@ -41,7 +44,7 @@ public class OnItemDrop : MonoBehaviour
             {
                 transform.Rotate(Vector3.back * ROTATE_SPEED);
             }
-            else if(transform.rotation.eulerAngles.z != 0)
+            else if (transform.rotation.eulerAngles.z != 0)
             {
                 transform.rotation = new Quaternion();
             }
@@ -56,7 +59,7 @@ public class OnItemDrop : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (_target == Vector3.zero && (collider.gameObject.tag == "Wall" ||
-            (collider.gameObject.tag == "FlyingPlatform" && _rigidbody.velocity.y < 0)))
+            (collider.gameObject.tag == "FlyingPlatform" && _rigidbody.velocity.y < -2)))
         {
             _target = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
             Destroy(_rigidbody);
