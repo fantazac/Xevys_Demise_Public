@@ -4,11 +4,13 @@ using System;
 
 public class MoveWalkerSkeltal : SkeltalBehaviour
 {
+    protected const float WALKER_SPEED = 5;
+
     protected override bool UpdateSkeltal()
     {
         transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y),
             new Vector2(_initialPosition.x + (_isFacingRight ? _rightLimit : -_leftLimit),
-            transform.position.y), SPEED * Time.deltaTime);
+            transform.position.y), WALKER_SPEED * Time.deltaTime);
 
         if ((_isFacingRight && transform.position.x == _initialPosition.x + _rightLimit) || (!_isFacingRight && transform.position.x == _initialPosition.x - _leftLimit))
         {
