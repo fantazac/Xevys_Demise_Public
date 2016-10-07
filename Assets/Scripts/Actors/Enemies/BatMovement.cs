@@ -98,4 +98,12 @@ public class BatMovement : MonoBehaviour
         _target = new Vector3(Random.Range(_minX, _maxX), _initialPosition.y, _initialPosition.z);
     }
 
+    public bool CloseToTop()
+    {
+        if(Vector2.Distance((Vector2)transform.position, _target) < 1 || _isInPosition)
+        {
+            return true;
+        }
+        return false;
+    }
 }
