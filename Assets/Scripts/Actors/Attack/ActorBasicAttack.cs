@@ -3,7 +3,8 @@ using System.Collections;
 
 public class ActorBasicAttack : MonoBehaviour
 {
-    private const int FRAME_BUFFER = 30;
+    [SerializeField]
+    private const int ATTACK_SPEED = 30;
 
     private InputManager _inputManager;
     private SpriteRenderer _spriteRenderer;
@@ -17,7 +18,7 @@ public class ActorBasicAttack : MonoBehaviour
         _spriteRenderer = GameObject.Find("CharacterBasicAttackBoxSprite").GetComponent<SpriteRenderer>();
         _attackHitBox = GameObject.Find("CharacterBasicAttackBox");
         _audioSources = GetComponents<AudioSource>();
-        _count = FRAME_BUFFER;
+        _count = ATTACK_SPEED;
 
         _inputManager.OnBasicAttack += OnBasicAttack;
     }
@@ -25,7 +26,7 @@ public class ActorBasicAttack : MonoBehaviour
     void Update()
     {
         _count++;
-        if (_count >= FRAME_BUFFER / 2)
+        if (_spriteRenderer.enabled && _count >= ATTACK_SPEED / 2)
         {
             _spriteRenderer.enabled = false;
             _attackHitBox.GetComponent<BoxCollider2D>().enabled = false;
@@ -34,7 +35,7 @@ public class ActorBasicAttack : MonoBehaviour
 
     void OnBasicAttack()
     {
-        if (_count >= FRAME_BUFFER)
+        if (_count >= ATTACK_SPEED)
         {
             _spriteRenderer.enabled = true;
             _attackHitBox.GetComponent<BoxCollider2D>().enabled = true;

@@ -10,7 +10,6 @@ public abstract class SkeltalBehaviour : MonoBehaviour
     protected float _rightLimit;
 
     protected const float ATTACK_TIME = 3;
-    protected const float SPEED = 5;
 
     private SpriteRenderer _skeltalSwordSpriteRenderer;
     private GameObject _skeltalSword;
@@ -20,8 +19,6 @@ public abstract class SkeltalBehaviour : MonoBehaviour
     protected bool _isAttacking;
     protected float _attackTimeLeft;
 
-    protected float _attackTriggerTimer;
-
     //In the upcoming development, it would be wise to implement this variable into a component.
     protected bool _isFacingRight;
 
@@ -30,14 +27,14 @@ public abstract class SkeltalBehaviour : MonoBehaviour
     {
         _initialPosition = new Vector2(transform.position.x, transform.position.y);
         _leftLimit = Mathf.Abs(_leftLimit);
-        _rightLimit = Mathf.Abs(_rightLimit);
-        transform.position = new Vector2(rng.Next((int)(_leftLimit + _rightLimit)) + transform.position.x - _leftLimit, transform.position.y);
+        _rightLimit = Mathf.Abs(_rightLimit);       
         _skeltalSword = transform.FindChild("SkeltalSword").gameObject;
         _skeltalSwordSpriteRenderer = _skeltalSword.transform.FindChild("SkeltalSwordSprite").gameObject.GetComponent<SpriteRenderer>();
         _skeltalSword.GetComponent<BoxCollider2D>().offset = new Vector2(_skeltalSword.GetComponent<BoxCollider2D>().offset.x * -1, _skeltalSword.GetComponent<BoxCollider2D>().offset.y);
         _isFacingRight = false;
         _isAttacking = false;
         _attackTimeLeft = ATTACK_TIME;
+        transform.position = new Vector2(rng.Next((int)(_leftLimit + _rightLimit)) + transform.position.x - _leftLimit, transform.position.y);
     }
 
     // Update is called once per frame

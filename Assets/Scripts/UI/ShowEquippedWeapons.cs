@@ -10,6 +10,7 @@ public class ShowEquippedWeapons : MonoBehaviour
     private SpriteRenderer _selectedWeaponHighlight;
     private SpriteRenderer _knifeSpriteRenderer;
     private SpriteRenderer _axeSpriteRenderer;
+    private InventoryManager _inventoryManager;
 
     private void Start()
     {
@@ -18,6 +19,7 @@ public class ShowEquippedWeapons : MonoBehaviour
         _selectedWeaponHighlight = GameObject.Find("WeaponSelectHighlight").GetComponent<SpriteRenderer>();
         _knifeSpriteRenderer = GameObject.Find("WeaponSelectKnife").GetComponent<SpriteRenderer>();
         _axeSpriteRenderer = GameObject.Find("WeaponSelectAxe").GetComponent<SpriteRenderer>();
+        _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
 
         _knifeText.enabled = false;
         _axeText.enabled = false;
@@ -28,7 +30,7 @@ public class ShowEquippedWeapons : MonoBehaviour
 
     public void OnKnifeAmmoChanged(int total)
     {
-        if (!_knifeSpriteRenderer.enabled)
+        if (!_inventoryManager.KnifeEnabled)
         {
             _knifeSpriteRenderer.enabled = true;
             _knifeText.enabled = true;
@@ -39,7 +41,7 @@ public class ShowEquippedWeapons : MonoBehaviour
 
     public void OnAxeAmmoChanged(int total)
     {
-        if (!_axeSpriteRenderer.enabled)
+        if (!_inventoryManager.AxeEnabled)
         {
             _axeSpriteRenderer.enabled = true;
             _axeText.enabled = true;
