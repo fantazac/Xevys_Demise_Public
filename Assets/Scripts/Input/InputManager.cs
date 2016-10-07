@@ -145,7 +145,7 @@ public class InputManager : MonoBehaviour
                     }
                 }
 
-                if (state.Buttons.A == ButtonState.Pressed && _aButtonReady)
+                if (state.Buttons.A == ButtonState.Pressed && _aButtonReady && state.ThumbSticks.Left.Y != -_joysticksYAxisDeadZone)
                 {
                     _aButtonReady = false;
                     OnJump();
@@ -186,7 +186,6 @@ public class InputManager : MonoBehaviour
                 }
 
                 
-
                 if (state.Buttons.B == ButtonState.Pressed)
                 {
                     OnThrowAttack();
@@ -212,10 +211,6 @@ public class InputManager : MonoBehaviour
                 {
                     _rightShoulderReady = true;
                 }
-
-
-                //Faire vibrer le gamepad en fonction des triggers
-                //GamePad.SetVibration(player, state.Triggers.Left, state.Triggers.Right);
             }
         }
     }
