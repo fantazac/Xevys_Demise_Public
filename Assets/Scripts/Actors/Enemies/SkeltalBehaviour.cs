@@ -30,14 +30,14 @@ public abstract class SkeltalBehaviour : MonoBehaviour
     {
         _initialPosition = new Vector2(transform.position.x, transform.position.y);
         _leftLimit = Mathf.Abs(_leftLimit);
-        _rightLimit = Mathf.Abs(_rightLimit);
-        transform.position = new Vector2(rng.Next((int)(_leftLimit + _rightLimit)) + transform.position.x - _leftLimit, transform.position.y);
+        _rightLimit = Mathf.Abs(_rightLimit);       
         _skeltalSword = transform.FindChild("SkeltalSword").gameObject;
         _skeltalSwordSpriteRenderer = _skeltalSword.transform.FindChild("SkeltalSwordSprite").gameObject.GetComponent<SpriteRenderer>();
         _skeltalSword.GetComponent<BoxCollider2D>().offset = new Vector2(_skeltalSword.GetComponent<BoxCollider2D>().offset.x * -1, _skeltalSword.GetComponent<BoxCollider2D>().offset.y);
         _isFacingRight = false;
         _isAttacking = false;
         _attackTimeLeft = ATTACK_TIME;
+        transform.position = new Vector2(rng.Next((int)(_leftLimit + _rightLimit)) + transform.position.x - _leftLimit, transform.position.y);
     }
 
     // Update is called once per frame
