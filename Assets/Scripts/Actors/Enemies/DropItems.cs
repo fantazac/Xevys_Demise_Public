@@ -21,13 +21,18 @@ public class DropItems : MonoBehaviour
         {
             if (Random.Range(0, 100) < _dropRates[i])
             {
-                _itemsToDrop[_itemsDroppedCount++] = _items[i];
+                if ((_items[i].gameObject.tag != "AxeDrop" && _items[i].gameObject.tag != "KnifeDrop") ||
+                    (_items[i].gameObject.tag == "AxeDrop" && GameObject.Find("Character").GetComponent<InventoryManager>().AxeEnabled) ||
+                    (_items[i].gameObject.tag == "KnifeDrop" && GameObject.Find("Character").GetComponent<InventoryManager>().KnifeEnabled))
+                {
+                    _itemsToDrop[_itemsDroppedCount++] = _items[i];
+                }
             }
         }
 
         for (int j = 0; j < _itemsToDrop.Length; j++)
         {
-            if(_itemsToDrop[j] == null)
+            if (_itemsToDrop[j] == null)
             {
                 break;
             }
