@@ -205,6 +205,11 @@ public class ScarabMovement : MonoBehaviour
             }
         }
     }
+
+    public bool OnBottomOfPlatform()
+    {
+        return transform.rotation.eulerAngles.z > 170 || transform.rotation.eulerAngles.z < -170;
+    }
 }
 
 public enum ScarabDirection
