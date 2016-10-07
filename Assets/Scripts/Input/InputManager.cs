@@ -41,6 +41,7 @@ public class InputManager : MonoBehaviour
     private bool _leftShoulderReady = true;
     private bool _rightShoulderReady = true;
     private bool _xButtonReady = true;
+    private bool _aButtonReady = true;
 
     private void FixedUpdate()
     {
@@ -61,7 +62,7 @@ public class InputManager : MonoBehaviour
         {
             OnJumpDown();
         }
-        else if (Input.GetKey(KeyCode.Space))
+        else if (Input.GetKeyDown(KeyCode.Space))
         {
             OnJump();
         }
@@ -143,9 +144,15 @@ public class InputManager : MonoBehaviour
                         OnUnderwaterControl(false);
                     }
                 }
-                else if (state.Buttons.A == ButtonState.Pressed)
+
+                if (state.Buttons.A == ButtonState.Pressed && _aButtonReady)
                 {
+                    _aButtonReady = false;
                     OnJump();
+                }
+                if (state.Buttons.A == ButtonState.Released && !_aButtonReady)
+                {
+                    _aButtonReady = true;
                 }
 
                 #region Cheat
@@ -177,6 +184,8 @@ public class InputManager : MonoBehaviour
                 {
                     _xButtonReady = true;
                 }
+
+                
 
                 if (state.Buttons.B == ButtonState.Pressed)
                 {
