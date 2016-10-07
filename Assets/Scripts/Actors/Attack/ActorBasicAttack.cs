@@ -25,7 +25,7 @@ public class ActorBasicAttack : MonoBehaviour
     void Update()
     {
         _count++;
-        if (_count >= FRAME_BUFFER / 2)
+        if (_spriteRenderer.enabled && _count >= FRAME_BUFFER / 2)
         {
             _spriteRenderer.enabled = false;
             _attackHitBox.GetComponent<BoxCollider2D>().enabled = false;
