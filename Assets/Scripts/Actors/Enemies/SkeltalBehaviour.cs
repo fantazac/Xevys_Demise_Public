@@ -10,7 +10,6 @@ public abstract class SkeltalBehaviour : MonoBehaviour
     protected float _rightLimit;
 
     protected const float ATTACK_TIME = 3;
-    protected const float SPEED = 5;
 
     private SpriteRenderer _skeltalSwordSpriteRenderer;
     private GameObject _skeltalSword;
@@ -19,8 +18,6 @@ public abstract class SkeltalBehaviour : MonoBehaviour
     protected Vector2 _initialPosition;
     protected bool _isAttacking;
     protected float _attackTimeLeft;
-
-    protected float _attackTriggerTimer;
 
     //In the upcoming development, it would be wise to implement this variable into a component.
     protected bool _isFacingRight;
