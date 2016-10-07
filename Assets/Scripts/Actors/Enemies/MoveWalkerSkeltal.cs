@@ -5,6 +5,13 @@ using System;
 public class MoveWalkerSkeltal : SkeltalBehaviour
 {
     protected const float WALKER_SPEED = 5;
+    private Animator _animator;
+
+    protected override void Start()
+    {
+        base.Start();
+        _animator = GetComponent<Animator>();
+    }
 
     protected override bool UpdateSkeltal()
     {
@@ -14,9 +21,11 @@ public class MoveWalkerSkeltal : SkeltalBehaviour
 
         if ((_isFacingRight && transform.position.x == _initialPosition.x + _rightLimit) || (!_isFacingRight && transform.position.x == _initialPosition.x - _leftLimit))
         {
+            _animator.SetBool("IsMoving", false);
             return true;
         }
 
+        _animator.SetBool("IsMoving", true);
         return false;
     }
 }
