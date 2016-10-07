@@ -18,7 +18,7 @@ public class ActorDamageManager : MonoBehaviour
     private void Start()
     {
         _attackerTag = gameObject.tag;
-        _playerTags = new string[] { "BasicAttackHitbox", "Knife", "Axe" };
+        _playerTags = new string[] { "BasicAttackHitbox" };
         _enemiesTags = new string[] { "Scarab", "Bat", "Skeltal", "Behemoth", "SkeltalSwordHitbox" };
 
         if (_playerTags.Contains(_attackerTag))
@@ -33,25 +33,17 @@ public class ActorDamageManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _damageTimer--;       
+        _damageTimer--;
     }
 
     private void OnTriggerStay2D(Collider2D collider)
     {
         _receiverTag = collider.gameObject.tag;
 
-        if (((_playerTags.Contains(_attackerTag) && (_enemiesTags.Contains(_receiverTag))
-            || (_enemiesTags.Contains(_attackerTag)) && _receiverTag == "Player" && !collider.GetComponent<InvincibilityAfterBeingHit>().IsFlickering))
+        if (_playerTags.Contains(_attackerTag) && _enemiesTags.Contains(_receiverTag) || _enemiesTags.Contains(_attackerTag) && _receiverTag == "Player" && !collider.GetComponent<InvincibilityAfterBeingHit>().IsFlickering
             && _damageTimer <= 0)
         {
-            if (collider.GetComponent<Health>().HealthPoint >= 100)
-            {
-                collider.GetComponent<Health>().Hit(_baseDamage);
-            }
-            else if (collider.GetComponent<Health>().HealthPoint < 100)
-            {
-                collider.GetComponent<Health>().Hit((int)collider.GetComponent<Health>().HealthPoint);
-            }
+            collider.GetComponent<Health>().Hit(_baseDamage);
 
             if (_receiverTag == "Player")
             {
