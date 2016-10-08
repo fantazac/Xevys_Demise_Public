@@ -43,7 +43,7 @@ public class InputManager : MonoBehaviour
     private bool _xButtonReady = true;
     private bool _aButtonReady = true;
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow))
         {
