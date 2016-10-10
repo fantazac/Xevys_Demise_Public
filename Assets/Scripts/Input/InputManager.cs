@@ -18,11 +18,11 @@ public class InputManager : MonoBehaviour
     public event OnUnderwaterControlHandler OnUnderwaterControl;
 
     public delegate void OnBootsEquipHandler();
-    public event OnBootsEquipHandler OnBootsEquip;
+    public event OnBootsEquipHandler OnIronBootsEquip;
 
-    public delegate void OnBootsUnequipHandler();
-    public event OnBootsUnequipHandler OnBootsUnequip;
-
+    public delegate void OnDoubleJumpBootsEquipHandler();
+    public event OnBootsEquipHandler OnDoubleJumpBootsEquip;
+    
     public delegate void OnStopHandler();
     public event OnStopHandler OnStop;
 
@@ -43,7 +43,7 @@ public class InputManager : MonoBehaviour
     private bool _xButtonReady = true;
     private bool _aButtonReady = true;
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow))
         {
@@ -77,13 +77,14 @@ public class InputManager : MonoBehaviour
             OnUnderwaterControl(false);
         }
 
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            OnBootsEquip();
+            OnIronBootsEquip();
         }
-        else if (Input.GetKey(KeyCode.U))
+
+        if (Input.GetKeyDown(KeyCode.J))
         {
-            OnBootsUnequip();
+            OnDoubleJumpBootsEquip();
         }
 
         if (Input.GetKeyDown(KeyCode.K))
@@ -168,11 +169,7 @@ public class InputManager : MonoBehaviour
 
                 if (state.Buttons.RightStick == ButtonState.Pressed)
                 {
-                    OnBootsEquip();
-                }
-                else if (GameObject.Find("Character").GetComponent<PlayerMovement>().WearsBoots)
-                {
-                    OnBootsUnequip();
+                    OnIronBootsEquip();
                 }
 
                 if (state.Buttons.X == ButtonState.Pressed && _xButtonReady)
