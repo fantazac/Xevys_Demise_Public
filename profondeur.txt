@@ -1,6 +1,6 @@
 -10: camera
 -5: character
--4: 
+-4: render over walls/obstacles
 -3: walls/obstacles
 -2: walls/obstacles behind other walls/obstacles
 -1: level doors
