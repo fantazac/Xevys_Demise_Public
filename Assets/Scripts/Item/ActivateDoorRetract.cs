@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class OpenDoorTrigger : MonoBehaviour
+public class ActivateDoorRetract : MonoBehaviour
 {
 
     [SerializeField]
@@ -10,7 +10,7 @@ public class OpenDoorTrigger : MonoBehaviour
     [SerializeField]
     private GameObject[] _wallsToActivate;
 
-    private bool _soundPlayed;
+    private bool _soundPlayed = false;
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
@@ -25,7 +25,7 @@ public class OpenDoorTrigger : MonoBehaviour
             _soundPlayed = true;
             gameObject.transform.position = new Vector3(-1000, -1000, 0);
 
-            Destroy(_door);
+            _door.GetComponent<RetractDoor>().Retract = true;
         }
     }
 
