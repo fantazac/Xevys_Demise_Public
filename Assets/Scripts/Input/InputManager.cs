@@ -45,11 +45,11 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
         {
             OnMove(Vector3.left, false);
         }
-        else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow))
+        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
         {
             OnMove(Vector3.right, true);
         }
@@ -58,7 +58,7 @@ public class InputManager : MonoBehaviour
             OnStop();
         }
 
-        if (Input.GetKey(KeyCode.DownArrow) && Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space))
         {
             OnJumpDown();
         }
@@ -67,12 +67,12 @@ public class InputManager : MonoBehaviour
             OnJump();
         }
 
-        if (Input.GetKey(KeyCode.DownArrow))
+        if (Input.GetKey(KeyCode.S))
         {
             OnUnderwaterControl(true);
         }
 
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.W))
         {
             OnUnderwaterControl(false);
         }
