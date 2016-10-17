@@ -4,37 +4,30 @@ using System.Collections;
 public class MoveJumpySkeltal : SkeltalBehaviour
 {
     [SerializeField]
-    protected float _jumpForce = 10;
+    protected float _maximumHeight = 2.5f;
 
-    protected float _currentJumpForce;
+    [SerializeField]
+    protected float _maximumTimeInAir = 1.5f;
+
+    protected float _timeInAir;
 
     protected override void Start()
     {
         base.Start();
-        _currentJumpForce = _jumpForce;
+        _timeInAir = 0;
     }
 
     protected override bool UpdateSkeltal()
     {
-        transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), new Vector2(transform.position.x, 9001), _currentJumpForce * Time.deltaTime);
-        transform.position = new Vector2(transform.position.x, Mathf.Max(_initialPosition.y, transform.position.y));
+        _timeInAir += Time.deltaTime;
+        float _newHeight;
+        _newHeight = -_maximumHeight * (_timeInAir) * (_timeInAir - _maximumTimeInAir) + _initialPosition.y;
+        transform.position = new Vector2(transform.position.x, Mathf.Max(_initialPosition.y, _newHeight));
 
-        if (_currentJumpForce > 0.1f)
-        {
-            _currentJumpForce *= 0.9f;
-        }
-        else if (_currentJumpForce <= 0.1f && _currentJumpForce > 0)
-        {
-            _currentJumpForce *= -1;
-        }
-        else
-        {
-            _currentJumpForce *= 1.1f;
-        }
 
         if (transform.position.y <= _initialPosition.y)
         {
-            _currentJumpForce = _jumpForce;
+            _timeInAir = 0;
             return true;
         }
 

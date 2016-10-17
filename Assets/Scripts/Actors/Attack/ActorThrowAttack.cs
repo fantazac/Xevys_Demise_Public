@@ -43,22 +43,21 @@ public class ActorThrowAttack : MonoBehaviour
     private int _axeThrowCDCount;
 
     private InputManager _inputManager;
+    private InventoryManager _inventoryManager;
     private AudioSource[] _audioSources;
 
-    public enum Projectile { Knives, Axes };
-    private List<Projectile> _throwableWeapons;
-
-    private ShowEquippedWeapons _showEquippedWeapons;
+    private ShowItems _showItems;
 
     private void Start()
     {
         _inputManager = GetComponent<InputManager>();
-        _throwableWeapons = new List<Projectile> { Projectile.Knives, Projectile.Axes };
         _inputManager.OnThrowAttack += OnKnifeAttack;
         _inputManager.OnThrowAttackChanged += OnThrowableWeaponChange;
 
+        _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
+
         _audioSources = GetComponents<AudioSource>();
-        _showEquippedWeapons = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowEquippedWeapons>();
+        _showItems = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowItems>();
 
         _knifeThrowCDCount = ATTACK_COOLDOWN;
         _axeThrowCDCount = ATTACK_COOLDOWN;
@@ -98,7 +97,7 @@ public class ActorThrowAttack : MonoBehaviour
                 _knifeThrowCDCount = 0;
                 GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition--;
             }
-            _showEquippedWeapons.OnKnifeAmmoChanged(GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
+            _showItems.OnKnifeAmmoChanged(GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
         }
     }
 
@@ -126,39 +125,27 @@ public class ActorThrowAttack : MonoBehaviour
                 _axeThrowCDCount = 0;
                 GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition--;
             }
-            _showEquippedWeapons.OnAxeAmmoChanged(GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
+            _showItems.OnAxeAmmoChanged(GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
         }
     }
 
     private void OnThrowableWeaponChange()
     {
-        switch (_throwableWeapons[0])
+        if (_inventoryManager.KnifeActive && GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition > 0)
         {
-            case Projectile.Knives:
-            default:
-                if (GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition > 0)
-                {
-                    _inputManager.OnThrowAttack += OnAxeAttack;
-                    _inputManager.OnThrowAttack -= OnKnifeAttack;
-                    _showEquippedWeapons.OnAxeSelected();
-
-                    Projectile tmp = _throwableWeapons[0];
-                    _throwableWeapons[0] = _throwableWeapons[1];
-                    _throwableWeapons[1] = tmp;
-                }             
-                break;
-            case Projectile.Axes:
-                if (GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition > 0)
-                {
-                    _inputManager.OnThrowAttack -= OnAxeAttack;
-                    _inputManager.OnThrowAttack += OnKnifeAttack;
-                    _showEquippedWeapons.OnKnifeSelected();
-
-                    Projectile tmp = _throwableWeapons[0];
-                    _throwableWeapons[0] = _throwableWeapons[1];
-                    _throwableWeapons[1] = tmp;
-                }             
-                break;
+            _inputManager.OnThrowAttack += OnAxeAttack;
+            _inputManager.OnThrowAttack -= OnKnifeAttack;
+            _inventoryManager.AxeActive = true;
+            _inventoryManager.KnifeActive = false;
+            _showItems.OnAxeSelected();
+        }
+        else if (_inventoryManager.AxeActive && GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition > 0)
+        {
+            _inputManager.OnThrowAttack -= OnAxeAttack;
+            _inputManager.OnThrowAttack += OnKnifeAttack;
+            _inventoryManager.AxeActive = false;
+            _inventoryManager.KnifeActive = true;
+            _showItems.OnKnifeSelected();
         }
     }
 }
