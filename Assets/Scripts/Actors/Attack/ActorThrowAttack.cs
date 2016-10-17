@@ -48,7 +48,7 @@ public class ActorThrowAttack : MonoBehaviour
     public enum Projectile { Knives, Axes };
     private List<Projectile> _throwableWeapons;
 
-    private ShowEquippedWeapons _showEquippedWeapons;
+    private ShowItems _showItems;
 
     private void Start()
     {
@@ -58,7 +58,7 @@ public class ActorThrowAttack : MonoBehaviour
         _inputManager.OnThrowAttackChanged += OnThrowableWeaponChange;
 
         _audioSources = GetComponents<AudioSource>();
-        _showEquippedWeapons = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowEquippedWeapons>();
+        _showItems = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowItems>();
 
         _knifeThrowCDCount = ATTACK_COOLDOWN;
         _axeThrowCDCount = ATTACK_COOLDOWN;
@@ -98,7 +98,7 @@ public class ActorThrowAttack : MonoBehaviour
                 _knifeThrowCDCount = 0;
                 GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition--;
             }
-            _showEquippedWeapons.OnKnifeAmmoChanged(GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
+            _showItems.OnKnifeAmmoChanged(GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
         }
     }
 
@@ -126,7 +126,7 @@ public class ActorThrowAttack : MonoBehaviour
                 _axeThrowCDCount = 0;
                 GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition--;
             }
-            _showEquippedWeapons.OnAxeAmmoChanged(GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
+            _showItems.OnAxeAmmoChanged(GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
         }
     }
 
@@ -140,7 +140,7 @@ public class ActorThrowAttack : MonoBehaviour
                 {
                     _inputManager.OnThrowAttack += OnAxeAttack;
                     _inputManager.OnThrowAttack -= OnKnifeAttack;
-                    _showEquippedWeapons.OnAxeSelected();
+                    _showItems.OnAxeSelected();
 
                     Projectile tmp = _throwableWeapons[0];
                     _throwableWeapons[0] = _throwableWeapons[1];
@@ -152,7 +152,7 @@ public class ActorThrowAttack : MonoBehaviour
                 {
                     _inputManager.OnThrowAttack -= OnAxeAttack;
                     _inputManager.OnThrowAttack += OnKnifeAttack;
-                    _showEquippedWeapons.OnKnifeSelected();
+                    _showItems.OnKnifeSelected();
 
                     Projectile tmp = _throwableWeapons[0];
                     _throwableWeapons[0] = _throwableWeapons[1];

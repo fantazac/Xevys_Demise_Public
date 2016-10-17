@@ -3,13 +3,14 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
-public class ShowEquippedWeapons : MonoBehaviour
+public class ShowItems : MonoBehaviour
 {
     private Text _knifeText;
     private Text _axeText;
     private SpriteRenderer _selectedWeaponHighlight;
     private SpriteRenderer _knifeSpriteRenderer;
     private SpriteRenderer _axeSpriteRenderer;
+    private SpriteRenderer _featherSpriteRenderer;
     private InventoryManager _inventoryManager;
 
     private void Start()
@@ -19,6 +20,7 @@ public class ShowEquippedWeapons : MonoBehaviour
         _selectedWeaponHighlight = GameObject.Find("WeaponSelectHighlight").GetComponent<SpriteRenderer>();
         _knifeSpriteRenderer = GameObject.Find("WeaponSelectKnife").GetComponent<SpriteRenderer>();
         _axeSpriteRenderer = GameObject.Find("WeaponSelectAxe").GetComponent<SpriteRenderer>();
+        _featherSpriteRenderer = GameObject.Find("FeatherFrame").GetComponent<SpriteRenderer>();
         _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
 
         _knifeText.enabled = false;
@@ -67,6 +69,11 @@ public class ShowEquippedWeapons : MonoBehaviour
         }
         _selectedWeaponHighlight.transform.position = new Vector3(_axeSpriteRenderer.transform.position.x,
             _axeSpriteRenderer.transform.position.y, _axeSpriteRenderer.transform.position.z + 5);
+    }
+
+    public void OnFeatherEnabled()
+    {
+        _featherSpriteRenderer.enabled = true;
     }
 
 }
