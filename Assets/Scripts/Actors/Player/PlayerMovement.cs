@@ -55,7 +55,6 @@ public class PlayerMovement : MonoBehaviour
         _inputManager.OnJumpDown += OnJumpDown;
         _inputManager.OnUnderwaterControl += OnUnderwaterControl;
         _inputManager.OnIronBootsEquip += OnIronBootsEquip;
-        _inputManager.OnDoubleJumpBootsEquip += OnDoubleJumpBootsEquip;
         _inputManager.OnStop += OnStop;
 
         _waterYSpeed = INITIAL_WATER_FALLING_SPEED;
@@ -126,12 +125,6 @@ public class PlayerMovement : MonoBehaviour
             _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
         }
         _wearsIronBoots = !_wearsIronBoots;
-    }
-
-    // DEBUG FEATURE
-    private void OnDoubleJumpBootsEquip()
-    {
-        _inventoryManager.EnableFeather();
     }
 
     private void OnStop()
