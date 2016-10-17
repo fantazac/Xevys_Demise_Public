@@ -27,10 +27,14 @@ public class CameraManager : MonoBehaviour
     void Start()
     {
         if (focusObject != null)
+        {
             FocusObject = focusObject;
+        }
 
         if (listAreaNodes.Count == 0)
+        {
             Debug.LogWarning(gameObject.name.ToString() + " (CameraManager): No Area boundaries are assigned. The camera will move freely to the set targets");
+        }
     }
 
     void Update()
@@ -98,7 +102,10 @@ public class CameraManager : MonoBehaviour
             {
                 previousArea = listAreaNodes.IndexOf(n);
 
-                if (previousArea == _currentArea) { return; }
+                if (previousArea == _currentArea)
+                {
+                    return;
+                }
                 _currentArea = previousArea;
             }
         }
@@ -146,7 +153,9 @@ public class CameraManager : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (listAreaNodes.Count == 0)
+        {
             return;
+        } 
 
         // Draw the current selected area's bounding box
         foreach (GameObject n in listAreaNodes)
@@ -156,8 +165,10 @@ public class CameraManager : MonoBehaviour
 
             Gizmos.color = Color.red;
             if (n == listAreaNodes[_currentArea])
+            {
                 Gizmos.color = Color.green;
-
+            }
+                
             Gizmos.DrawLine(new Vector2(i.position.x, i.position.y), new Vector2(j.position.x, i.position.y));
             Gizmos.DrawLine(new Vector2(i.position.x, j.position.y), new Vector2(j.position.x, j.position.y));
             Gizmos.DrawLine(new Vector2(i.position.x, i.position.y), new Vector2(i.position.x, j.position.y));
