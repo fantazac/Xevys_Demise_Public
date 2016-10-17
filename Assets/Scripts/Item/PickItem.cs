@@ -52,6 +52,7 @@ public class PickItem : MonoBehaviour
             else if (gameObject.tag == "FeatherItem")
             {
                 GetComponent<ActivateHoverRetract>().ActivateRetract();
+                collider.GetComponentInChildren<InventoryManager>().EnableFeather();
             }
             
 
