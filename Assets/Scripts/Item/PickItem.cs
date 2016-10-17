@@ -19,7 +19,6 @@ public class PickItem : MonoBehaviour
     private void Start()
     {
         _showItems = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowItems>();
-
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -31,14 +30,12 @@ public class PickItem : MonoBehaviour
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition += BASE_KNIFE_AMOUNT_ON_PICKUP;
                 GetComponent<ActivateHoverRetract>().ActivateRetract();
                 _showItems.OnKnifeAmmoChanged(collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
-                collider.GetComponent<InventoryManager>().EnableKnife();
             }
             else if (gameObject.tag == "BaseAxeItem")
             {
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition += BASE_AXE_AMOUNT_ON_PICKUP;
                 GetComponent<ActivateHoverRetract>().ActivateRetract();
                 _showItems.OnAxeAmmoChanged(collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
-                collider.GetComponent<InventoryManager>().EnableAxe();
             }
             else if (gameObject.tag == "KnifePickableItem")
             {

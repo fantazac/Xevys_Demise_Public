@@ -28,12 +28,15 @@ public class ShowItems : MonoBehaviour
         _selectedWeaponHighlight.enabled = false;
         _knifeSpriteRenderer.enabled = false;
         _axeSpriteRenderer.enabled = false;
+
+        _featherSpriteRenderer.enabled = false;
     }
 
     public void OnKnifeAmmoChanged(int total)
     {
         if (!_inventoryManager.KnifeEnabled)
         {
+            _inventoryManager.EnableKnife();
             _knifeSpriteRenderer.enabled = true;
             _knifeText.enabled = true;
             OnKnifeSelected();
@@ -45,6 +48,7 @@ public class ShowItems : MonoBehaviour
     {
         if (!_inventoryManager.AxeEnabled)
         {
+            _inventoryManager.EnableAxe();
             _axeSpriteRenderer.enabled = true;
             _axeText.enabled = true;
         }
