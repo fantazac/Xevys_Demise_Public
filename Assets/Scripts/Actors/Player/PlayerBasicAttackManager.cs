@@ -14,7 +14,7 @@ public class PlayerBasicAttackManager : MonoBehaviour
 
     private void Start()
     {
-        _enemiesTags = new string[] { "Scarab", "Bat", "Skeltal", "Behemoth", "SkeltalSwordHitbox" };
+        _enemiesTags = new string[] { "Scarab", "Bat", "Skeltal", "Behemoth", "Phoenix", "SkeltalSwordHitbox" };
         _baseDamageTimer = 50;
     }
 
