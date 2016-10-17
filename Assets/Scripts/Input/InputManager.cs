@@ -19,9 +19,6 @@ public class InputManager : MonoBehaviour
 
     public delegate void OnBootsEquipHandler();
     public event OnBootsEquipHandler OnIronBootsEquip;
-
-    public delegate void OnDoubleJumpBootsEquipHandler();
-    public event OnBootsEquipHandler OnDoubleJumpBootsEquip;
     
     public delegate void OnStopHandler();
     public event OnStopHandler OnStop;
@@ -80,11 +77,6 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             OnIronBootsEquip();
-        }
-
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            OnDoubleJumpBootsEquip();
         }
 
         if (Input.GetKeyDown(KeyCode.K))
