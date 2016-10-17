@@ -177,7 +177,10 @@ public class InputManager : MonoBehaviour
                 
                 if (state.Buttons.B == ButtonState.Pressed)
                 {
-                    OnThrowAttack();
+                    if (OnThrowAttack != null)
+                    {
+                        OnThrowAttack();
+                    }                  
                 }
 
                 if (state.Buttons.LeftShoulder == ButtonState.Pressed && _leftShoulderReady)
