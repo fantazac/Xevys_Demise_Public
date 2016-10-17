@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PickThrowingWeaponsMunitions : MonoBehaviour
+public class PickItem : MonoBehaviour
 {
     [SerializeField]
     private const int AXE_AMOUNT_ON_PICKUP = 5;
@@ -48,6 +48,11 @@ public class PickThrowingWeaponsMunitions : MonoBehaviour
             {
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition += AXE_AMOUNT_ON_PICKUP;
                 _showEquippedWeapons.OnAxeAmmoChanged(collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
+            }
+            else if (gameObject.tag == "FeatherItem")
+            {
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                collider.GetComponentInChildren<InventoryManager>().EnableFeather();
             }
             
 

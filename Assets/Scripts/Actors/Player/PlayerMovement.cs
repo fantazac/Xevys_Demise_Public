@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private InputManager _inputManager;
     private Rigidbody2D _rigidbody;
     private BoxCollider2D _basicAttackBox;
+    private InventoryManager _inventoryManager;
 
     private const float INITIAL_GRAVITY_SCALE = 5;
     private const float INITIAL_WATER_FALLING_SPEED = 3;
@@ -30,7 +31,6 @@ public class PlayerMovement : MonoBehaviour
     private float _waterYSpeed;
     private Animator _anim;
     private Transform _spriteTransform;
-    private bool _wearsDoubleJumpBoots = true;
     private bool _canDoubleJump = false;
 
     public float Speed { get { return _speed; } set { _speed = value; } }
@@ -41,11 +41,11 @@ public class PlayerMovement : MonoBehaviour
     public bool WearsIronBoots { get { return _wearsIronBoots; } }
     public bool IsKnockedBack { get { return _isKnockedBack; } set { _isKnockedBack = value; } }
     public float TerminalSpeed { get { return TERMINAL_SPEED; } }
-    public bool WearsDoubleJumpBoots { get { return _wearsDoubleJumpBoots; } set { _wearsDoubleJumpBoots = value; } }
 
     private void Start()
     {
         _anim = GameObject.Find("CharacterSprite").GetComponent<Animator>();
+        _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
         _spriteTransform = _anim.GetComponent<Transform>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _inputManager = GetComponent<InputManager>();
@@ -91,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 ChangePlayerVerticalVelocity(_jumpingSpeed);
             }
-            else if (IsJumping() && !_feetTouchWater && !_wearsIronBoots && _wearsDoubleJumpBoots && _canDoubleJump)
+            else if (IsJumping() && !_feetTouchWater && !_wearsIronBoots && _inventoryManager.FeatherEnabled && _canDoubleJump)
             {
                 _canDoubleJump = false;
                 ChangePlayerVerticalVelocity(_jumpingSpeed);
@@ -128,9 +128,10 @@ public class PlayerMovement : MonoBehaviour
         _wearsIronBoots = !_wearsIronBoots;
     }
 
+    // DEBUG FEATURE
     private void OnDoubleJumpBootsEquip()
     {
-        _wearsDoubleJumpBoots = !_wearsDoubleJumpBoots;
+        _inventoryManager.EnableFeather();
     }
 
     private void OnStop()
@@ -164,7 +165,8 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            return !(((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround && !GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
+            return !(((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround 
+                && !GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
                 || (GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform && _rigidbody.velocity.y == 0)
                 || _rigidbody.velocity == Vector2.zero)
                 && !(_rigidbody.velocity.y > 0));
@@ -187,7 +189,7 @@ public class PlayerMovement : MonoBehaviour
             _knockbackCount++;
         }
 
-        if (!IsJumping() && _wearsDoubleJumpBoots && !_canDoubleJump)
+        if (!IsJumping() && _inventoryManager.FeatherEnabled && !_canDoubleJump)
         {
             _canDoubleJump = true;
         }
