@@ -8,7 +8,6 @@ public class PhoenixAI : MonoBehaviour {
         fly,
         flee,
         charge,
-        retreat,
     }
     [SerializeField]
     private Vector2 _northEastLimit;
@@ -22,13 +21,14 @@ public class PhoenixAI : MonoBehaviour {
     private const float FLIGHT_DELAY = 0.5f;
     private const float ATTACK_DELAY = 5;
     private const float PLAYER_APPROACH_LIMIT = 6;
-    private const float SPEED = 3;
+    private const float SPEED = 5;
     private const float WING_FLAP = 2.675f;
 
     private Rigidbody2D _rigidbody;
     private Vector2 currentPoint;
     private Vector2 closestPoint;
     private Vector2 playerPosition;
+    private Vector2 attackPosition;
     //These components should eventually be placed into a script for all bosses (think heritage) as they are only used for a death status.
     private Health _health;
     private BoxCollider2D _boxCollider;
@@ -58,64 +58,93 @@ public class PhoenixAI : MonoBehaviour {
     // Update is called once per frame
     private void Update()
     {
+        //This status allows Phoenix to watch the player and either charge on him after a few seconds or flee.
         if (_status == PhoenixStatus.fly)
         {
             _attackCooldownTimeLeft += Time.fixedDeltaTime;
             if (_attackCooldownTimeLeft > ATTACK_DELAY)
             {
+                attackPosition = transform.position;
+                playerPosition = GameObject.Find("Character").transform.position;
+                _attackCooldownTimeLeft = 0;
                 _status = PhoenixStatus.charge;
-
             }
-            float playerDistance = Vector2.Distance(GameObject.Find("Character").transform.position, transform.position);
-            if (playerDistance < PLAYER_APPROACH_LIMIT)
+            else
             {
-                int randomNumber = _rng.Next();
-                if (currentPoint.Equals(_northEastLimit) || currentPoint.Equals(_southWestLimit))
+                float playerDistance = Vector2.Distance(GameObject.Find("Character").transform.position, transform.position);
+                if (playerDistance < PLAYER_APPROACH_LIMIT)
                 {
-                    closestPoint = (randomNumber % 2 == 0 ? _northWestLimit : _southEastLimit);
+                    int randomNumber = _rng.Next();
+                    if (currentPoint.Equals(_northEastLimit) || currentPoint.Equals(_southWestLimit))
+                    {
+                        closestPoint = (randomNumber % 2 == 0 ? _northWestLimit : _southEastLimit);
+                    }
+                    else
+                    {
+                        closestPoint = (randomNumber % 2 == 0 ? _northEastLimit : _southWestLimit);
+                    }
+                    _rigidbody.isKinematic = true;
+                    _status = PhoenixStatus.flee;
                 }
                 else
                 {
-                    closestPoint = (randomNumber % 2 == 0 ? _northEastLimit : _southWestLimit);
+                    if (_flightTimeLeft > 0)
+                    {
+                        _flightTimeLeft -= Time.fixedDeltaTime;
+                    }
+                    else
+                    {
+                        _flightTimeLeft = FLIGHT_DELAY;
+                        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, WING_FLAP);
+                    }
+                }
+            }
+        }
+        //Flee status makes Phoenix go to a neighbouring point in order to avoid the player.
+        else if (_status == PhoenixStatus.flee)
+        {
+            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), closestPoint, SPEED * Time.fixedDeltaTime);
+            CheckClosestPoint();
+        }
+        //In this status, Phoenix dives on the player, allowing the latter to strike its head.
+        else if (_status == PhoenixStatus.charge)
+        {
+            int diveOrientation = (playerPosition.y < attackPosition.y ? 1 : -1);
+            float newHorizontalPosition = transform.position.x + Orientation * Time.fixedDeltaTime;
+
+            float x = Orientation * (newHorizontalPosition - attackPosition.x);
+            float x2 = (playerPosition.x - attackPosition.x) * 2;
+            float a = Mathf.Abs(playerPosition.y / playerPosition.x / (playerPosition.x - x2));
+
+            float newVerticalPosition = (diveOrientation * a * newHorizontalPosition * (newHorizontalPosition - x2)) - attackPosition.y;
+            transform.position = new Vector2(newHorizontalPosition, newHorizontalPosition);
+            //Not a problem
+            if (Orientation == 1 ^ playerPosition.x > transform.position.x)
+            {
+                closestPoint = currentPoint;
+                while (closestPoint.Equals(currentPoint))
+                {
+                    int pointToFleeIndex = _rng.Next() % 4;
+                    if (pointToFleeIndex == 0)
+                    {
+                        closestPoint = _northEastLimit;
+                    }
+                    else if (pointToFleeIndex == 1)
+                    {
+                        closestPoint = _southEastLimit;
+                    }
+                    else if (pointToFleeIndex == 2)
+                    {
+                        closestPoint = _southWestLimit;
+                    }
+                    else if (pointToFleeIndex == 3)
+                    {
+                        closestPoint = _northWestLimit;
+                    }
                 }
                 _rigidbody.isKinematic = true;
                 _status = PhoenixStatus.flee;
             }
-            if (_flightTimeLeft > 0)
-            {
-                _flightTimeLeft -= Time.fixedDeltaTime;
-            }
-            else
-            {
-                _flightTimeLeft = FLIGHT_DELAY;
-                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, WING_FLAP);
-            }
-        }
-        else if (_status == PhoenixStatus.flee)
-        {
-            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), closestPoint, SPEED * Time.fixedDeltaTime);
-            float closestPointDistance = Vector2.Distance(closestPoint, transform.position);
-            if (closestPointDistance < 1)
-            {
-                _rigidbody.isKinematic = false;
-                _status = PhoenixStatus.fly;
-            }
-        }
-        else if (_status == PhoenixStatus.charge)
-        {
-            playerPosition = GameObject.Find("Character").transform.position;
-            int diveOrientation = (playerPosition.y > transform.position.y ? -1 : 1);
-            float newHorizontalPosition = transform.position.x + Orientation * Time.fixedDeltaTime;
-            float newVerticalPosition = diveOrientation * Mathf.Pow(newHorizontalPosition - playerPosition.x - transform.position.x, 2) + playerPosition.y;
-            transform.position = new Vector2(newHorizontalPosition, newHorizontalPosition);
-            if(Orientation == 1 ^ playerPosition.x > transform.position.x)
-            {
-                _status = PhoenixStatus.retreat;
-            }
-        }
-        else if (_status == PhoenixStatus.retreat)
-        {
-
         }
 
         if (_status == PhoenixStatus.fly || _status == PhoenixStatus.flee)
@@ -137,6 +166,17 @@ public class PhoenixAI : MonoBehaviour {
             }
         }
 	}
+
+    private void CheckClosestPoint()
+    {
+        float closestPointDistance = Vector2.Distance(closestPoint, transform.position);
+        if (closestPointDistance < 1)
+        {
+            currentPoint = closestPoint;
+            _rigidbody.isKinematic = false;
+            _status = PhoenixStatus.fly;
+        }
+    }
 
     //In upcoming development, it would be wise to implement this method into a Component.
     private void Flip()
