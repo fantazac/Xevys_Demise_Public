@@ -51,10 +51,10 @@ public class ActorThrowAttack : MonoBehaviour
     private void Start()
     {
         _inputManager = GetComponent<InputManager>();
-        _inputManager.OnThrowAttack += OnKnifeAttack;
         _inputManager.OnThrowAttackChanged += OnThrowableWeaponChange;
 
         _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
+        _inventoryManager.OnNewWeaponPickedUp += OnNewWeaponPickedUp;
 
         _audioSources = GetComponents<AudioSource>();
         _showItems = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowItems>();
@@ -76,7 +76,7 @@ public class ActorThrowAttack : MonoBehaviour
     }
 
     private void OnKnifeAttack()
-    {
+    {       
         if (_knifeThrowCDCount >= ATTACK_COOLDOWN && GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition > 0)
         {
             _audioSources[1].Play();
@@ -129,23 +129,36 @@ public class ActorThrowAttack : MonoBehaviour
         }
     }
 
+    private void OnNewWeaponPickedUp(InventoryManager.WeaponTypes weaponTypes)
+    {
+        switch (weaponTypes)
+        {
+            case InventoryManager.WeaponTypes.Axe:
+            {
+                _inputManager.OnThrowAttack += OnAxeAttack;
+                _inputManager.OnThrowAttack -= OnKnifeAttack;
+                _showItems.OnAxeSelected();
+                break;
+            }   
+            case InventoryManager.WeaponTypes.Knife:
+            {
+                _inputManager.OnThrowAttack -= OnAxeAttack;
+                _inputManager.OnThrowAttack += OnKnifeAttack;
+                _showItems.OnKnifeSelected();
+                break;
+            } 
+        }
+    }
+
     private void OnThrowableWeaponChange()
     {
-        if (_inventoryManager.KnifeActive && GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition > 0)
+        if (_inventoryManager.AxeActive && GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition > 0)
         {
-            _inputManager.OnThrowAttack += OnAxeAttack;
-            _inputManager.OnThrowAttack -= OnKnifeAttack;
-            _inventoryManager.AxeActive = true;
-            _inventoryManager.KnifeActive = false;
-            _showItems.OnAxeSelected();
+            OnNewWeaponPickedUp(InventoryManager.WeaponTypes.Knife);
         }
         else if (_inventoryManager.AxeActive && GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition > 0)
         {
-            _inputManager.OnThrowAttack -= OnAxeAttack;
-            _inputManager.OnThrowAttack += OnKnifeAttack;
-            _inventoryManager.AxeActive = false;
-            _inventoryManager.KnifeActive = true;
-            _showItems.OnKnifeSelected();
+            OnNewWeaponPickedUp(InventoryManager.WeaponTypes.Axe);
         }
     }
 }
