@@ -3,6 +3,11 @@ using System.Collections;
 
 public class InventoryManager : MonoBehaviour
 {
+    public delegate void OnNewWeaponPickedUpHandler(WeaponTypes weaponTypes);
+    public event OnNewWeaponPickedUpHandler OnNewWeaponPickedUp;
+
+    public enum WeaponTypes { Knife, Axe }
+
     private bool _knifeEnabled = false;
     private bool _axeEnabled = false;
     private bool _knifeActive = false;
@@ -21,12 +26,24 @@ public class InventoryManager : MonoBehaviour
     {
         _knifeEnabled = true;
         _knifeActive = true;
+        _axeActive = false;
+
+        if (OnNewWeaponPickedUp != null)
+        {
+            OnNewWeaponPickedUp(WeaponTypes.Knife);
+        }
     }
 
     public void EnableAxe()
     {
         _axeEnabled = true;
         _axeActive = true;
+        _knifeActive = false;
+
+        if (OnNewWeaponPickedUp != null)
+        {
+            OnNewWeaponPickedUp(WeaponTypes.Axe);
+        }
     }
 
     public void EnableFeather()
