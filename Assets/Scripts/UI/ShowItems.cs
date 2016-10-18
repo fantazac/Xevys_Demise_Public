@@ -51,6 +51,7 @@ public class ShowItems : MonoBehaviour
             _inventoryManager.EnableAxe();
             _axeSpriteRenderer.enabled = true;
             _axeText.enabled = true;
+            OnAxeSelected();
         }
         _axeText.text = total.ToString();
     }
