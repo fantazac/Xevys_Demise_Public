@@ -19,7 +19,7 @@ public class InputManager : MonoBehaviour
 
     public delegate void OnBootsEquipHandler();
     public event OnBootsEquipHandler OnIronBootsEquip;
-    
+
     public delegate void OnStopHandler();
     public event OnStopHandler OnStop;
 
@@ -119,7 +119,7 @@ public class InputManager : MonoBehaviour
                         OnMove(Vector3.right, true);
                     }
                 }
-                
+
                 if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
                 {
                     if (state.Buttons.A == ButtonState.Pressed && state.ThumbSticks.Left.Y < 0)
@@ -157,7 +157,7 @@ public class InputManager : MonoBehaviour
                 }
 
                 #endregion
-                
+
 
                 if (state.Buttons.RightStick == ButtonState.Pressed)
                 {
@@ -174,13 +174,13 @@ public class InputManager : MonoBehaviour
                     _xButtonReady = true;
                 }
 
-                
+
                 if (state.Buttons.B == ButtonState.Pressed)
                 {
                     if (OnThrowAttack != null)
                     {
                         OnThrowAttack();
-                    }                  
+                    }
                 }
 
                 if (state.Buttons.LeftShoulder == ButtonState.Pressed && _leftShoulderReady)

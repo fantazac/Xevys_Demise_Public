@@ -6,9 +6,14 @@ public class WaterDetector : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
+        if (collider.gameObject.tag == "AxeHandle" || collider.gameObject.tag == "AxeBlade")
+        {
+            transform.parent.GetComponent<Water>().Splash(transform.position.x, collider.GetComponentInParent<Rigidbody2D>().velocity.y * collider.GetComponentInParent<Rigidbody2D>().mass / 400f);
+        }
+
         if (collider.GetComponent<Rigidbody2D>() != null)
         {
-            transform.parent.GetComponent<Water>().Splash(transform.position.x, collider.GetComponent<Rigidbody2D>().velocity.y * collider.GetComponent<Rigidbody2D>().mass / 40f);
+            transform.parent.GetComponent<Water>().Splash(transform.position.x, collider.GetComponent<Rigidbody2D>().velocity.y * collider.GetComponent<Rigidbody2D>().mass / 60f);
         }
     }
 
@@ -18,11 +23,13 @@ public class WaterDetector : MonoBehaviour
         {
             if (collider.GetComponent<PlayerMovement>().FacingRight)
             {
-                transform.parent.GetComponent<Water>().Splash(transform.position.x + 0.6f, Mathf.Abs(collider.GetComponent<Rigidbody2D>().velocity.x) / 400f);
+                transform.parent.GetComponent<Water>().Splash(transform.position.x + 0.5f, Mathf.Abs(collider.GetComponent<Rigidbody2D>().velocity.x) / 400f);
+                transform.parent.GetComponent<Water>().Splash(transform.position.x - 0.5f, -Mathf.Abs(collider.GetComponent<Rigidbody2D>().velocity.x) / 400f);
             }
             else
             {
-                transform.parent.GetComponent<Water>().Splash(transform.position.x - 0.6f, Mathf.Abs(collider.GetComponent<Rigidbody2D>().velocity.x) / 400f);
+                transform.parent.GetComponent<Water>().Splash(transform.position.x - 0.5f, Mathf.Abs(collider.GetComponent<Rigidbody2D>().velocity.x) / 400f);
+                transform.parent.GetComponent<Water>().Splash(transform.position.x + 0.5f, -Mathf.Abs(collider.GetComponent<Rigidbody2D>().velocity.x) / 400f);
             }
         }
     }
