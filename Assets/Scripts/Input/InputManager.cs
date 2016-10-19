@@ -29,8 +29,8 @@ public class InputManager : MonoBehaviour
     public delegate void OnThrowAttackHandler();
     public event OnThrowAttackHandler OnThrowAttack;
 
-    public delegate void OnThrowAttackChangedHandler();
-    public event OnThrowAttackChangedHandler OnThrowAttackChanged;
+    public delegate void OnThowAttackChangeButtonPressedHandler();
+    public event OnThowAttackChangeButtonPressedHandler OnThowAttackChangeButtonPressed;
 
     private float _joysticksXAxisDeadZone = 0.1f;
     private float _joysticksYAxisDeadZone = 1f;
@@ -91,7 +91,7 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            OnThrowAttackChanged();
+            OnThowAttackChangeButtonPressed();
         }
 
         GamePadInputs();
@@ -186,7 +186,7 @@ public class InputManager : MonoBehaviour
                 if (state.Buttons.LeftShoulder == ButtonState.Pressed && _leftShoulderReady)
                 {
                     _leftShoulderReady = false;
-                    OnThrowAttackChanged();
+                    OnThowAttackChangeButtonPressed();
                 }
 
                 if (state.Buttons.LeftShoulder == ButtonState.Released && !_leftShoulderReady)
@@ -197,7 +197,7 @@ public class InputManager : MonoBehaviour
                 if (state.Buttons.RightShoulder == ButtonState.Pressed && _rightShoulderReady)
                 {
                     _rightShoulderReady = false;
-                    OnThrowAttackChanged();
+                    OnThowAttackChangeButtonPressed();
                 }
                 if (state.Buttons.RightShoulder == ButtonState.Released && !_rightShoulderReady)
                 {
