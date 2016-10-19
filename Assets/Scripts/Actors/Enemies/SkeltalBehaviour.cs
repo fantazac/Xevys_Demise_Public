@@ -11,7 +11,6 @@ public abstract class SkeltalBehaviour : MonoBehaviour
 
     protected const float ATTACK_TIME = 3;
 
-    private SpriteRenderer _skeltalSwordSpriteRenderer;
     private GameObject _skeltalSword;
 
     protected System.Random rng = new System.Random();
@@ -29,7 +28,6 @@ public abstract class SkeltalBehaviour : MonoBehaviour
         _leftLimit = Mathf.Abs(_leftLimit);
         _rightLimit = Mathf.Abs(_rightLimit);       
         _skeltalSword = transform.FindChild("SkeltalSword").gameObject;
-        _skeltalSwordSpriteRenderer = _skeltalSword.transform.FindChild("SkeltalSwordSprite").gameObject.GetComponent<SpriteRenderer>();
         _isFacingRight = false;
         _isAttacking = false;
         _attackTimeLeft = ATTACK_TIME;
@@ -49,7 +47,6 @@ public abstract class SkeltalBehaviour : MonoBehaviour
             _attackTimeLeft -= Time.fixedDeltaTime;
             if (_attackTimeLeft < 2 && _attackTimeLeft > 1)
             {
-                _skeltalSwordSpriteRenderer.enabled = true;
                 _skeltalSword.GetComponent<BoxCollider2D>().enabled = true;
             }
             else if (_attackTimeLeft <= 0)
@@ -60,7 +57,6 @@ public abstract class SkeltalBehaviour : MonoBehaviour
             }
             else
             {
-                _skeltalSwordSpriteRenderer.enabled = false;
                 _skeltalSword.GetComponent<BoxCollider2D>().enabled = false;
             }
         }
@@ -73,6 +69,5 @@ public abstract class SkeltalBehaviour : MonoBehaviour
     {
         _isFacingRight = !_isFacingRight;
         transform.localScale = new Vector2(-1 * transform.localScale.x, transform.localScale.y);
-        _skeltalSwordSpriteRenderer.transform.position = new Vector2(transform.position.x + (_isFacingRight? 1 : -1), transform.position.y);
     }
 }

@@ -3,6 +3,9 @@ using System.Collections;
 
 public class Water : MonoBehaviour
 {
+    [Header("Disposition")]
+    [SerializeField]
+    private bool _isUnderAnotherWaterObject = false;
 
     [Header("Physics Constants")]
     [SerializeField]
@@ -147,17 +150,20 @@ public class Water : MonoBehaviour
 
     public void Splash(float xpos, float velocity)
     {
-        //If the position is within the bounds of the water:
-        if (xpos >= _xpositions[0] && xpos <= _xpositions[_xpositions.Length - 1])
+        if (!_isUnderAnotherWaterObject)
         {
-            //Offset the x position to be the distance from the left side
-            xpos -= _xpositions[0];
+            //If the position is within the bounds of the water:
+            if (xpos >= _xpositions[0] && xpos <= _xpositions[_xpositions.Length - 1])
+            {
+                //Offset the x position to be the distance from the left side
+                xpos -= _xpositions[0];
 
-            //Find which spring we're touching
-            int index = Mathf.RoundToInt((_xpositions.Length - 1) * (xpos / (_xpositions[_xpositions.Length - 1] - _xpositions[0])));
+                //Find which spring we're touching
+                int index = Mathf.RoundToInt((_xpositions.Length - 1) * (xpos / (_xpositions[_xpositions.Length - 1] - _xpositions[0])));
 
-            //Add the velocity of the falling object to the spring
-            _velocities[index] += velocity;
+                //Add the velocity of the falling object to the spring
+                _velocities[index] += velocity;
+            }
         }
     }
 
