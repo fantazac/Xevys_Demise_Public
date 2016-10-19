@@ -27,10 +27,14 @@ public class CameraManager : MonoBehaviour
     void Start()
     {
         if (focusObject != null)
+        {
             FocusObject = focusObject;
+        }
 
         if (listAreaNodes.Count == 0)
+        {
             Debug.LogWarning(gameObject.name.ToString() + " (CameraManager): No Area boundaries are assigned. The camera will move freely to the set targets");
+        }
     }
 
     void Update()
@@ -55,25 +59,25 @@ public class CameraManager : MonoBehaviour
             // If the current room size is smaller than the camera, fix the camera in the center of the room only following the focusobject over the y-axis
             if (GetAreaRect(_currentArea).width < (Camera.main.orthographicSize * Camera.main.aspect) * 2)
             {
-                newPosition.x = listAreaNodes[_currentArea].transform.position.x + GetAreaRect(_currentArea).width / 2;
+                newPosition.x = listAreaNodes[_currentArea].transform.GetChild(0).position.x + GetAreaRect(_currentArea).width / 2;
             }
             else
             {
                 newPosition.x = Mathf.Clamp(followtarget.x,
-                    listAreaNodes[_currentArea].transform.position.x + (Camera.main.orthographicSize * Camera.main.aspect),
-                    listAreaNodes[_currentArea].transform.GetChild(0).position.x - (Camera.main.orthographicSize * Camera.main.aspect));
+                    listAreaNodes[_currentArea].transform.GetChild(0).position.x + (Camera.main.orthographicSize * Camera.main.aspect),
+                    listAreaNodes[_currentArea].transform.GetChild(1).position.x - (Camera.main.orthographicSize * Camera.main.aspect));
             }
 
             // Same for rooms with a smaller height than the camera. Fix the camera in the center of the roomheight and follow focusobject over x-axis
             if (GetAreaRect(_currentArea).height < Camera.main.orthographicSize * 2)
             {
-                newPosition.y = listAreaNodes[_currentArea].transform.position.y - GetAreaRect(_currentArea).height / 2;
+                newPosition.y = listAreaNodes[_currentArea].transform.GetChild(0).position.y - GetAreaRect(_currentArea).height / 2;
             }
             else
             {
                 newPosition.y = Mathf.Clamp(followtarget.y,
-                listAreaNodes[_currentArea].transform.GetChild(0).position.y + Camera.main.orthographicSize,
-                listAreaNodes[_currentArea].transform.position.y - Camera.main.orthographicSize);
+                listAreaNodes[_currentArea].transform.GetChild(1).position.y + Camera.main.orthographicSize,
+                listAreaNodes[_currentArea].transform.GetChild(0).position.y - Camera.main.orthographicSize);
             }
 
             // Check wether the player is outside the boundaries of the camera. If so trigger a transition, else move towards the current set target position
@@ -98,7 +102,10 @@ public class CameraManager : MonoBehaviour
             {
                 previousArea = listAreaNodes.IndexOf(n);
 
-                if (previousArea == _currentArea) { return; }
+                if (previousArea == _currentArea)
+                {
+                    return;
+                }
                 _currentArea = previousArea;
             }
         }
@@ -129,9 +136,9 @@ public class CameraManager : MonoBehaviour
     // Returns a Rect form of the area given in the parameter _area
     private Rect GetAreaRect(int _area)
     {
-        GameObject n = listAreaNodes[_area];
-        Rect rect = new Rect(n.transform.position.x, n.transform.GetChild(0).position.y,
-                n.transform.GetChild(0).position.x - n.transform.position.x, Mathf.Abs(n.transform.GetChild(0).position.y - n.transform.position.y));
+        GameObject camDimensions = listAreaNodes[_area];
+        Rect rect = new Rect(camDimensions.transform.GetChild(0).position.x, camDimensions.transform.GetChild(1).position.y,
+                camDimensions.transform.GetChild(1).position.x - camDimensions.transform.GetChild(0).position.x, Mathf.Abs(camDimensions.transform.GetChild(1).position.y - camDimensions.transform.position.y));
         return rect;
     }
 
@@ -146,22 +153,26 @@ public class CameraManager : MonoBehaviour
     private void OnDrawGizmos()
     {
         if (listAreaNodes.Count == 0)
+        {
             return;
+        } 
 
         // Draw the current selected area's bounding box
-        foreach (GameObject n in listAreaNodes)
+        foreach (GameObject camDimensions in listAreaNodes)
         {
-            Transform i = n.transform;
-            Transform j = n.transform.GetChild(0);
+            Transform cameraDimensionStart = camDimensions.transform.GetChild(0);
+            Transform cameraDimensionEnd = camDimensions.transform.GetChild(1);
 
             Gizmos.color = Color.red;
-            if (n == listAreaNodes[_currentArea])
+            if (camDimensions == listAreaNodes[_currentArea])
+            {
                 Gizmos.color = Color.green;
-
-            Gizmos.DrawLine(new Vector2(i.position.x, i.position.y), new Vector2(j.position.x, i.position.y));
-            Gizmos.DrawLine(new Vector2(i.position.x, j.position.y), new Vector2(j.position.x, j.position.y));
-            Gizmos.DrawLine(new Vector2(i.position.x, i.position.y), new Vector2(i.position.x, j.position.y));
-            Gizmos.DrawLine(new Vector2(j.position.x, i.position.y), new Vector2(j.position.x, j.position.y));
+            }
+                
+            Gizmos.DrawLine(new Vector2(cameraDimensionStart.position.x, cameraDimensionStart.position.y), new Vector2(cameraDimensionEnd.position.x, cameraDimensionStart.position.y));
+            Gizmos.DrawLine(new Vector2(cameraDimensionStart.position.x, cameraDimensionEnd.position.y), new Vector2(cameraDimensionEnd.position.x, cameraDimensionEnd.position.y));
+            Gizmos.DrawLine(new Vector2(cameraDimensionStart.position.x, cameraDimensionStart.position.y), new Vector2(cameraDimensionStart.position.x, cameraDimensionEnd.position.y));
+            Gizmos.DrawLine(new Vector2(cameraDimensionEnd.position.x, cameraDimensionStart.position.y), new Vector2(cameraDimensionEnd.position.x, cameraDimensionEnd.position.y));
         }
     }
 }

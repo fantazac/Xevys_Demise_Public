@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private InputManager _inputManager;
     private Rigidbody2D _rigidbody;
     private BoxCollider2D _basicAttackBox;
+    private InventoryManager _inventoryManager;
 
     private const float INITIAL_GRAVITY_SCALE = 5;
     private const float INITIAL_WATER_FALLING_SPEED = 3;
@@ -17,7 +18,6 @@ public class PlayerMovement : MonoBehaviour
     private const float SPEED_REDUCTION_WHEN_STOPPING = 0.94f;
     private const float WATER_ACCELERATION_FACTOR = 1.4f;
     private const float LINEAR_DRAG = 30f;
-    private const int JUMP_COOLDOWN = 5;
     private const float KNOCKBACK_DURATION = 15;
 
     private bool _facingRight = true;
@@ -25,26 +25,27 @@ public class PlayerMovement : MonoBehaviour
     private float _jumpingSpeed = 17;
     private bool _feetTouchWater = false;
     private bool _isFloating = false;
-    private bool _wearsBoots = false;
+    private bool _wearsIronBoots = false;
     private bool _isKnockedBack = false;
     private float _knockbackCount = 0;
     private float _waterYSpeed;
-    private int _jumpCDCount;
     private Animator _anim;
     private Transform _spriteTransform;
+    private bool _canDoubleJump = false;
 
     public float Speed { get { return _speed; } set { _speed = value; } }
     public float JumpingSpeed { get { return _jumpingSpeed; } set { _jumpingSpeed = value; } }
     public bool FeetTouchWater { get { return _feetTouchWater; } set { _feetTouchWater = value; } }
     public bool IsFloating { get { return _isFloating; } set { _isFloating = value; } }
     public bool FacingRight { get { return _facingRight; } }
-    public bool WearsBoots { get { return _wearsBoots; } }
+    public bool WearsIronBoots { get { return _wearsIronBoots; } }
     public bool IsKnockedBack { get { return _isKnockedBack; } set { _isKnockedBack = value; } }
     public float TerminalSpeed { get { return TERMINAL_SPEED; } }
 
     private void Start()
     {
         _anim = GameObject.Find("CharacterSprite").GetComponent<Animator>();
+        _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
         _spriteTransform = _anim.GetComponent<Transform>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _inputManager = GetComponent<InputManager>();
@@ -53,12 +54,10 @@ public class PlayerMovement : MonoBehaviour
         _inputManager.OnJump += OnJump;
         _inputManager.OnJumpDown += OnJumpDown;
         _inputManager.OnUnderwaterControl += OnUnderwaterControl;
-        _inputManager.OnBootsEquip += OnBootsEquip;
-        _inputManager.OnBootsUnequip += OnBootsUnequip;
+        _inputManager.OnIronBootsEquip += OnIronBootsEquip;
         _inputManager.OnStop += OnStop;
 
         _waterYSpeed = INITIAL_WATER_FALLING_SPEED;
-        _jumpCDCount = JUMP_COOLDOWN;
     }
 
     private void OnMove(Vector3 vector, bool goesRight)
@@ -72,17 +71,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnJump()
     {
-        if (_jumpCDCount >= JUMP_COOLDOWN && !_isKnockedBack)
+        if (!_isKnockedBack)
         {
-            if (!IsJumping() && _feetTouchWater && _wearsBoots)
+
+            if (!IsJumping() && _feetTouchWater && _wearsIronBoots)
             {
                 ChangePlayerVerticalVelocity(_jumpingSpeed * WATER_ACCELERATION_FACTOR);
-                _jumpCDCount = 0;
             }
             else if (!IsJumping() && _feetTouchWater)
             {
                 ChangePlayerVerticalVelocity(_jumpingSpeed / WATER_ACCELERATION_FACTOR);
-                _jumpCDCount = 0;
                 if (_isFloating && _feetTouchWater)
                 {
                     _feetTouchWater = false;
@@ -91,7 +89,11 @@ public class PlayerMovement : MonoBehaviour
             else if (!IsJumping())
             {
                 ChangePlayerVerticalVelocity(_jumpingSpeed);
-                _jumpCDCount = 0;
+            }
+            else if (IsJumping() && !_feetTouchWater && !_wearsIronBoots && _inventoryManager.FeatherEnabled && _canDoubleJump)
+            {
+                _canDoubleJump = false;
+                ChangePlayerVerticalVelocity(_jumpingSpeed);
             }
         }
     }
@@ -106,31 +108,23 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnUnderwaterControl(bool goesDown)
     {
-        if ((goesDown && _wearsBoots) || (!goesDown && !_wearsBoots))
+        if ((goesDown && _wearsIronBoots) || (!goesDown && !_wearsIronBoots))
         {
             _waterYSpeed = INITIAL_WATER_FALLING_SPEED * WATER_ACCELERATION_FACTOR;
         }
         else
         {
             _waterYSpeed = INITIAL_WATER_FALLING_SPEED / WATER_ACCELERATION_FACTOR;
-        }   
+        }
     }
 
-    private void OnBootsEquip()
+    private void OnIronBootsEquip()
     {
-        if (!_wearsBoots)
+        if (_wearsIronBoots)
         {
-            _wearsBoots = true;
-        } 
-    }
-
-    private void OnBootsUnequip()
-    {
-        if (_wearsBoots)
-        {
-            _wearsBoots = false;
             _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
         }
+        _wearsIronBoots = !_wearsIronBoots;
     }
 
     private void OnStop()
@@ -158,14 +152,14 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsJumping()
     {
-
         if (_feetTouchWater)
         {
             return !(_rigidbody.velocity.y == 0 || GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround);
         }
         else
         {
-            return !(((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround && !GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
+            return !(((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround 
+                && !GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
                 || (GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform && _rigidbody.velocity.y == 0)
                 || _rigidbody.velocity == Vector2.zero)
                 && !(_rigidbody.velocity.y > 0));
@@ -178,7 +172,7 @@ public class PlayerMovement : MonoBehaviour
         _anim.SetBool("IsJumping", IsJumping() && _rigidbody.velocity.y > 0);
         _anim.SetBool("IsFalling", IsJumping() && _rigidbody.velocity.y < 0);
 
-        if(_isKnockedBack && _knockbackCount == KNOCKBACK_DURATION)
+        if (_isKnockedBack && _knockbackCount == KNOCKBACK_DURATION)
         {
             _isKnockedBack = false;
             _knockbackCount = 0;
@@ -188,12 +182,12 @@ public class PlayerMovement : MonoBehaviour
             _knockbackCount++;
         }
 
-        if (_jumpCDCount < JUMP_COOLDOWN)
+        if (!IsJumping() && _inventoryManager.FeatherEnabled && !_canDoubleJump)
         {
-            _jumpCDCount++;
-        }  
+            _canDoubleJump = true;
+        }
 
-        if (_wearsBoots)
+        if (_wearsIronBoots)
         {
             if (_feetTouchWater && _isFloating)
             {
@@ -203,14 +197,14 @@ public class PlayerMovement : MonoBehaviour
                     if (_isFloating && _feetTouchWater)
                     {
                         _feetTouchWater = false;
-                    }  
+                    }
                 }
-            }    
+            }
 
             if (_feetTouchWater && _rigidbody.velocity.y < 0)
             {
                 _rigidbody.gravityScale = 0;
-            }  
+            }
             else if (_feetTouchWater)
             {
                 _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE / GRAVITY_DIVISION_FACTOR_ON_GROUND_UNDERWATER;
@@ -218,14 +212,14 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
-            }  
+            }
 
             if (_feetTouchWater && _rigidbody.gravityScale == 0)
             {
                 if (_rigidbody.velocity.y > (-_waterYSpeed + PRECISION_MARGIN))
                 {
                     ChangePlayerVerticalVelocity(_rigidbody.velocity.y - PRECISION_MARGIN);
-                }  
+                }
                 else if (_rigidbody.velocity.y < (-_waterYSpeed - PRECISION_MARGIN))
                 {
                     ChangePlayerVerticalVelocity(_rigidbody.velocity.y + PRECISION_MARGIN);
@@ -233,8 +227,8 @@ public class PlayerMovement : MonoBehaviour
                 else
                 {
                     ChangePlayerVerticalVelocity(_rigidbody.velocity.y);
-                } 
-            }  
+                }
+            }
         }
         else
         {
@@ -245,7 +239,7 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
-            } 
+            }
 
             if (_feetTouchWater && _isFloating)
             {
@@ -255,17 +249,17 @@ public class PlayerMovement : MonoBehaviour
                     if (_isFloating && _feetTouchWater)
                     {
                         _feetTouchWater = false;
-                    }  
+                    }
                 }
                 else
                 {
                     ChangePlayerVerticalVelocity(0);
-                }   
-            }   
+                }
+            }
             else if (_feetTouchWater && _rigidbody.velocity.y > (_waterYSpeed + (PRECISION_MARGIN * 2)))
             {
                 ChangePlayerVerticalVelocity(_rigidbody.velocity.y - (PRECISION_MARGIN * 5));
-            } 
+            }
             else if (_feetTouchWater && _rigidbody.velocity.y < (_waterYSpeed - (PRECISION_MARGIN * 2)))
             {
                 ChangePlayerVerticalVelocity(_rigidbody.velocity.y + (PRECISION_MARGIN * 5));
@@ -279,7 +273,7 @@ public class PlayerMovement : MonoBehaviour
         if (!_feetTouchWater && _rigidbody.velocity.y < TERMINAL_SPEED)
         {
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, TERMINAL_SPEED);
-        } 
+        }
 
         _waterYSpeed = INITIAL_WATER_FALLING_SPEED;
     }

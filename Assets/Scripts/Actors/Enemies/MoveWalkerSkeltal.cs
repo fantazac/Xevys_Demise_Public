@@ -19,7 +19,7 @@ public class MoveWalkerSkeltal : SkeltalBehaviour
             new Vector2(_initialPosition.x + (_isFacingRight ? _rightLimit : -_leftLimit),
             transform.position.y), WALKER_SPEED * Time.deltaTime);
 
-        if ((_isFacingRight && transform.position.x == _initialPosition.x + _rightLimit) || (!_isFacingRight && transform.position.x == _initialPosition.x - _leftLimit))
+        if ((_isFacingRight && transform.position.x >= _initialPosition.x + _rightLimit) || (!_isFacingRight && transform.position.x <= _initialPosition.x - _leftLimit))
         {
             _animator.SetBool("IsMoving", false);
             return true;

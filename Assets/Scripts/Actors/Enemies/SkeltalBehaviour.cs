@@ -30,13 +30,13 @@ public abstract class SkeltalBehaviour : MonoBehaviour
         _rightLimit = Mathf.Abs(_rightLimit);       
         _skeltalSword = transform.FindChild("SkeltalSword").gameObject;
         _skeltalSwordSpriteRenderer = _skeltalSword.transform.FindChild("SkeltalSwordSprite").gameObject.GetComponent<SpriteRenderer>();
-        _skeltalSword.GetComponent<BoxCollider2D>().offset = new Vector2(_skeltalSword.GetComponent<BoxCollider2D>().offset.x * -1, _skeltalSword.GetComponent<BoxCollider2D>().offset.y);
         _isFacingRight = false;
         _isAttacking = false;
         _attackTimeLeft = ATTACK_TIME;
+        _skeltalSword.GetComponent<BoxCollider2D>().offset = new Vector2(_skeltalSword.GetComponent<BoxCollider2D>().offset.x * -1, _skeltalSword.GetComponent<BoxCollider2D>().offset.y);
         transform.position = new Vector2(rng.Next((int)(_leftLimit + _rightLimit)) + transform.position.x - _leftLimit, transform.position.y);
     }
-
+    
     // Update is called once per frame
     private void Update()
     {
@@ -73,6 +73,6 @@ public abstract class SkeltalBehaviour : MonoBehaviour
     {
         _isFacingRight = !_isFacingRight;
         transform.localScale = new Vector2(-1 * transform.localScale.x, transform.localScale.y);
-        _skeltalSword.GetComponent<BoxCollider2D>().offset = new Vector2(_skeltalSword.GetComponent<BoxCollider2D>().offset.x * -1, _skeltalSword.GetComponent<BoxCollider2D>().offset.y);
+        _skeltalSwordSpriteRenderer.transform.position = new Vector2(transform.position.x + (_isFacingRight? 1 : -1), transform.position.y);
     }
 }
