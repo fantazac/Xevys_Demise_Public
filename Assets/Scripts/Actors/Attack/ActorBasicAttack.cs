@@ -7,7 +7,6 @@ public class ActorBasicAttack : MonoBehaviour
     private const int ATTACK_SPEED = 30;
 
     private InputManager _inputManager;
-    private SpriteRenderer _spriteRenderer;
     private GameObject _attackHitBox;
     private AudioSource[] _audioSources;
     private int _count;
@@ -15,7 +14,6 @@ public class ActorBasicAttack : MonoBehaviour
     void Start()
     {
         _inputManager = GetComponent<InputManager>();
-        _spriteRenderer = GameObject.Find("CharacterBasicAttackBoxSprite").GetComponent<SpriteRenderer>();
         _attackHitBox = GameObject.Find("CharacterBasicAttackBox");
         _audioSources = GetComponents<AudioSource>();
         _count = ATTACK_SPEED;
@@ -26,9 +24,8 @@ public class ActorBasicAttack : MonoBehaviour
     void Update()
     {
         _count++;
-        if (_spriteRenderer.enabled && _count >= ATTACK_SPEED / 2)
+        if (_count >= ATTACK_SPEED / 2)
         {
-            _spriteRenderer.enabled = false;
             _attackHitBox.GetComponent<BoxCollider2D>().enabled = false;
         }
     }
@@ -37,7 +34,6 @@ public class ActorBasicAttack : MonoBehaviour
     {
         if (_count >= ATTACK_SPEED)
         {
-            _spriteRenderer.enabled = true;
             _attackHitBox.GetComponent<BoxCollider2D>().enabled = true;
             _count = 0;
 
