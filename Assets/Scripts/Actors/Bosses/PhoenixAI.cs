@@ -106,11 +106,11 @@ public class PhoenixAI : MonoBehaviour {
             transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), closestPoint, SPEED * Time.fixedDeltaTime);
             CheckClosestPoint();
         }
-        //In this status, Phoenix dives on the player, allowing the latter to strike its head.
+        //In this status, Phoenix dives on the player in a parabolic path, allowing the latter to strike its head.
         else if (_status == PhoenixStatus.charge)
         {
             int diveOrientation = (playerPosition.y < attackPosition.y ? 1 : -1);
-            float newHorizontalPosition = transform.position.x + Orientation * Time.fixedDeltaTime;
+            float newHorizontalPosition = transform.position.x + Orientation * Time.fixedDeltaTime * SPEED;
 
             float x = Orientation * (newHorizontalPosition - attackPosition.x);
             float x2 = (playerPosition.x - attackPosition.x) * 2;
