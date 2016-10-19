@@ -3,8 +3,8 @@ using System.Collections;
 
 public class InventoryManager : MonoBehaviour
 {
-    public delegate void OnNewWeaponPickedUpHandler(WeaponTypes weaponTypes);
-    public event OnNewWeaponPickedUpHandler OnNewWeaponPickedUp;
+    public delegate void OnThrowableWeaponChangeHandler(WeaponTypes weaponTypes);
+    public event OnThrowableWeaponChangeHandler OnThrowableWeaponChange;
 
     public enum WeaponTypes { Knife, Axe }
 
@@ -18,31 +18,27 @@ public class InventoryManager : MonoBehaviour
     public bool KnifeEnabled { get { return _knifeEnabled; } }
     public bool AxeEnabled { get { return _axeEnabled; } }
     public bool KnifeActive { get { return _knifeActive; } set { _knifeActive = value; } }
-    public bool AxeActive { get { return _axeActive; } set { _knifeActive = value; } }
+    public bool AxeActive { get { return _axeActive; } set { _axeActive = value; } }
 
     public bool FeatherEnabled { get { return _featherEnabled; } }
 
     public void EnableKnife()
     {
         _knifeEnabled = true;
-        _knifeActive = true;
-        _axeActive = false;
 
-        if (OnNewWeaponPickedUp != null)
+        if (OnThrowableWeaponChange != null)
         {
-            OnNewWeaponPickedUp(WeaponTypes.Knife);
+            OnThrowableWeaponChange(WeaponTypes.Knife);
         }
     }
 
     public void EnableAxe()
     {
         _axeEnabled = true;
-        _axeActive = true;
-        _knifeActive = false;
 
-        if (OnNewWeaponPickedUp != null)
+        if (OnThrowableWeaponChange != null)
         {
-            OnNewWeaponPickedUp(WeaponTypes.Axe);
+            OnThrowableWeaponChange(WeaponTypes.Axe);
         }
     }
 
