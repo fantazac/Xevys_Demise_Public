@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿//Source : https://github.com/tutsplus/unity-2d-water-effect/
+//Ce code est basé sur cette source, mais je suis entrain de l'adapter pour nous. Il est sujet à changer.
+using UnityEngine;
 using System.Collections;
 
 public class WaterDetector : MonoBehaviour
