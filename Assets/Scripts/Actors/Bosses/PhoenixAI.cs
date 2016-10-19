@@ -7,7 +7,7 @@ public class PhoenixAI : MonoBehaviour {
     {
         fly,
         flee,
-        charge,
+        attack,
     }
     [SerializeField]
     private Vector2 _northEastLimit;
@@ -24,11 +24,12 @@ public class PhoenixAI : MonoBehaviour {
     private const float SPEED = 5;
     private const float WING_FLAP = 2.675f;
 
-    private Rigidbody2D _rigidbody;
     private Vector2 currentPoint;
     private Vector2 closestPoint;
     private Vector2 playerPosition;
     private Vector2 attackPosition;
+    private Rigidbody2D _rigidbody;
+    private FlipEnemy _flipEnemy;
     //These components should eventually be placed into a script for all bosses (think heritage) as they are only used for a death status.
     private Health _health;
     private BoxCollider2D _boxCollider;
@@ -40,10 +41,10 @@ public class PhoenixAI : MonoBehaviour {
     private float _attackCooldownTimeLeft;
     private float _closestHorizontalPoint;
     private float _closestVerticalPoint;
-
-    //In upcoming development, it would be wise to implement this variable and property into a Component.
-    private bool _isFacingLeft;
-    private int Orientation { get { return (_isFacingLeft ? -1 : 1); } }
+    //Variables used for attack in a parabolic pattern.The function y = (x - x1)(x - x2) is used.
+    //In this context, _attackXAxisFirstPoint, or x1, is always 0, so it's neglectable.
+    private float _attackXAxis;
+    private float _attackXAxisSecondPoint;
 
     // Use this for initialization
     private void Start ()
@@ -52,6 +53,8 @@ public class PhoenixAI : MonoBehaviour {
         _flightTimeLeft = 0;
         _attackCooldownTimeLeft = 0;
         _rigidbody = GetComponent<Rigidbody2D>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _flipEnemy = GetComponent<FlipEnemy>();
         currentPoint = _southWestLimit;
 	}
 
@@ -67,7 +70,10 @@ public class PhoenixAI : MonoBehaviour {
                 attackPosition = transform.position;
                 playerPosition = GameObject.Find("Character").transform.position;
                 _attackCooldownTimeLeft = 0;
-                _status = PhoenixStatus.charge;
+                _rigidbody.isKinematic = true;
+                _attackXAxis = 0;
+                _attackXAxisSecondPoint = (playerPosition.x - attackPosition.x) * 2;
+                _status = PhoenixStatus.attack;
             }
             else
             {
@@ -107,19 +113,19 @@ public class PhoenixAI : MonoBehaviour {
             CheckClosestPoint();
         }
         //In this status, Phoenix dives on the player in a parabolic path, allowing the latter to strike its head.
-        else if (_status == PhoenixStatus.charge)
+        else if (_status == PhoenixStatus.attack)
         {
-            int diveOrientation = (playerPosition.y < attackPosition.y ? 1 : -1);
-            float newHorizontalPosition = transform.position.x + Orientation * Time.fixedDeltaTime * SPEED;
-
-            float x = Orientation * (newHorizontalPosition - attackPosition.x);
-            float x2 = (playerPosition.x - attackPosition.x) * 2;
-            float a = Mathf.Abs(playerPosition.y / playerPosition.x / (playerPosition.x - x2));
-
-            float newVerticalPosition = (diveOrientation * a * newHorizontalPosition * (newHorizontalPosition - x2)) - attackPosition.y;
+            //At each frame, Phoenix must move a bit from its origin point.
+            _attackXAxis += _flipEnemy.Orientation * Time.fixedDeltaTime;
+            //Then, he must be set up at its relative point in the map.
+            float a = Mathf.Abs(playerPosition.y / playerPosition.x / (playerPosition.x - _attackXAxisSecondPoint));
+            float attackYaxis = (a * _attackXAxis * (_attackXAxis - _attackXAxisSecondPoint));
+            float newHorizontalPosition = attackPosition.x + _attackXAxis;
+            float newVerticalPosition = attackPosition.y + attackYaxis;
             transform.position = new Vector2(newHorizontalPosition, newHorizontalPosition);
-            //Not a problem
-            if (Orientation == 1 ^ playerPosition.x > transform.position.x)
+            //transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), playerPosition, SPEED * Time.fixedDeltaTime);
+
+            if (Vector2.Distance(transform.position, playerPosition) < 3)
             {
                 closestPoint = currentPoint;
                 while (closestPoint.Equals(currentPoint))
@@ -149,21 +155,7 @@ public class PhoenixAI : MonoBehaviour {
 
         if (_status == PhoenixStatus.fly || _status == PhoenixStatus.flee)
         {
-            //This snippet of code can be eventually placed in a component as well; it is identical to Behemoth.
-            if (GameObject.Find("Character").transform.position.x > transform.position.x)
-            {
-                if (_isFacingLeft)
-                {
-                    Flip();
-                }
-            }
-            else if (GameObject.Find("Character").transform.position.x < transform.position.x)
-            {
-                if (!_isFacingLeft)
-                {
-                    Flip();
-                }
-            }
+            _flipEnemy.CheckPlayerPosition();
         }
 	}
 
@@ -176,12 +168,5 @@ public class PhoenixAI : MonoBehaviour {
             _rigidbody.isKinematic = false;
             _status = PhoenixStatus.fly;
         }
-    }
-
-    //In upcoming development, it would be wise to implement this method into a Component.
-    private void Flip()
-    {
-        _isFacingLeft = !_isFacingLeft;
-        transform.localScale = new Vector2(-1 * transform.localScale.x, transform.localScale.y);
     }
 }

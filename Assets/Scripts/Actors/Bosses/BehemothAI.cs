@@ -28,6 +28,7 @@ public class BehemothAI : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private GameObject _aimedWall;
     private Animator _animator;
+    private FlipEnemy _flipEnemy;
     //These components should eventually be placed into a script for all bosses (think heritage) as they are only used for a death status.
     private Health _health;
     private BoxCollider2D _boxCollider;
@@ -40,13 +41,10 @@ public class BehemothAI : MonoBehaviour
     //Death status also include this boolean.
     private bool _isDead;
 
-    //In upcoming development, it would be wise to implement this variable and property into a Component.
-    private bool _isFacingLeft;
-    private int Orientation { get { return (_isFacingLeft ? -1 : 1); } }
-
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _flipEnemy = GetComponent<FlipEnemy>();
         _animator = GetComponent<Animator>();
         _health = GetComponent<Health>();
         _boxCollider = GetComponent<BoxCollider2D>();
@@ -66,20 +64,7 @@ public class BehemothAI : MonoBehaviour
             //Wait allows Behemoth to face the player and prepare to charge.
             if (_status == BehemothStatus.wait)
             {
-                if (GameObject.Find("Character").transform.position.x > transform.position.x)
-                {
-                    if (_isFacingLeft)
-                    {
-                        Flip();
-                    }
-                }
-                else if (GameObject.Find("Character").transform.position.x < transform.position.x)
-                {
-                    if (!_isFacingLeft)
-                    {
-                        Flip();
-                    }
-                }
+                _flipEnemy.CheckPlayerPosition();
                 if (_timeLeft > 0)
                 {
                     _timeLeft -= Time.fixedDeltaTime;
@@ -96,7 +81,7 @@ public class BehemothAI : MonoBehaviour
                     _isCharging = (_rng.Next() % 2 == 0 ? true : false);
                     _timeLeft = FEIGN_TIME + (_isCharging ? CHARGE_TIME : 0);
                     _status = BehemothStatus.charge;
-                    _aimedWall = (_isFacingLeft ? _leftWall : _rightWall);
+                    _aimedWall = (_flipEnemy.IsFacingRight ? _leftWall : _rightWall);
                 }
             }
             //Charge status makes Behemoth aims for the wall for the amount of time in seconds decided above.
@@ -106,8 +91,8 @@ public class BehemothAI : MonoBehaviour
                 _timeLeft -= Time.fixedDeltaTime;
                 if (_timeLeft > 0)
                 {
-                    _rigidbody.velocity = new Vector2(_speed * Orientation, _rigidbody.velocity.y);
-                    if (_isFacingLeft ?
+                    _rigidbody.velocity = new Vector2(_speed * _flipEnemy.Orientation, _rigidbody.velocity.y);
+                    if (_flipEnemy.IsFacingRight ?
                         _aimedWall.transform.position.x + _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 >= transform.position.x - GetComponent<SpriteRenderer>().bounds.size.x / 2 :
                         _aimedWall.transform.position.x - _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 <= transform.position.x + GetComponent<SpriteRenderer>().bounds.size.x / 2)
                     {
@@ -127,7 +112,7 @@ public class BehemothAI : MonoBehaviour
                 if (_timeLeft > 0)
                 {
                     _timeLeft -= Time.fixedDeltaTime;
-                    _rigidbody.velocity = new Vector2(-_speed / 10 * Orientation, _rigidbody.velocity.y);
+                    _rigidbody.velocity = new Vector2(-_speed / 10 * _flipEnemy.Orientation, _rigidbody.velocity.y);
                 }
                 else
                 {
@@ -155,12 +140,5 @@ public class BehemothAI : MonoBehaviour
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
         _status = BehemothStatus.wait;
         _timeLeft = _rng.Next(5, 10);
-    }
-
-    //In upcoming development, it would be wise to implement this method into a Component.
-    private void Flip()
-    {
-        _isFacingLeft = !_isFacingLeft;
-        transform.localScale = new Vector2(-1 * transform.localScale.x, transform.localScale.y);
     }
 }
