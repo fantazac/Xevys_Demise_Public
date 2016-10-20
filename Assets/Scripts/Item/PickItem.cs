@@ -57,7 +57,7 @@ public class PickItem : MonoBehaviour
             {
                 GetComponent<ActivateHoverRetract>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableIronBoots();
-                //_showItems.OnIronBootsEnabled();
+                _showItems.OnIronBootsEnabled();
             }
             
 
