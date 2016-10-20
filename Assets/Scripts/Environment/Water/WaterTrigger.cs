@@ -8,7 +8,7 @@ public class WaterTrigger : MonoBehaviour
         if (collider.gameObject.tag == "PlayerWaterHitbox")
         {
             collider.GetComponent<PlayerWaterInteraction>().OnWaterEnter(collider);
-        } 
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collider)
@@ -16,6 +16,6 @@ public class WaterTrigger : MonoBehaviour
         if (collider.GetComponent<Transform>().tag == "PlayerWaterHitbox")
         {
             collider.GetComponent<PlayerWaterInteraction>().OnWaterExit(collider);
-        }  
+        }
     }
 }

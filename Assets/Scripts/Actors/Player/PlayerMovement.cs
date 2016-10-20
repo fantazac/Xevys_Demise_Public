@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     private const float WATER_ACCELERATION_FACTOR = 1.4f;
     private const float LINEAR_DRAG = 30f;
     private const float KNOCKBACK_DURATION = 15;
+    private const float SPEED_REDUCTION_FACTOR_IN_WATER = 0.4f;
 
     private bool _facingRight = true;
     private float _speed = 7;
@@ -70,7 +71,15 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!_isKnockedBack)
         {
-            _rigidbody.velocity = new Vector2(vector.x * _speed, _rigidbody.velocity.y);
+            if (_feetTouchWater)
+            {
+                _rigidbody.velocity = new Vector2(vector.x * _speed * SPEED_REDUCTION_FACTOR_IN_WATER, _rigidbody.velocity.y);
+            }
+            else
+            {
+                _rigidbody.velocity = new Vector2(vector.x * _speed, _rigidbody.velocity.y);
+            }
+           
             Flip(goesRight);
         }
     }
