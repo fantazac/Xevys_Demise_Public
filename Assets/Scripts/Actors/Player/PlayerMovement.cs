@@ -79,7 +79,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!_isKnockedBack)
         {
-
             if (!IsJumping() && _feetTouchWater && _wearsIronBoots)
             {
                 ChangePlayerVerticalVelocity(_jumpingSpeed * WATER_ACCELERATION_FACTOR);
@@ -178,7 +177,8 @@ public class PlayerMovement : MonoBehaviour
         _anim.SetBool("IsJumping", IsJumping() && _rigidbody.velocity.y > 0);
         _anim.SetBool("IsFalling", IsJumping() && _rigidbody.velocity.y < 0);
 
-        if (IsJumping() && _rigidbody.velocity.y < 0)
+        // Appel au falldamage
+        if (IsJumping() && _rigidbody.velocity.y < 0 && !_feetTouchWater)
         {
             _wasFalling = true;
             if (OnFalling != null)
@@ -186,7 +186,7 @@ public class PlayerMovement : MonoBehaviour
                 OnFalling();
             }
         }
-        else if (_wasFalling == true)
+        else if (_wasFalling)
         {
             _wasFalling = false;
             if (OnLanding != null)
