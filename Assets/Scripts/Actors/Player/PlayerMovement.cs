@@ -177,6 +177,7 @@ public class PlayerMovement : MonoBehaviour
         _anim.SetBool("IsJumping", IsJumping() && _rigidbody.velocity.y > 0);
         _anim.SetBool("IsFalling", IsJumping() && _rigidbody.velocity.y < 0);
 
+        // Appel au falldamage
         if (IsJumping() && _rigidbody.velocity.y < 0 && !_feetTouchWater)
         {
             _wasFalling = true;
@@ -185,7 +186,7 @@ public class PlayerMovement : MonoBehaviour
                 OnFalling();
             }
         }
-        else if (_wasFalling == true)
+        else if (_wasFalling)
         {
             _wasFalling = false;
             if (OnLanding != null)
