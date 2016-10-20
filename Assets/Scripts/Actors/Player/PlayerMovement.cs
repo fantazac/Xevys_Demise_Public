@@ -32,7 +32,6 @@ public class PlayerMovement : MonoBehaviour
     private float _jumpingSpeed = 17;
     private bool _feetTouchWater = false;
     private bool _isFloating = false;
-    private bool _wearsIronBoots = false;
     private bool _isKnockedBack = false;
     private float _knockbackCount = 0;
     private float _waterYSpeed;
@@ -44,7 +43,6 @@ public class PlayerMovement : MonoBehaviour
     public bool FeetTouchWater { get { return _feetTouchWater; } set { _feetTouchWater = value; } }
     public bool IsFloating { get { return _isFloating; } set { _isFloating = value; } }
     public bool FacingRight { get { return _facingRight; } }
-    public bool WearsIronBoots { get { return _wearsIronBoots; } }
     public bool IsKnockedBack { get { return _isKnockedBack; } set { _isKnockedBack = value; } }
     public float TerminalSpeed { get { return TERMINAL_SPEED; } }
 
@@ -79,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!_isKnockedBack)
         {
-            if (!IsJumping() && _feetTouchWater && _wearsIronBoots)
+            if (!IsJumping() && _feetTouchWater && _inventoryManager.IronBootsActive)
             {
                 ChangePlayerVerticalVelocity(_jumpingSpeed * WATER_ACCELERATION_FACTOR);
             }
@@ -95,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 ChangePlayerVerticalVelocity(_jumpingSpeed);
             }
-            else if (IsJumping() && !_feetTouchWater && !_wearsIronBoots && _inventoryManager.FeatherEnabled && _canDoubleJump)
+            else if (IsJumping() && !_feetTouchWater && !_inventoryManager.IronBootsActive && _inventoryManager.FeatherEnabled && _canDoubleJump)
             {
                 _canDoubleJump = false;
                 ChangePlayerVerticalVelocity(_jumpingSpeed);
@@ -113,7 +111,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnUnderwaterControl(bool goesDown)
     {
-        if ((goesDown && _wearsIronBoots) || (!goesDown && !_wearsIronBoots))
+        if ((goesDown && _inventoryManager.IronBootsActive) || (!goesDown && !_inventoryManager.IronBootsActive))
         {
             _waterYSpeed = INITIAL_WATER_FALLING_SPEED * WATER_ACCELERATION_FACTOR;
         }
@@ -125,11 +123,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnIronBootsEquip()
     {
-        if (_wearsIronBoots)
+        if (_inventoryManager.IronBootsEnabled)
         {
-            _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
-        }
-        _wearsIronBoots = !_wearsIronBoots;
+            if (_inventoryManager.IronBootsActive)
+            {
+                _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
+            }
+            _inventoryManager.IronBootsActive = !_inventoryManager.IronBootsActive;
+        }     
     }
 
     private void OnStop()
@@ -210,7 +211,7 @@ public class PlayerMovement : MonoBehaviour
             _canDoubleJump = true;
         }
 
-        if (_wearsIronBoots)
+        if (_inventoryManager.IronBootsActive)
         {
             if (_feetTouchWater && _isFloating)
             {
