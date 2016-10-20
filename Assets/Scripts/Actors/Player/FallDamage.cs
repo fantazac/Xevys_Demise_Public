@@ -30,7 +30,7 @@ public class FallDamage: MonoBehaviour
     {
         if (_fallingCount > 50 && !_invincibility.IsFlickering && _playerHealth && _playerHealth.HealthPoint > 0)
         {
-            _playerHealth.Hit(Mathf.Clamp(_fallingCount * 5, _fallingCount * 5, (int)_playerHealth.HealthPoint));
+            _playerHealth.Hit(Mathf.Clamp(_fallingCount * 4, _fallingCount * 4, (int)_playerHealth.HealthPoint));
             _knockback.KnockbackPlayer(new Vector2(GameObject.FindGameObjectWithTag("Player").transform.position.x, 
                 GameObject.FindGameObjectWithTag("Player").transform.position.y - 1));
             _invincibility.StartFlicker();
