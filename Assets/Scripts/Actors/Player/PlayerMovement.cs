@@ -8,6 +8,13 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private BoxCollider2D _basicAttackBox;
     private InventoryManager _inventoryManager;
+    private Animator _anim;
+    private Transform _spriteTransform;
+
+    public delegate void OnFallingHandler();
+    public event OnFallingHandler OnFalling;
+    public delegate void OnLandingHandler();
+    public event OnLandingHandler OnLanding;
 
     private const float INITIAL_GRAVITY_SCALE = 5;
     private const float INITIAL_WATER_FALLING_SPEED = 3;
@@ -29,9 +36,8 @@ public class PlayerMovement : MonoBehaviour
     private bool _isKnockedBack = false;
     private float _knockbackCount = 0;
     private float _waterYSpeed;
-    private Animator _anim;
-    private Transform _spriteTransform;
     private bool _canDoubleJump = false;
+    private bool _wasFalling = false;
 
     public float Speed { get { return _speed; } set { _speed = value; } }
     public float JumpingSpeed { get { return _jumpingSpeed; } set { _jumpingSpeed = value; } }
@@ -73,7 +79,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!_isKnockedBack)
         {
-
             if (!IsJumping() && _feetTouchWater && _wearsIronBoots)
             {
                 ChangePlayerVerticalVelocity(_jumpingSpeed * WATER_ACCELERATION_FACTOR);
@@ -171,6 +176,24 @@ public class PlayerMovement : MonoBehaviour
         _anim.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
         _anim.SetBool("IsJumping", IsJumping() && _rigidbody.velocity.y > 0);
         _anim.SetBool("IsFalling", IsJumping() && _rigidbody.velocity.y < 0);
+
+        // Appel au falldamage
+        if (IsJumping() && _rigidbody.velocity.y < 0 && !_feetTouchWater)
+        {
+            _wasFalling = true;
+            if (OnFalling != null)
+            {
+                OnFalling();
+            }
+        }
+        else if (_wasFalling)
+        {
+            _wasFalling = false;
+            if (OnLanding != null)
+            {
+                OnLanding();
+            }
+        }
 
         if (_isKnockedBack && _knockbackCount == KNOCKBACK_DURATION)
         {

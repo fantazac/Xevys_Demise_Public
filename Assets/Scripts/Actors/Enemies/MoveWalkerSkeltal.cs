@@ -4,7 +4,7 @@ using System;
 
 public class MoveWalkerSkeltal : SkeltalBehaviour
 {
-    protected const float WALKER_SPEED = 5;
+    protected const float WALKER_SPEED = 0.1f;
     private Animator _animator;
 
     protected override void Start()
@@ -15,9 +15,7 @@ public class MoveWalkerSkeltal : SkeltalBehaviour
 
     protected override bool UpdateSkeltal()
     {
-        transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y),
-            new Vector2(_initialPosition.x + (_isFacingRight ? _rightLimit : -_leftLimit),
-            transform.position.y), WALKER_SPEED * Time.deltaTime);
+        transform.position = new Vector2(transform.position.x + (_isFacingRight ? WALKER_SPEED : -WALKER_SPEED), transform.position.y);
 
         if ((_isFacingRight && transform.position.x >= _initialPosition.x + _rightLimit) || (!_isFacingRight && transform.position.x <= _initialPosition.x - _leftLimit))
         {
