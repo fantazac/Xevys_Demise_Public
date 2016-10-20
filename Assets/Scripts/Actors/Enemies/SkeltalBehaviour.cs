@@ -9,9 +9,10 @@ public abstract class SkeltalBehaviour : MonoBehaviour
     [SerializeField]
     protected float _rightLimit;
 
-    protected const float ATTACK_TIME = 3;
+    protected const float ATTACK_TIME = 1.5f;
 
     private GameObject _skeltalSword;
+    private Animator _animator;
 
     protected System.Random rng = new System.Random();
     protected Vector2 _initialPosition;
@@ -33,6 +34,7 @@ public abstract class SkeltalBehaviour : MonoBehaviour
         _attackTimeLeft = ATTACK_TIME;
         _skeltalSword.GetComponent<BoxCollider2D>().offset = new Vector2(_skeltalSword.GetComponent<BoxCollider2D>().offset.x * -1, _skeltalSword.GetComponent<BoxCollider2D>().offset.y);
         transform.position = new Vector2(rng.Next((int)(_leftLimit + _rightLimit)) + transform.position.x - _leftLimit, transform.position.y);
+        _animator = GetComponent<Animator>();
     }
     
     // Update is called once per frame
@@ -48,6 +50,8 @@ public abstract class SkeltalBehaviour : MonoBehaviour
             if (_attackTimeLeft < 2 && _attackTimeLeft > 1)
             {
                 _skeltalSword.GetComponent<BoxCollider2D>().enabled = true;
+                _animator.SetBool("IsAttacking", true);
+
             }
             else if (_attackTimeLeft <= 0)
             {
@@ -58,6 +62,7 @@ public abstract class SkeltalBehaviour : MonoBehaviour
             else
             {
                 _skeltalSword.GetComponent<BoxCollider2D>().enabled = false;
+                _animator.SetBool("IsAttacking", false);
             }
         }
     }
