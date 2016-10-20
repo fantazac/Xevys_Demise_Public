@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PhoenixAI : MonoBehaviour {
+public class PhoenixAI : MonoBehaviour
+{
 
     public enum PhoenixStatus
     {
         fly,
         flee,
         attack,
+        dead,
     }
 
     [SerializeField]
@@ -32,10 +34,7 @@ public class PhoenixAI : MonoBehaviour {
     private Rigidbody2D _rigidbody;
     private Animator _animator;
     private FlipBoss _flipBoss;
-    //These components should eventually be placed into a script for all bosses (think heritage) as they are only used for a death status.
-    private Health _health;
-    private BoxCollider2D _boxCollider;
-    private SpriteRenderer _spriteRenderer;
+    private OnBossDefeated _onBossDefeated;
 
     private System.Random _rng = new System.Random();
     private PhoenixStatus _status;
@@ -45,7 +44,7 @@ public class PhoenixAI : MonoBehaviour {
     private float _closestVerticalPoint;
 
     // Use this for initialization
-    private void Start ()
+    private void Start()
     {
         _status = PhoenixStatus.fly;
         _flightTimeLeft = 0;
@@ -54,8 +53,13 @@ public class PhoenixAI : MonoBehaviour {
         _rigidbody = GetComponent<Rigidbody2D>();
         _flipBoss = GetComponent<FlipBoss>();
         _animator = GetComponent<Animator>();
-        _health = GetComponent<Health>();
-        _boxCollider = GetComponent<BoxCollider2D>();
+        _onBossDefeated = GetComponent<OnBossDefeated>();
+        _onBossDefeated.onDefeated += OnPhoenixDefeated;
+    }
+
+    private void OnDestroy()
+    {
+        _onBossDefeated.onDefeated -= OnPhoenixDefeated;
     }
 
     // Update is called once per frame
@@ -141,7 +145,7 @@ public class PhoenixAI : MonoBehaviour {
                 EngageInFleeStatus();
             }
         }
-	}
+    }
 
     private void CheckForFlyStatus()
     {
@@ -164,5 +168,12 @@ public class PhoenixAI : MonoBehaviour {
         _flipBoss.CheckSpecificPointForFlip(_closestPoint);
         transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_closestPoint.y - transform.position.y) / (_closestPoint.x - transform.position.x)));
         _status = PhoenixStatus.flee;
+    }
+
+    public void OnPhoenixDefeated()
+    {
+        _status = PhoenixStatus.dead;
+        _animator.SetBool("IsDead", true);
+        _rigidbody.isKinematic = false;
     }
 }
