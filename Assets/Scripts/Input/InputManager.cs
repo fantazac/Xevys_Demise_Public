@@ -38,6 +38,7 @@ public class InputManager : MonoBehaviour
     private bool _leftShoulderReady = true;
     private bool _rightShoulderReady = true;
     private bool _xButtonReady = true;
+    private bool _yButtonReady = true;
     private bool _aButtonReady = true;
 
     private void Update()
@@ -159,9 +160,14 @@ public class InputManager : MonoBehaviour
                 #endregion
 
 
-                if (state.Buttons.RightStick == ButtonState.Pressed)
+                if (state.Buttons.Y == ButtonState.Pressed && _yButtonReady)
                 {
+                    _yButtonReady = false;
                     OnIronBootsEquip();
+                }
+                if (state.Buttons.Y == ButtonState.Released && !_yButtonReady)
+                {
+                    _yButtonReady = true;
                 }
 
                 if (state.Buttons.X == ButtonState.Pressed && _xButtonReady)
