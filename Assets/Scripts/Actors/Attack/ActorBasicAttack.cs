@@ -29,6 +29,7 @@ public class ActorBasicAttack : MonoBehaviour
     {
         _anim.SetBool("IsAttacking", _isAttacking);
         _count++;
+
         if (_count >= ATTACK_SPEED / 2)
         {
             _attackHitBox.GetComponent<BoxCollider2D>().enabled = false;
@@ -38,7 +39,7 @@ public class ActorBasicAttack : MonoBehaviour
 
     private void OnBasicAttack()
     {
-        if (_count >= ATTACK_SPEED && GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>().velocity.y >= 0)
+        if (_count >= ATTACK_SPEED)
         {
             _isAttacking = true;
             _attackHitBox.GetComponent<BoxCollider2D>().enabled = true;
