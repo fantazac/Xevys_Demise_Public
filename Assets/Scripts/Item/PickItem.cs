@@ -53,6 +53,12 @@ public class PickItem : MonoBehaviour
                 collider.GetComponentInChildren<InventoryManager>().EnableFeather();
                 _showItems.OnFeatherEnabled();
             }
+            else if (gameObject.tag == "IronBootsItem")
+            {
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                collider.GetComponentInChildren<InventoryManager>().EnableIronBoots();
+                _showItems.OnIronBootsEnabled();
+            }
             
 
             GetComponent<AudioSource>().Play();

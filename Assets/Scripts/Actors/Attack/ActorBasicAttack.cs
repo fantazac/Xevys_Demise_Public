@@ -42,10 +42,13 @@ public class ActorBasicAttack : MonoBehaviour
         if (_count >= ATTACK_SPEED)
         {
             _isAttacking = true;
-            _attackHitBox.GetComponent<BoxCollider2D>().enabled = true;
             _count = 0;
-
-            _audioSources[0].Play();
         }
+    }
+
+    public void OnBasicAttackEffective()
+    {
+        _audioSources[0].Play();
+        _attackHitBox.GetComponent<BoxCollider2D>().enabled = true;
     }
 }
