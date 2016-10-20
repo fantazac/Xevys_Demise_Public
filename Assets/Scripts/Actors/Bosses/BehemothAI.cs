@@ -25,14 +25,13 @@ public class BehemothAI : MonoBehaviour
     private const float FEIGN_TIME = 0.33f;
     private const int CHARGE_TIME = 5;
 
-    private Rigidbody2D _rigidbody;
     private GameObject _aimedWall;
+    private Rigidbody2D _rigidbody;
     private Animator _animator;
-    private FlipEnemy _flipEnemy;
+    private FlipBoss _flipBoss;
     //These components should eventually be placed into a script for all bosses (think heritage) as they are only used for a death status.
     private Health _health;
     private BoxCollider2D _boxCollider;
-    private SpriteRenderer _spriteRenderer;
 
     private System.Random _rng = new System.Random();
     private BehemothStatus _status = BehemothStatus.wait;
@@ -44,7 +43,7 @@ public class BehemothAI : MonoBehaviour
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _flipEnemy = GetComponent<FlipEnemy>();
+        _flipBoss = GetComponent<FlipBoss>();
         _animator = GetComponent<Animator>();
         _health = GetComponent<Health>();
         _boxCollider = GetComponent<BoxCollider2D>();
@@ -64,7 +63,7 @@ public class BehemothAI : MonoBehaviour
             //Wait allows Behemoth to face the player and prepare to charge.
             if (_status == BehemothStatus.wait)
             {
-                _flipEnemy.CheckPlayerPosition();
+                _flipBoss.CheckPlayerPosition();
                 if (_timeLeft > 0)
                 {
                     _timeLeft -= Time.fixedDeltaTime;
@@ -81,7 +80,7 @@ public class BehemothAI : MonoBehaviour
                     _isCharging = (_rng.Next() % 2 == 0 ? true : false);
                     _timeLeft = FEIGN_TIME + (_isCharging ? CHARGE_TIME : 0);
                     _status = BehemothStatus.charge;
-                    _aimedWall = (_flipEnemy.IsFacingRight ? _leftWall : _rightWall);
+                    _aimedWall = (_flipBoss.IsFacingRight ? _leftWall : _rightWall);
                 }
             }
             //Charge status makes Behemoth aims for the wall for the amount of time in seconds decided above.
@@ -91,8 +90,8 @@ public class BehemothAI : MonoBehaviour
                 _timeLeft -= Time.fixedDeltaTime;
                 if (_timeLeft > 0)
                 {
-                    _rigidbody.velocity = new Vector2(_speed * _flipEnemy.Orientation, _rigidbody.velocity.y);
-                    if (_flipEnemy.IsFacingRight ?
+                    _rigidbody.velocity = new Vector2(_speed * _flipBoss.Orientation, _rigidbody.velocity.y);
+                    if (_flipBoss.IsFacingRight ?
                         _aimedWall.transform.position.x + _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 >= transform.position.x - GetComponent<SpriteRenderer>().bounds.size.x / 2 :
                         _aimedWall.transform.position.x - _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 <= transform.position.x + GetComponent<SpriteRenderer>().bounds.size.x / 2)
                     {
@@ -112,7 +111,7 @@ public class BehemothAI : MonoBehaviour
                 if (_timeLeft > 0)
                 {
                     _timeLeft -= Time.fixedDeltaTime;
-                    _rigidbody.velocity = new Vector2(-_speed / 10 * _flipEnemy.Orientation, _rigidbody.velocity.y);
+                    _rigidbody.velocity = new Vector2(-_speed / 10 * _flipBoss.Orientation, _rigidbody.velocity.y);
                 }
                 else
                 {

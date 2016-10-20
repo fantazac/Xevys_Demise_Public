@@ -155,7 +155,7 @@ public class CameraManager : MonoBehaviour
         if (listAreaNodes.Count == 0)
         {
             return;
-        } 
+        }
 
         // Draw the current selected area's bounding box
         foreach (GameObject camDimensions in listAreaNodes)
@@ -168,7 +168,7 @@ public class CameraManager : MonoBehaviour
             {
                 Gizmos.color = Color.green;
             }
-                
+
             Gizmos.DrawLine(new Vector2(cameraDimensionStart.position.x, cameraDimensionStart.position.y), new Vector2(cameraDimensionEnd.position.x, cameraDimensionStart.position.y));
             Gizmos.DrawLine(new Vector2(cameraDimensionStart.position.x, cameraDimensionEnd.position.y), new Vector2(cameraDimensionEnd.position.x, cameraDimensionEnd.position.y));
             Gizmos.DrawLine(new Vector2(cameraDimensionStart.position.x, cameraDimensionStart.position.y), new Vector2(cameraDimensionStart.position.x, cameraDimensionEnd.position.y));

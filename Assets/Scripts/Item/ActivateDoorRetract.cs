@@ -14,7 +14,7 @@ public class ActivateDoorRetract : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (_door != null && (collider.gameObject.tag == "AxeBlade" || collider.gameObject.tag == "AxeHandle"))
+        if (_door != null && (collider.gameObject.tag == "AxeBlade" || collider.gameObject.tag == "AxeHandle" || collider.gameObject.tag == "Knife"))
         {
             foreach (GameObject wall in _wallsToActivate)
             {
