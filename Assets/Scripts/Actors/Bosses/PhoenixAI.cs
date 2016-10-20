@@ -9,6 +9,7 @@ public class PhoenixAI : MonoBehaviour {
         flee,
         attack,
     }
+
     [SerializeField]
     private Vector2 _northEastLimit;
     [SerializeField]
@@ -21,15 +22,16 @@ public class PhoenixAI : MonoBehaviour {
     private const float FLIGHT_DELAY = 0.5f;
     private const float ATTACK_DELAY = 5;
     private const float PLAYER_APPROACH_LIMIT = 6;
-    private const float SPEED = 5;
+    private const float SPEED = 7;
     private const float WING_FLAP = 2.675f;
+    private const float RADIAN_TO_DEGREE = 57.2958f;
 
-    private Vector2 currentPoint;
-    private Vector2 closestPoint;
-    private Vector2 playerPosition;
-    private Vector2 attackPosition;
+    private Vector2 _currentPoint;
+    private Vector2 _closestPoint;
+    private Vector2 _playerPosition;
     private Rigidbody2D _rigidbody;
-    private FlipEnemy _flipEnemy;
+    private Animator _animator;
+    private FlipBoss _flipBoss;
     //These components should eventually be placed into a script for all bosses (think heritage) as they are only used for a death status.
     private Health _health;
     private BoxCollider2D _boxCollider;
@@ -41,10 +43,6 @@ public class PhoenixAI : MonoBehaviour {
     private float _attackCooldownTimeLeft;
     private float _closestHorizontalPoint;
     private float _closestVerticalPoint;
-    //Variables used for attack in a parabolic pattern.The function y = (x - x1)(x - x2) is used.
-    //In this context, _attackXAxisFirstPoint, or x1, is always 0, so it's neglectable.
-    private float _attackXAxis;
-    private float _attackXAxisSecondPoint;
 
     // Use this for initialization
     private void Start ()
@@ -52,11 +50,13 @@ public class PhoenixAI : MonoBehaviour {
         _status = PhoenixStatus.fly;
         _flightTimeLeft = 0;
         _attackCooldownTimeLeft = 0;
+        _currentPoint = _southWestLimit;
         _rigidbody = GetComponent<Rigidbody2D>();
-        _spriteRenderer = GetComponent<SpriteRenderer>();
-        _flipEnemy = GetComponent<FlipEnemy>();
-        currentPoint = _southWestLimit;
-	}
+        _flipBoss = GetComponent<FlipBoss>();
+        _animator = GetComponent<Animator>();
+        _health = GetComponent<Health>();
+        _boxCollider = GetComponent<BoxCollider2D>();
+    }
 
     // Update is called once per frame
     private void Update()
@@ -64,15 +64,14 @@ public class PhoenixAI : MonoBehaviour {
         //This status allows Phoenix to watch the player and either charge on him after a few seconds or flee.
         if (_status == PhoenixStatus.fly)
         {
+            _flipBoss.CheckPlayerPosition();
             _attackCooldownTimeLeft += Time.fixedDeltaTime;
             if (_attackCooldownTimeLeft > ATTACK_DELAY)
             {
-                attackPosition = transform.position;
-                playerPosition = GameObject.Find("Character").transform.position;
+                _playerPosition = GameObject.Find("Character").transform.position;
+                transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_playerPosition.y - transform.position.y) / (_playerPosition.x - transform.position.x)));
                 _attackCooldownTimeLeft = 0;
                 _rigidbody.isKinematic = true;
-                _attackXAxis = 0;
-                _attackXAxisSecondPoint = (playerPosition.x - attackPosition.x) * 2;
                 _status = PhoenixStatus.attack;
             }
             else
@@ -81,16 +80,15 @@ public class PhoenixAI : MonoBehaviour {
                 if (playerDistance < PLAYER_APPROACH_LIMIT)
                 {
                     int randomNumber = _rng.Next();
-                    if (currentPoint.Equals(_northEastLimit) || currentPoint.Equals(_southWestLimit))
+                    if (_currentPoint.Equals(_northEastLimit) || _currentPoint.Equals(_southWestLimit))
                     {
-                        closestPoint = (randomNumber % 2 == 0 ? _northWestLimit : _southEastLimit);
+                        _closestPoint = (randomNumber % 2 == 0 ? _northWestLimit : _southEastLimit);
                     }
                     else
                     {
-                        closestPoint = (randomNumber % 2 == 0 ? _northEastLimit : _southWestLimit);
+                        _closestPoint = (randomNumber % 2 == 0 ? _northEastLimit : _southWestLimit);
                     }
-                    _rigidbody.isKinematic = true;
-                    _status = PhoenixStatus.flee;
+                    EngageInFleeStatus();
                 }
                 else
                 {
@@ -109,64 +107,62 @@ public class PhoenixAI : MonoBehaviour {
         //Flee status makes Phoenix go to a neighbouring point in order to avoid the player.
         else if (_status == PhoenixStatus.flee)
         {
-            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), closestPoint, SPEED * Time.fixedDeltaTime);
-            CheckClosestPoint();
+            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _closestPoint, SPEED * Time.fixedDeltaTime);
+            CheckForFlyStatus();
         }
         //In this status, Phoenix dives on the player in a parabolic path, allowing the latter to strike its head.
         else if (_status == PhoenixStatus.attack)
         {
-            //At each frame, Phoenix must move a bit from its origin point.
-            _attackXAxis += _flipEnemy.Orientation * Time.fixedDeltaTime;
-            //Then, he must be set up at its relative point in the map.
-            float a = Mathf.Abs(playerPosition.y / playerPosition.x / (playerPosition.x - _attackXAxisSecondPoint));
-            float attackYaxis = (a * _attackXAxis * (_attackXAxis - _attackXAxisSecondPoint));
-            float newHorizontalPosition = attackPosition.x + _attackXAxis;
-            float newVerticalPosition = attackPosition.y + attackYaxis;
-            transform.position = new Vector2(newHorizontalPosition, newHorizontalPosition);
-            //transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), playerPosition, SPEED * Time.fixedDeltaTime);
+            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _playerPosition, SPEED * Time.fixedDeltaTime);
 
-            if (Vector2.Distance(transform.position, playerPosition) < 3)
+            if (Vector2.Distance(transform.position, _playerPosition) < 1)
             {
-                closestPoint = currentPoint;
-                while (closestPoint.Equals(currentPoint))
+                _closestPoint = _currentPoint;
+                while (_closestPoint.Equals(_currentPoint))
                 {
                     int pointToFleeIndex = _rng.Next() % 4;
                     if (pointToFleeIndex == 0)
                     {
-                        closestPoint = _northEastLimit;
+                        _closestPoint = _northEastLimit;
                     }
                     else if (pointToFleeIndex == 1)
                     {
-                        closestPoint = _southEastLimit;
+                        _closestPoint = _southEastLimit;
                     }
                     else if (pointToFleeIndex == 2)
                     {
-                        closestPoint = _southWestLimit;
+                        _closestPoint = _southWestLimit;
                     }
                     else if (pointToFleeIndex == 3)
                     {
-                        closestPoint = _northWestLimit;
+                        _closestPoint = _northWestLimit;
                     }
                 }
-                _rigidbody.isKinematic = true;
-                _status = PhoenixStatus.flee;
+                EngageInFleeStatus();
             }
-        }
-
-        if (_status == PhoenixStatus.fly || _status == PhoenixStatus.flee)
-        {
-            _flipEnemy.CheckPlayerPosition();
         }
 	}
 
-    private void CheckClosestPoint()
+    private void CheckForFlyStatus()
     {
-        float closestPointDistance = Vector2.Distance(closestPoint, transform.position);
+        float closestPointDistance = Vector2.Distance(_closestPoint, transform.position);
         if (closestPointDistance < 1)
         {
-            currentPoint = closestPoint;
+            _currentPoint = _closestPoint;
             _rigidbody.isKinematic = false;
+            transform.rotation = Quaternion.identity;
+            _flightTimeLeft = 0;
             _status = PhoenixStatus.fly;
         }
+    }
+
+    private void EngageInFleeStatus()
+    {
+        transform.rotation = Quaternion.identity;
+        _rigidbody.isKinematic = true;
+        _attackCooldownTimeLeft = 0;
+        _flipBoss.CheckSpecificPointForFlip(_closestPoint);
+        transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_closestPoint.y - transform.position.y) / (_closestPoint.x - transform.position.x)));
+        _status = PhoenixStatus.flee;
     }
 }
