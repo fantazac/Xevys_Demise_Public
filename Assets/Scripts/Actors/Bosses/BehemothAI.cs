@@ -72,7 +72,7 @@ public class BehemothAI : MonoBehaviour
                 _isCharging = (_rng.Next() % 2 == 0 ? true : false);
                 _timeLeft = FEIGN_TIME + (_isCharging ? CHARGE_TIME : 0);
                 _status = BehemothStatus.charge;
-                _aimedWall = (_flipBoss.IsFacingRight ? _leftWall : _rightWall);
+                _aimedWall = (_flipBoss.IsFacingLeft ? _leftWall : _rightWall);
             }
         }
         //Charge status makes Behemoth aims for the wall for the amount of time in seconds decided above.
@@ -83,7 +83,7 @@ public class BehemothAI : MonoBehaviour
             if (_timeLeft > 0)
             {
                 _rigidbody.velocity = new Vector2(_speed * _flipBoss.Orientation, _rigidbody.velocity.y);
-                if (_flipBoss.IsFacingRight ?
+                if (_flipBoss.IsFacingLeft ?
                     _aimedWall.transform.position.x + _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 >= transform.position.x - GetComponent<SpriteRenderer>().bounds.size.x / 2 :
                     _aimedWall.transform.position.x - _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 <= transform.position.x + GetComponent<SpriteRenderer>().bounds.size.x / 2)
                 {
