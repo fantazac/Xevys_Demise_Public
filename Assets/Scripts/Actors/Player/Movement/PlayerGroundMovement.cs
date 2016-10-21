@@ -67,6 +67,7 @@ public class PlayerGroundMovement : PlayerMovement
             if (_inventoryManager.IronBootsActive)
             {
                 _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
+                _showItems.OnIronBootsSelected();
             }
             _inventoryManager.IronBootsActive = !_inventoryManager.IronBootsActive;
         }
