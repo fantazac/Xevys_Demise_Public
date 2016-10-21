@@ -31,6 +31,5 @@ public class RetractDoor : MonoBehaviour
         {
             GameObject.Find("Character").GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition += BASE_AXE_AMOUNT_ON_PICKUP;
         }
-        Debug.Log(GameObject.Find("Main Camera").GetComponent<CameraManager>().CurrentArea == MAIN_CAMERA_BASE_AXE_ITEM_AREA && GameObject.Find("Character").GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition < 1 && !GameObject.Find("BaseAxeItem"));
     }
 }
