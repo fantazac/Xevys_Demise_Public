@@ -6,6 +6,11 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void OnMove(Vector3 vector, bool goesRight)
     {
+        if (!enabled)
+        {
+            return;
+        }
+
         if (!_isKnockedBack)
         {
             _rigidbody.velocity = new Vector2(vector.x * _speed, _rigidbody.velocity.y);
@@ -15,6 +20,11 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void OnJump()
     {
+        if (!enabled)
+        {
+            return;
+        }
+
         if (!_isKnockedBack)
         {
             if (!IsJumping())
@@ -31,6 +41,11 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void OnJumpDown()
     {
+        if (!enabled)
+        {
+            return;
+        }
+
         if (!IsJumping() && !_isKnockedBack && GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
         {
             GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().DisablePlatformHitbox();
@@ -39,6 +54,11 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void OnStop()
     {
+        if (!enabled)
+        {
+            return;
+        }
+
         if (!_isKnockedBack)
         {
             if (_rigidbody.velocity.x < 1 && GetComponent<FlipPlayer>().IsFacingRight || _rigidbody.velocity.x > -1 && !GetComponent<FlipPlayer>().IsFacingRight)
@@ -62,13 +82,22 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void OnIronBootsEquip()
     {
+        if (!enabled)
+        {
+            return;
+        }
+
         if (_inventoryManager.IronBootsEnabled)
         {
             if (_inventoryManager.IronBootsActive)
             {
                 _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
-                _showItems.OnIronBootsSelected();
             }
+            else
+            {
+                _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE * 2;
+            }
+            _showItems.OnIronBootsSelected();
             _inventoryManager.IronBootsActive = !_inventoryManager.IronBootsActive;
         }
     }
@@ -84,6 +113,10 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void UpdateMovement()
     {
+        if (!enabled)
+        {
+            return;
+        }
 
         if (_isKnockedBack && _knockbackCount == KNOCKBACK_DURATION)
         {

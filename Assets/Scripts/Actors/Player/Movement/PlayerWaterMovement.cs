@@ -20,6 +20,11 @@ public class PlayerWaterMovement : PlayerMovement
 
     protected override void OnMove(Vector3 vector, bool goesRight)
     {
+        if (!enabled)
+        {
+            return;
+        }
+
         if (!_isKnockedBack)
         {
             if (_feetTouchWater)
@@ -37,6 +42,11 @@ public class PlayerWaterMovement : PlayerMovement
 
     protected override void OnJump()
     {
+        if (!enabled)
+        {
+            return;
+        }
+
         if (!_isKnockedBack)
         {
             if (!IsJumping() && _feetTouchWater && _inventoryManager.IronBootsActive)
@@ -51,20 +61,16 @@ public class PlayerWaterMovement : PlayerMovement
                     _feetTouchWater = false;
                 }
             }
-            else if (!IsJumping())
-            {
-                ChangePlayerVerticalVelocity(_jumpingSpeed);
-            }
-            else if (IsJumping() && !_feetTouchWater && !_inventoryManager.IronBootsActive && _inventoryManager.FeatherEnabled && _canDoubleJump)
-            {
-                _canDoubleJump = false;
-                ChangePlayerVerticalVelocity(_jumpingSpeed);
-            }
         }
     }
 
     protected override void OnJumpDown()
     {
+        if (!enabled)
+        {
+            return;
+        }
+
         if (!IsJumping() && !_isKnockedBack && GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
         {
             GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().DisablePlatformHitbox();
@@ -73,6 +79,11 @@ public class PlayerWaterMovement : PlayerMovement
 
     protected override void OnUnderwaterControl(bool goesDown)
     {
+        if (!enabled)
+        {
+            return;
+        }
+
         if ((goesDown && _inventoryManager.IronBootsActive) || (!goesDown && !_inventoryManager.IronBootsActive))
         {
             _waterYSpeed = INITIAL_WATER_FALLING_SPEED * WATER_ACCELERATION_FACTOR;
@@ -85,14 +96,33 @@ public class PlayerWaterMovement : PlayerMovement
 
     protected override void OnIronBootsEquip()
     {
+        if (!enabled)
+        {
+            return;
+        }
+
         if (_inventoryManager.IronBootsEnabled)
         {
+            if (_inventoryManager.IronBootsActive)
+            {
+                _rigidbody.gravityScale = 0;
+            }
+            else
+            {
+                _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
+            }
+            _showItems.OnIronBootsSelected();
             _inventoryManager.IronBootsActive = !_inventoryManager.IronBootsActive;
         }
     }
 
     protected override void OnStop()
     {
+        if (!enabled)
+        {
+            return;
+        }
+
         if (!_isKnockedBack)
         {
             if (_rigidbody.velocity.x < 1 && GetComponent<FlipPlayer>().IsFacingRight || _rigidbody.velocity.x > -1 && !GetComponent<FlipPlayer>().IsFacingRight)
@@ -121,6 +151,10 @@ public class PlayerWaterMovement : PlayerMovement
 
     protected override void UpdateMovement()
     {
+        if (!enabled)
+        {
+            return;
+        }
 
         if (_isKnockedBack && _knockbackCount == KNOCKBACK_DURATION)
         {
@@ -130,11 +164,6 @@ public class PlayerWaterMovement : PlayerMovement
         else if (_isKnockedBack)
         {
             _knockbackCount++;
-        }
-
-        if (!IsJumping() && _inventoryManager.FeatherEnabled && !_canDoubleJump)
-        {
-            _canDoubleJump = true;
         }
 
         if (_inventoryManager.IronBootsActive)
@@ -218,11 +247,6 @@ public class PlayerWaterMovement : PlayerMovement
             {
                 ChangePlayerVerticalVelocity(_waterYSpeed);
             }
-        }
-
-        if (!_feetTouchWater && _rigidbody.velocity.y < TERMINAL_SPEED)
-        {
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, TERMINAL_SPEED);
         }
 
         _waterYSpeed = INITIAL_WATER_FALLING_SPEED;

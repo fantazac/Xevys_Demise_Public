@@ -26,11 +26,8 @@ public class PlayerWaterInteraction : MonoBehaviour
     {
         if (collider is BoxCollider2D)
         {
-            _player.GetComponent<PlayerWaterMovement>().FeetTouchWater = false;
-            _player.GetComponent<PlayerWaterMovement>().IsFloating = false;
-
-            _player.GetComponent<PlayerWaterMovement>().enabled = true;
-            _player.GetComponent<PlayerGroundMovement>().enabled = false;
+            _player.GetComponent<PlayerWaterMovement>().enabled = false;
+            _player.GetComponent<PlayerGroundMovement>().enabled = true;
         }
 
         if (collider is CircleCollider2D)

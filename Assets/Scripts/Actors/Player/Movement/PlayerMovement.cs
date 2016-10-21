@@ -80,7 +80,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(GetComponent<FlipPlayer>().IsFacingRight);
         _anim.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
         _anim.SetBool("IsJumping", IsJumping() && _rigidbody.velocity.y > 0);
         _anim.SetBool("IsFalling", IsJumping() && _rigidbody.velocity.y < 0);
