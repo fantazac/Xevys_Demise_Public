@@ -9,10 +9,16 @@ public class PlayerWaterInteraction : MonoBehaviour
 
     public void OnWaterEnter(Collider2D collider)
     {
+        if(collider is BoxCollider2D)
+        {
+            _player.GetComponent<PlayerWaterMovement>().enabled = true;
+            _player.GetComponent<PlayerGroundMovement>().enabled = false;
+        }
+
         if (collider is CircleCollider2D)
         {
-            _player.GetComponent<PlayerMovement>().FeetTouchWater = true;
-            _player.GetComponent<PlayerMovement>().IsFloating = false;
+            _player.GetComponent<PlayerWaterMovement>().FeetTouchWater = true;
+            _player.GetComponent<PlayerWaterMovement>().IsFloating = false;
         }
     }
 
@@ -20,14 +26,16 @@ public class PlayerWaterInteraction : MonoBehaviour
     {
         if (collider is BoxCollider2D)
         {
-            _player.GetComponent<PlayerMovement>().FeetTouchWater = false;
-            _player.GetComponent<PlayerMovement>().IsFloating = false;
-            GameObject.Find("CharacterTouchesGround").GetComponent<BoxCollider2D>().enabled = true;
+            _player.GetComponent<PlayerWaterMovement>().FeetTouchWater = false;
+            _player.GetComponent<PlayerWaterMovement>().IsFloating = false;
+
+            _player.GetComponent<PlayerWaterMovement>().enabled = true;
+            _player.GetComponent<PlayerGroundMovement>().enabled = false;
         }
 
         if (collider is CircleCollider2D)
         {
-            _player.GetComponent<PlayerMovement>().IsFloating = true;
+            _player.GetComponent<PlayerWaterMovement>().IsFloating = true;
         }  
     }
 }
