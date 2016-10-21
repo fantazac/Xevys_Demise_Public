@@ -35,6 +35,9 @@ public class ShowItems : MonoBehaviour
         _axeSpriteRenderer.enabled = false;
         _featherSpriteRenderer.enabled = false;
         _ironBootsSpriteRenderer.enabled = false;
+
+        _selectedIronBootsHighlight.transform.position = new Vector3(_ironBootsSpriteRenderer.transform.position.x,
+            _ironBootsSpriteRenderer.transform.position.y, _ironBootsSpriteRenderer.transform.position.z + 5);
     }
 
     public void OnKnifeAmmoChanged(int total)
@@ -83,12 +86,7 @@ public class ShowItems : MonoBehaviour
 
     public void OnIronBootsSelected()
     {
-        if (!_selectedIronBootsHighlight.enabled)
-        {
-            _selectedWeaponHighlight.enabled = true;
-        }
-        _selectedWeaponHighlight.transform.position = new Vector3(_axeSpriteRenderer.transform.position.x,
-            _axeSpriteRenderer.transform.position.y, _axeSpriteRenderer.transform.position.z + 5);
+        _selectedIronBootsHighlight.enabled = !_selectedIronBootsHighlight.enabled;
     }
 
     public void OnFeatherEnabled()

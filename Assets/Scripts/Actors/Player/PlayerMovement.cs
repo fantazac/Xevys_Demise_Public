@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     private InventoryManager _inventoryManager;
     private Animator _anim;
     private Transform _spriteTransform;
+    private ShowItems _showItems;
 
     public delegate void OnFallingHandler();
     public event OnFallingHandler OnFalling;
@@ -54,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _inputManager = GetComponent<InputManager>();
         _basicAttackBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
+        _showItems = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowItems>();
         _inputManager.OnMove += OnMove;
         _inputManager.OnJump += OnJump;
         _inputManager.OnJumpDown += OnJumpDown;
@@ -130,6 +132,7 @@ public class PlayerMovement : MonoBehaviour
                 _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
             }
             _inventoryManager.IronBootsActive = !_inventoryManager.IronBootsActive;
+            _showItems.OnIronBootsSelected();
         }     
     }
 
