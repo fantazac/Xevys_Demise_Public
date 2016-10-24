@@ -14,6 +14,7 @@ public class ShowItems : MonoBehaviour
     private SpriteRenderer _featherSpriteRenderer;
     private SpriteRenderer _ironBootsSpriteRenderer;
     private SpriteRenderer _bubbleSpriteRenderer;
+    private SpriteRenderer _fireProofArmorRenderer;
     private InventoryManager _inventoryManager;
 
     private void Start()
@@ -28,6 +29,7 @@ public class ShowItems : MonoBehaviour
         _ironBootsSpriteRenderer = GameObject.Find("IronBootsFrame").GetComponent<SpriteRenderer>();
         _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
         _bubbleSpriteRenderer = GameObject.Find("BubbleFrame").GetComponent<SpriteRenderer>();
+        _fireProofArmorRenderer = GameObject.Find("FireProofArmorFrame").GetComponent<SpriteRenderer>();
 
         _knifeText.enabled = false;
         _axeText.enabled = false;
@@ -38,6 +40,7 @@ public class ShowItems : MonoBehaviour
         _featherSpriteRenderer.enabled = false;
         _ironBootsSpriteRenderer.enabled = false;
         _bubbleSpriteRenderer.enabled = false;
+        _fireProofArmorRenderer.enabled = false;
 
         _selectedIronBootsHighlight.transform.position = new Vector3(_ironBootsSpriteRenderer.transform.position.x,
             _ironBootsSpriteRenderer.transform.position.y, _ironBootsSpriteRenderer.transform.position.z + 5);
@@ -105,6 +108,11 @@ public class ShowItems : MonoBehaviour
     public void OnBubbleEnabled()
     {
         _bubbleSpriteRenderer.enabled = true;
+    }
+
+    public void OnFireProofArmorEnabled()
+    {
+        _fireProofArmorRenderer.enabled = true;
     }
 
 }
