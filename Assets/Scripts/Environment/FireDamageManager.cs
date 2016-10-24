@@ -22,6 +22,7 @@ public class FireDamageManager : MonoBehaviour
     private void OnTriggerStay2D(Collider2D coll)
     {
         if (coll.gameObject.tag == "Player" &&
+            !GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>().FireProofArmorEnabled &&
             !coll.gameObject.GetComponent<InvincibilityAfterBeingHit>().IsFlickering &&
             _damageTimer <= 0)
         {
