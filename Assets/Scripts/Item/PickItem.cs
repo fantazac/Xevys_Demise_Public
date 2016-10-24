@@ -59,6 +59,12 @@ public class PickItem : MonoBehaviour
                 collider.GetComponentInChildren<InventoryManager>().EnableIronBoots();
                 _showItems.OnIronBootsEnabled();
             }
+            else if (gameObject.tag == "BubbleItem")
+            {
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                //collider.GetComponentInChildren<InventoryManager>().EnableBubble();
+                //_showItems.OnBubbleEnabled();
+            }
             
 
             GetComponent<AudioSource>().Play();
