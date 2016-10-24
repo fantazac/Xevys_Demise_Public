@@ -43,6 +43,7 @@ public class InputManager : MonoBehaviour
     private bool _xButtonReady = true;
     private bool _yButtonReady = true;
     private bool _aButtonReady = true;
+    private bool _upButtonReady = true;
 
     private void Update()
     {
@@ -144,7 +145,17 @@ public class InputManager : MonoBehaviour
                     if (state.ThumbSticks.Left.Y > 0)
                     {
                         OnUnderwaterControl(false);
-                    }
+                        if (_upButtonReady)
+                        {
+                            _upButtonReady = false;
+                            OnEnterPortal();
+                        }                       
+                    }                 
+                }
+
+                if (!_upButtonReady && state.ThumbSticks.Left.Y <= 0)
+                {
+                    _upButtonReady = true;
                 }
 
                 if (state.Buttons.A == ButtonState.Pressed && _aButtonReady && state.ThumbSticks.Left.Y != -_joysticksYAxisDeadZone)
@@ -187,7 +198,6 @@ public class InputManager : MonoBehaviour
                 {
                     _xButtonReady = true;
                 }
-
 
                 if (state.Buttons.B == ButtonState.Pressed)
                 {

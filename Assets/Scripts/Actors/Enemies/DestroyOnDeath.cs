@@ -5,7 +5,7 @@ public class DestroyOnDeath : MonoBehaviour
 {
     [SerializeField]
     private int _deathSoundIndex = -1;
-    private AudioSource[] _audioSources;
+    private AudioSourcePlayer _audioSourcePlayer;
 
     private Health _health;
     private Animator _animator;
@@ -14,7 +14,7 @@ public class DestroyOnDeath : MonoBehaviour
     {
         _health = GetComponent<Health>();
         _animator = GetComponent<Animator>();
-        _audioSources = GetComponents<AudioSource>();
+        _audioSourcePlayer = GetComponent<AudioSourcePlayer>();
     }
 
     private void Update()
@@ -24,11 +24,8 @@ public class DestroyOnDeath : MonoBehaviour
             _animator.SetBool("IsDying", true);
             if(_deathSoundIndex > -1)
             {
-                foreach(AudioSource audioSource in _audioSources)
-                {
-                    audioSource.Stop();
-                }
-                _audioSources[_deathSoundIndex].Play();
+                _audioSourcePlayer.StopAll();
+                _audioSourcePlayer.Play(_deathSoundIndex);
             }
         }
     }
