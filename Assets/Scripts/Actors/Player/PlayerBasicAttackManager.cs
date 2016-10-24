@@ -13,7 +13,7 @@ public class PlayerBasicAttackManager : MonoBehaviour
 
     private void Start()
     {
-        _enemiesTags = new string[] { "Scarab", "Bat", "Skeltal", "Behemoth", "Phoenix", "Spike" };
+        _enemiesTags = new string[] { "Scarab", "Bat", "Skeltal", "Behemoth", "Phoenix" };
         _anim = GameObject.Find("CharacterSprite").GetComponent<Animator>();
     }
 
