@@ -62,8 +62,8 @@ public class PickItem : MonoBehaviour
             else if (gameObject.tag == "BubbleItem")
             {
                 GetComponent<ActivateHoverRetract>().ActivateRetract();
-                //collider.GetComponentInChildren<InventoryManager>().EnableBubble();
-                //_showItems.OnBubbleEnabled();
+                collider.GetComponentInChildren<InventoryManager>().EnableBubble();
+                _showItems.OnBubbleEnabled();
             }
             
 
