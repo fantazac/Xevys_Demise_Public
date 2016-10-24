@@ -11,6 +11,9 @@ public class RetractDoor : MonoBehaviour
     private bool _retract = false;
     private float _retractCount = 0;
 
+    [SerializeField]
+    private bool _retractHorizontally = false;
+
     public bool Retract { set { _retract = value; } }
 
     private void Update()
@@ -19,7 +22,14 @@ public class RetractDoor : MonoBehaviour
         {
             if (_retractCount < RETRACT_AMOUNT)
             {
-                transform.position = new Vector3(transform.position.x, transform.position.y + RETRACT_SPEED, transform.position.z);
+                if (_retractHorizontally)
+                {
+                    transform.position = new Vector3(transform.position.x + RETRACT_SPEED, transform.position.y, transform.position.z);
+                }
+                else
+                {
+                    transform.position = new Vector3(transform.position.x, transform.position.y + RETRACT_SPEED, transform.position.z);
+                }
                 _retractCount += RETRACT_SPEED;
             }
             else
