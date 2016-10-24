@@ -16,6 +16,7 @@ public class InventoryManager : MonoBehaviour
     private bool _ironBootsActive = false;
     private bool _featherEnabled = false;
     private bool _bubbleEnabled = false;
+    private bool _fireProofArmorEnabled = false;
 
     public bool KnifeEnabled { get { return _knifeEnabled; } }
     public bool AxeEnabled { get { return _axeEnabled; } }
@@ -25,6 +26,7 @@ public class InventoryManager : MonoBehaviour
     public bool IronBootsActive { get { return _ironBootsActive; } set { _ironBootsActive = value; } }
     public bool FeatherEnabled { get { return _featherEnabled; } }
     public bool BubbleEnabled { get { return _bubbleEnabled; } }
+    public bool FireProofArmorEnabled { get { return _fireProofArmorEnabled; } }
 
 
     public void EnableKnife()
@@ -60,5 +62,10 @@ public class InventoryManager : MonoBehaviour
     public void EnableBubble()
     {
         _bubbleEnabled = true;
+    }
+
+    public void EnableFireProofArmor()
+    {
+        _fireProofArmorEnabled = true;
     }
 }
