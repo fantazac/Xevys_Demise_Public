@@ -8,7 +8,7 @@ public class Health : MonoBehaviour
     private float _health = 1000f;
     [SerializeField]
     private int _hitSoundIndex = -1;
-    private AudioSourcePlayer _player;
+    private AudioSourcePlayer _soundPlayer;
 
     public float HealthPoint { get { return _health; } set { _health = value; } }
 
@@ -17,7 +17,7 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
-        _player = GetComponent<AudioSourcePlayer>();
+        _soundPlayer = GetComponent<AudioSourcePlayer>();
     }
 
     public void Heal(int healPoints)
@@ -35,12 +35,7 @@ public class Health : MonoBehaviour
 
         if(_hitSoundIndex > -1)
         {
-            _player.Play(_hitSoundIndex);
-        }
-
-        if(HealthPoint <= 0)
-        {
-
+            _soundPlayer.Play(_hitSoundIndex);
         }
     }
 }

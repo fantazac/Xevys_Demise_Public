@@ -14,4 +14,17 @@ public class AudioSourcePlayer : MonoBehaviour
     {
         _audioSources[audioSourceIndex].Play();
     }
+
+    public void Stop(int audioSourceIndex)
+    {
+        _audioSources[audioSourceIndex].Stop();
+    }
+
+    public void StopAll()
+    {
+        foreach(AudioSource audioSource in _audioSources)
+        {
+            audioSource.Stop();
+        }
+    }
 }
