@@ -7,7 +7,7 @@ public class KnockbackOnDamageTaken : MonoBehaviour
 
     public void KnockbackPlayer(Vector2 positionEnemy)
     {
-        GetComponent<PlayerMovement>().IsKnockedBack = true;
+        GetComponent<PlayerGroundMovement>().IsKnockedBack = true;
 
         if (transform.position.x < positionEnemy.x)
         {

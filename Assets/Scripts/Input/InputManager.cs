@@ -29,8 +29,11 @@ public class InputManager : MonoBehaviour
     public delegate void OnThrowAttackHandler();
     public event OnThrowAttackHandler OnThrowAttack;
 
-    public delegate void OnThowAttackChangeButtonPressedHandler();
-    public event OnThowAttackChangeButtonPressedHandler OnThowAttackChangeButtonPressed;
+    public delegate void OnThrowAttackChangeButtonPressedHandler();
+    public event OnThrowAttackChangeButtonPressedHandler OnThrowAttackChangeButtonPressed;
+
+    public delegate void OnEnterPortalHandler();
+    public event OnEnterPortalHandler OnEnterPortal;
 
     private float _joysticksXAxisDeadZone = 0.1f;
     private float _joysticksYAxisDeadZone = 1f;
@@ -40,6 +43,7 @@ public class InputManager : MonoBehaviour
     private bool _xButtonReady = true;
     private bool _yButtonReady = true;
     private bool _aButtonReady = true;
+    private bool _upButtonReady = true;
 
     private void Update()
     {
@@ -75,6 +79,11 @@ public class InputManager : MonoBehaviour
             OnUnderwaterControl(false);
         }
 
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            OnEnterPortal();
+        }
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             OnIronBootsEquip();
@@ -92,7 +101,7 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            OnThowAttackChangeButtonPressed();
+            OnThrowAttackChangeButtonPressed();
         }
 
         GamePadInputs();
@@ -136,7 +145,17 @@ public class InputManager : MonoBehaviour
                     if (state.ThumbSticks.Left.Y > 0)
                     {
                         OnUnderwaterControl(false);
-                    }
+                        if (_upButtonReady)
+                        {
+                            _upButtonReady = false;
+                            OnEnterPortal();
+                        }                       
+                    }                 
+                }
+
+                if (!_upButtonReady && state.ThumbSticks.Left.Y <= 0)
+                {
+                    _upButtonReady = true;
                 }
 
                 if (state.Buttons.A == ButtonState.Pressed && _aButtonReady && state.ThumbSticks.Left.Y != -_joysticksYAxisDeadZone)
@@ -180,7 +199,6 @@ public class InputManager : MonoBehaviour
                     _xButtonReady = true;
                 }
 
-
                 if (state.Buttons.B == ButtonState.Pressed)
                 {
                     if (OnThrowAttack != null)
@@ -192,7 +210,7 @@ public class InputManager : MonoBehaviour
                 if (state.Buttons.LeftShoulder == ButtonState.Pressed && _leftShoulderReady)
                 {
                     _leftShoulderReady = false;
-                    OnThowAttackChangeButtonPressed();
+                    OnThrowAttackChangeButtonPressed();
                 }
 
                 if (state.Buttons.LeftShoulder == ButtonState.Released && !_leftShoulderReady)
@@ -203,7 +221,7 @@ public class InputManager : MonoBehaviour
                 if (state.Buttons.RightShoulder == ButtonState.Pressed && _rightShoulderReady)
                 {
                     _rightShoulderReady = false;
-                    OnThowAttackChangeButtonPressed();
+                    OnThrowAttackChangeButtonPressed();
                 }
                 if (state.Buttons.RightShoulder == ButtonState.Released && !_rightShoulderReady)
                 {

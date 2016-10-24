@@ -59,7 +59,19 @@ public class PickItem : MonoBehaviour
                 collider.GetComponentInChildren<InventoryManager>().EnableIronBoots();
                 _showItems.OnIronBootsEnabled();
             }
-            
+            else if (gameObject.tag == "BubbleItem")
+            {
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                collider.GetComponentInChildren<InventoryManager>().EnableBubble();
+                _showItems.OnBubbleEnabled();
+            }
+            else if (gameObject.tag == "FireProofArmorItem")
+            {
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                collider.GetComponentInChildren<InventoryManager>().EnableFireProofArmor();
+                _showItems.OnFireProofArmorEnabled();
+            }
+
 
             GetComponent<AudioSource>().Play();
             gameObject.transform.position = new Vector3(-1000, -1000, 0);
