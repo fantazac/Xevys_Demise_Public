@@ -51,7 +51,7 @@ public class ActorThrowAttack: MonoBehaviour
     private void Start()
     {
         _inputManager = GetComponent<InputManager>();
-        _inputManager.OnThowAttackChangeButtonPressed += OnThrowableWeaponChangeButtonPressed;
+        _inputManager.OnThrowAttackChangeButtonPressed += OnThrowableWeaponChangeButtonPressed;
 
         _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
         _inventoryManager.OnThrowableWeaponChange += OnThrowableWeaponChange;
