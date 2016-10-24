@@ -6,7 +6,7 @@ public class FlipBoss : MonoBehaviour {
     [SerializeField]
     private bool _isFacingLeft;
 
-    public bool IsFacingRight { get { return _isFacingLeft; } }
+    public bool IsFacingLeft { get { return _isFacingLeft; } }
     public int Orientation { get { return (_isFacingLeft ? -1 : 1); } }
 
     public void CheckSpecificPointForFlip(Vector2 point)
