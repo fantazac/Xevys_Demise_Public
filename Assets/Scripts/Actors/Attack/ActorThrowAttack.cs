@@ -79,6 +79,10 @@ public class ActorThrowAttack: MonoBehaviour
     {
         if (_knifeThrowCDCount >= ATTACK_COOLDOWN && GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition > 0)
         {
+            /* BEN_REVIEW
+             * 
+             * Le son devrait être déclanché dans un autre component.
+             */
             _audioSources[1].Play();
             GameObject newKnife;
 

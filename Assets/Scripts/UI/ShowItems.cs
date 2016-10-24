@@ -3,6 +3,12 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
+/* BEN_REVIEW
+ * 
+ * Ce composant fait pas mal de choses : il active des objets dans l'inventaire du joueur et change le visuel du UI.
+ * 
+ * C'est donc deux composants différents.
+ */
 public class ShowItems : MonoBehaviour
 {
     private Text _knifeText;
@@ -17,6 +23,10 @@ public class ShowItems : MonoBehaviour
 
     private void Start()
     {
+        /* BEN_REVIEW
+         * 
+         * Faites vous des classes poura accèder simplement aux GameObjects. Leur seul but sera de vous les donner.
+         */
         _knifeText = GameObject.Find("KnifeAmmo").GetComponent<Text>();
         _axeText = GameObject.Find("AxeAmmo").GetComponent<Text>();
         _selectedWeaponHighlight = GameObject.Find("WeaponSelectHighlight").GetComponent<SpriteRenderer>();
@@ -36,10 +46,21 @@ public class ShowItems : MonoBehaviour
         _featherSpriteRenderer.enabled = false;
         _ironBootsSpriteRenderer.enabled = false;
 
+        /* BEN_REVIEW
+         * 
+         * Chiffre magique : 5.
+         */
         _selectedIronBootsHighlight.transform.position = new Vector3(_ironBootsSpriteRenderer.transform.position.x,
             _ironBootsSpriteRenderer.transform.position.y, _ironBootsSpriteRenderer.transform.position.z + 5);
     }
 
+    /* BEN_REVIEW
+     * 
+     * Cette méthode a un nom "évènementiel", mais elle n'est pas enregistré auprès d'un évènement. Elle est appelée
+     * par un autre objet.
+     * 
+     * Deux options : créer un évènement ou renommer la méthode.
+     */
     public void OnKnifeAmmoChanged(int total)
     {
         if (!_inventoryManager.KnifeEnabled)

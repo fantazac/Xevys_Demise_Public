@@ -29,6 +29,11 @@ public class FlipBoss : MonoBehaviour {
 
     public void CheckPlayerPosition()
     {
+        /* BEN_REVIEW
+         * 
+         * À d'autres endroits, vous obtenez le player avec le tag "Player". Ici, vous l'obtenez avec le nom. 
+         * Soyez consistants.
+         */
         if (GameObject.Find("Character").transform.position.x > transform.position.x)
         {
             if (_isFacingLeft)
@@ -36,6 +41,11 @@ public class FlipBoss : MonoBehaviour {
                 Flip();
             }
         }
+        /* BEN_REVIEW
+         * 
+         * Évitez de faire plusieurs fois "Find" du même objet. Conservez des références quelque part, même si
+         * c'est temporaire.
+         */
         else if (GameObject.Find("Character").transform.position.x < transform.position.x)
         {
             if (!_isFacingLeft)
@@ -45,6 +55,11 @@ public class FlipBoss : MonoBehaviour {
         }
     }
 
+    /* BEN_REVIEW
+     * 
+     * Ceci est un TODO.
+     * Mettre TODO devant le commentaire.
+     */
     //In upcoming development, it would be wise to implement this method into a Component.
     private void Flip()
     {

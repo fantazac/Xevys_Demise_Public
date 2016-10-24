@@ -1,6 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_REVIEW
+ * 
+ * C'est pour un trigger ? Pourquoi est-ce dans un dossier "Item" et non pas dans un dossier "Trigger" ?
+ * 
+ * EDIT : N'y a-t-il pas un moyen de fusionner ça avec ActivateDoorDescent et ActivateHoverRetract ? 
+ * Polymorphisme quelqu'un...
+ */
 public class ActivatePlatformElevation : MonoBehaviour
 {
 
@@ -13,6 +20,10 @@ public class ActivatePlatformElevation : MonoBehaviour
     {
         if (_flyingPlatform != null)
         {
+            /* BEN_REVIEW
+             * 
+             * Encore une fois, faire un composant à part pour le son.
+             */
             GetComponent<AudioSource>().Play();
             _soundPlayed = true;
 

@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿/* BEN_REVIEW
+ * 
+ * Placez le dossier "Camera" (où est ce script) dans le dossier "Scripts".
+ */
+using UnityEngine;
 
 // Source: http://wiki.unity3d.com/index.php?title=AspectRatioEnforcers
 public class AspectUtility: MonoBehaviour

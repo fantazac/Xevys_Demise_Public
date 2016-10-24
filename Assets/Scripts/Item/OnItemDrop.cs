@@ -1,6 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_REVIEW
+ * 
+ * HEIN ?!?!
+ * 
+ * Pas capable de voir ce que cela fait...Je déduis rapidement que ça crée un drop...mais cela m'a l'air très
+ * compliqué pour pas grand chose...
+ */
 public class OnItemDrop : MonoBehaviour
 {
 

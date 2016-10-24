@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_REVIEW
+ * 
+ * Voir EnableDoor. 
+ */
 public class RetractHoverPad : MonoBehaviour
 {
 

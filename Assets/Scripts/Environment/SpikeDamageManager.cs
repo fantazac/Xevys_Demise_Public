@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_REVIEW
+ * 
+ * Ça ressemble drôlement à "EnnemiAttackManager".
+ */
 public class SpikeDamageManager : MonoBehaviour
 {
     [SerializeField]

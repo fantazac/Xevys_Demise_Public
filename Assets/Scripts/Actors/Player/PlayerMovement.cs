@@ -167,6 +167,12 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            /* BEN_REVIEW
+             * 
+             * Euh...ne pouvez vous pas faire quelque chose pour ça ? Méchante condition...
+             * 
+             * Aussi, évitez les "Find" à répétition.
+             */
             return !(((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround 
                 && !GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
                 || (GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform && _rigidbody.velocity.y == 0)

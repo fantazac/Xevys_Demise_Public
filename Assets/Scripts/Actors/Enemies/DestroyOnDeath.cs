@@ -21,6 +21,10 @@ public class DestroyOnDeath : MonoBehaviour
         }
     }
 
+    /* BEN_REVIEW
+     * 
+     * C'est pas appellé nulle part il semble...
+     */
     protected void Destroy()
     {
         GetComponent<DropItems>().Drop();

@@ -67,6 +67,15 @@ public class ScarabMovement : MonoBehaviour
 
     }
 
+    /* BEN_REVIEW
+     * 
+     * QUIZ SUPRISE!! Combien de ligne fait cette méthode ? Vous n'avez pas le droit de "scroller".
+     * 
+     * 
+     * RÉPONSE : 73 lignes.
+     * 
+     * Je vous laisse deviner ce que je veux dire par là (découpage en méthodes quoi).
+     */
     private void Update()
     {
         if (_attachedWall != null)

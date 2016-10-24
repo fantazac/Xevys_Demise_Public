@@ -3,7 +3,14 @@ using System.Collections;
 
 public class BatMovement : MonoBehaviour
 {
-
+    /* BEN_REVIEW
+     * 
+     * Au lieu de prendre un GameObject, tu peut directement demander le composant.
+     * 
+     * Aussi, pourquoi est-ce que le trigger de détection du joueur n'est pas un enfant de cet ennemi ?
+     * Est-ce que cela ne vous éviterait pas de le déplacer manuellement ? Je comprends ce que vous faites
+     * et je ne vois pas pourquoi est-ce que ce serait un problème.
+     */
     [SerializeField]
     private GameObject _playerDetectionHitbox;
 
@@ -56,6 +63,11 @@ public class BatMovement : MonoBehaviour
         if (!_goingDown && _isInPosition && _playerDetectionHitbox.GetComponent<DetectPlayer>().DetectedPlayer)
         {
             _goingDown = true;
+            /* BEN_REVIEW
+             * 
+             * C'est sur que je préfèrerais que les animations soient déclanchées dans un autre component. D'un autre côté,
+             * c'est directement relié au mouvement et cela ne me dérange pas trop. ==> Wish list
+             */
             _audio.Play();
             _animator.SetBool("IsFlying", true);
         }

@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_REVIEW
+ * 
+ * Remove trigger ? Donc, ça enlève le trigger ?
+ * 
+ * EDIT : Nope.
+ */
 public class RemoveTrigger : MonoBehaviour
 {
 

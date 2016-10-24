@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_REVIEW
+ * 
+ * Voir BehemothAI. Les même commentaires s'appliquent.
+ */
 public class PhoenixAI : MonoBehaviour {
-
+    
     public enum PhoenixStatus
     {
         fly,

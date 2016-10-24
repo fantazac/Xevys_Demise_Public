@@ -3,7 +3,10 @@ using System.Collections;
 
 public class InvincibilityAfterBeingHit : MonoBehaviour
 {
-
+    /* BEN_REVIEW
+     * 
+     * À configurer dans l'éditeur.
+     */
     private const float INVINCIBILITY_TIME = 120;
     private const float FLICKER_INTERVAL = 5;
 
@@ -13,6 +16,10 @@ public class InvincibilityAfterBeingHit : MonoBehaviour
     public float InvincibilityTime { get { return INVINCIBILITY_TIME; } }
     public bool IsFlickering { get { return _flickerSprite; } }
 
+    /* BEN_REVIEW
+     * 
+     * À mettre dans une cooroutine à la place.
+     */
     private void FixedUpdate()
     {
         if (_flickerSprite && _invincibilityCount == INVINCIBILITY_TIME - (FLICKER_INTERVAL * 2))
@@ -23,6 +30,10 @@ public class InvincibilityAfterBeingHit : MonoBehaviour
         }
         else if (_flickerSprite)
         {
+            /* BEN_REVIEW
+             * 
+             * C'est aussi faisable avec une animation custom.
+             */
             if (_invincibilityCount % (FLICKER_INTERVAL * 2) < FLICKER_INTERVAL)
             {
                 GetComponentInChildren<SpriteRenderer>().color = Color.white;
@@ -37,6 +48,10 @@ public class InvincibilityAfterBeingHit : MonoBehaviour
 
     public void StartFlicker()
     {
+        /* BEN_REVIEW
+         * 
+         * Faire cela avec une cooroutine.
+         */
         _flickerSprite = true;
         _invincibilityCount = 0;
     }

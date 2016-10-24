@@ -12,6 +12,12 @@ public class ActorBasicAttack : MonoBehaviour
     private Animator _anim;
 
     private bool _isAttacking = false;
+    /* BEN_REVIEW
+     * 
+     * Count de quoi ?
+     * 
+     * EDIT : AH ok, c'est votre cooldown. À mettre en secondes et utiliser le "deltaTime" pour l'incrémenter.
+     */
     private int _count;
 
     private void Start()

@@ -41,6 +41,13 @@ public class InputManager : MonoBehaviour
     private bool _yButtonReady = true;
     private bool _aButtonReady = true;
 
+    /* BEN_REVIEW
+     * 
+     * À séparer en petites méthodes pour chaque event (aka Input).
+     * 
+     * Pour votre input "CHEAT", faire un autre composant à mettre dans le dossier "Debug" (voir mes diapos). Il
+     * ne faut pas poluer les scripts de Gameplay de "Cheats", car vous risquez de les oublier.
+     */
     private void Update()
     {
         if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
@@ -98,16 +105,41 @@ public class InputManager : MonoBehaviour
         GamePadInputs();
     }
 
+    /* BEN_REVIEW
+     * 
+     * Vous devriez avoir deux "sous-composants" : l'un pour la manette et l'autre pour le clavier. Ensuite,
+     * le "InputManager" s'enregistre auprès de ces deux composants pour exposer des évènements conjoints.
+     * 
+     * Le plus simple serait d'avoir une classe de base pour les trois. N'oubliez pas que la méthode "GetComponents"
+     * peut obtenir les objets héritant d'une classe (ou implémentant une interface) aussi.
+     */
     private void GamePadInputs()
     {
+        /* BEN_REVIEW
+         * 
+         * OK, car jeu a un seul joueur, donc toutes les manettes branchées sont pour le joueur 1 (avec ce que cela implique
+         * comme hack potentiels).
+         */
         foreach (PlayerIndex player in Enum.GetValues(typeof(PlayerIndex)))
         {
+            /* BEN_REVIEW
+             * 
+             * Obvious comment is obvious.
+             */
             //Obtention de l'état du gamepad
             GamePadState state = GamePad.GetState(player);
 
+            /* BEN_REVIEW
+             * 
+             * Obvious comment is obvious.
+             */
             //Tester si la manette est connectée
             if (state.IsConnected)
             {
+                /* BEN_REVIEW
+                 * 
+                 * Obvious comment is obvious + Copier/Coller ?
+                 */
                 //Déplacement gauche à droite du joueur (utilisez les events)
                 if (Math.Abs(state.ThumbSticks.Left.X) > _joysticksXAxisDeadZone)
                 {
@@ -121,6 +153,10 @@ public class InputManager : MonoBehaviour
                     }
                 }
 
+                /* BEN_REVIEW
+                 * 
+                 * Hummm...Pas sûr que ça marche cette condition là...
+                 */
                 if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
                 {
                     if (state.Buttons.A == ButtonState.Pressed && state.ThumbSticks.Left.Y < 0)

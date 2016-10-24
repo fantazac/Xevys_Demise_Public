@@ -6,6 +6,12 @@ public class Health : MonoBehaviour
 {
     [SerializeField]
     private float _health = 1000f;
+
+    /* BEN_REVIEW
+     * 
+     * Ce n'est pas la responsabilité de ce composant de faire jouer du son lorsque
+     * l'on reçois un coup. Faites un autre composant pour cela qui s'abonne sur le "OnHealthChanged".
+     */
     [SerializeField]
     private int _hitSoundIndex = -1;
     private AudioSource[] _audioSources;
@@ -15,6 +21,12 @@ public class Health : MonoBehaviour
     public delegate void HealthChangedHandler(int hitPoint);
     public event HealthChangedHandler OnHealthChanged;
 
+    /* BEN_REVIEW
+     * 
+     * Toutes les méthodes évènementielles Unity doivent être private.
+     * 
+     * En fait, toute méthode doit avoir son modificateur de visibilité (public, private, protected, internal, etc...).
+     */
     void Start()
     {
         _audioSources = GetComponents<AudioSource>();
@@ -38,6 +50,10 @@ public class Health : MonoBehaviour
             _audioSources[_hitSoundIndex].Play();
         }
 
+        /* BEN_REVIEW
+         * 
+         * "if" vide à supprimer (ou créer l'évènement "OnDeath") qui va avec cette condition.
+         */
         if(HealthPoint <= 0)
         {
 

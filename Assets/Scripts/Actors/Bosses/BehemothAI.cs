@@ -3,6 +3,10 @@ using System.Collections;
 
 public class BehemothAI : MonoBehaviour
 {
+    /* BEN_REVIEW
+     * 
+     * Le nom des valeurs de l'enum doivent être en UPPER_CASE_CASING.
+     */
     private enum BehemothStatus
     {
         wait,
@@ -49,6 +53,10 @@ public class BehemothAI : MonoBehaviour
         _boxCollider = GetComponent<BoxCollider2D>();
     }
 
+    /* BEN_REVIEW
+     * 
+     * À découper en méthode. Probablement une pour chaque état.
+     */
     private void Update()
     {
         if (!_isDead && _health.HealthPoint <= 0)

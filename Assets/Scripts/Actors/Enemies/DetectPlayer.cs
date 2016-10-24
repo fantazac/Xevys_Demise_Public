@@ -4,6 +4,10 @@ using System.Collections;
 public class DetectPlayer : MonoBehaviour
 {
 
+    /* BEN_REVIEW
+     * 
+     * DetectedPlayer peut être une propriété automatique avec "private set".
+     */
     private bool _detectedPlayer;
 
     public bool DetectedPlayer { get { return _detectedPlayer; } set { _detectedPlayer = value; } }

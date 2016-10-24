@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_REVIEW
+ * 
+ * C'est bien le seul genre de classe "Manager" que j'accepte.
+ */
 public class InventoryManager : MonoBehaviour
 {
     public delegate void OnThrowableWeaponChangeHandler(WeaponTypes weaponTypes);
@@ -8,6 +12,10 @@ public class InventoryManager : MonoBehaviour
 
     public enum WeaponTypes { Knife, Axe }
 
+    /* BEN_REVIEW
+     * 
+     * Pourquoi n'est-ce pas des propriétés automatiques ? Convention d'équipe ?
+     */
     private bool _knifeEnabled = false;
     private bool _axeEnabled = false;
     private bool _knifeActive = false;

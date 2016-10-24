@@ -21,6 +21,10 @@ public class DropItems : MonoBehaviour
         {
             if (Random.Range(0, 100) < _dropRates[i])
             {
+                /* BEN_REVIEW
+                 * 
+                 * Éviter les "Find" à répétition pour le même "GameObject".
+                 */
                 if ((_items[i].gameObject.tag != "AxeDrop" && _items[i].gameObject.tag != "KnifeDrop") ||
                     (_items[i].gameObject.tag == "AxeDrop" && GameObject.Find("Character").GetComponent<InventoryManager>().AxeEnabled) ||
                     (_items[i].gameObject.tag == "KnifeDrop" && GameObject.Find("Character").GetComponent<InventoryManager>().KnifeEnabled))
