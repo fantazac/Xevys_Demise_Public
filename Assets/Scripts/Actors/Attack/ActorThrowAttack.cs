@@ -44,7 +44,7 @@ public class ActorThrowAttack: MonoBehaviour
 
     private InputManager _inputManager;
     private InventoryManager _inventoryManager;
-    private AudioSource[] _audioSources;
+    private AudioSourcePlayer _soundPlayer;
 
     private ShowItems _showItems;
 
@@ -56,7 +56,7 @@ public class ActorThrowAttack: MonoBehaviour
         _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
         _inventoryManager.OnThrowableWeaponChange += OnThrowableWeaponChange;
 
-        _audioSources = GetComponents<AudioSource>();
+        _soundPlayer = GetComponent<AudioSourcePlayer>();
         _showItems = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowItems>();
 
         _knifeThrowCDCount = ATTACK_COOLDOWN;
@@ -79,7 +79,7 @@ public class ActorThrowAttack: MonoBehaviour
     {
         if (_knifeThrowCDCount >= ATTACK_COOLDOWN && GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition > 0)
         {
-            _audioSources[1].Play();
+            _soundPlayer.Play(1);
             GameObject newKnife;
 
             if (GetComponent<FlipPlayer>().IsFacingRight)
@@ -105,7 +105,7 @@ public class ActorThrowAttack: MonoBehaviour
     {
         if (_axeThrowCDCount >= ATTACK_COOLDOWN && GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition > 0)
         {
-            _audioSources[2].Play();
+            _soundPlayer.Play(2);
             GameObject newAxe;
 
             if (GetComponent<FlipPlayer>().IsFacingRight)
