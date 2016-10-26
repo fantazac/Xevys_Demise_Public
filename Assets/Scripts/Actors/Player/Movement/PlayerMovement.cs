@@ -29,10 +29,12 @@ public class PlayerMovement : MonoBehaviour
     protected float _knockbackCount = 0;
     protected bool _canDoubleJump = false;
     protected bool _wasFalling = false;
+    protected bool _isCrouching = false;
 
     public float Speed { get { return _speed; } set { _speed = value; } }
     public float JumpingSpeed { get { return _jumpingSpeed; } set { _jumpingSpeed = value; } }
     public bool IsKnockedBack { get { return _isKnockedBack; } set { _isKnockedBack = value; } }
+    public bool IsCrouching { get { return _isCrouching; } set { _isCrouching = value; } }
     public float TerminalSpeed { get { return TERMINAL_SPEED; } }
 
     private void Start()
@@ -51,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
         _inputManager.OnUnderwaterControl += OnUnderwaterControl;
         _inputManager.OnIronBootsEquip += OnIronBootsEquip;
         _inputManager.OnStop += OnStop;
+        _inputManager.OnCrouch += OnCrouch;
+        _inputManager.OnStandingUp += OnStandingUp;
 
         _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
     }
@@ -66,6 +70,10 @@ public class PlayerMovement : MonoBehaviour
     protected virtual void OnIronBootsEquip() { }
 
     protected virtual void OnStop() { }
+
+    protected virtual void OnCrouch() { }
+
+    protected virtual void OnStandingUp() { }
 
     protected virtual void UpdateMovement() { }
 
@@ -83,8 +91,8 @@ public class PlayerMovement : MonoBehaviour
         _anim.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
         _anim.SetBool("IsJumping", IsJumping() && _rigidbody.velocity.y > 0);
         _anim.SetBool("IsFalling", IsJumping() && _rigidbody.velocity.y < 0);
+        _anim.SetBool("IsCrouching", IsCrouching);
 
-        // Appel au falldamage
         if (IsJumping() && _rigidbody.velocity.y < 0)
         {
             _wasFalling = true;
