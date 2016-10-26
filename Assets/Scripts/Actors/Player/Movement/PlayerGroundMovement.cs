@@ -11,7 +11,7 @@ public class PlayerGroundMovement : PlayerMovement
             return;
         }
 
-        if (!_isKnockedBack)
+        if (!_isKnockedBack && !_isCrouching)
         {
             _rigidbody.velocity = new Vector2(vector.x * _speed, _rigidbody.velocity.y);
             Flip(goesRight);
@@ -23,9 +23,7 @@ public class PlayerGroundMovement : PlayerMovement
         if (!enabled)
         {
             return;
-        }
-
-        //GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
+        }      
         IsCrouching = true;
     }
 
@@ -35,7 +33,6 @@ public class PlayerGroundMovement : PlayerMovement
         {
             return;
         }
-
         IsCrouching = false;
     }
 
