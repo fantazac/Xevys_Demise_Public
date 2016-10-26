@@ -18,6 +18,27 @@ public class PlayerGroundMovement : PlayerMovement
         }
     }
 
+    protected override void OnCrouch()
+    {
+        if (!enabled)
+        {
+            return;
+        }
+
+        //GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
+        IsCrouching = true;
+    }
+
+    protected override void OnStandingUp()
+    {
+        if (!enabled)
+        {
+            return;
+        }
+
+        IsCrouching = false;
+    }
+
     protected override void OnJump()
     {
         if (!enabled)

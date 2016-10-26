@@ -26,6 +26,12 @@ public class InputManager : MonoBehaviour
     public delegate void OnBasicAttackHandler();
     public event OnBasicAttackHandler OnBasicAttack;
 
+    public delegate void OnCrouchHandler();
+    public event OnCrouchHandler OnCrouch;
+
+    public delegate void OnStandingUpHandler();
+    public event OnStandingUpHandler OnStandingUp;
+
     public delegate void OnThrowAttackHandler();
     public event OnThrowAttackHandler OnThrowAttack;
 
@@ -111,13 +117,10 @@ public class InputManager : MonoBehaviour
     {
         foreach (PlayerIndex player in Enum.GetValues(typeof(PlayerIndex)))
         {
-            //Obtention de l'état du gamepad
             GamePadState state = GamePad.GetState(player);
 
-            //Tester si la manette est connectée
             if (state.IsConnected)
             {
-                //Déplacement gauche à droite du joueur (utilisez les events)
                 if (Math.Abs(state.ThumbSticks.Left.X) > _joysticksXAxisDeadZone)
                 {
                     if (state.ThumbSticks.Left.X < 0)
@@ -132,16 +135,20 @@ public class InputManager : MonoBehaviour
 
                 if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
                 {
-                    if (state.Buttons.A == ButtonState.Pressed && state.ThumbSticks.Left.Y < 0)
-                    {
-                        OnJumpDown();
-                    }
-
                     if (state.ThumbSticks.Left.Y < 0)
                     {
                         OnUnderwaterControl(true);
-                    }
+                        OnCrouch();
+                        if (state.Buttons.A == ButtonState.Pressed)
+                        {
+                            OnJumpDown();
+                        }                       
+                    }                   
+                }
 
+                if (state.ThumbSticks.Left.Y >= 0)
+                {
+                    OnStandingUp();
                     if (state.ThumbSticks.Left.Y > 0)
                     {
                         OnUnderwaterControl(false);
@@ -149,9 +156,11 @@ public class InputManager : MonoBehaviour
                         {
                             _upButtonReady = false;
                             OnEnterPortal();
-                        }                       
-                    }                 
+                        }
+                    }
                 }
+
+
 
                 if (!_upButtonReady && state.ThumbSticks.Left.Y <= 0)
                 {
