@@ -3,13 +3,12 @@ using System.Collections;
 
 public class PhoenixAI : MonoBehaviour
 {
-
-    public enum PhoenixStatus
+    private enum PhoenixStatus
     {
-        fly,
-        flee,
-        attack,
-        dead,
+        FLY,
+        FLEE,
+        ATTACK,
+        DEAD,
     }
 
     [SerializeField]
@@ -46,7 +45,7 @@ public class PhoenixAI : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        _status = PhoenixStatus.fly;
+        _status = PhoenixStatus.FLY;
         _flightTimeLeft = 0;
         _attackCooldownTimeLeft = 0;
         _currentPoint = _southWestLimit;
@@ -66,7 +65,7 @@ public class PhoenixAI : MonoBehaviour
     private void Update()
     {
         //This status allows Phoenix to watch the player and either charge on him after a few seconds or flee.
-        if (_status == PhoenixStatus.fly)
+        if (_status == PhoenixStatus.FLY)
         {
             _flipBoss.CheckPlayerPosition();
             _attackCooldownTimeLeft += Time.fixedDeltaTime;
@@ -76,7 +75,7 @@ public class PhoenixAI : MonoBehaviour
                 transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_playerPosition.y - transform.position.y) / (_playerPosition.x - transform.position.x)));
                 _attackCooldownTimeLeft = 0;
                 _rigidbody.isKinematic = true;
-                _status = PhoenixStatus.attack;
+                _status = PhoenixStatus.ATTACK;
             }
             else
             {
@@ -109,13 +108,13 @@ public class PhoenixAI : MonoBehaviour
             }
         }
         //Flee status makes Phoenix go to a neighbouring point in order to avoid the player.
-        else if (_status == PhoenixStatus.flee)
+        else if (_status == PhoenixStatus.FLEE)
         {
             transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _closestPoint, SPEED * Time.fixedDeltaTime);
             CheckForFlyStatus();
         }
         //In this status, Phoenix dives on the player in a parabolic path, allowing the latter to strike its head.
-        else if (_status == PhoenixStatus.attack)
+        else if (_status == PhoenixStatus.ATTACK)
         {
             transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _playerPosition, SPEED * Time.fixedDeltaTime);
 
@@ -156,7 +155,7 @@ public class PhoenixAI : MonoBehaviour
             _rigidbody.isKinematic = false;
             transform.rotation = Quaternion.identity;
             _flightTimeLeft = 0;
-            _status = PhoenixStatus.fly;
+            _status = PhoenixStatus.FLY;
         }
     }
 
@@ -167,12 +166,12 @@ public class PhoenixAI : MonoBehaviour
         _attackCooldownTimeLeft = 0;
         _flipBoss.CheckSpecificPointForFlip(_closestPoint);
         transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_closestPoint.y - transform.position.y) / (_closestPoint.x - transform.position.x)));
-        _status = PhoenixStatus.flee;
+        _status = PhoenixStatus.FLEE;
     }
 
     public void OnPhoenixDefeated()
     {
-        _status = PhoenixStatus.dead;
+        _status = PhoenixStatus.DEAD;
         _animator.SetBool("IsDead", true);
         _rigidbody.isKinematic = false;
     }

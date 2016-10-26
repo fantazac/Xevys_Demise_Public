@@ -5,9 +5,15 @@ public class FlipBoss : MonoBehaviour {
 
     [SerializeField]
     private bool _isFacingLeft;
+    GameObject player;
 
     public bool IsFacingLeft { get { return _isFacingLeft; } }
     public int Orientation { get { return (_isFacingLeft ? -1 : 1); } }
+
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
 
     public void CheckSpecificPointForFlip(Vector2 point)
     {
@@ -29,14 +35,14 @@ public class FlipBoss : MonoBehaviour {
 
     public void CheckPlayerPosition()
     {
-        if (GameObject.Find("Character").transform.position.x > transform.position.x)
+        if (player.transform.position.x > transform.position.x)
         {
             if (_isFacingLeft)
             {
                 Flip();
             }
         }
-        else if (GameObject.Find("Character").transform.position.x < transform.position.x)
+        else if (player.transform.position.x < transform.position.x)
         {
             if (!_isFacingLeft)
             {
@@ -45,7 +51,6 @@ public class FlipBoss : MonoBehaviour {
         }
     }
 
-    //In upcoming development, it would be wise to implement this method into a Component.
     private void Flip()
     {
         _isFacingLeft = !_isFacingLeft;

@@ -14,6 +14,7 @@ public class OnBossDefeated : MonoBehaviour
     // Use this for initialization
     private void Start ()
     {
+        _isDead = false;
         _health = GetComponent<Health>();
         _boxCollider = GetComponent<BoxCollider2D>();
         _polygonCollider = GetComponent<PolygonCollider2D>();

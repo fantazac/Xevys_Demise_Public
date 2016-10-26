@@ -11,11 +11,29 @@ public class PlayerGroundMovement : PlayerMovement
             return;
         }
 
-        if (!_isKnockedBack)
+        if (!_isKnockedBack && !_isCrouching)
         {
             _rigidbody.velocity = new Vector2(vector.x * _speed, _rigidbody.velocity.y);
             Flip(goesRight);
         }
+    }
+
+    protected override void OnCrouch()
+    {
+        if (!enabled)
+        {
+            return;
+        }      
+        IsCrouching = true;
+    }
+
+    protected override void OnStandingUp()
+    {
+        if (!enabled)
+        {
+            return;
+        }
+        IsCrouching = false;
     }
 
     protected override void OnJump()
