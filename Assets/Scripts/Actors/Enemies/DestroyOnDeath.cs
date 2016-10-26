@@ -28,6 +28,7 @@ public class DestroyOnDeath : MonoBehaviour
                 _audioSourcePlayer.StopAll();
                 _audioSourcePlayer.Play(_deathSoundIndex);
                 _deathSoundPlayed = true;
+                GetComponent<BoxCollider2D>().enabled = false;
             }
         }
     }
