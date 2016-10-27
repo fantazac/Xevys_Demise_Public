@@ -166,8 +166,6 @@ public class InputManager : MonoBehaviour
                     }
                 }
 
-
-
                 if (!_upButtonReady && state.ThumbSticks.Left.Y <= 0)
                 {
                     _upButtonReady = true;
