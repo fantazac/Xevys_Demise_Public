@@ -53,11 +53,11 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.S))
         {
             OnMove(Vector3.left, false);
         }
-        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S))
         {
             OnMove(Vector3.right, true);
         }
