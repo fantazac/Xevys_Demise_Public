@@ -28,13 +28,13 @@ public class PlayerGroundMovement : PlayerMovement
         {
             IsCrouching = true;
             _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = false;
-            _playerSpriteRenderer.transform.position = new Vector3(_playerSpriteRenderer.transform.position.x, _playerSpriteRenderer.transform.position.y
-                + CROUCHING_SPRITE_POSITION_OFFSET, _playerSpriteRenderer.transform.position.z);
             _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND * CROUCHING_OFFSET);
             _playerBoxCollider.offset = new Vector2(_playerBoxCollider.offset.x, PLAYER_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
             _playerBoxColliderFeet.offset = new Vector2(_playerBoxColliderFeet.offset.x, FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
             _playerBoxColliderTorso.offset = new Vector2(_playerBoxColliderTorso.offset.x, TORSO_BOX_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
             _playerCircleColliderTorso.offset = new Vector2(_playerCircleColliderTorso.offset.x, TORSO_CIRCLE_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
+            _playerSpriteRenderer.transform.position = new Vector3(_playerSpriteRenderer.transform.position.x, _playerSpriteRenderer.transform.position.y
+                + CROUCHING_SPRITE_POSITION_OFFSET, _playerSpriteRenderer.transform.position.z);
         }   
     }
 

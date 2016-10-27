@@ -66,18 +66,24 @@ public class InputManager : MonoBehaviour
             OnStop();
         }
 
-        if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.S))
         {
-            OnJumpDown();
+            OnUnderwaterControl(true);
+                       
+            if (Input.GetKey(KeyCode.Space))
+            {
+                OnJumpDown();
+            }
+            
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
             OnJump();
         }
 
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S))
         {
-            OnUnderwaterControl(true);
+            OnCrouch();
         }
 
         if (Input.GetKey(KeyCode.W))
@@ -146,7 +152,7 @@ public class InputManager : MonoBehaviour
                     }                   
                 }
 
-                if (state.ThumbSticks.Left.Y >= 0)
+                if (state.ThumbSticks.Left.Y >= 0 && !Input.GetKey(KeyCode.S))
                 {
                     OnStandingUp();
                     if (state.ThumbSticks.Left.Y > 0)
@@ -159,6 +165,8 @@ public class InputManager : MonoBehaviour
                         }
                     }
                 }
+
+
 
                 if (!_upButtonReady && state.ThumbSticks.Left.Y <= 0)
                 {
