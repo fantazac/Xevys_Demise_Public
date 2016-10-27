@@ -24,7 +24,7 @@ public class FlipBoss : MonoBehaviour {
                 Flip();
             }
         }
-        else
+        else if (point.x < transform.position.x)
         {
             if (!_isFacingLeft)
             {

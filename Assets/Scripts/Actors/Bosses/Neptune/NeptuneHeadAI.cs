@@ -3,11 +3,11 @@ using System.Collections;
 
 public class NeptuneHeadAI : MonoBehaviour
 {
-    protected const float SPEED = 0.95f;
+    protected const float SPEED = 5f;// 0.95f;
     protected const float RADIAN_TO_DEGREE = 57.2958f;
     private const float ATTACK_DELAY = 5;
     private const float WARNING_DELAY = 2;
-    private const float BODY_PART_SPAWN_DELAY = 2;
+    private const float BODY_PART_SPAWN_DELAY = 1.8f;
     private const float FLAME_SPAWN_SPACING = 1.5f;
 
     [SerializeField]
@@ -50,7 +50,6 @@ public class NeptuneHeadAI : MonoBehaviour
         }
     }
 
-    // Use this for initialization
     protected virtual void Start()
     {
         _attackCooldownTimeLeft = ATTACK_DELAY;
@@ -66,7 +65,6 @@ public class NeptuneHeadAI : MonoBehaviour
         _onBossDefeated = GetComponent<OnBossDefeated>();
         _onBossDefeated.onDefeated += OnNeptuneDefeated;
         InitializePoints();
-        GetComponent<SpriteRenderer>().flipY = !GetComponent<SpriteRenderer>().flipY;
         RotateAndFlip();
     }
 
@@ -95,7 +93,12 @@ public class NeptuneHeadAI : MonoBehaviour
                 _spawnBodyPartTimeLeft = BODY_PART_SPAWN_DELAY;
                 if (numberBodyPartsSpawned % 2 == 1)
                 {
-                    _bodyParts[numberBodyPartsSpawned].GetComponent<SpriteRenderer>().flipY = !_bodyParts[numberBodyPartsSpawned].GetComponent<SpriteRenderer>().flipY;
+                    _bodyParts[numberBodyPartsSpawned].transform.localScale = new Vector2(_bodyParts[numberBodyPartsSpawned].transform.localScale.x,-1 * _bodyParts[numberBodyPartsSpawned].transform.localScale.y);
+                    //_bodyParts[numberBodyPartsSpawned].GetComponent<SpriteRenderer>().flipY = !_bodyParts[numberBodyPartsSpawned].GetComponent<SpriteRenderer>().flipY;
+                }
+                if (numberBodyPartsSpawned == _bodyParts.Length - 1)
+                {
+                    _bodyParts[numberBodyPartsSpawned].GetComponent<NeptuneBodyAI>().SetLastPart();
                 }
                 numberBodyPartsSpawned++;
             }
@@ -166,6 +169,14 @@ public class NeptuneHeadAI : MonoBehaviour
         }
     }
 
+    protected virtual void RotateAndFlip()
+    {
+        _flipBoss.CheckSpecificPointForFlip(_targetedPoint);
+        transform.localScale = new Vector2(transform.localScale.x, -1 * transform.localScale.y);
+        transform.rotation = Quaternion.identity;
+        transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_targetedPoint.y - transform.position.y) / (_targetedPoint.x - transform.position.x)) + (_flipBoss.IsFacingLeft ? 270 : 90));
+    }
+
     private void OnNeptuneDefeated()
     {
         foreach (GameObject bodyPart in _bodyParts)
@@ -174,13 +185,5 @@ public class NeptuneHeadAI : MonoBehaviour
         }
         _rigidbody.isKinematic = false;
         _animator.SetBool("IsDead", true);
-    }
-
-    protected virtual void RotateAndFlip()
-    {
-        _flipBoss.CheckSpecificPointForFlip(_targetedPoint);
-        GetComponent<SpriteRenderer>().flipY = !GetComponent<SpriteRenderer>().flipY;
-        transform.rotation = Quaternion.identity;
-        transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_targetedPoint.y - transform.position.y) / (_targetedPoint.x - transform.position.x)) + (_flipBoss.IsFacingLeft ? 270 : 90));
     }
 }
