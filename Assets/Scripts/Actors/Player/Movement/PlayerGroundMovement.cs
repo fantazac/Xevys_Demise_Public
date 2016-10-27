@@ -31,9 +31,7 @@ public class PlayerGroundMovement : PlayerMovement
                 + CROUCHING_SPRITE_POSITION_OFFSET, _playerSpriteRenderer.transform.position.z);
             _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = false;
             _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND * CROUCHING_OFFSET);
-            _playerBoxColliderFeet.offset = new Vector2(_playerBoxColliderFeet.offset.x, FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
-            /*_playerBoxColliderTorso.size = new Vector2(_playerBoxColliderTorso.offset.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND * CROUCHING_OFFSET);
-            _playerCircleColliderTorso.offset = new Vector2(_playerCircleColliderTorso.offset.x, TORSO_CIRCLE_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);*/           
+            _playerBoxColliderFeet.offset = new Vector2(_playerBoxColliderFeet.offset.x, FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);          
         }   
     }
 
@@ -49,8 +47,6 @@ public class PlayerGroundMovement : PlayerMovement
             _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = true;
             _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND);
             _playerBoxColliderFeet.offset = new Vector2(_playerBoxColliderFeet.offset.x, FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND);
-            /*_playerBoxColliderTorso.size = new Vector2(_playerBoxColliderTorso.offset.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND);
-            _playerCircleColliderTorso.offset = new Vector2(_playerCircleColliderTorso.offset.x, TORSO_CIRCLE_COLLIDER_BOX_Y_OFFSET_WHEN_STAND);*/
         }       
     }
 
