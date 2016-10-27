@@ -13,7 +13,7 @@ public class FallDamage: MonoBehaviour
     private void Start()
     {
         _playerHealth = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
-        _playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
+        _playerMovement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerGroundMovement>();
         _knockback = GameObject.FindGameObjectWithTag("Player").GetComponent<KnockbackOnDamageTaken>();
         _invincibility = GameObject.FindGameObjectWithTag("Player").GetComponent<InvincibilityAfterBeingHit>();
 
