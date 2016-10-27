@@ -13,6 +13,11 @@ public class InventoryManager : MonoBehaviour
     private bool _knifeActive = false;
     private bool _axeActive = false;
 
+    private bool _earthArtefactFound = false;
+    private bool _airArtefactFound = false;
+    private bool _fireArtefactFound = false;
+    private bool _waterArtefactFound = false;
+
     private bool _featherEnabled = false;
 
     public bool KnifeEnabled { get { return _knifeEnabled; } }
@@ -45,5 +50,25 @@ public class InventoryManager : MonoBehaviour
     public void EnableFeather()
     {
         _featherEnabled = true;
+    }
+
+    public void EnableEarthArtefact()
+    {
+        _earthArtefactFound = true;
+    }
+
+    public void EnableAirArtefact()
+    {
+        _airArtefactFound = true;
+    }
+
+    public void EnableWaterArtefact()
+    {
+        _waterArtefactFound = true;
+    }
+
+    public void EnableFireArtefact()
+    {
+        _airArtefactFound = true;
     }
 }

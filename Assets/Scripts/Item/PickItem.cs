@@ -53,7 +53,27 @@ public class PickItem : MonoBehaviour
                 collider.GetComponentInChildren<InventoryManager>().EnableFeather();
                 _showItems.OnFeatherEnabled();
             }
-            
+            else if (gameObject.tag == "EarthArtefactItem")
+            {
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                collider.GetComponentInChildren<InventoryManager>().EnableEarthArtefact();
+            }
+            else if (gameObject.tag == "AirArtefactItem")
+            {
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                collider.GetComponentInChildren<InventoryManager>().EnableAirArtefact();
+            }
+            else if (gameObject.tag == "WaterArtefactItem")
+            {
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                collider.GetComponentInChildren<InventoryManager>().EnableWaterArtefact();
+            }
+            else if (gameObject.tag == "FireArtefactItem")
+            {
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                collider.GetComponentInChildren<InventoryManager>().EnableFireArtefact();
+            }
+
 
             GetComponent<AudioSource>().Play();
             gameObject.transform.position = new Vector3(-1000, -1000, 0);
