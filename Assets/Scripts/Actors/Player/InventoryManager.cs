@@ -35,6 +35,10 @@ public class InventoryManager : MonoBehaviour
     public bool BubbleEnabled { get { return _bubbleEnabled; } }
     public bool FireProofArmorEnabled { get { return _fireProofArmorEnabled; } }
 
+    public bool AirEnabled { get { return _airArtefactFound; } }
+    public bool EarthEnabled { get { return _earthArtefactFound; } }
+    public bool WaterEnabled { get { return _waterArtefactFound; } }
+
 
     public void EnableKnife()
     {
