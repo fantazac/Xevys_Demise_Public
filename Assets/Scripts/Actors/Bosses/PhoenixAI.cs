@@ -67,82 +67,97 @@ public class PhoenixAI : MonoBehaviour
         //This status allows Phoenix to watch the player and either charge on him after a few seconds or flee.
         if (_status == PhoenixStatus.FLY)
         {
-            _flipBoss.CheckPlayerPosition();
-            _attackCooldownTimeLeft += Time.fixedDeltaTime;
-            if (_attackCooldownTimeLeft > ATTACK_DELAY)
-            {
-                _playerPosition = GameObject.Find("Character").transform.position;
-                transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_playerPosition.y - transform.position.y) / (_playerPosition.x - transform.position.x)));
-                _attackCooldownTimeLeft = 0;
-                _rigidbody.isKinematic = true;
-                _status = PhoenixStatus.ATTACK;
-            }
-            else
-            {
-                float playerDistance = Vector2.Distance(GameObject.Find("Character").transform.position, transform.position);
-                if (playerDistance < PLAYER_APPROACH_LIMIT)
-                {
-                    int randomNumber = _rng.Next();
-                    if (_currentPoint.Equals(_northEastLimit) || _currentPoint.Equals(_southWestLimit))
-                    {
-                        _closestPoint = (randomNumber % 2 == 0 ? _northWestLimit : _southEastLimit);
-                    }
-                    else
-                    {
-                        _closestPoint = (randomNumber % 2 == 0 ? _northEastLimit : _southWestLimit);
-                    }
-                    EngageInFleeStatus();
-                }
-                else
-                {
-                    if (_flightTimeLeft > 0)
-                    {
-                        _flightTimeLeft -= Time.fixedDeltaTime;
-                    }
-                    else
-                    {
-                        _flightTimeLeft = FLIGHT_DELAY;
-                        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, WING_FLAP);
-                    }
-                }
-            }
+            FlyUpdate();
         }
         //Flee status makes Phoenix go to a neighbouring point in order to avoid the player.
         else if (_status == PhoenixStatus.FLEE)
         {
-            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _closestPoint, SPEED * Time.fixedDeltaTime);
-            CheckForFlyStatus();
+            FleeUpdate();
         }
         //In this status, Phoenix dives on the player in a parabolic path, allowing the latter to strike its head.
         else if (_status == PhoenixStatus.ATTACK)
         {
-            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _playerPosition, SPEED * Time.fixedDeltaTime);
+            AttackUpdate();
+        }
+    }
 
-            if (Vector2.Distance(transform.position, _playerPosition) < 1)
+    private void FlyUpdate()
+    {
+        _flipBoss.CheckPlayerPosition();
+        _attackCooldownTimeLeft += Time.fixedDeltaTime;
+        if (_attackCooldownTimeLeft > ATTACK_DELAY)
+        {
+            _playerPosition = GameObject.Find("Character").transform.position;
+            transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_playerPosition.y - transform.position.y) / (_playerPosition.x - transform.position.x)));
+            _attackCooldownTimeLeft = 0;
+            _rigidbody.isKinematic = true;
+            _status = PhoenixStatus.ATTACK;
+        }
+        else
+        {
+            float playerDistance = Vector2.Distance(GameObject.Find("Character").transform.position, transform.position);
+            if (playerDistance < PLAYER_APPROACH_LIMIT)
             {
-                _closestPoint = _currentPoint;
-                while (_closestPoint.Equals(_currentPoint))
+                int randomNumber = _rng.Next();
+                if (_currentPoint.Equals(_northEastLimit) || _currentPoint.Equals(_southWestLimit))
                 {
-                    int pointToFleeIndex = _rng.Next() % 4;
-                    if (pointToFleeIndex == 0)
-                    {
-                        _closestPoint = _northEastLimit;
-                    }
-                    else if (pointToFleeIndex == 1)
-                    {
-                        _closestPoint = _southEastLimit;
-                    }
-                    else if (pointToFleeIndex == 2)
-                    {
-                        _closestPoint = _southWestLimit;
-                    }
-                    else if (pointToFleeIndex == 3)
-                    {
-                        _closestPoint = _northWestLimit;
-                    }
+                    _closestPoint = (randomNumber % 2 == 0 ? _northWestLimit : _southEastLimit);
+                }
+                else
+                {
+                    _closestPoint = (randomNumber % 2 == 0 ? _northEastLimit : _southWestLimit);
                 }
                 EngageInFleeStatus();
             }
+            else
+            {
+                if (_flightTimeLeft > 0)
+                {
+                    _flightTimeLeft -= Time.fixedDeltaTime;
+                }
+                else
+                {
+                    _flightTimeLeft = FLIGHT_DELAY;
+                    _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, WING_FLAP);
+                }
+            }
+        }
+    }
+
+    private void FleeUpdate()
+    {
+        transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _closestPoint, SPEED * Time.fixedDeltaTime);
+        CheckForFlyStatus();
+    }
+
+    private void AttackUpdate()
+    {
+        transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _playerPosition, SPEED * Time.fixedDeltaTime);
+
+        if (Vector2.Distance(transform.position, _playerPosition) < 1)
+        {
+            _closestPoint = _currentPoint;
+            while (_closestPoint.Equals(_currentPoint))
+            {
+                int pointToFleeIndex = _rng.Next() % 4;
+                if (pointToFleeIndex == 0)
+                {
+                    _closestPoint = _northEastLimit;
+                }
+                else if (pointToFleeIndex == 1)
+                {
+                    _closestPoint = _southEastLimit;
+                }
+                else if (pointToFleeIndex == 2)
+                {
+                    _closestPoint = _southWestLimit;
+                }
+                else if (pointToFleeIndex == 3)
+                {
+                    _closestPoint = _northWestLimit;
+                }
+            }
+            EngageInFleeStatus();
         }
     }
 
