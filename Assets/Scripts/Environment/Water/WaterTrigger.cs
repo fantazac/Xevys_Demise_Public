@@ -3,7 +3,7 @@
 public class WaterTrigger : MonoBehaviour
 {
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    /*private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "PlayerWaterHitbox")
         {
@@ -17,5 +17,5 @@ public class WaterTrigger : MonoBehaviour
         {
             collider.GetComponent<PlayerWaterInteraction>().OnWaterExit(collider);
         }
-    }
+    }*/
 }
