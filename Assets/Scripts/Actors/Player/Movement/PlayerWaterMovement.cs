@@ -95,7 +95,6 @@ public class PlayerWaterMovement : PlayerMovement
 
         if (_inventoryManager.IronBootsEnabled)
         {
-            ChangeGravity();
             _showItems.OnIronBootsSelected();
             _inventoryManager.IronBootsActive = !_inventoryManager.IronBootsActive;
         }
