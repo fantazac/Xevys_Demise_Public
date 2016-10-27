@@ -9,7 +9,7 @@ public class ActivateDoorDescent : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if(_door != null)
+        if(_door != null && collider.gameObject.tag == "Player")
         {
             _door.GetComponent<EnableDoor>().Descent = true;
         }

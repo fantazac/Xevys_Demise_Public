@@ -12,6 +12,9 @@ public class InventoryManager : MonoBehaviour
     private bool _axeEnabled = false;
     private bool _knifeActive = false;
     private bool _axeActive = false;
+    private bool _ironBootsEnabled = false;
+    private bool _ironBootsActive = false;
+
 
     private bool _earthArtefactFound = false;
     private bool _airArtefactFound = false;
@@ -19,13 +22,23 @@ public class InventoryManager : MonoBehaviour
     private bool _waterArtefactFound = false;
 
     private bool _featherEnabled = false;
+    private bool _bubbleEnabled = false;
+    private bool _fireProofArmorEnabled = false;
 
     public bool KnifeEnabled { get { return _knifeEnabled; } }
     public bool AxeEnabled { get { return _axeEnabled; } }
     public bool KnifeActive { get { return _knifeActive; } set { _knifeActive = value; } }
     public bool AxeActive { get { return _axeActive; } set { _axeActive = value; } }
-
+    public bool IronBootsEnabled { get { return _ironBootsEnabled; } }
+    public bool IronBootsActive { get { return _ironBootsActive; } set { _ironBootsActive = value; } }
     public bool FeatherEnabled { get { return _featherEnabled; } }
+    public bool BubbleEnabled { get { return _bubbleEnabled; } }
+    public bool FireProofArmorEnabled { get { return _fireProofArmorEnabled; } }
+
+    public bool AirEnabled { get { return _airArtefactFound; } }
+    public bool EarthEnabled { get { return _earthArtefactFound; } }
+    public bool WaterEnabled { get { return _waterArtefactFound; } }
+
 
     public void EnableKnife()
     {
@@ -47,9 +60,24 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public void EnableIronBoots()
+    {
+        _ironBootsEnabled = true;
+    }
+
     public void EnableFeather()
     {
         _featherEnabled = true;
+    }
+
+    public void EnableBubble()
+    {
+        _bubbleEnabled = true;
+    }
+
+    public void EnableFireProofArmor()
+    {
+        _fireProofArmorEnabled = true;
     }
 
     public void EnableEarthArtefact()

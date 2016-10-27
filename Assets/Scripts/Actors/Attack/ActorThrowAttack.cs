@@ -44,19 +44,19 @@ public class ActorThrowAttack: MonoBehaviour
 
     private InputManager _inputManager;
     private InventoryManager _inventoryManager;
-    private AudioSource[] _audioSources;
+    private AudioSourcePlayer _soundPlayer;
 
     private ShowItems _showItems;
 
     private void Start()
     {
         _inputManager = GetComponent<InputManager>();
-        _inputManager.OnThowAttackChangeButtonPressed += OnThrowableWeaponChangeButtonPressed;
+        _inputManager.OnThrowAttackChangeButtonPressed += OnThrowableWeaponChangeButtonPressed;
 
         _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
         _inventoryManager.OnThrowableWeaponChange += OnThrowableWeaponChange;
 
-        _audioSources = GetComponents<AudioSource>();
+        _soundPlayer = GetComponent<AudioSourcePlayer>();
         _showItems = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowItems>();
 
         _knifeThrowCDCount = ATTACK_COOLDOWN;
@@ -79,10 +79,10 @@ public class ActorThrowAttack: MonoBehaviour
     {
         if (_knifeThrowCDCount >= ATTACK_COOLDOWN && GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition > 0)
         {
-            _audioSources[1].Play();
+            _soundPlayer.Play(1);
             GameObject newKnife;
 
-            if (GetComponent<PlayerMovement>().FacingRight)
+            if (GetComponent<FlipPlayer>().IsFacingRight)
             {
                 newKnife = (GameObject)Instantiate(_knife, new Vector3(transform.position.x + WEAPON_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, WEAPON_Z_POSITION), transform.rotation);
                 newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(KNIFE_SPEED, 0);
@@ -105,10 +105,10 @@ public class ActorThrowAttack: MonoBehaviour
     {
         if (_axeThrowCDCount >= ATTACK_COOLDOWN && GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition > 0)
         {
-            _audioSources[2].Play();
+            _soundPlayer.Play(2);
             GameObject newAxe;
 
-            if (GetComponent<PlayerMovement>().FacingRight)
+            if (GetComponent<FlipPlayer>().IsFacingRight)
             {
                 newAxe = (GameObject)Instantiate(_axeFacingRight, new Vector3(transform.position.x, transform.position.y + AXE_THROWING_HEIGHT, WEAPON_Z_POSITION), transform.rotation);
                 newAxe.GetComponent<Rigidbody2D>().rotation = AXE_INITIAL_ANGLE;

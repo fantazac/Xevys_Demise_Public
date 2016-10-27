@@ -26,11 +26,20 @@ public class InputManager : MonoBehaviour
     public delegate void OnBasicAttackHandler();
     public event OnBasicAttackHandler OnBasicAttack;
 
+    public delegate void OnCrouchHandler();
+    public event OnCrouchHandler OnCrouch;
+
+    public delegate void OnStandingUpHandler();
+    public event OnStandingUpHandler OnStandingUp;
+
     public delegate void OnThrowAttackHandler();
     public event OnThrowAttackHandler OnThrowAttack;
 
-    public delegate void OnThowAttackChangeButtonPressedHandler();
-    public event OnThowAttackChangeButtonPressedHandler OnThowAttackChangeButtonPressed;
+    public delegate void OnThrowAttackChangeButtonPressedHandler();
+    public event OnThrowAttackChangeButtonPressedHandler OnThrowAttackChangeButtonPressed;
+
+    public delegate void OnEnterPortalHandler();
+    public event OnEnterPortalHandler OnEnterPortal;
 
     private float _joysticksXAxisDeadZone = 0.1f;
     private float _joysticksYAxisDeadZone = 1f;
@@ -38,15 +47,19 @@ public class InputManager : MonoBehaviour
     private bool _leftShoulderReady = true;
     private bool _rightShoulderReady = true;
     private bool _xButtonReady = true;
+    private bool _yButtonReady = true;
     private bool _aButtonReady = true;
+    private bool _upButtonReady = true;
+
+    private bool _cheatsEnabled = false;
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.S))
         {
             OnMove(Vector3.left, false);
         }
-        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S))
         {
             OnMove(Vector3.right, true);
         }
@@ -55,23 +68,34 @@ public class InputManager : MonoBehaviour
             OnStop();
         }
 
-        if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.S))
         {
-            OnJumpDown();
+            OnUnderwaterControl(true);
+                       
+            if (Input.GetKey(KeyCode.Space))
+            {
+                OnJumpDown();
+            }
+            
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
             OnJump();
         }
 
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S))
         {
-            OnUnderwaterControl(true);
+            OnCrouch();
         }
 
         if (Input.GetKey(KeyCode.W))
         {
             OnUnderwaterControl(false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            OnEnterPortal();
         }
 
         if (Input.GetKeyDown(KeyCode.E))
@@ -91,7 +115,7 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            OnThowAttackChangeButtonPressed();
+            OnThrowAttackChangeButtonPressed();
         }
 
         GamePadInputs();
@@ -101,13 +125,10 @@ public class InputManager : MonoBehaviour
     {
         foreach (PlayerIndex player in Enum.GetValues(typeof(PlayerIndex)))
         {
-            //Obtention de l'état du gamepad
             GamePadState state = GamePad.GetState(player);
 
-            //Tester si la manette est connectée
             if (state.IsConnected)
             {
-                //Déplacement gauche à droite du joueur (utilisez les events)
                 if (Math.Abs(state.ThumbSticks.Left.X) > _joysticksXAxisDeadZone)
                 {
                     if (state.ThumbSticks.Left.X < 0)
@@ -122,20 +143,34 @@ public class InputManager : MonoBehaviour
 
                 if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
                 {
-                    if (state.Buttons.A == ButtonState.Pressed && state.ThumbSticks.Left.Y < 0)
-                    {
-                        OnJumpDown();
-                    }
-
                     if (state.ThumbSticks.Left.Y < 0)
                     {
                         OnUnderwaterControl(true);
-                    }
+                        OnCrouch();
+                        if (state.Buttons.A == ButtonState.Pressed)
+                        {
+                            OnJumpDown();
+                        }                       
+                    }                   
+                }
 
+                if (state.ThumbSticks.Left.Y >= 0 && !Input.GetKey(KeyCode.S))
+                {
+                    OnStandingUp();
                     if (state.ThumbSticks.Left.Y > 0)
                     {
                         OnUnderwaterControl(false);
+                        if (_upButtonReady)
+                        {
+                            _upButtonReady = false;
+                            OnEnterPortal();
+                        }
                     }
+                }
+
+                if (!_upButtonReady && state.ThumbSticks.Left.Y <= 0)
+                {
+                    _upButtonReady = true;
                 }
 
                 if (state.Buttons.A == ButtonState.Pressed && _aButtonReady && state.ThumbSticks.Left.Y != -_joysticksYAxisDeadZone)
@@ -150,7 +185,7 @@ public class InputManager : MonoBehaviour
 
                 #region Cheat
 
-                if (state.Buttons.LeftStick == ButtonState.Pressed)
+                if (_cheatsEnabled && state.Buttons.LeftStick == ButtonState.Pressed)
                 {
                     GameObject.Find("Character").GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition++;
                     GameObject.Find("Character").GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition++;
@@ -159,9 +194,14 @@ public class InputManager : MonoBehaviour
                 #endregion
 
 
-                if (state.Buttons.RightStick == ButtonState.Pressed)
+                if (state.Buttons.Y == ButtonState.Pressed && _yButtonReady)
                 {
+                    _yButtonReady = false;
                     OnIronBootsEquip();
+                }
+                if (state.Buttons.Y == ButtonState.Released && !_yButtonReady)
+                {
+                    _yButtonReady = true;
                 }
 
                 if (state.Buttons.X == ButtonState.Pressed && _xButtonReady)
@@ -174,7 +214,6 @@ public class InputManager : MonoBehaviour
                     _xButtonReady = true;
                 }
 
-
                 if (state.Buttons.B == ButtonState.Pressed)
                 {
                     if (OnThrowAttack != null)
@@ -186,7 +225,7 @@ public class InputManager : MonoBehaviour
                 if (state.Buttons.LeftShoulder == ButtonState.Pressed && _leftShoulderReady)
                 {
                     _leftShoulderReady = false;
-                    OnThowAttackChangeButtonPressed();
+                    OnThrowAttackChangeButtonPressed();
                 }
 
                 if (state.Buttons.LeftShoulder == ButtonState.Released && !_leftShoulderReady)
@@ -197,7 +236,7 @@ public class InputManager : MonoBehaviour
                 if (state.Buttons.RightShoulder == ButtonState.Pressed && _rightShoulderReady)
                 {
                     _rightShoulderReady = false;
-                    OnThowAttackChangeButtonPressed();
+                    OnThrowAttackChangeButtonPressed();
                 }
                 if (state.Buttons.RightShoulder == ButtonState.Released && !_rightShoulderReady)
                 {

@@ -53,25 +53,47 @@ public class PickItem : MonoBehaviour
                 collider.GetComponentInChildren<InventoryManager>().EnableFeather();
                 _showItems.OnFeatherEnabled();
             }
+            else if (gameObject.tag == "IronBootsItem")
+            {
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                collider.GetComponentInChildren<InventoryManager>().EnableIronBoots();
+                _showItems.OnIronBootsEnabled();
+            }
+            else if (gameObject.tag == "BubbleItem")
+            {
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                collider.GetComponentInChildren<InventoryManager>().EnableBubble();
+                _showItems.OnBubbleEnabled();
+            }
+            else if (gameObject.tag == "FireProofArmorItem")
+            {
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                collider.GetComponentInChildren<InventoryManager>().EnableFireProofArmor();
+                _showItems.OnFireProofArmorEnabled();
+            }
             else if (gameObject.tag == "EarthArtefactItem")
             {
                 GetComponent<ActivateHoverRetract>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableEarthArtefact();
+                _showItems.OnEarthArtefactEnabled();
             }
             else if (gameObject.tag == "AirArtefactItem")
             {
                 GetComponent<ActivateHoverRetract>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableAirArtefact();
+                _showItems.OnAirArtefactEnabled();
             }
             else if (gameObject.tag == "WaterArtefactItem")
             {
                 GetComponent<ActivateHoverRetract>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableWaterArtefact();
+                _showItems.OnWaterArtefactEnabled();
             }
             else if (gameObject.tag == "FireArtefactItem")
             {
                 GetComponent<ActivateHoverRetract>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableFireArtefact();
+                _showItems.OnFireArtefactEnabled();
             }
 
 
