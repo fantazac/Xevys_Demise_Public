@@ -4,10 +4,10 @@ using System.Collections;
 public class PickItem : MonoBehaviour
 {
     [SerializeField]
-    private const int AXE_AMOUNT_ON_PICKUP = 5;
+    private const int AXE_AMOUNT_ON_PICKUP = 2;
 
     [SerializeField]
-    private const int KNIFE_AMOUNT_ON_PICKUP = 5;
+    private const int KNIFE_AMOUNT_ON_PICKUP = 2;
 
     private const int BASE_AXE_AMOUNT_ON_PICKUP = 10;
     private const int BASE_KNIFE_AMOUNT_ON_PICKUP = 10;
