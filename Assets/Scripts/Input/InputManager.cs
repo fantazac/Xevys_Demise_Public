@@ -51,6 +51,8 @@ public class InputManager : MonoBehaviour
     private bool _aButtonReady = true;
     private bool _upButtonReady = true;
 
+    private bool _cheatsEnabled = false;
+
     private void Update()
     {
         if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.S))
@@ -183,7 +185,7 @@ public class InputManager : MonoBehaviour
 
                 #region Cheat
 
-                if (state.Buttons.LeftStick == ButtonState.Pressed)
+                if (_cheatsEnabled && state.Buttons.LeftStick == ButtonState.Pressed)
                 {
                     GameObject.Find("Character").GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition++;
                     GameObject.Find("Character").GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition++;
