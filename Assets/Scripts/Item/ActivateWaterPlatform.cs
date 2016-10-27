@@ -4,7 +4,13 @@ using System.Collections;
 public class ActivateWaterPlatform : MonoBehaviour {
 
     [SerializeField]
-    private GameObject _door;
+    private GameObject _doorToDestroy;
+
+    [SerializeField]
+    private GameObject _doorToRetract;
+
+    [SerializeField]
+    private GameObject[] _wallsToActivate;
 
     [SerializeField]
     private GameObject _player;
@@ -13,13 +19,21 @@ public class ActivateWaterPlatform : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (_door != null && _player.GetComponent<InventoryManager>().WaterEnabled)
+        if (_doorToDestroy != null && _doorToRetract != null 
+            && _player.GetComponent<InventoryManager>().WaterEnabled)
         {
+            foreach (GameObject wall in _wallsToActivate)
+            {
+                wall.GetComponent<BoxCollider2D>().enabled = true;
+            }
+
             GetComponent<AudioSource>().Play();
             _soundPlayed = true;
             gameObject.transform.position = new Vector3(-1000, -1000, 0);
 
-            _door.GetComponent<RetractDoor>().Retract = true;
+            Destroy(_doorToDestroy);
+
+            _doorToRetract.GetComponent<RetractDoor>().Retract = true;
         }
     }
 
