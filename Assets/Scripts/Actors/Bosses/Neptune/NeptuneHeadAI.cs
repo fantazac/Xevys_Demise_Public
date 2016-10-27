@@ -3,7 +3,7 @@ using System.Collections;
 
 public class NeptuneHeadAI : MonoBehaviour
 {
-    protected const float SPEED = 3f;// 0.95f;
+    protected const float SPEED = 0.95f;
     protected const float RADIAN_TO_DEGREE = 57.2958f;
     private const float ATTACK_DELAY = 5;
     private const float WARNING_DELAY = 2;
@@ -66,6 +66,8 @@ public class NeptuneHeadAI : MonoBehaviour
         _onBossDefeated = GetComponent<OnBossDefeated>();
         _onBossDefeated.onDefeated += OnNeptuneDefeated;
         InitializePoints();
+        GetComponent<SpriteRenderer>().flipY = !GetComponent<SpriteRenderer>().flipY;
+        RotateAndFlip();
     }
 
     protected void InitializePoints()
@@ -91,6 +93,10 @@ public class NeptuneHeadAI : MonoBehaviour
             {
                 _bodyParts[numberBodyPartsSpawned].SetActive(true);
                 _spawnBodyPartTimeLeft = BODY_PART_SPAWN_DELAY;
+                if (numberBodyPartsSpawned % 2 == 1)
+                {
+                    _bodyParts[numberBodyPartsSpawned].GetComponent<SpriteRenderer>().flipY = !_bodyParts[numberBodyPartsSpawned].GetComponent<SpriteRenderer>().flipY;
+                }
                 numberBodyPartsSpawned++;
             }
         }
@@ -136,33 +142,28 @@ public class NeptuneHeadAI : MonoBehaviour
 
     protected void MoveInTrajectory()
     {
-        transform.rotation = Quaternion.identity;
+        
         transform.position = Vector2.MoveTowards(transform.position, _targetedPoint, SPEED * Time.fixedDeltaTime);
         if (_targetedPoint == _southWestLimit && transform.position.x <= _southWestLimit.x && transform.position.y <= _southWestLimit.y)
         {
             _targetedPoint = _northWestLimit;
-            GetComponent<SpriteRenderer>().flipY = !GetComponent<SpriteRenderer>().flipY;
-            _flipBoss.CheckSpecificPointForFlip(_targetedPoint);
+            RotateAndFlip();
         }
         else if (_targetedPoint == _northWestLimit && transform.position.x <= _northWestLimit.x && transform.position.y >= _northWestLimit.y)
         {
             _targetedPoint = _southEastLimit;
-            GetComponent<SpriteRenderer>().flipY = !GetComponent<SpriteRenderer>().flipY;
-            _flipBoss.CheckSpecificPointForFlip(_targetedPoint);
+            RotateAndFlip();
         }
         else if (_targetedPoint == _southEastLimit && transform.position.x >= _southEastLimit.x && transform.position.y <= _southEastLimit.y)
         {
             _targetedPoint = _northEastLimit;
-            GetComponent<SpriteRenderer>().flipY = !GetComponent<SpriteRenderer>().flipY;
-            _flipBoss.CheckSpecificPointForFlip(_targetedPoint);
+            RotateAndFlip();
         }
         else if (_targetedPoint == _northEastLimit && transform.position.x >= _northEastLimit.x && transform.position.y >= _northEastLimit.y)
         {
             _targetedPoint = _southWestLimit;
-            GetComponent<SpriteRenderer>().flipY = !GetComponent<SpriteRenderer>().flipY;
-            _flipBoss.CheckSpecificPointForFlip(_targetedPoint);
+            RotateAndFlip();
         }
-        RotateAndFlip();
     }
 
     private void OnNeptuneDefeated()
@@ -177,6 +178,9 @@ public class NeptuneHeadAI : MonoBehaviour
 
     protected virtual void RotateAndFlip()
     {
+        _flipBoss.CheckSpecificPointForFlip(_targetedPoint);
+        GetComponent<SpriteRenderer>().flipY = !GetComponent<SpriteRenderer>().flipY;
+        transform.rotation = Quaternion.identity;
         transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_targetedPoint.y - transform.position.y) / (_targetedPoint.x - transform.position.x)) + (_flipBoss.IsFacingLeft ? 270 : 90));
     }
 }

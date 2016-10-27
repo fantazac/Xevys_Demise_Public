@@ -18,11 +18,10 @@ public class NeptuneBodyAI : NeptuneHeadAI {
 	private void Update()
     {
         MoveInTrajectory();
-        RotateAndFlip();
 	}
 
     protected override void RotateAndFlip()
     {
-        transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_targetedPoint.y - transform.position.y) / (_targetedPoint.x - transform.position.x)) + (_flipBoss.IsFacingLeft ? 0 : 0));
+        transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_targetedPoint.y - transform.position.y) / (_targetedPoint.x - transform.position.x)));
     }
 }
