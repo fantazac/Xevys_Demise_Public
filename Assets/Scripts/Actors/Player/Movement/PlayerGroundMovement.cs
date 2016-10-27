@@ -107,16 +107,26 @@ public class PlayerGroundMovement : PlayerMovement
 
         if (_inventoryManager.IronBootsEnabled)
         {
-            if (_inventoryManager.IronBootsActive)
-            {
-                _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
-            }
-            else
-            {
-                _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE * 2;
-            }
+            ChangeGravity();
             _showItems.OnIronBootsSelected();
             _inventoryManager.IronBootsActive = !_inventoryManager.IronBootsActive;
+        }
+    }
+
+    public override void ChangeGravity()
+    {
+        if (!enabled)
+        {
+            return;
+        }
+
+        if (_inventoryManager.IronBootsActive)
+        {
+            _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
+        }
+        else
+        {
+            _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE * 2;
         }
     }
 
@@ -135,6 +145,8 @@ public class PlayerGroundMovement : PlayerMovement
         {
             return;
         }
+
+        _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
 
         if (_isKnockedBack && _knockbackCount == KNOCKBACK_DURATION)
         {

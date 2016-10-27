@@ -91,6 +91,8 @@ public class PlayerMovement : MonoBehaviour
 
     protected virtual void UpdateMovement() { }
 
+    public virtual void ChangeGravity() { }
+
     public virtual bool IsJumping()
     {
         return !(((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround
@@ -112,16 +114,16 @@ public class PlayerMovement : MonoBehaviour
             _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND * CROUCHING_OFFSET);
             _playerBoxCollider.offset = new Vector2(_playerBoxCollider.offset.x, PLAYER_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
             _playerBoxColliderFeet.offset = new Vector2(_playerBoxColliderFeet.offset.x, FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
-            _playerBoxColliderTorso.offset = new Vector2(_playerBoxColliderTorso.offset.x, TORSO_BOX_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
-            _playerCircleColliderTorso.offset = new Vector2(_playerCircleColliderTorso.offset.x, TORSO_CIRCLE_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
+            //_playerBoxColliderTorso.offset = new Vector2(_playerBoxColliderTorso.offset.x, TORSO_BOX_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
+            //_playerCircleColliderTorso.offset = new Vector2(_playerCircleColliderTorso.offset.x, TORSO_CIRCLE_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
         }
         else
         {
             _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND);
             _playerBoxCollider.offset = new Vector2(_playerBoxCollider.offset.x, PLAYER_COLLIDER_BOX_Y_OFFSET_WHEN_STAND);
             _playerBoxColliderFeet.offset = new Vector2(_playerBoxColliderFeet.offset.x, FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND);
-            _playerBoxColliderTorso.offset = new Vector2(_playerBoxColliderTorso.offset.x, TORSO_BOX_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
-            _playerCircleColliderTorso.offset = new Vector2(_playerCircleColliderTorso.offset.x, TORSO_CIRCLE_COLLIDER_BOX_Y_OFFSET_WHEN_STAND);
+            //_playerBoxColliderTorso.offset = new Vector2(_playerBoxColliderTorso.offset.x, TORSO_BOX_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
+            //_playerCircleColliderTorso.offset = new Vector2(_playerCircleColliderTorso.offset.x, TORSO_CIRCLE_COLLIDER_BOX_Y_OFFSET_WHEN_STAND);
         }
 
         if (IsJumping() && _rigidbody.velocity.y < 0)
