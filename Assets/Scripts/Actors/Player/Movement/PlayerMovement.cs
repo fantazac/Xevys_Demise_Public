@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     protected const float TORSO_CIRCLE_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = 0.21f;
     protected const float TORSO_BOX_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.4f;
     protected const float CROUCHING_OFFSET = 0.6f;
-    protected const float CROUCHING_SPRITE_POSITION_OFFSET = 0.17f;
+    protected const float CROUCHING_SPRITE_POSITION_OFFSET = 0.35f;
 
     protected float _speed = 7;
     protected float _jumpingSpeed = 17;
