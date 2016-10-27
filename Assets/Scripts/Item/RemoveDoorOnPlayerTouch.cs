@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ActivateDoorDescent : MonoBehaviour
+public class RemoveDoorOnPlayerTouch : MonoBehaviour
 {
 
     [SerializeField]
@@ -9,9 +9,9 @@ public class ActivateDoorDescent : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if(_door != null && collider.gameObject.tag == "Player")
+        if (_door != null && collider.gameObject.tag == "Player")
         {
-            _door.GetComponent<EnableDoor>().Descent = true;
+            _door.GetComponent<RetractDoor>().Retract = true;
         }
     }
 
