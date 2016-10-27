@@ -133,8 +133,8 @@ public class PlayerGroundMovement : PlayerMovement
         {
             return;
         }
-
-        if (_inventoryManager.IronBootsActive)
+        
+        if (!_inventoryManager.IronBootsActive)
         {
             _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
         }
