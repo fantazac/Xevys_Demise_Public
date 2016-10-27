@@ -1,0 +1,32 @@
+Maps
+-Revoir design 2-7
+-(Water) 3-2 3-3 : plus haute plateforme en sautant (ne devrait pas)
+
+Graphique
+-Neptune (terrible)
+-Skeltals attaquent avant animation
+-Lorsque plusieurs spikes; faire une grosse hitbox au lieu de plusieurs.
+-Map de feu; porte du boss accessible malgré la porte grise
+
+-Musique
+-Feu à Terre : La musique continue
+
+-Physique
+Hache droppée de scarabée clippe dans plancher
+
+
+Suggestions :
+-saut analogique
+-finir animation cours avant saut
+-latence attaque
+-arrêt avant attaque / pas glisser
+-arrêt animation skeltal au moment mort
+-skeltal IA
+-remap double jump (plafond) clip/mur en bas
+soft spot (saut analogique)
+-remettre à falling lorsque saut en bas de plateforme
+goutelettes lors de saut dans l'eau
+bottes de plomb : arrêt moins sec au sommet
+animation bottes
+
+wishlist : animation attaché au mur
