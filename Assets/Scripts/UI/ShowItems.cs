@@ -15,6 +15,10 @@ public class ShowItems : MonoBehaviour
     private SpriteRenderer _ironBootsSpriteRenderer;
     private SpriteRenderer _bubbleSpriteRenderer;
     private SpriteRenderer _fireProofArmorRenderer;
+    private SpriteRenderer _earthKeyRenderer;
+    private SpriteRenderer _airKeyRenderer;
+    private SpriteRenderer _waterKeyRenderer;
+    private SpriteRenderer _fireKeyRenderer;
     private InventoryManager _inventoryManager;
 
     private void Start()
@@ -30,6 +34,10 @@ public class ShowItems : MonoBehaviour
         _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
         _bubbleSpriteRenderer = GameObject.Find("BubbleFrame").GetComponent<SpriteRenderer>();
         _fireProofArmorRenderer = GameObject.Find("FireProofArmorFrame").GetComponent<SpriteRenderer>();
+        _earthKeyRenderer = GameObject.Find("EarthKeyFrame").GetComponent<SpriteRenderer>();
+        _airKeyRenderer = GameObject.Find("AirKeyFrame").GetComponent<SpriteRenderer>();
+        _waterKeyRenderer = GameObject.Find("WaterKeyFrame").GetComponent<SpriteRenderer>();
+        _fireKeyRenderer = GameObject.Find("FireKeyFrame").GetComponent<SpriteRenderer>();
 
         _knifeText.enabled = false;
         _axeText.enabled = false;
@@ -41,6 +49,10 @@ public class ShowItems : MonoBehaviour
         _ironBootsSpriteRenderer.enabled = false;
         _bubbleSpriteRenderer.enabled = false;
         _fireProofArmorRenderer.enabled = false;
+        _earthKeyRenderer.enabled = false;
+        _airKeyRenderer.enabled = false;
+        _waterKeyRenderer.enabled = false;
+        _fireKeyRenderer.enabled = false;
 
         _selectedIronBootsHighlight.transform.position = new Vector3(_ironBootsSpriteRenderer.transform.position.x,
             _ironBootsSpriteRenderer.transform.position.y, _ironBootsSpriteRenderer.transform.position.z + 5);
@@ -115,4 +127,23 @@ public class ShowItems : MonoBehaviour
         _fireProofArmorRenderer.enabled = true;
     }
 
+    public void OnEarthKeyEnabled()
+    {
+        _earthKeyRenderer.enabled = true;
+    }
+
+    public void OnAirKeyEnabled()
+    {
+        _airKeyRenderer.enabled = true;
+    }
+
+    public void OnWaterKeyEnabled()
+    {
+        _waterKeyRenderer.enabled = true;
+    }
+
+    public void OnFireKeyEnabled()
+    {
+        _fireKeyRenderer.enabled = true;
+    }
 }

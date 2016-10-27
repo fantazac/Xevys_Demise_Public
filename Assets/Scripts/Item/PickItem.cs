@@ -71,6 +71,26 @@ public class PickItem : MonoBehaviour
                 collider.GetComponentInChildren<InventoryManager>().EnableFireProofArmor();
                 _showItems.OnFireProofArmorEnabled();
             }
+            else if (gameObject.tag == "EarthKey")
+            {
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                _showItems.OnEarthKeyEnabled();
+            }
+            else if (gameObject.tag == "AirKey")
+            {
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                _showItems.OnAirKeyEnabled();
+            }
+            else if (gameObject.tag == "WaterKey")
+            {
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                _showItems.OnWaterKeyEnabled();
+            }
+            else if (gameObject.tag == "FireKey")
+            {
+                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                _showItems.OnFireKeyEnabled();
+            }
 
 
             GetComponent<AudioSource>().Play();
