@@ -15,10 +15,10 @@ public class ShowItems : MonoBehaviour
     private SpriteRenderer _ironBootsSpriteRenderer;
     private SpriteRenderer _bubbleSpriteRenderer;
     private SpriteRenderer _fireProofArmorRenderer;
-    private SpriteRenderer _earthKeyRenderer;
-    private SpriteRenderer _airKeyRenderer;
-    private SpriteRenderer _waterKeyRenderer;
-    private SpriteRenderer _fireKeyRenderer;
+    private SpriteRenderer _earthArtefactRenderer;
+    private SpriteRenderer _airArtefactRenderer;
+    private SpriteRenderer _waterArtefactRenderer;
+    private SpriteRenderer _fireArtefactRenderer;
     private InventoryManager _inventoryManager;
 
     private void Start()
@@ -34,10 +34,10 @@ public class ShowItems : MonoBehaviour
         _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
         _bubbleSpriteRenderer = GameObject.Find("BubbleFrame").GetComponent<SpriteRenderer>();
         _fireProofArmorRenderer = GameObject.Find("FireProofArmorFrame").GetComponent<SpriteRenderer>();
-        _earthKeyRenderer = GameObject.Find("EarthKeyFrame").GetComponent<SpriteRenderer>();
-        _airKeyRenderer = GameObject.Find("AirKeyFrame").GetComponent<SpriteRenderer>();
-        _waterKeyRenderer = GameObject.Find("WaterKeyFrame").GetComponent<SpriteRenderer>();
-        _fireKeyRenderer = GameObject.Find("FireKeyFrame").GetComponent<SpriteRenderer>();
+        _earthArtefactRenderer = GameObject.Find("EarthArtefactFrame").GetComponent<SpriteRenderer>();
+        _airArtefactRenderer = GameObject.Find("AirArtefactFrame").GetComponent<SpriteRenderer>();
+        _waterArtefactRenderer = GameObject.Find("WaterArtefactFrame").GetComponent<SpriteRenderer>();
+        _fireArtefactRenderer = GameObject.Find("FireArtefactFrame").GetComponent<SpriteRenderer>();
 
         _knifeText.enabled = false;
         _axeText.enabled = false;
@@ -49,10 +49,10 @@ public class ShowItems : MonoBehaviour
         _ironBootsSpriteRenderer.enabled = false;
         _bubbleSpriteRenderer.enabled = false;
         _fireProofArmorRenderer.enabled = false;
-        _earthKeyRenderer.enabled = false;
-        _airKeyRenderer.enabled = false;
-        _waterKeyRenderer.enabled = false;
-        _fireKeyRenderer.enabled = false;
+        _earthArtefactRenderer.enabled = false;
+        _airArtefactRenderer.enabled = false;
+        _waterArtefactRenderer.enabled = false;
+        _fireArtefactRenderer.enabled = false;
 
         _selectedIronBootsHighlight.transform.position = new Vector3(_ironBootsSpriteRenderer.transform.position.x,
             _ironBootsSpriteRenderer.transform.position.y, _ironBootsSpriteRenderer.transform.position.z + 5);
@@ -127,23 +127,23 @@ public class ShowItems : MonoBehaviour
         _fireProofArmorRenderer.enabled = true;
     }
 
-    public void OnEarthKeyEnabled()
+    public void OnEarthArtefactEnabled()
     {
-        _earthKeyRenderer.enabled = true;
+        _earthArtefactRenderer.enabled = true;
     }
 
-    public void OnAirKeyEnabled()
+    public void OnAirArtefactEnabled()
     {
-        _airKeyRenderer.enabled = true;
+        _airArtefactRenderer.enabled = true;
     }
 
-    public void OnWaterKeyEnabled()
+    public void OnWaterArtefactEnabled()
     {
-        _waterKeyRenderer.enabled = true;
+        _waterArtefactRenderer.enabled = true;
     }
 
-    public void OnFireKeyEnabled()
+    public void OnFireArtefactEnabled()
     {
-        _fireKeyRenderer.enabled = true;
+        _fireArtefactRenderer.enabled = true;
     }
 }

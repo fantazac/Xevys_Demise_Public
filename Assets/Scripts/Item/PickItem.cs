@@ -75,21 +75,25 @@ public class PickItem : MonoBehaviour
             {
                 GetComponent<ActivateHoverRetract>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableEarthArtefact();
+                _showItems.OnEarthArtefactEnabled();
             }
             else if (gameObject.tag == "AirArtefactItem")
             {
                 GetComponent<ActivateHoverRetract>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableAirArtefact();
+                _showItems.OnAirArtefactEnabled();
             }
             else if (gameObject.tag == "WaterArtefactItem")
             {
                 GetComponent<ActivateHoverRetract>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableWaterArtefact();
+                _showItems.OnWaterArtefactEnabled();
             }
             else if (gameObject.tag == "FireArtefactItem")
             {
                 GetComponent<ActivateHoverRetract>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableFireArtefact();
+                _showItems.OnFireArtefactEnabled();
             }
 
 
