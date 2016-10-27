@@ -19,7 +19,14 @@ public class WaterDetector : MonoBehaviour
 
         if (collider.GetComponent<Rigidbody2D>() != null)
         {
-            transform.parent.GetComponent<Water>().Splash(transform.position.x, collider.GetComponent<Rigidbody2D>().velocity.y * collider.GetComponent<Rigidbody2D>().mass / DEFAULT_DAMPING_REDUCTION);
+            if (collider.gameObject.tag == "Player" && collider.GetComponent<InventoryManager>().IronBootsActive && collider.GetComponent<PlayerWaterMovement>().enabled)
+            {
+                transform.parent.GetComponent<Water>().Splash(transform.position.x, collider.GetComponent<Rigidbody2D>().velocity.y * collider.GetComponent<Rigidbody2D>().mass / (DEFAULT_DAMPING_REDUCTION * 2));
+            }
+            else
+            {
+                transform.parent.GetComponent<Water>().Splash(transform.position.x, collider.GetComponent<Rigidbody2D>().velocity.y * collider.GetComponent<Rigidbody2D>().mass / DEFAULT_DAMPING_REDUCTION);
+            }
         }
     }
 

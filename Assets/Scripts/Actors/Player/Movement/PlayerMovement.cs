@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     protected BoxCollider2D _playerBoxColliderFeet;
     protected BoxCollider2D _playerBoxColliderTorso;
     protected CircleCollider2D _playerCircleColliderTorso;
+    protected SpriteRenderer _playerSpriteRenderer;
     protected InventoryManager _inventoryManager;
     protected Animator _anim;
     protected Transform _spriteTransform;
@@ -31,7 +32,8 @@ public class PlayerMovement : MonoBehaviour
     protected const float FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.45f;
     protected const float TORSO_CIRCLE_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = 0.21f;
     protected const float TORSO_BOX_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.4f;
-    protected const float CROUCHING_OFFSET = 0.4f;
+    protected const float CROUCHING_OFFSET = 0.6f;
+    protected const float CROUCHING_SPRITE_POSITION_OFFSET = 0.35f;
 
     protected float _speed = 7;
     protected float _jumpingSpeed = 17;
@@ -50,11 +52,12 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         _anim = GameObject.Find("CharacterSprite").GetComponent<Animator>();
+        _playerSpriteRenderer = GameObject.Find("CharacterSprite").GetComponent<SpriteRenderer>();
         _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
         _playerBoxCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>();
         _playerBoxColliderFeet = GameObject.Find("CharacterTouchesGround").GetComponent<BoxCollider2D>();
         _playerBoxColliderTorso = GameObject.Find("CharacterWaterHitbox").GetComponent<BoxCollider2D>();
-        _playerCircleColliderTorso = GameObject.Find("CharacterWaterHitbox").GetComponent<CircleCollider2D>();
+        _playerCircleColliderTorso = GameObject.Find("CharacterFloatingHitbox").GetComponent<CircleCollider2D>();
         _spriteTransform = _anim.GetComponent<Transform>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _inputManager = GetComponent<InputManager>();
@@ -91,6 +94,8 @@ public class PlayerMovement : MonoBehaviour
 
     protected virtual void UpdateMovement() { }
 
+    public virtual void ChangeGravity() { }
+
     public virtual bool IsJumping()
     {
         return !(((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround
@@ -112,16 +117,12 @@ public class PlayerMovement : MonoBehaviour
             _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND * CROUCHING_OFFSET);
             _playerBoxCollider.offset = new Vector2(_playerBoxCollider.offset.x, PLAYER_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
             _playerBoxColliderFeet.offset = new Vector2(_playerBoxColliderFeet.offset.x, FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
-            _playerBoxColliderTorso.offset = new Vector2(_playerBoxColliderTorso.offset.x, TORSO_BOX_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
-            _playerCircleColliderTorso.offset = new Vector2(_playerCircleColliderTorso.offset.x, TORSO_CIRCLE_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
         }
         else
         {
             _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND);
             _playerBoxCollider.offset = new Vector2(_playerBoxCollider.offset.x, PLAYER_COLLIDER_BOX_Y_OFFSET_WHEN_STAND);
             _playerBoxColliderFeet.offset = new Vector2(_playerBoxColliderFeet.offset.x, FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND);
-            _playerBoxColliderTorso.offset = new Vector2(_playerBoxColliderTorso.offset.x, TORSO_BOX_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
-            _playerCircleColliderTorso.offset = new Vector2(_playerCircleColliderTorso.offset.x, TORSO_CIRCLE_COLLIDER_BOX_Y_OFFSET_WHEN_STAND);
         }
 
         if (IsJumping() && _rigidbody.velocity.y < 0)
