@@ -20,7 +20,7 @@ public class ActivateWaterPlatform : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (_doorToDestroy != null && _doorToRetract != null 
-            && _player.GetComponent<InventoryManager>().WaterEnabled)
+            && _player.GetComponent<InventoryManager>().WaterArtefactEnabled)
         {
             foreach (GameObject wall in _wallsToActivate)
             {

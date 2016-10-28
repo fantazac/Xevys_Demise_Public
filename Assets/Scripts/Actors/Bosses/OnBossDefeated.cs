@@ -11,17 +11,15 @@ public class OnBossDefeated : MonoBehaviour
     public delegate void OnDefeated();
     public event OnDefeated onDefeated;
 
-    // Use this for initialization
-    private void Start ()
+    private void Start()
     {
         _isDead = false;
         _health = GetComponent<Health>();
         _boxCollider = GetComponent<BoxCollider2D>();
         _polygonCollider = GetComponent<PolygonCollider2D>();
     }
-	
-	// Update is called once per frame
-	private void Update ()
+
+	private void Update()
     {
         if (!_isDead && _health.HealthPoint <= 0)
         {

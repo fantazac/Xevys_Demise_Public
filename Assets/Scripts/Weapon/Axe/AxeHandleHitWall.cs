@@ -18,7 +18,7 @@ public class AxeHandleHitWall : MonoBehaviour
             transform.parent.GetComponentInChildren<PolygonCollider2D>().isTrigger = false;
             transform.parent.GetComponent<Rigidbody2D>().drag = BASE_AXE_DRAG;
             _touchesGround = true;
-            transform.parent.GetComponent<DestroyWeapon>().TouchesGround = true;
+            transform.parent.GetComponent<DestroyProjectile>().TouchesGround = true;
         }
     }
 }
