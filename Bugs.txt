@@ -8,25 +8,26 @@ Graphique
 -Lorsque plusieurs spikes; faire une grosse hitbox au lieu de plusieurs.
 -Map de feu; porte du boss accessible malgré la porte grise
 
--Musique
--Feu à Terre : La musique continue
-
 -Physique
-Hache droppée de scarabée clippe dans plancher
-
+Ennemi tué sur plateforme : drop item à un point précis
 
 Suggestions :
+-difficulté (normie, casual, average, okay, expert)
+-plusieurs spawn-points/patterns d'ennemis
+-respawn ennemi en entrée de room
+-despawn ennemi en sortie de room
 -saut analogique
 -finir animation cours avant saut
 -latence attaque
--arrêt avant attaque / pas glisser
+-arrêt avant attaque / pas glisser, lock mouvement
 -arrêt animation skeltal au moment mort
 -skeltal IA
 -remap double jump (plafond) clip/mur en bas
 soft spot (saut analogique)
 -remettre à falling lorsque saut en bas de plateforme
-goutelettes lors de saut dans l'eau
-bottes de plomb : arrêt moins sec au sommet
-animation bottes
-
+-goutelettes lors de saut dans l'eau
+-bottes de plomb : arrêt moins sec au sommet
+-animation bottes
+-lock attack sur ennemi avec l'épée
 wishlist : animation attaché au mur
+-lancement arme dans l'eau: ralentisse, voire ne se rende pas jusqu'au bout
