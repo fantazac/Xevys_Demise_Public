@@ -38,6 +38,7 @@ public class InventoryManager : MonoBehaviour
     public bool AirEnabled { get { return _airArtefactFound; } }
     public bool EarthEnabled { get { return _earthArtefactFound; } }
     public bool WaterEnabled { get { return _waterArtefactFound; } }
+    public bool FireEnabled { get { return _fireArtefactFound; } }
 
 
     public void EnableKnife()
