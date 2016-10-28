@@ -46,22 +46,22 @@ public class ActivateArtefactTrigger : MonoBehaviour
 
     private bool EarthArtefactIsUnlocked()
     {
-        return _artefactType == ArtefactType.Earth && _playerInventory.EarthEnabled;
+        return _artefactType == ArtefactType.Earth && _playerInventory.EarthArtefactEnabled;
     }
 
     private bool AirArtefactIsUnlocked()
     {
-        return _artefactType == ArtefactType.Air && _playerInventory.AirEnabled;
+        return _artefactType == ArtefactType.Air && _playerInventory.AirArtefactEnabled;
     }
 
     private bool WaterArtefactIsUnlocked()
     {
-        return _artefactType == ArtefactType.Water && _playerInventory.WaterEnabled;
+        return _artefactType == ArtefactType.Water && _playerInventory.WaterArtefactEnabled;
     }
 
     private bool FireArtefactIsUnlocked()
     {
-        return _artefactType == ArtefactType.Fire && _playerInventory.FireEnabled;
+        return _artefactType == ArtefactType.Fire && _playerInventory.FireArtefactEnabled;
     }
 
     private bool TriggerIsValid(Collider2D collider)
