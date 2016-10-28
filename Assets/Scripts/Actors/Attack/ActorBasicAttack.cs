@@ -4,7 +4,7 @@ using System.Collections;
 public class ActorBasicAttack : MonoBehaviour
 {
     [SerializeField]
-    private const float ATTACK_SPEED = 0.2f;
+    private const float ATTACK_SPEED = 0.5f;
 
     private InputManager _inputManager;
     private GameObject _attackHitBox;
