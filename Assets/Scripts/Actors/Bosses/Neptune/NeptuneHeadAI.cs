@@ -3,7 +3,7 @@ using System.Collections;
 
 public class NeptuneHeadAI : MonoBehaviour
 {
-    protected const float SPEED = 5f;// 0.95f;
+    protected const float SPEED = 0.95f;
     protected const float RADIAN_TO_DEGREE = 57.2958f;
     private const float ATTACK_DELAY = 5;
     private const float WARNING_DELAY = 2;
@@ -94,7 +94,6 @@ public class NeptuneHeadAI : MonoBehaviour
                 if (numberBodyPartsSpawned % 2 == 1)
                 {
                     _bodyParts[numberBodyPartsSpawned].transform.localScale = new Vector2(_bodyParts[numberBodyPartsSpawned].transform.localScale.x,-1 * _bodyParts[numberBodyPartsSpawned].transform.localScale.y);
-                    //_bodyParts[numberBodyPartsSpawned].GetComponent<SpriteRenderer>().flipY = !_bodyParts[numberBodyPartsSpawned].GetComponent<SpriteRenderer>().flipY;
                 }
                 if (numberBodyPartsSpawned == _bodyParts.Length - 1)
                 {
