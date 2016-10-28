@@ -4,7 +4,7 @@ using System.Collections;
 public class ActorBasicAttack : MonoBehaviour
 {
     [SerializeField]
-    private const int ATTACK_SPEED = 30;
+    private const float ATTACK_SPEED = 0.5f;
 
     private InputManager _inputManager;
     private GameObject _attackHitBox;
@@ -12,7 +12,7 @@ public class ActorBasicAttack : MonoBehaviour
     private Animator _anim;
 
     private bool _isAttacking = false;
-    private int _count;
+    private float _attackCooldown;
 
     private void Start()
     {
@@ -20,7 +20,7 @@ public class ActorBasicAttack : MonoBehaviour
         _attackHitBox = GameObject.Find("CharacterBasicAttackBox");
         _anim = GameObject.Find("CharacterSprite").GetComponent<Animator>();
         _soundPlayer = GetComponent<AudioSourcePlayer>();
-        _count = ATTACK_SPEED;
+        _attackCooldown = ATTACK_SPEED;
 
         _inputManager.OnBasicAttack += OnBasicAttack;
     }
@@ -28,9 +28,9 @@ public class ActorBasicAttack : MonoBehaviour
     private void Update()
     {
         _anim.SetBool("IsAttacking", _isAttacking);
-        _count++;
+        _attackCooldown += Time.deltaTime;
 
-        if (_count >= ATTACK_SPEED / 2)
+        if (_attackCooldown >= ATTACK_SPEED / 2)
         {
             _attackHitBox.GetComponent<BoxCollider2D>().enabled = false;
             _isAttacking = false;
@@ -39,10 +39,10 @@ public class ActorBasicAttack : MonoBehaviour
 
     private void OnBasicAttack()
     {
-        if (_count >= ATTACK_SPEED)
+        if (_attackCooldown >= ATTACK_SPEED)
         {
             _isAttacking = true;
-            _count = 0;
+            _attackCooldown = 0;
         }
     }
 
