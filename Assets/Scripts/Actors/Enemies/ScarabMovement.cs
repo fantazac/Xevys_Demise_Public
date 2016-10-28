@@ -71,73 +71,83 @@ public class ScarabMovement : MonoBehaviour
     {
         if (_attachedWall != null)
         {
-            if (_target != transform.position)
+            RectangularMovementUpdate();
+        }
+        else
+        {
+            IrregularMovementUpdate();
+        }
+    }
+
+    private void RectangularMovementUpdate()
+    {
+        if (_target != transform.position)
+        {
+            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _target, 1 * Time.deltaTime);
+            if (Vector3.Distance(_target, transform.position) <= transform.localScale.x / ROTATION_SPEED)
             {
-                transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _target, 1 * Time.deltaTime);
-                if (Vector3.Distance(_target, transform.position) <= transform.localScale.x / ROTATION_SPEED)
-                {
-                    _rotate = true;
-                }
+                _rotate = true;
             }
+        }
+        else
+        {
+            FindTarget();
+        }
+
+        if (_rotate)
+        {
+            if (_rotateCount < MAX_ROTATION)
+            {
+                _rotateCount += ROTATION_SPEED;
+                transform.Rotate(Vector3.forward * ROTATION_SPEED);
+            }
+
             else
             {
-                FindTarget();
+                _rotate = false;
+                _rotateCount = 0;
             }
+        }
+    }
 
-            if (_rotate)
+    private void IrregularMovementUpdate()
+    {
+        if (_target != transform.position)
+        {
+            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _target, 1 * Time.deltaTime);
+            if (Vector3.Distance(_target, transform.position) <= transform.localScale.x / ROTATION_SPEED && _currentPoint != 0 && _currentPoint != _points.Length - 1)
             {
-                if (_rotateCount < MAX_ROTATION)
+                _rotate = true;
+                _currentRotateDirection = _rotationDirections[_currentPoint];
+                if (!goesBackwards)
                 {
-                    _rotateCount += ROTATION_SPEED;
-                    transform.Rotate(Vector3.forward * ROTATION_SPEED);
-                }
-
-                else
-                {
-                    _rotate = false;
-                    _rotateCount = 0;
+                    _currentRotateDirection = !_currentRotateDirection;
                 }
             }
         }
         else
         {
-            if (_target != transform.position)
+            FindTarget();
+        }
+
+        if (_rotate)
+        {
+            if (_rotateCount < MAX_ROTATION)
             {
-                transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _target, 1 * Time.deltaTime);
-                if (Vector3.Distance(_target, transform.position) <= transform.localScale.x / ROTATION_SPEED && _currentPoint != 0 && _currentPoint != _points.Length - 1)
+                _rotateCount += ROTATION_SPEED;
+                if (_currentRotateDirection)
                 {
-                    _rotate = true;
-                    _currentRotateDirection = _rotationDirections[_currentPoint];
-                    if (!goesBackwards)
-                    {
-                        _currentRotateDirection = !_currentRotateDirection;
-                    }
+                    transform.Rotate(Vector3.forward * ROTATION_SPEED);
+                }
+                else
+                {
+                    transform.Rotate(Vector3.back * ROTATION_SPEED);
                 }
             }
             else
             {
-                FindTarget();
-            }
-
-            if (_rotate)
-            {
-                if (_rotateCount < MAX_ROTATION)
-                {
-                    _rotateCount += ROTATION_SPEED;
-                    if (_currentRotateDirection)
-                    {
-                        transform.Rotate(Vector3.forward * ROTATION_SPEED);
-                    }
-                    else
-                    {
-                        transform.Rotate(Vector3.back * ROTATION_SPEED);
-                    }
-                }
-                else
-                {
-                    _rotate = false;
-                    _rotateCount = 0;
-                }
+                _rotate = false;
+                _rotateCount = 0;
             }
         }
     }
