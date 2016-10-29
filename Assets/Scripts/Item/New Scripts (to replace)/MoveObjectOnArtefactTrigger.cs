@@ -12,9 +12,6 @@ public class MoveObjectOnArtefactTrigger : MonoBehaviour
     }
 
     [SerializeField]
-    private GameObject _objectToMove;
-
-    [SerializeField]
     private GameObject _triggerActivationObject;
 
     [SerializeField]
@@ -26,22 +23,45 @@ public class MoveObjectOnArtefactTrigger : MonoBehaviour
     [SerializeField]
     private float _speedInUnitsPerSecond;
 
+    private float _distanceMade = 0;
+
+    private Vector3[] _directionalVectors;
+    private Vector3 _directionalVector;
+
     private ActivateArtefactTrigger _trigger;
+
+    public delegate void OnFinishedMovingHandler();
+    public event OnFinishedMovingHandler OnFinishedMoving;
 
     private void Start()
     {
         _trigger = _triggerActivationObject.GetComponent<ActivateArtefactTrigger>();
-        _trigger.OnTrigger += MoveObject;
+        _trigger.OnTrigger += StartObjectMovement;
+
+        _directionalVectors = new Vector3[] { Vector3.up, Vector3.down, Vector3.left, Vector3.right };
+        _directionalVector = _directionalVectors[(int)_moveDirection];
     }
 
-    private void MoveObject()
+    private void StartObjectMovement()
     {
-        //faire une cooroutine qui bouge l'objet avec un Time.deltaTime dans la bonne direction et appeler ObjectDoneMoving() quand c'est fini
+        StartCoroutine("MoveObject");
     }
 
-    private void ObjectDoneMoving()
+    private IEnumerator MoveObject()
     {
+        while (true)
+        {
+            gameObject.transform.position += _directionalVector * _speedInUnitsPerSecond * Time.deltaTime;
+            _distanceMade += _speedInUnitsPerSecond * Time.deltaTime;
 
+            if (_distanceMade >= _distanceToMoveObject)
+            {
+                break;
+            }
+
+            return null;
+        }
+        OnFinishedMoving();
+        return null;
     }
-
 }
