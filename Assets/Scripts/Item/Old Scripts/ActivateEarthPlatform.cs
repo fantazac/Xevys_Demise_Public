@@ -14,7 +14,7 @@ public class ActivateEarthPlatform : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (_flyingPlatform != null && _player.GetComponent<InventoryManager>().EarthEnabled)
+        if (_flyingPlatform != null && _player.GetComponent<InventoryManager>().EarthArtefactEnabled)
         {
             GetComponent<AudioSource>().Play();
             _soundPlayed = true;

@@ -3,16 +3,13 @@ using System.Collections;
 
 public class DetectPlayer : MonoBehaviour
 {
-
-    private bool _detectedPlayer;
-
-    public bool DetectedPlayer { get { return _detectedPlayer; } set { _detectedPlayer = value; } }
+    public bool DetectedPlayer { get; private set; }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "Player")
         {
-            _detectedPlayer = true;
+            DetectedPlayer = true;
         }
     }
 
@@ -20,7 +17,7 @@ public class DetectPlayer : MonoBehaviour
     {
         if (collider.gameObject.tag == "Player")
         {
-            _detectedPlayer = false;
+            DetectedPlayer = false;
         }
     }
 }

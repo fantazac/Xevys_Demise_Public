@@ -14,7 +14,7 @@ public class ActivateAirPlatform : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (_flyingPlatform != null && _player.GetComponent<InventoryManager>().AirEnabled)
+        if (_flyingPlatform != null && _player.GetComponent<InventoryManager>().AirArtefactEnabled)
         {
             GetComponent<AudioSource>().Play();
             _soundPlayed = true;

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+// Source: https://www.assetstore.unity3d.com/en/#!/content/55578
 public class CameraManager : MonoBehaviour
 {
 
