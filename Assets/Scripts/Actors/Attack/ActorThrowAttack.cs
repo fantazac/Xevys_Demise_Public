@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-public class ActorThrowAttack: MonoBehaviour
+public class ActorThrowAttack : MonoBehaviour
 {
 
     [SerializeField]
@@ -25,13 +25,13 @@ public class ActorThrowAttack: MonoBehaviour
     private float KNIFE_SPEED = 15f;
 
     [SerializeField]
-    private float AXE_SPEED = 6f;
+    private float AXE_X_SPEED = 6f;
 
     [SerializeField]
-    private float AXE_THROWING_ANGLE = 14.5f;
+    private float AXE_Y_SPEED = 14.5f;
 
     [SerializeField]
-    private float AXE_INITIAL_ANGLE = 90f;
+    private float AXE_INITIAL_ROTATION = 90f;
 
     [SerializeField]
     private const int ATTACK_COOLDOWN = 50;
@@ -82,21 +82,12 @@ public class ActorThrowAttack: MonoBehaviour
             _soundPlayer.Play(1);
             GameObject newKnife;
 
-            if (GetComponent<FlipPlayer>().IsFacingRight)
-            {
-                newKnife = (GameObject)Instantiate(_knife, new Vector3(transform.position.x + WEAPON_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, WEAPON_Z_POSITION), transform.rotation);
-                newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(KNIFE_SPEED, 0);
-                _knifeThrowCDCount = 0;
-                GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition--;
-            }
-            else
-            {
-                newKnife = (GameObject)Instantiate(_knife, new Vector3(transform.position.x - WEAPON_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, WEAPON_Z_POSITION), transform.rotation);
-                newKnife.GetComponent<SpriteRenderer>().flipX = true;
-                newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(-KNIFE_SPEED, 0);
-                _knifeThrowCDCount = 0;
-                GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition--;
-            }
+            newKnife = (GameObject)Instantiate(_knife, new Vector3(transform.position.x + WEAPON_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, WEAPON_Z_POSITION), transform.rotation);
+            newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<FlipPlayer>().IsFacingRight ? KNIFE_SPEED : -KNIFE_SPEED, 0);
+            newKnife.GetComponent<SpriteRenderer>().flipX = !GetComponent<FlipPlayer>().IsFacingRight;
+            _knifeThrowCDCount = 0;
+            GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition--;
+
             _showItems.OnKnifeAmmoChanged(GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
         }
     }
@@ -108,23 +99,13 @@ public class ActorThrowAttack: MonoBehaviour
             _soundPlayer.Play(2);
             GameObject newAxe;
 
-            if (GetComponent<FlipPlayer>().IsFacingRight)
-            {
-                newAxe = (GameObject)Instantiate(_axeFacingRight, new Vector3(transform.position.x, transform.position.y + AXE_THROWING_HEIGHT, WEAPON_Z_POSITION), transform.rotation);
-                newAxe.GetComponent<Rigidbody2D>().rotation = AXE_INITIAL_ANGLE;
-                newAxe.GetComponent<Rigidbody2D>().velocity = new Vector2(AXE_SPEED, AXE_THROWING_ANGLE);
-                _axeThrowCDCount = 0;
-                GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition--;
-            }
-            else
-            {
-                newAxe = (GameObject)Instantiate(_axeFacingLeft, new Vector3(transform.position.x, transform.position.y + AXE_THROWING_HEIGHT, WEAPON_Z_POSITION), transform.rotation);
-                newAxe.GetComponent<Rigidbody2D>().rotation = AXE_INITIAL_ANGLE;
-                newAxe.GetComponent<SpriteRenderer>().flipY = true;
-                newAxe.GetComponent<Rigidbody2D>().velocity = new Vector2(-AXE_SPEED, AXE_THROWING_ANGLE);
-                _axeThrowCDCount = 0;
-                GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition--;
-            }
+            newAxe = (GameObject)Instantiate(_axeFacingRight, new Vector3(transform.position.x, transform.position.y + AXE_THROWING_HEIGHT, WEAPON_Z_POSITION), transform.rotation);
+            newAxe.GetComponent<Rigidbody2D>().rotation = AXE_INITIAL_ROTATION;
+            newAxe.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<FlipPlayer>().IsFacingRight ? AXE_X_SPEED : -AXE_X_SPEED, AXE_Y_SPEED);
+            newAxe.GetComponent<SpriteRenderer>().flipY = !GetComponent<FlipPlayer>().IsFacingRight;
+            _axeThrowCDCount = 0;
+            GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition--;
+
             _showItems.OnAxeAmmoChanged(GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
         }
     }
