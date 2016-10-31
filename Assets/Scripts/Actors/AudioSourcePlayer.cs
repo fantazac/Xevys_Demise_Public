@@ -37,4 +37,9 @@ public class AudioSourcePlayer : MonoBehaviour
             audioSource.Stop();
         }
     }
+
+    public AudioSource GetAudioSource()
+    {
+        return _audioSources[0];
+    }
 }
