@@ -4,6 +4,9 @@ using System.Collections;
 public class ActivateWaterPlatform : MonoBehaviour {
 
     [SerializeField]
+    private float _distanceToMovePlatform = -1000f;
+
+    [SerializeField]
     private GameObject _doorToDestroy;
 
     [SerializeField]
@@ -29,7 +32,7 @@ public class ActivateWaterPlatform : MonoBehaviour {
 
             GetComponent<AudioSource>().Play();
             _soundPlayed = true;
-            gameObject.transform.position = new Vector3(-1000, -1000, 0);
+            gameObject.transform.position = new Vector3(_distanceToMovePlatform, _distanceToMovePlatform, 0);
 
             Destroy(_doorToDestroy);
 

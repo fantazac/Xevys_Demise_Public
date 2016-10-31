@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RemoveTrigger : MonoBehaviour
+public class DestroyTriggerGameObject : MonoBehaviour
 {
 
     private void OnTriggerEnter2D(Collider2D collider)

@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnableDoor : MonoBehaviour
+public class RetractHoverPlatform : MonoBehaviour
 {
     [SerializeField]
-    private float _distanceToDrop = 4f;
+    private float _distanceToDrop = 0.5f;
     [SerializeField]
-    private float _speed = 0.2f;
+    private float _speed = 0.025f;
 
     private float _currentRelativeHeight = 0;
 
@@ -22,15 +22,14 @@ public class EnableDoor : MonoBehaviour
         {
             if (_currentRelativeHeight < _distanceToDrop)
             {
-                float currentDescent = _speed * Time.fixedDeltaTime;
-                transform.position = new Vector3(transform.position.x, transform.position.y - currentDescent, transform.position.z);
-                _currentRelativeHeight += currentDescent;
+                float currentRetract = _speed * Time.fixedDeltaTime;
+                transform.position = new Vector3(transform.position.x, transform.position.y - currentRetract, transform.position.z);
+                _currentRelativeHeight += currentRetract;
             }
             else
             {
-                IsActivated = false;
-            }
+                Destroy(gameObject);
+            }  
         }
     }
-
 }
