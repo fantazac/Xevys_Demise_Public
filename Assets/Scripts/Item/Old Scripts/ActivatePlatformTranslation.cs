@@ -24,7 +24,7 @@ public class ActivatePlatformTranslation : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (_soundPlayed && !GetComponent<AudioSource>().isPlaying)
+        if (_soundPlayed && !GetComponent<AudioSourcePlayer>().IsPlaying())
         {
             Destroy(gameObject);
         }

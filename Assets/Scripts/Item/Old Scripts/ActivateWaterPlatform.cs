@@ -39,7 +39,7 @@ public class ActivateWaterPlatform : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (_soundPlayed && !GetComponent<AudioSource>().isPlaying)
+        if (_soundPlayed && !GetComponent<AudioSourcePlayer>().IsPlaying())
         {
             Destroy(gameObject);
         }
