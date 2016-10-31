@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MoveObjectOnArtefactTrigger : MonoBehaviour
+public class MoveObjectOnTrigger : MonoBehaviour
 {
     private enum MoveDirection
     {
@@ -10,6 +10,9 @@ public class MoveObjectOnArtefactTrigger : MonoBehaviour
         Left,
         Right
     }
+
+    [SerializeField]
+    private bool _isAnArtifactTrigger = false;
 
     [SerializeField]
     private GameObject _triggerActivationObject;
@@ -27,19 +30,22 @@ public class MoveObjectOnArtefactTrigger : MonoBehaviour
 
     private Vector3[] _directionalVectors;
     private Vector3 _directionalVector;
+    private Vector3 _finalPosition;
 
-    private ActivateArtefactTrigger _trigger;
+    private ActivateTrigger _trigger;
 
     public delegate void OnFinishedMovingHandler();
     public event OnFinishedMovingHandler OnFinishedMoving;
 
     private void Start()
     {
-        _trigger = _triggerActivationObject.GetComponent<ActivateArtefactTrigger>();
+       
+        _trigger = _triggerActivationObject.GetComponent<ActivateTrigger>();
         _trigger.OnTrigger += StartObjectMovement;
 
         _directionalVectors = new Vector3[] { Vector3.up, Vector3.down, Vector3.left, Vector3.right };
         _directionalVector = _directionalVectors[(int)_moveDirection];
+        _finalPosition = transform.position + (_directionalVector * _distanceToMoveObject);
     }
 
     private void StartObjectMovement()
@@ -56,12 +62,13 @@ public class MoveObjectOnArtefactTrigger : MonoBehaviour
 
             if (_distanceMade >= _distanceToMoveObject)
             {
+                gameObject.transform.position = _finalPosition;
                 break;
             }
 
-            return null;
+            yield return null;
         }
-        OnFinishedMoving();
-        return null;
+        //OnFinishedMoving();
+        yield return null;
     }
 }

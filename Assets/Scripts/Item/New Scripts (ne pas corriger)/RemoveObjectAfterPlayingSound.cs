@@ -6,13 +6,13 @@ public class RemoveObjectAfterPlayingSound : MonoBehaviour
 
     private PlaySound _sound;
 
-    private ActivateArtefactTrigger _trigger;
+    private ActivateTrigger _trigger;
 
     private bool _deleteOnSoundFinished = false;
 
     private void Start()
     {
-        _trigger = GetComponent<ActivateArtefactTrigger>();
+        _trigger = GetComponent<ActivateTrigger>();
         _trigger.OnTrigger += PrepareRemovalOfObject;
 
         _sound = GetComponent<PlaySound>();

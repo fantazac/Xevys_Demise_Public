@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ActivateArtefactTrigger : MonoBehaviour
+public class ActivateTrigger : MonoBehaviour
 {
+
     private enum ArtefactType
     {
+        None,
         Earth,
         Air,
         Water,
@@ -41,7 +43,12 @@ public class ActivateArtefactTrigger : MonoBehaviour
 
     private bool ArtefactIsUnlocked()
     {
-        return EarthArtefactIsUnlocked() || AirArtefactIsUnlocked() || WaterArtefactIsUnlocked() || FireArtefactIsUnlocked();
+        return !IsAnArtifactTrigger() || EarthArtefactIsUnlocked() || AirArtefactIsUnlocked() || WaterArtefactIsUnlocked() || FireArtefactIsUnlocked();
+    }
+
+    private bool IsAnArtifactTrigger()
+    {
+        return _artefactType != ArtefactType.None;
     }
 
     private bool EarthArtefactIsUnlocked()
@@ -83,4 +90,5 @@ public class ActivateArtefactTrigger : MonoBehaviour
     {
         return _axeCanTrigger && (collider.gameObject.tag == "AxeBlade" || collider.gameObject.tag == "AxeHandle");
     }
+
 }

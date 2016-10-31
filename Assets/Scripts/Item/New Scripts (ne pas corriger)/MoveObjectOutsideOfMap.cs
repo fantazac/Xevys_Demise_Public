@@ -4,11 +4,11 @@ using System.Collections;
 public class MoveObjectOutsideOfMap : MonoBehaviour
 {
 
-    private ActivateArtefactTrigger _trigger;
+    private ActivateTrigger _trigger;
 
     private void Start()
     {
-        _trigger = GetComponent<ActivateArtefactTrigger>();
+        _trigger = GetComponent<ActivateTrigger>();
         _trigger.OnTrigger += MoveObjectOutside;
     }
 
