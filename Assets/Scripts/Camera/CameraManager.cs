@@ -12,9 +12,9 @@ public class CameraManager : MonoBehaviour
     [Header("Target Elements")]
     private Vector3 followtarget;
     [SerializeField]
-    private GameObject focusObject;
-    [SerializeField]
     private Vector3 focusPosition;
+
+    private GameObject focusObject;
 
     // Area boundary elements
     [Header("Area Elements")]
@@ -27,6 +27,8 @@ public class CameraManager : MonoBehaviour
 
     void Start()
     {
+        focusObject = Player.GetPlayer();
+
         if (focusObject != null)
         {
             FocusObject = focusObject;

@@ -1,22 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ScaleHealthBar : MonoBehaviour {
+public class ScaleHealthBar : MonoBehaviour
+{
 
     private float _initialRectangleX;
     private bool _healthBarIsScaling = false;
     private Transform _healthBar;
     private Health _health;
 
-    private void Start () {
+    private void Start()
+    {
         _health = Player.GetPlayer().GetComponent<Health>();
         _healthBar = GameObject.Find("HealthBar").GetComponent<Transform>();
         _initialRectangleX = _healthBar.localScale.x;
-        
+
         _health.OnHealthChanged += OnHealthChanged;
     }
-	
-	private void FixedUpdate () {
+
+    private void FixedUpdate()
+    {
         if (_healthBarIsScaling)
         {
             Vector3 finalSize = new Vector3(_initialRectangleX - (100 - ((_health.HealthPoint - 10) * 100) / 1000) * _initialRectangleX / 100,

@@ -45,13 +45,13 @@ public class MoveObjectOnTrigger : MonoBehaviour
 
         _directionalVectors = new Vector3[] { Vector3.up, Vector3.down, Vector3.left, Vector3.right };
         _directionalVector = _directionalVectors[(int)_moveDirection];
-        _finalPosition = transform.position + (_directionalVector * _distanceToMoveObject);
 
         OnFinishedMoving += LastAction;
     }
 
     public void StartObjectMovement()
     {
+        _finalPosition = transform.position + (_directionalVector * _distanceToMoveObject);
         StartCoroutine("MoveObject");
     }
 
