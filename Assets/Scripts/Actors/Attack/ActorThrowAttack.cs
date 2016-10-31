@@ -88,7 +88,7 @@ public class ActorThrowAttack : MonoBehaviour
             _knifeThrowCDCount = 0;
             GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition--;
 
-            _showItems.OnKnifeAmmoChanged(GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
+            _showItems.KnifeAmmoChange(GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
         }
     }
 
@@ -106,7 +106,7 @@ public class ActorThrowAttack : MonoBehaviour
             _axeThrowCDCount = 0;
             GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition--;
 
-            _showItems.OnAxeAmmoChanged(GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
+            _showItems.AxeAmmoChange(GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
         }
     }
 
@@ -122,7 +122,7 @@ public class ActorThrowAttack : MonoBehaviour
                     _inventoryManager.AxeActive = true;
                     _inventoryManager.KnifeActive = false;
 
-                    _showItems.OnAxeSelected();
+                    _showItems.AxeSelect();
                     break;
                 }
             case InventoryManager.WeaponTypes.Knife:
@@ -133,7 +133,7 @@ public class ActorThrowAttack : MonoBehaviour
                     _inventoryManager.AxeActive = false;
                     _inventoryManager.KnifeActive = true;
 
-                    _showItems.OnKnifeSelected();
+                    _showItems.KnifeSelect();
                     break;
                 }
         }

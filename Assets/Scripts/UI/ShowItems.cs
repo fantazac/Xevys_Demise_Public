@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class ShowItems : MonoBehaviour
 {
+    [SerializeField]
+    private const int Z_OFFSET_ITEM_SELECT = 5;
+
     private Text _knifeText;
     private Text _axeText;
     private SpriteRenderer _selectedWeaponHighlight;
@@ -55,94 +58,94 @@ public class ShowItems : MonoBehaviour
         _fireArtefactRenderer.enabled = false;
 
         _selectedIronBootsHighlight.transform.position = new Vector3(_ironBootsSpriteRenderer.transform.position.x,
-            _ironBootsSpriteRenderer.transform.position.y, _ironBootsSpriteRenderer.transform.position.z + 5);
+            _ironBootsSpriteRenderer.transform.position.y, _ironBootsSpriteRenderer.transform.position.z + Z_OFFSET_ITEM_SELECT);
     }
 
-    public void OnKnifeAmmoChanged(int total)
+    public void KnifeAmmoChange(int total)
     {
         if (!_inventoryManager.KnifeEnabled)
         {
             _inventoryManager.EnableKnife();
             _knifeSpriteRenderer.enabled = true;
             _knifeText.enabled = true;
-            OnKnifeSelected();
+            KnifeSelect();
         }
         _knifeText.text = total.ToString();
     }
 
-    public void OnAxeAmmoChanged(int total)
+    public void AxeAmmoChange(int total)
     {
         if (!_inventoryManager.AxeEnabled)
         {
             _inventoryManager.EnableAxe();
             _axeSpriteRenderer.enabled = true;
             _axeText.enabled = true;
-            OnAxeSelected();
+            AxeSelect();
         }
         _axeText.text = total.ToString();
     }
 
-    public void OnKnifeSelected()
+    public void KnifeSelect()
     {
         if (!_selectedWeaponHighlight.enabled)
         {
             _selectedWeaponHighlight.enabled = true;
         }
         _selectedWeaponHighlight.transform.position = new Vector3(_knifeSpriteRenderer.transform.position.x,
-            _knifeSpriteRenderer.transform.position.y, _knifeSpriteRenderer.transform.position.z + 5);
+            _knifeSpriteRenderer.transform.position.y, _knifeSpriteRenderer.transform.position.z + Z_OFFSET_ITEM_SELECT);
     }
 
-    public void OnAxeSelected()
+    public void AxeSelect()
     {
         if (!_selectedWeaponHighlight.enabled)
         {
             _selectedWeaponHighlight.enabled = true;
         }
         _selectedWeaponHighlight.transform.position = new Vector3(_axeSpriteRenderer.transform.position.x,
-            _axeSpriteRenderer.transform.position.y, _axeSpriteRenderer.transform.position.z + 5);
+            _axeSpriteRenderer.transform.position.y, _axeSpriteRenderer.transform.position.z + Z_OFFSET_ITEM_SELECT);
     }
 
-    public void OnIronBootsSelected()
+    public void IronBootsSelect()
     {
         _selectedIronBootsHighlight.enabled = !_selectedIronBootsHighlight.enabled;
     }
 
-    public void OnFeatherEnabled()
+    public void FeatherEnable()
     {
         _featherSpriteRenderer.enabled = true;
     }
 
-    public void OnIronBootsEnabled()
+    public void IronBootsEnable()
     {
         _ironBootsSpriteRenderer.enabled = true;
     }
 
-    public void OnBubbleEnabled()
+    public void BubbleEnable()
     {
         _bubbleSpriteRenderer.enabled = true;
     }
 
-    public void OnFireProofArmorEnabled()
+    public void FireProofArmorEnable()
     {
         _fireProofArmorRenderer.enabled = true;
     }
 
-    public void OnEarthArtefactEnabled()
+    public void EarthArtefactEnable()
     {
         _earthArtefactRenderer.enabled = true;
     }
 
-    public void OnAirArtefactEnabled()
+    public void AirArtefactEnable()
     {
         _airArtefactRenderer.enabled = true;
     }
 
-    public void OnWaterArtefactEnabled()
+    public void WaterArtefactEnable()
     {
         _waterArtefactRenderer.enabled = true;
     }
 
-    public void OnFireArtefactEnabled()
+    public void FireArtefactEnable()
     {
         _fireArtefactRenderer.enabled = true;
     }
