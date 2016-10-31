@@ -1,13 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ActivateHitboxOfObjects : MonoBehaviour
+public class ActivateHitboxOfObjectsOnTrigger : MonoBehaviour
 {
 
     [SerializeField]
     private GameObject[] _hitboxesToActivate;
 
-    public void Activate()
+    private ActivateTrigger _trigger;
+
+    private void Start()
+    {
+        _trigger = GetComponent<ActivateTrigger>();
+        _trigger.OnTrigger += Activate;
+    }
+
+    private void Activate()
     {
         foreach (GameObject hitbox in _hitboxesToActivate)
         {

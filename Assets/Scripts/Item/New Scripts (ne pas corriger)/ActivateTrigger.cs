@@ -41,6 +41,11 @@ public class ActivateTrigger : MonoBehaviour
         }
     }
 
+    public void MultipleTriggersActivated()
+    {
+        OnTrigger();
+    }
+
     private bool ArtefactIsUnlocked()
     {
         return !IsAnArtifactTrigger() || EarthArtefactIsUnlocked() || AirArtefactIsUnlocked() || WaterArtefactIsUnlocked() || FireArtefactIsUnlocked();
@@ -52,7 +57,7 @@ public class ActivateTrigger : MonoBehaviour
     }
 
     private bool EarthArtefactIsUnlocked()
-    {
+    {   
         return _artefactType == ArtefactType.Earth && _playerInventory.EarthArtefactEnabled;
     }
 

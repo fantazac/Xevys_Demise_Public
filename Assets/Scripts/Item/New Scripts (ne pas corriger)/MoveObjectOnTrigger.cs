@@ -12,9 +12,6 @@ public class MoveObjectOnTrigger : MonoBehaviour
     }
 
     [SerializeField]
-    private bool _isAnArtifactTrigger = false;
-
-    [SerializeField]
     private GameObject _triggerActivationObject;
 
     [SerializeField]
@@ -39,19 +36,27 @@ public class MoveObjectOnTrigger : MonoBehaviour
 
     private void Start()
     {
-       
         _trigger = _triggerActivationObject.GetComponent<ActivateTrigger>();
-        _trigger.OnTrigger += StartObjectMovement;
+
+        if (_trigger != null)
+        {
+            _trigger.OnTrigger += StartObjectMovement;
+        }
 
         _directionalVectors = new Vector3[] { Vector3.up, Vector3.down, Vector3.left, Vector3.right };
         _directionalVector = _directionalVectors[(int)_moveDirection];
         _finalPosition = transform.position + (_directionalVector * _distanceToMoveObject);
+
+        OnFinishedMoving += LastAction;
     }
 
-    private void StartObjectMovement()
+    public void StartObjectMovement()
     {
         StartCoroutine("MoveObject");
     }
+
+    //méthode utilisée pour s'assurer qu'il y a un event dans le delegate
+    private void LastAction() { }
 
     private IEnumerator MoveObject()
     {
@@ -68,7 +73,7 @@ public class MoveObjectOnTrigger : MonoBehaviour
 
             yield return null;
         }
-        //OnFinishedMoving();
+        OnFinishedMoving();
         yield return null;
     }
 }
