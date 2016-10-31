@@ -16,7 +16,7 @@ public class ActorBasicAttack : MonoBehaviour
 
     private void Start()
     {
-        _inputManager = GetComponent<InputManager>();
+        _inputManager = GetComponentInChildren<InputManager>();
         _attackHitBox = GameObject.Find("CharacterBasicAttackBox");
         _anim = GameObject.Find("CharacterSprite").GetComponent<Animator>();
         _soundPlayer = GetComponent<AudioSourcePlayer>();

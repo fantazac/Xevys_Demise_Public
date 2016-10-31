@@ -61,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
         _playerCircleColliderTorso = GameObject.Find("CharacterFloatingHitbox").GetComponent<CircleCollider2D>();
         _spriteTransform = _anim.GetComponent<Transform>();
         _rigidbody = GetComponent<Rigidbody2D>();
-        _inputManager = GetComponent<InputManager>();
+        _inputManager = GetComponentInChildren<InputManager>();
         _basicAttackBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
         _showItems = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowItems>();
         _touchesGroundHitbox = GameObject.Find("CharacterTouchesGround");
