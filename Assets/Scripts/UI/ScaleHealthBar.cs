@@ -6,20 +6,23 @@ public class ScaleHealthBar : MonoBehaviour
 {
     [SerializeField]
     public const int MAX_HEALTH = 1000;
+    [SerializeField]
+    private Color _color;
 
     private float _initialRectangleX;
     private bool _healthBarIsScaling = false;
     private Transform _healthBar;
     private Image _healthBarImage;
-    private Health _health; 
+    private Health _health;
 
 	private void Start ()
 	{
-	    _health = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
+	    _health = Player.GetPlayer().GetComponent<Health>();
         _healthBar = GameObject.Find("HealthBar").GetComponent<Transform>();
 	    _healthBarImage = GameObject.Find("HealthBar").GetComponent<Image>();
 	    _initialRectangleX = _healthBar.localScale.x;
-	    _healthBarImage.color = new Color(0, 1, 0, 1);
+	    _color = new Color(0, 1, 0, 1);
+	    _healthBarImage.color = _color;
 
         _health.OnHealthChanged += OnHealthChanged;
 	}
@@ -49,11 +52,21 @@ public class ScaleHealthBar : MonoBehaviour
             // Change la couleur de la barre de vie en fonction du % de vie restant
             if (_health.HealthPoint - hitPoints >= 50f*MAX_HEALTH/100f)
             {
-                _healthBarImage.color = new Color(_healthBarImage.color.r + (float)(hitPoints * 0.0020), 1, 0, 1);
+                Color interpolatedColor = _healthBarImage.color;
+                interpolatedColor.r = _healthBarImage.color.r + (float)(hitPoints*0.0020);
+                interpolatedColor.g = 1;
+                interpolatedColor.b = 0;
+                interpolatedColor.a = 1;
+                _healthBarImage.color = interpolatedColor;
             }
             else
             {
-                _healthBarImage.color = new Color(1, _healthBarImage.color.g - (float)(hitPoints * 0.0020), 0, 1);
+                Color interpolatedColor = _healthBarImage.color;
+                interpolatedColor.r = 1;
+                interpolatedColor.g = _healthBarImage.color.g - (float)(hitPoints * 0.0020);
+                interpolatedColor.b = 0;
+                interpolatedColor.a = 1;
+                _healthBarImage.color = interpolatedColor;
             }
         }    
     }
