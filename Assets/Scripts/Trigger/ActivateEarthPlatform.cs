@@ -1,22 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ActivatePlatformElevation : MonoBehaviour
+public class ActivateEarthPlatform : MonoBehaviour
 {
-
+    [SerializeField]
+    private float _distanceToMovePlatform = -1000f;
     [SerializeField]
     private GameObject _flyingPlatform;
+
+    [SerializeField]
+    private GameObject _player;
 
     private bool _soundPlayed = false;
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (_flyingPlatform != null)
+        if (_flyingPlatform != null && _player.GetComponent<InventoryManager>().EarthArtefactEnabled)
         {
             GetComponent<AudioSource>().Play();
             _soundPlayed = true;
 
-            gameObject.transform.position = new Vector3(-1000, -1000, 0);
+            gameObject.transform.position = new Vector3(_distanceToMovePlatform, _distanceToMovePlatform , 0);
 
             _flyingPlatform.GetComponent<ElevateFlyingPlatform>().Elevate = true;
         }
@@ -24,10 +28,9 @@ public class ActivatePlatformElevation : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (_soundPlayed && !GetComponent<AudioSource>().isPlaying)
+        if (_soundPlayed && !GetComponent<AudioSourcePlayer>().IsPlaying())
         {
             Destroy(gameObject);
         }
     }
-
 }

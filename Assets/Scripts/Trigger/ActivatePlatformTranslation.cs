@@ -3,6 +3,8 @@ using System.Collections;
 
 public class ActivatePlatformTranslation : MonoBehaviour
 {
+    [SerializeField]
+    private float _distanceToMovePlatform = -1000f;
 
     [SerializeField]
     private GameObject _flyingPlatform;
@@ -16,7 +18,7 @@ public class ActivatePlatformTranslation : MonoBehaviour
             GetComponent<AudioSource>().Play();
             _soundPlayed = true;
 
-            gameObject.transform.position = new Vector3(-1000, -1000, 0);
+            gameObject.transform.position = new Vector3(_distanceToMovePlatform, _distanceToMovePlatform, 0);
 
             _flyingPlatform.GetComponent<EnablePlatform>().Move = true;
         }
@@ -24,7 +26,7 @@ public class ActivatePlatformTranslation : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (_soundPlayed && !GetComponent<AudioSource>().isPlaying)
+        if (_soundPlayed && !GetComponent<AudioSourcePlayer>().IsPlaying())
         {
             Destroy(gameObject);
         }

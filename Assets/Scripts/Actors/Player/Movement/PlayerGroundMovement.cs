@@ -122,7 +122,7 @@ public class PlayerGroundMovement : PlayerMovement
         if (_inventoryManager.IronBootsEnabled)
         {
             ChangeGravity();
-            _showItems.OnIronBootsSelected();
+            _showItems.IronBootsSelect();
             _inventoryManager.IronBootsActive = !_inventoryManager.IronBootsActive;
         }
     }

@@ -22,8 +22,8 @@ public class DropItems : MonoBehaviour
             if (Random.Range(0, 100) < _dropRates[i])
             {
                 if ((_items[i].gameObject.tag != "AxeDrop" && _items[i].gameObject.tag != "KnifeDrop") ||
-                    (_items[i].gameObject.tag == "AxeDrop" && GameObject.Find("Character").GetComponent<InventoryManager>().AxeEnabled) ||
-                    (_items[i].gameObject.tag == "KnifeDrop" && GameObject.Find("Character").GetComponent<InventoryManager>().KnifeEnabled))
+                    (_items[i].gameObject.tag == "AxeDrop" && Player.GetPlayer().GetComponent<InventoryManager>().AxeEnabled) ||
+                    (_items[i].gameObject.tag == "KnifeDrop" && Player.GetPlayer().GetComponent<InventoryManager>().KnifeEnabled))
                 {
                     _itemsToDrop[_itemsDroppedCount++] = _items[i];
                 }

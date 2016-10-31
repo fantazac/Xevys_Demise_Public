@@ -13,7 +13,7 @@ public class PlayerPortalManager : MonoBehaviour
 
     private void Start()
     {
-        _inputManager = GetComponent<InputManager>();
+        _inputManager = GetComponentInChildren<InputManager>();
         _inputManager.OnEnterPortal += OnEnterPortal;
     }
 

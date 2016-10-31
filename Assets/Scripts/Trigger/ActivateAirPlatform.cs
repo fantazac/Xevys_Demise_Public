@@ -3,7 +3,8 @@ using System.Collections;
 
 public class ActivateAirPlatform : MonoBehaviour
 {
-
+    [SerializeField]
+    private float _distanceToMovePlatform = -1000f;
     [SerializeField]
     private GameObject _flyingPlatform;
 
@@ -14,12 +15,12 @@ public class ActivateAirPlatform : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (_flyingPlatform != null && _player.GetComponent<InventoryManager>().AirEnabled)
+        if (_flyingPlatform != null && _player.GetComponent<InventoryManager>().AirArtefactEnabled)
         {
             GetComponent<AudioSource>().Play();
             _soundPlayed = true;
 
-            gameObject.transform.position = new Vector3(-1000, -1000, 0);
+            gameObject.transform.position = new Vector3(_distanceToMovePlatform, _distanceToMovePlatform, 0);
 
             _flyingPlatform.GetComponent<EnablePlatform>().Move = true;
         }

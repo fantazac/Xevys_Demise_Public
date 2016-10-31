@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     protected Animator _anim;
     protected Transform _spriteTransform;
     protected ShowItems _showItems;
+    protected GameObject _touchesGroundHitbox;
 
     public delegate void OnFallingHandler();
     public event OnFallingHandler OnFalling;
@@ -60,9 +61,10 @@ public class PlayerMovement : MonoBehaviour
         _playerCircleColliderTorso = GameObject.Find("CharacterFloatingHitbox").GetComponent<CircleCollider2D>();
         _spriteTransform = _anim.GetComponent<Transform>();
         _rigidbody = GetComponent<Rigidbody2D>();
-        _inputManager = GetComponent<InputManager>();
+        _inputManager = GetComponentInChildren<InputManager>();
         _basicAttackBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
         _showItems = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowItems>();
+        _touchesGroundHitbox = GameObject.Find("CharacterTouchesGround");
 
         _inputManager.OnMove += OnMove;
         _inputManager.OnJump += OnJump;
@@ -98,11 +100,37 @@ public class PlayerMovement : MonoBehaviour
 
     public virtual bool IsJumping()
     {
-        return !(((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround
-                && !GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
-                || (GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform && _rigidbody.velocity.y == 0)
-                || _rigidbody.velocity == Vector2.zero)
-                && !(_rigidbody.velocity.y > 0));
+        return !((PlayerIsOnGround() || VerticalVelocityIsZeroOnFlyingPlatform() || PlayerIsNotMoving()) && !(VerticalVelocityIsPositive()));
+    }
+
+    private bool VerticalVelocityIsPositive()
+    {
+        return _rigidbody.velocity.y > 0;
+    }
+
+    private bool VerticalVelocityIsZeroOnFlyingPlatform()
+    {
+        return _touchesGroundHitbox.GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform && _rigidbody.velocity.y == 0;
+    }
+
+    private bool PlayerIsNotMoving()
+    {
+        return _rigidbody.velocity == Vector2.zero;
+    }
+
+    private bool PlayerIsOnGround()
+    {
+        return PlayerTouchesGround() && !PlayerTouchesFlyingPlatform();
+    }
+
+    private bool PlayerTouchesGround()
+    {
+        return Player.GetPlayer().GetComponent<PlayerTouchesGround>().OnGround;
+    }
+
+    private bool PlayerTouchesFlyingPlatform()
+    {
+        return _touchesGroundHitbox.GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform;
     }
 
     private void Update()

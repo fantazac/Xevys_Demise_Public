@@ -28,72 +28,72 @@ public class PickItem : MonoBehaviour
             if (gameObject.tag == "BaseKnifeItem")
             {
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition += BASE_KNIFE_AMOUNT_ON_PICKUP;
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
-                _showItems.OnKnifeAmmoChanged(collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
+                _showItems.KnifeAmmoChange(collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
             }
             else if (gameObject.tag == "BaseAxeItem")
             {
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition += BASE_AXE_AMOUNT_ON_PICKUP;
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
-                _showItems.OnAxeAmmoChanged(collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
+                _showItems.AxeAmmoChange(collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
             }
             else if (gameObject.tag == "KnifePickableItem")
             {
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition += KNIFE_AMOUNT_ON_PICKUP;
-                _showItems.OnKnifeAmmoChanged(collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
+                _showItems.KnifeAmmoChange(collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
             }
             else if (gameObject.tag == "AxePickableItem")
             {
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition += AXE_AMOUNT_ON_PICKUP;
-                _showItems.OnAxeAmmoChanged(collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
+                _showItems.AxeAmmoChange(collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
             }
             else if (gameObject.tag == "FeatherItem")
             {
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableFeather();
-                _showItems.OnFeatherEnabled();
+                _showItems.FeatherEnable();
             }
             else if (gameObject.tag == "IronBootsItem")
             {
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableIronBoots();
-                _showItems.OnIronBootsEnabled();
+                _showItems.IronBootsEnable();
             }
             else if (gameObject.tag == "BubbleItem")
             {
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableBubble();
-                _showItems.OnBubbleEnabled();
+                _showItems.BubbleEnable();
             }
             else if (gameObject.tag == "FireProofArmorItem")
             {
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableFireProofArmor();
-                _showItems.OnFireProofArmorEnabled();
+                _showItems.FireProofArmorEnable();
             }
             else if (gameObject.tag == "EarthArtefactItem")
             {
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableEarthArtefact();
-                _showItems.OnEarthArtefactEnabled();
+                _showItems.EarthArtefactEnable();
             }
             else if (gameObject.tag == "AirArtefactItem")
             {
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableAirArtefact();
-                _showItems.OnAirArtefactEnabled();
+                _showItems.AirArtefactEnable();
             }
             else if (gameObject.tag == "WaterArtefactItem")
             {
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableWaterArtefact();
-                _showItems.OnWaterArtefactEnabled();
+                _showItems.WaterArtefactEnable();
             }
             else if (gameObject.tag == "FireArtefactItem")
             {
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableFireArtefact();
-                _showItems.OnFireArtefactEnabled();
+                _showItems.FireArtefactEnable();
             }
 
 

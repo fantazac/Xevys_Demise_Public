@@ -4,7 +4,9 @@ using System.Collections;
 public class InvincibilityAfterBeingHit : MonoBehaviour
 {
 
+    [SerializeField]
     private const float INVINCIBILITY_TIME = 120;
+    [SerializeField]
     private const float FLICKER_INTERVAL = 5;
 
     private float _invincibilityCount = 0;
@@ -23,21 +25,29 @@ public class InvincibilityAfterBeingHit : MonoBehaviour
         }
         else if (_flickerSprite)
         {
-            if (_invincibilityCount % (FLICKER_INTERVAL * 2) < FLICKER_INTERVAL)
-            {
-                GetComponentInChildren<SpriteRenderer>().color = Color.white;
-            }
-            else
-            {
-                GetComponentInChildren<SpriteRenderer>().color = Color.gray;
-            }
-            _invincibilityCount++;
+            StartFlicker();
         }
+    }
+
+    private IEnumerator Flicker()
+    {
+
+        if (_invincibilityCount % (FLICKER_INTERVAL * 2) < FLICKER_INTERVAL)
+        {
+            GetComponentInChildren<SpriteRenderer>().color = Color.white;
+        }
+        else
+        {
+            GetComponentInChildren<SpriteRenderer>().color = Color.gray;
+        }
+        _invincibilityCount++;
+
+        return null;
     }
 
     public void StartFlicker()
     {
         _flickerSprite = true;
-        _invincibilityCount = 0;
+        StartCoroutine("Flicker");
     }
 }

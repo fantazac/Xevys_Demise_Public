@@ -9,10 +9,20 @@ public class AudioSourcePlayer : MonoBehaviour
     {
         _audioSources = GetComponents<AudioSource>();
     }
-    
+
+    public void Play()
+    {
+        _audioSources[0].Play();
+    }
+
     public void Play(int audioSourceIndex)
     {
         _audioSources[audioSourceIndex].Play();
+    }
+
+    public bool IsPlaying()
+    {
+        return _audioSources[0].isPlaying;
     }
 
     public void Stop(int audioSourceIndex)
