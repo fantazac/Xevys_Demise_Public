@@ -4,35 +4,14 @@ using System.Collections;
 public class PlayerWaterInteraction : MonoBehaviour
 {
 
-    [SerializeField]
-    private GameObject _player;
-
-    public void OnWaterEnter(Collider2D collider)
+    public void OnTriggerExit2D(Collider2D collider)
     {
-        if(collider is BoxCollider2D)
+        if (collider.gameObject.tag == "Water" && collider.transform.position.y < GetComponentInParent<Transform>().position.y)
         {
-            _player.GetComponent<PlayerWaterMovement>().enabled = true;
-            _player.GetComponent<PlayerGroundMovement>().enabled = false;
-        }
+            GetComponentInParent<PlayerWaterMovement>().enabled = false;
+            GetComponentInParent<PlayerGroundMovement>().enabled = true;
 
-        if (collider is CircleCollider2D)
-        {
-            _player.GetComponent<PlayerWaterMovement>().FeetTouchWater = true;
-            _player.GetComponent<PlayerWaterMovement>().IsFloating = false;
-        }
-    }
-
-    public void OnWaterExit(Collider2D collider)
-    {
-        if (collider is BoxCollider2D)
-        {
-            _player.GetComponent<PlayerWaterMovement>().enabled = false;
-            _player.GetComponent<PlayerGroundMovement>().enabled = true;
-        }
-
-        if (collider is CircleCollider2D)
-        {
-            _player.GetComponent<PlayerWaterMovement>().IsFloating = true;
-        }  
+            GetComponentInParent<PlayerGroundMovement>().ChangeGravity();
+        } 
     }
 }

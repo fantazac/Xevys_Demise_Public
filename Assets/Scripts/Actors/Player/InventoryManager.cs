@@ -8,30 +8,24 @@ public class InventoryManager : MonoBehaviour
 
     public enum WeaponTypes { Knife, Axe }
 
-    private bool _knifeEnabled = false;
-    private bool _axeEnabled = false;
-    private bool _knifeActive = false;
-    private bool _axeActive = false;
-    private bool _ironBootsEnabled = false;
-    private bool _ironBootsActive = false;
-    private bool _featherEnabled = false;
-    private bool _bubbleEnabled = false;
-    private bool _fireProofArmorEnabled = false;
+    public bool KnifeEnabled { get; private set; }
+    public bool AxeEnabled { get; private set; }
+    public bool KnifeActive { get; set; }
+    public bool AxeActive { get; set; }
+    public bool IronBootsEnabled { get; private set; }
+    public bool IronBootsActive { get; set; }
+    public bool FeatherEnabled { get; private set; }
+    public bool BubbleEnabled { get; private set; }
+    public bool FireProofArmorEnabled { get; private set; }
 
-    public bool KnifeEnabled { get { return _knifeEnabled; } }
-    public bool AxeEnabled { get { return _axeEnabled; } }
-    public bool KnifeActive { get { return _knifeActive; } set { _knifeActive = value; } }
-    public bool AxeActive { get { return _axeActive; } set { _axeActive = value; } }
-    public bool IronBootsEnabled { get { return _ironBootsEnabled; } }
-    public bool IronBootsActive { get { return _ironBootsActive; } set { _ironBootsActive = value; } }
-    public bool FeatherEnabled { get { return _featherEnabled; } }
-    public bool BubbleEnabled { get { return _bubbleEnabled; } }
-    public bool FireProofArmorEnabled { get { return _fireProofArmorEnabled; } }
-
+    public bool AirArtefactEnabled { get; private set; }
+    public bool EarthArtefactEnabled { get; private set; }
+    public bool WaterArtefactEnabled { get; private set; }
+    public bool FireArtefactEnabled { get; private set; }
 
     public void EnableKnife()
     {
-        _knifeEnabled = true;
+        KnifeEnabled = true;
 
         if (OnThrowableWeaponChange != null)
         {
@@ -41,7 +35,7 @@ public class InventoryManager : MonoBehaviour
 
     public void EnableAxe()
     {
-        _axeEnabled = true;
+        AxeEnabled = true;
 
         if (OnThrowableWeaponChange != null)
         {
@@ -51,21 +45,41 @@ public class InventoryManager : MonoBehaviour
 
     public void EnableIronBoots()
     {
-        _ironBootsEnabled = true;
+        IronBootsEnabled = true;
     }
 
     public void EnableFeather()
     {
-        _featherEnabled = true;
+        FeatherEnabled = true;
     }
 
     public void EnableBubble()
     {
-        _bubbleEnabled = true;
+        BubbleEnabled = true;
     }
 
     public void EnableFireProofArmor()
     {
-        _fireProofArmorEnabled = true;
+        FireProofArmorEnabled = true;
+    }
+
+    public void EnableEarthArtefact()
+    {
+        EarthArtefactEnabled = true;
+    }
+
+    public void EnableAirArtefact()
+    {
+        AirArtefactEnabled = true;
+    }
+
+    public void EnableWaterArtefact()
+    {
+        WaterArtefactEnabled = true;
+    }
+
+    public void EnableFireArtefact()
+    {
+        FireArtefactEnabled = true;
     }
 }

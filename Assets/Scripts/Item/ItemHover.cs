@@ -19,7 +19,7 @@ public class ItemHover : MonoBehaviour
 
     private void Update()
     {
-        transform.position = new Vector2(transform.position.x, _initialYPosition + WAVE_LENGTH * Mathf.Sin(_sinCount));
+        transform.position = new Vector2(transform.position.x, _initialYPosition + WAVE_LENGTH * Mathf.Sin(_sinCount) * Time.deltaTime * 60);
         _sinCount += _speed;
     }
 }

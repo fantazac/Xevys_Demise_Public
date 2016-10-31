@@ -3,27 +3,32 @@ using System.Collections;
 
 public class EnableDoor : MonoBehaviour
 {
+    [SerializeField]
+    private float _distanceToDrop = 4f;
+    [SerializeField]
+    private float _speed = 0.2f;
 
-    private const float DESCENT_AMOUNT = 4f;
-    private const float DESCENT_SPEED = 0.2f;
+    private float _currentRelativeHeight = 0;
 
-    private bool _descent = false;
-    private float _descentCount = 0;
+    public bool IsActivated { set; get; }
 
-    public bool Descent { set { _descent = value; } }
-
+    private void Start()
+    {
+        IsActivated = false;
+    }
     private void Update()
     {
-        if (_descent)
+        if (IsActivated)
         {
-            if (_descentCount < DESCENT_AMOUNT)
+            if (_currentRelativeHeight < _distanceToDrop)
             {
-                transform.position = new Vector3(transform.position.x, transform.position.y - DESCENT_SPEED, transform.position.z);
-                _descentCount += DESCENT_SPEED;
+                float currentDescent = _speed * Time.fixedDeltaTime;
+                transform.position = new Vector3(transform.position.x, transform.position.y - currentDescent, transform.position.z);
+                _currentRelativeHeight += currentDescent;
             }
             else
             {
-                _descent = false;
+                IsActivated = false;
             }
         }
     }

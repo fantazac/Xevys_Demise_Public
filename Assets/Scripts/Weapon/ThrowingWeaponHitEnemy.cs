@@ -13,7 +13,7 @@ public class ThrowingWeaponHitEnemy : MonoBehaviour
             collider.gameObject.tag == "Skeltal")
         {
             collider.GetComponent<Health>().Hit(_baseDamage);
-            GetComponent<DestroyWeapon>().DestroyNow = true;
+            GetComponent<DestroyProjectile>().DestroyNow = true;
         }
     }
 }

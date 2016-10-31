@@ -9,7 +9,7 @@ public class ElevateStairsTrigger : MonoBehaviour
 
     private const float ELEVATION_AMOUNT = 2.7f;
     private const float ELEVATION_SPEED = 0.05f;
-    private const int MAIN_CAMERA_BASE_KNIFE_ITEM_AREA = 3;
+    private const int MAIN_CAMERA_BASE_KNIFE_ITEM_AREA = 4;
     private const int BASE_KNIFE_AMOUNT_ON_PICKUP = 10;
 
     private bool _soundPlayed;

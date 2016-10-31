@@ -5,16 +5,16 @@ public class KnifeHitWall : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == "Wall")
+        if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "Spike")
         {
             GetComponent<BoxCollider2D>().isTrigger = false;
             GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             GetComponent<Rigidbody2D>().gravityScale = 0;
-            GetComponent<DestroyWeapon>().TouchesGround = true;
+            GetComponent<DestroyProjectile>().TouchesGround = true;
         }
         else if (collider.gameObject.tag == "LevelWall")
         {
-            GetComponent<DestroyWeapon>().DestroyNow = true;
+            GetComponent<DestroyProjectile>().DestroyNow = true;
         }
     }
 }

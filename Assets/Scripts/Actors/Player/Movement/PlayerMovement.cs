@@ -6,10 +6,16 @@ public class PlayerMovement : MonoBehaviour
     protected InputManager _inputManager;
     protected Rigidbody2D _rigidbody;
     protected BoxCollider2D _basicAttackBox;
+    protected BoxCollider2D _playerBoxCollider;
+    protected BoxCollider2D _playerBoxColliderFeet;
+    protected BoxCollider2D _playerBoxColliderTorso;
+    protected CircleCollider2D _playerCircleColliderTorso;
+    protected SpriteRenderer _playerSpriteRenderer;
     protected InventoryManager _inventoryManager;
     protected Animator _anim;
     protected Transform _spriteTransform;
     protected ShowItems _showItems;
+    protected GameObject _touchesGroundHitbox;
 
     public delegate void OnFallingHandler();
     public event OnFallingHandler OnFalling;
@@ -22,6 +28,13 @@ public class PlayerMovement : MonoBehaviour
     protected const float SPEED_REDUCTION_WHEN_STOPPING = 0.94f;
     protected const float LINEAR_DRAG = 30f;
     protected const float KNOCKBACK_DURATION = 15;
+    protected const float PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND = 0.8622845f;
+    protected const float PLAYER_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.008171797f;
+    protected const float FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.45f;
+    protected const float TORSO_CIRCLE_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = 0.21f;
+    protected const float TORSO_BOX_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.4f;
+    protected const float CROUCHING_OFFSET = 0.6f;
+    protected const float CROUCHING_SPRITE_POSITION_OFFSET = 0.35f;
 
     protected float _speed = 7;
     protected float _jumpingSpeed = 17;
@@ -29,21 +42,29 @@ public class PlayerMovement : MonoBehaviour
     protected float _knockbackCount = 0;
     protected bool _canDoubleJump = false;
     protected bool _wasFalling = false;
+    protected bool _isCrouching = false;
 
     public float Speed { get { return _speed; } set { _speed = value; } }
     public float JumpingSpeed { get { return _jumpingSpeed; } set { _jumpingSpeed = value; } }
     public bool IsKnockedBack { get { return _isKnockedBack; } set { _isKnockedBack = value; } }
+    public bool IsCrouching { get { return _isCrouching; } set { _isCrouching = value; } }
     public float TerminalSpeed { get { return TERMINAL_SPEED; } }
 
     private void Start()
     {
         _anim = GameObject.Find("CharacterSprite").GetComponent<Animator>();
+        _playerSpriteRenderer = GameObject.Find("CharacterSprite").GetComponent<SpriteRenderer>();
         _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
+        _playerBoxCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>();
+        _playerBoxColliderFeet = GameObject.Find("CharacterTouchesGround").GetComponent<BoxCollider2D>();
+        _playerBoxColliderTorso = GameObject.Find("CharacterWaterHitbox").GetComponent<BoxCollider2D>();
+        _playerCircleColliderTorso = GameObject.Find("CharacterFloatingHitbox").GetComponent<CircleCollider2D>();
         _spriteTransform = _anim.GetComponent<Transform>();
         _rigidbody = GetComponent<Rigidbody2D>();
-        _inputManager = GetComponent<InputManager>();
+        _inputManager = GetComponentInChildren<InputManager>();
         _basicAttackBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
         _showItems = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowItems>();
+        _touchesGroundHitbox = GameObject.Find("CharacterTouchesGround");
 
         _inputManager.OnMove += OnMove;
         _inputManager.OnJump += OnJump;
@@ -51,6 +72,8 @@ public class PlayerMovement : MonoBehaviour
         _inputManager.OnUnderwaterControl += OnUnderwaterControl;
         _inputManager.OnIronBootsEquip += OnIronBootsEquip;
         _inputManager.OnStop += OnStop;
+        _inputManager.OnCrouch += OnCrouch;
+        _inputManager.OnStandingUp += OnStandingUp;
 
         _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
     }
@@ -67,15 +90,47 @@ public class PlayerMovement : MonoBehaviour
 
     protected virtual void OnStop() { }
 
+    protected virtual void OnCrouch() { }
+
+    protected virtual void OnStandingUp() { }
+
     protected virtual void UpdateMovement() { }
+
+    public virtual void ChangeGravity() { }
 
     public virtual bool IsJumping()
     {
-        return !(((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround
-                && !GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
-                || (GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform && _rigidbody.velocity.y == 0)
-                || _rigidbody.velocity == Vector2.zero)
-                && !(_rigidbody.velocity.y > 0));
+        return !((PlayerIsOnGround() || VerticalVelocityIsZeroOnFlyingPlatform() || PlayerIsNotMoving()) && !(VerticalVelocityIsPositive()));
+    }
+
+    private bool VerticalVelocityIsPositive()
+    {
+        return _rigidbody.velocity.y > 0;
+    }
+
+    private bool VerticalVelocityIsZeroOnFlyingPlatform()
+    {
+        return _touchesGroundHitbox.GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform && _rigidbody.velocity.y == 0;
+    }
+
+    private bool PlayerIsNotMoving()
+    {
+        return _rigidbody.velocity == Vector2.zero;
+    }
+
+    private bool PlayerIsOnGround()
+    {
+        return PlayerTouchesGround() && !PlayerTouchesFlyingPlatform();
+    }
+
+    private bool PlayerTouchesGround()
+    {
+        return Player.GetPlayer().GetComponent<PlayerTouchesGround>().OnGround;
+    }
+
+    private bool PlayerTouchesFlyingPlatform()
+    {
+        return _touchesGroundHitbox.GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform;
     }
 
     private void Update()
@@ -83,8 +138,21 @@ public class PlayerMovement : MonoBehaviour
         _anim.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
         _anim.SetBool("IsJumping", IsJumping() && _rigidbody.velocity.y > 0);
         _anim.SetBool("IsFalling", IsJumping() && _rigidbody.velocity.y < 0);
+        _anim.SetBool("IsCrouching", IsCrouching);
 
-        // Appel au falldamage
+        if (IsCrouching)
+        {
+            _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND * CROUCHING_OFFSET);
+            _playerBoxCollider.offset = new Vector2(_playerBoxCollider.offset.x, PLAYER_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
+            _playerBoxColliderFeet.offset = new Vector2(_playerBoxColliderFeet.offset.x, FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
+        }
+        else
+        {
+            _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND);
+            _playerBoxCollider.offset = new Vector2(_playerBoxCollider.offset.x, PLAYER_COLLIDER_BOX_Y_OFFSET_WHEN_STAND);
+            _playerBoxColliderFeet.offset = new Vector2(_playerBoxColliderFeet.offset.x, FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND);
+        }
+
         if (IsJumping() && _rigidbody.velocity.y < 0)
         {
             _wasFalling = true;

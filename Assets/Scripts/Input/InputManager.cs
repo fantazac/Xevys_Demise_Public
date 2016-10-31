@@ -1,7 +1,6 @@
 ﻿using System;
 using System.CodeDom;
 using UnityEngine;
-using XInputDotNetPure;
 
 public class InputManager : MonoBehaviour
 {
@@ -26,6 +25,12 @@ public class InputManager : MonoBehaviour
     public delegate void OnBasicAttackHandler();
     public event OnBasicAttackHandler OnBasicAttack;
 
+    public delegate void OnCrouchHandler();
+    public event OnCrouchHandler OnCrouch;
+
+    public delegate void OnStandingUpHandler();
+    public event OnStandingUpHandler OnStandingUp;
+
     public delegate void OnThrowAttackHandler();
     public event OnThrowAttackHandler OnThrowAttack;
 
@@ -35,199 +40,100 @@ public class InputManager : MonoBehaviour
     public delegate void OnEnterPortalHandler();
     public event OnEnterPortalHandler OnEnterPortal;
 
-    private float _joysticksXAxisDeadZone = 0.1f;
-    private float _joysticksYAxisDeadZone = 1f;
+    private KeyboardInputs _keyboardInputs;
+    private GamepadInputs _gamepadInputs;
 
-    private bool _leftShoulderReady = true;
-    private bool _rightShoulderReady = true;
-    private bool _xButtonReady = true;
-    private bool _yButtonReady = true;
-    private bool _aButtonReady = true;
-    private bool _upButtonReady = true;
-
-    private void Update()
+    private void Start()
     {
-        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
-        {
-            OnMove(Vector3.left, false);
-        }
-        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
-        {
-            OnMove(Vector3.right, true);
-        }
-        else
-        {
-            OnStop();
-        }
+        _keyboardInputs = GetComponentInChildren<KeyboardInputs>();
+        _keyboardInputs.OnMove += InputsOnMove;
+        _keyboardInputs.OnJump += InputsOnJump;
+        _keyboardInputs.OnJumpDown += InputsOnJumpDown;
+        _keyboardInputs.OnUnderwaterControl += InputsOnUnderwaterControl;
+        _keyboardInputs.OnIronBootsEquip += InputsOnIronBootsEquip;
+        _keyboardInputs.OnStop += InputsOnStop;
+        _keyboardInputs.OnBasicAttack += InputsOnBasicAttack;
+        _keyboardInputs.OnCrouch += InputsOnCrouch;
+        _keyboardInputs.OnStandingUp += InputsOnStandingUp;
+        _keyboardInputs.OnThrowAttack += InputsOnThrowAttack;
+        _keyboardInputs.OnThrowAttackChangeButtonPressed += InputsOnThrowAttackChangeButtonPressed;
+        _keyboardInputs.OnEnterPortal += InputsOnEnterPortal;
 
-        if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space))
-        {
-            OnJumpDown();
-        }
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            OnJump();
-        }
+        _gamepadInputs = GetComponentInChildren<GamepadInputs>();
+        _gamepadInputs.OnMove += InputsOnMove;
+        _gamepadInputs.OnJump += InputsOnJump;
+        _gamepadInputs.OnJumpDown += InputsOnJumpDown;
+        _gamepadInputs.OnUnderwaterControl += InputsOnUnderwaterControl;
+        _gamepadInputs.OnIronBootsEquip += InputsOnIronBootsEquip;
+        _gamepadInputs.OnStop += InputsOnStop;
+        _gamepadInputs.OnBasicAttack += InputsOnBasicAttack;
+        _gamepadInputs.OnCrouch += InputsOnCrouch;
+        _gamepadInputs.OnStandingUp += InputsOnStandingUp;
+        _gamepadInputs.OnThrowAttack += InputsOnThrowAttack;
+        _gamepadInputs.OnThrowAttackChangeButtonPressed += InputsOnThrowAttackChangeButtonPressed;
+        _gamepadInputs.OnEnterPortal += InputsOnEnterPortal;
+    }
 
-        if (Input.GetKey(KeyCode.S))
-        {
-            OnUnderwaterControl(true);
-        }
+    private void InputsOnMove(Vector3 movement, bool goesRight)
+    {
+        OnMove(movement, goesRight);
+    }
 
-        if (Input.GetKey(KeyCode.W))
-        {
-            OnUnderwaterControl(false);
-        }
+    private void InputsOnJump()
+    {
+        OnJump();
+    }
 
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            OnEnterPortal();
-        }
+    private void InputsOnJumpDown()
+    {
+        OnJumpDown();
+    }
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            OnIronBootsEquip();
-        }
+    private void InputsOnUnderwaterControl(bool goesDown)
+    {
+        OnUnderwaterControl(goesDown);
+    }
 
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            OnBasicAttack();
-        }
+    private void InputsOnIronBootsEquip()
+    {
+        OnIronBootsEquip();
+    }
 
-        if (Input.GetKey(KeyCode.L))
+    private void InputsOnStop()
+    {
+        OnStop();
+    }
+
+    private void InputsOnBasicAttack()
+    {
+        OnBasicAttack();
+    }
+
+    private void InputsOnCrouch()
+    {
+        OnCrouch();
+    }
+
+    private void InputsOnStandingUp()
+    {
+        OnStandingUp();
+    }
+
+    private void InputsOnThrowAttack()
+    {
+        if (OnThrowAttack != null)
         {
             OnThrowAttack();
         }
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            OnThrowAttackChangeButtonPressed();
-        }
-
-        GamePadInputs();
     }
 
-    private void GamePadInputs()
+    private void InputsOnThrowAttackChangeButtonPressed()
     {
-        foreach (PlayerIndex player in Enum.GetValues(typeof(PlayerIndex)))
-        {
-            //Obtention de l'état du gamepad
-            GamePadState state = GamePad.GetState(player);
+        OnThrowAttackChangeButtonPressed();
+    }
 
-            //Tester si la manette est connectée
-            if (state.IsConnected)
-            {
-                //Déplacement gauche à droite du joueur (utilisez les events)
-                if (Math.Abs(state.ThumbSticks.Left.X) > _joysticksXAxisDeadZone)
-                {
-                    if (state.ThumbSticks.Left.X < 0)
-                    {
-                        OnMove(Vector3.left, false);
-                    }
-                    else
-                    {
-                        OnMove(Vector3.right, true);
-                    }
-                }
-
-                if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
-                {
-                    if (state.Buttons.A == ButtonState.Pressed && state.ThumbSticks.Left.Y < 0)
-                    {
-                        OnJumpDown();
-                    }
-
-                    if (state.ThumbSticks.Left.Y < 0)
-                    {
-                        OnUnderwaterControl(true);
-                    }
-
-                    if (state.ThumbSticks.Left.Y > 0)
-                    {
-                        OnUnderwaterControl(false);
-                        if (_upButtonReady)
-                        {
-                            _upButtonReady = false;
-                            OnEnterPortal();
-                        }                       
-                    }                 
-                }
-
-                if (!_upButtonReady && state.ThumbSticks.Left.Y <= 0)
-                {
-                    _upButtonReady = true;
-                }
-
-                if (state.Buttons.A == ButtonState.Pressed && _aButtonReady && state.ThumbSticks.Left.Y != -_joysticksYAxisDeadZone)
-                {
-                    _aButtonReady = false;
-                    OnJump();
-                }
-                if (state.Buttons.A == ButtonState.Released && !_aButtonReady)
-                {
-                    _aButtonReady = true;
-                }
-
-                #region Cheat
-
-                if (state.Buttons.LeftStick == ButtonState.Pressed)
-                {
-                    GameObject.Find("Character").GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition++;
-                    GameObject.Find("Character").GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition++;
-                }
-
-                #endregion
-
-
-                if (state.Buttons.Y == ButtonState.Pressed && _yButtonReady)
-                {
-                    _yButtonReady = false;
-                    OnIronBootsEquip();
-                }
-                if (state.Buttons.Y == ButtonState.Released && !_yButtonReady)
-                {
-                    _yButtonReady = true;
-                }
-
-                if (state.Buttons.X == ButtonState.Pressed && _xButtonReady)
-                {
-                    _xButtonReady = false;
-                    OnBasicAttack();
-                }
-                if (state.Buttons.X == ButtonState.Released && !_xButtonReady)
-                {
-                    _xButtonReady = true;
-                }
-
-                if (state.Buttons.B == ButtonState.Pressed)
-                {
-                    if (OnThrowAttack != null)
-                    {
-                        OnThrowAttack();
-                    }
-                }
-
-                if (state.Buttons.LeftShoulder == ButtonState.Pressed && _leftShoulderReady)
-                {
-                    _leftShoulderReady = false;
-                    OnThrowAttackChangeButtonPressed();
-                }
-
-                if (state.Buttons.LeftShoulder == ButtonState.Released && !_leftShoulderReady)
-                {
-                    _leftShoulderReady = true;
-                }
-
-                if (state.Buttons.RightShoulder == ButtonState.Pressed && _rightShoulderReady)
-                {
-                    _rightShoulderReady = false;
-                    OnThrowAttackChangeButtonPressed();
-                }
-                if (state.Buttons.RightShoulder == ButtonState.Released && !_rightShoulderReady)
-                {
-                    _rightShoulderReady = true;
-                }
-            }
-        }
+    private void InputsOnEnterPortal()
+    {
+        OnEnterPortal();
     }
 }
