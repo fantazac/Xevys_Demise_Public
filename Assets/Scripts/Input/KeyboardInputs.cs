@@ -43,10 +43,12 @@ public class KeyboardInputs : MonoBehaviour {
     {
         if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.S))
         {
+            OnStandingUp();
             OnMove(Vector3.left, false);
         }
         else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S))
         {
+            OnStandingUp();
             OnMove(Vector3.right, true);
         }
         else
@@ -66,6 +68,7 @@ public class KeyboardInputs : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
+            OnStandingUp();
             OnJump();
         }
 
@@ -76,6 +79,7 @@ public class KeyboardInputs : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.W))
         {
+            OnStandingUp();
             OnUnderwaterControl(false);
         }
 
