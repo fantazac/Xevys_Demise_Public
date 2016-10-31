@@ -28,13 +28,13 @@ public class PickItem : MonoBehaviour
             if (gameObject.tag == "BaseKnifeItem")
             {
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition += BASE_KNIFE_AMOUNT_ON_PICKUP;
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 _showItems.OnKnifeAmmoChanged(collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
             }
             else if (gameObject.tag == "BaseAxeItem")
             {
                 collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition += BASE_AXE_AMOUNT_ON_PICKUP;
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 _showItems.OnAxeAmmoChanged(collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
             }
             else if (gameObject.tag == "KnifePickableItem")
@@ -49,49 +49,49 @@ public class PickItem : MonoBehaviour
             }
             else if (gameObject.tag == "FeatherItem")
             {
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableFeather();
                 _showItems.OnFeatherEnabled();
             }
             else if (gameObject.tag == "IronBootsItem")
             {
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableIronBoots();
                 _showItems.OnIronBootsEnabled();
             }
             else if (gameObject.tag == "BubbleItem")
             {
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableBubble();
                 _showItems.OnBubbleEnabled();
             }
             else if (gameObject.tag == "FireProofArmorItem")
             {
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableFireProofArmor();
                 _showItems.OnFireProofArmorEnabled();
             }
             else if (gameObject.tag == "EarthArtefactItem")
             {
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableEarthArtefact();
                 _showItems.OnEarthArtefactEnabled();
             }
             else if (gameObject.tag == "AirArtefactItem")
             {
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableAirArtefact();
                 _showItems.OnAirArtefactEnabled();
             }
             else if (gameObject.tag == "WaterArtefactItem")
             {
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableWaterArtefact();
                 _showItems.OnWaterArtefactEnabled();
             }
             else if (gameObject.tag == "FireArtefactItem")
             {
-                GetComponent<ActivateHoverRetract>().ActivateRetract();
+                GetComponent<ActivateHoverPlatform>().ActivateRetract();
                 collider.GetComponentInChildren<InventoryManager>().EnableFireArtefact();
                 _showItems.OnFireArtefactEnabled();
             }

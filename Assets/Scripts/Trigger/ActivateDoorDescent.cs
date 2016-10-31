@@ -11,7 +11,7 @@ public class ActivateDoorDescent : MonoBehaviour
     {
         if(_door != null && collider.gameObject.tag == "Player")
         {
-            _door.GetComponent<EnableDoor>().Descent = true;
+            _door.GetComponent<EnableDoor>().IsActivated = true;
         }
     }
 

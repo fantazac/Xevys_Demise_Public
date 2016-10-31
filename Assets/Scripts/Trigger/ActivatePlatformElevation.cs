@@ -3,7 +3,8 @@ using System.Collections;
 
 public class ActivatePlatformElevation : MonoBehaviour
 {
-
+    [SerializeField]
+    private float _distanceToMoveObject = -1000f;
     [SerializeField]
     private GameObject _flyingPlatform;
 
@@ -16,7 +17,7 @@ public class ActivatePlatformElevation : MonoBehaviour
             GetComponent<AudioSource>().Play();
             _soundPlayed = true;
 
-            gameObject.transform.position = new Vector3(-1000, -1000, 0);
+            gameObject.transform.position = new Vector3(_distanceToMoveObject, _distanceToMoveObject, 0);
 
             _flyingPlatform.GetComponent<ElevateFlyingPlatform>().Elevate = true;
         }

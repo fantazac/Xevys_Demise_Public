@@ -1,20 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ActivateDoorRetract : MonoBehaviour
-{
+public class ActivateWaterPlatform : MonoBehaviour {
 
     [SerializeField]
-    private GameObject _door;
+    private float _distanceToMovePlatform = -1000f;
+
+    [SerializeField]
+    private GameObject _doorToDestroy;
+
+    [SerializeField]
+    private GameObject _doorToRetract;
 
     [SerializeField]
     private GameObject[] _wallsToActivate;
+
+    [SerializeField]
+    private GameObject _player;
 
     private bool _soundPlayed = false;
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (_door != null && (collider.gameObject.tag == "AxeBlade" || collider.gameObject.tag == "AxeHandle" || collider.gameObject.tag == "Knife"))
+        if (_doorToDestroy != null && _doorToRetract != null 
+            && _player.GetComponent<InventoryManager>().WaterArtefactEnabled)
         {
             foreach (GameObject wall in _wallsToActivate)
             {
@@ -23,9 +32,11 @@ public class ActivateDoorRetract : MonoBehaviour
 
             GetComponent<AudioSource>().Play();
             _soundPlayed = true;
-            gameObject.transform.position = new Vector3(-1000, -1000, 0);
+            gameObject.transform.position = new Vector3(_distanceToMovePlatform, _distanceToMovePlatform, 0);
 
-            _door.GetComponent<RetractDoor>().Retract = true;
+            Destroy(_doorToDestroy);
+
+            _doorToRetract.GetComponent<RetractDoor>().Retract = true;
         }
     }
 
