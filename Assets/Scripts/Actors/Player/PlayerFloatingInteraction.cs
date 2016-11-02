@@ -3,8 +3,12 @@ using System.Collections;
 
 public class PlayerFloatingInteraction : MonoBehaviour
 {
-    [SerializeField]
     private GameObject _player;
+
+    private void Start()
+    {
+        _player = Player.GetPlayer();
+    }
 
     public void OnTriggerEnter2D(Collider2D collider)
     {
