@@ -63,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _inputManager = GetComponentInChildren<InputManager>();
         _basicAttackBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
-        _showItems = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowItems>();
+        _showItems = GameObject.Find("ItemCanvas").GetComponent<ShowItems>();
         _touchesGroundHitbox = GameObject.Find("CharacterTouchesGround");
 
         _inputManager.OnMove += OnMove;

@@ -58,7 +58,7 @@ public class ActorThrowAttack : MonoBehaviour
         _inventoryManager.OnThrowableWeaponChange += OnThrowableWeaponChange;
 
         _soundPlayer = GetComponent<AudioSourcePlayer>();
-        _showItems = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowItems>();
+        _showItems = GameObject.Find("ItemCanvas").GetComponent<ShowItems>();
 
         _munitions = GetComponent<PlayerThrowingWeaponsMunitions>();
 

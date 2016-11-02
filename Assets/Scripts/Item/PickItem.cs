@@ -18,7 +18,7 @@ public class PickItem : MonoBehaviour
 
     private void Start()
     {
-        _showItems = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowItems>();
+        _showItems = GameObject.Find("ItemCanvas").GetComponent<ShowItems>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
