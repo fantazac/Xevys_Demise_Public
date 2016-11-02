@@ -7,8 +7,6 @@ public class Health : MonoBehaviour
     [SerializeField]
     private float _health = 1000f;
 
-    private AudioSourcePlayer _soundPlayer;
-
     public float HealthPoint { get { return _health; } set { _health = value; } }
 
     public delegate void OnDamageTakenHandler(int hitPoints);
@@ -22,7 +20,6 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
-        _soundPlayer = GetComponent<AudioSourcePlayer>();
         OnHealthChanged += ChangeHealth;
     }
 
@@ -34,7 +31,12 @@ public class Health : MonoBehaviour
 
     public void Hit(int hitPoints)
     {
-        OnDamageTaken(-hitPoints);
+        //to change
+        if(OnDamageTaken != null)
+        {
+            OnDamageTaken(-hitPoints);
+        }
+        
         OnHealthChanged(-hitPoints);
     }
 
