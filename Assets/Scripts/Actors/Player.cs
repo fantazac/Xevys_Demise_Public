@@ -8,10 +8,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        if(_player == null)
-        {
-            _player = gameObject;
-        }
+        _player = gameObject;
     }
 
     public static GameObject GetPlayer()
