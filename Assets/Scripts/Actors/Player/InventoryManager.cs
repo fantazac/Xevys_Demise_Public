@@ -18,10 +18,30 @@ public class InventoryManager : MonoBehaviour
     public bool BubbleEnabled { get; private set; }
     public bool FireProofArmorEnabled { get; private set; }
 
+    public bool HasInfiniteKnives { get; private set; }
+    public bool HasInfiniteAxes { get; private set; }
+
     public bool AirArtefactEnabled { get; private set; }
     public bool EarthArtefactEnabled { get; private set; }
     public bool WaterArtefactEnabled { get; private set; }
     public bool FireArtefactEnabled { get; private set; }
+
+    public void SetInfiniteAmmoEvent(GameObject ammoObject)
+    {
+        ammoObject.GetComponent<InfiniteAmmoWhileInPickupRoom>().OnSetInfiniteAmmo += SetInfiniteAmmo;
+    }
+
+    private void SetInfiniteAmmo(GameObject item, bool enable)
+    {
+        if(item.tag == "Knife")
+        {
+            HasInfiniteKnives = enable;
+        }
+        else if (item.tag == "Axe")
+        {
+            HasInfiniteAxes = enable;
+        }
+    }
 
     public void EnableKnife()
     {

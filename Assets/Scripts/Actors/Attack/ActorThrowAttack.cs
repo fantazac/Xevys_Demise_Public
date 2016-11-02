@@ -45,6 +45,7 @@ public class ActorThrowAttack : MonoBehaviour
     private InputManager _inputManager;
     private InventoryManager _inventoryManager;
     private AudioSourcePlayer _soundPlayer;
+    private PlayerThrowingWeaponsMunitions _munitions;
 
     private ShowItems _showItems;
 
@@ -58,6 +59,8 @@ public class ActorThrowAttack : MonoBehaviour
 
         _soundPlayer = GetComponent<AudioSourcePlayer>();
         _showItems = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowItems>();
+
+        _munitions = GetComponent<PlayerThrowingWeaponsMunitions>();
 
         _knifeThrowCDCount = ATTACK_COOLDOWN;
         _axeThrowCDCount = ATTACK_COOLDOWN;
@@ -86,9 +89,13 @@ public class ActorThrowAttack : MonoBehaviour
             newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<FlipPlayer>().IsFacingRight ? KNIFE_SPEED : -KNIFE_SPEED, 0);
             newKnife.GetComponent<SpriteRenderer>().flipX = !GetComponent<FlipPlayer>().IsFacingRight;
             _knifeThrowCDCount = 0;
-            GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition--;
+            _munitions.KnifeMunition--;
+            if(_inventoryManager.HasInfiniteKnives && _munitions.KnifeMunition == 0)
+            {
+                _munitions.KnifeMunition += 1;
+            }
 
-            _showItems.KnifeAmmoChange(GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
+            _showItems.KnifeAmmoChange(_munitions.KnifeMunition);
         }
     }
 
@@ -104,9 +111,13 @@ public class ActorThrowAttack : MonoBehaviour
             newAxe.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<FlipPlayer>().IsFacingRight ? AXE_X_SPEED : -AXE_X_SPEED, AXE_Y_SPEED);
             newAxe.GetComponent<SpriteRenderer>().flipY = !GetComponent<FlipPlayer>().IsFacingRight;
             _axeThrowCDCount = 0;
-            GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition--;
+            _munitions.AxeMunition--;
+            if (_inventoryManager.HasInfiniteAxes && _munitions.AxeMunition == 0)
+            {
+                _munitions.AxeMunition += 1;
+            }
 
-            _showItems.AxeAmmoChange(GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
+            _showItems.AxeAmmoChange(_munitions.AxeMunition);
         }
     }
 

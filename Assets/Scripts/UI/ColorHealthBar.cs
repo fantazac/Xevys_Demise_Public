@@ -27,15 +27,15 @@ public class ColorHealthBar : MonoBehaviour
         _health.OnHealthChanged += OnHealthChanged;
 	}
 
-    private void OnHealthChanged(int hitPoints)
+    private void OnHealthChanged(int healthPoints)
     {
         if (_healthBar.localScale.x > 0)
         {
             // Change la couleur de la barre de vie en fonction du % de vie restant
-            if (_health.HealthPoint - hitPoints >= 50f * MAX_HEALTH / 100f)
+            if (_health.HealthPoint + healthPoints >= 50f * MAX_HEALTH / 100f)
             {
                 Color interpolatedColor = _healthBarImage.color;
-                interpolatedColor.r = _healthBarImage.color.r + (hitPoints * HP_MULTIPLICATOR_FOR_COLOR);
+                interpolatedColor.r = _healthBarImage.color.r + (healthPoints * HP_MULTIPLICATOR_FOR_COLOR);
                 interpolatedColor.g = 1;
                 interpolatedColor.b = 0;
                 interpolatedColor.a = 1;
@@ -45,7 +45,7 @@ public class ColorHealthBar : MonoBehaviour
             {
                 Color interpolatedColor = _healthBarImage.color;
                 interpolatedColor.r = 1;
-                interpolatedColor.g = _healthBarImage.color.g - (hitPoints * HP_MULTIPLICATOR_FOR_COLOR);
+                interpolatedColor.g = _healthBarImage.color.g - (healthPoints * HP_MULTIPLICATOR_FOR_COLOR);
                 interpolatedColor.b = 0;
                 interpolatedColor.a = 1;
                 _healthBarImage.color = interpolatedColor;
