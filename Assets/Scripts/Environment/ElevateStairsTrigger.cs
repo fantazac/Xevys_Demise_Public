@@ -50,9 +50,9 @@ public class ElevateStairsTrigger : MonoBehaviour
                 }
             }
         }
-        else if (GameObject.Find("Main Camera").GetComponent<CameraManager>().CurrentArea == MAIN_CAMERA_BASE_KNIFE_ITEM_AREA && GameObject.Find("Character").GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition < 1 && !GameObject.Find("Base Knife Item"))
+        else if (GameObject.Find("Main Camera").GetComponent<CameraManager>().CurrentArea == MAIN_CAMERA_BASE_KNIFE_ITEM_AREA && GameObject.Find("Character").GetComponent<PlayerThrowingWeaponsMunitions>().KnifeAmmo < 1 && !GameObject.Find("Base Knife Item"))
         {
-            GameObject.Find("Character").GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition += BASE_KNIFE_AMOUNT_ON_PICKUP;
+            //GameObject.Find("Character").GetComponent<PlayerThrowingWeaponsMunitions>().KnifeAmmo += BASE_KNIFE_AMOUNT_ON_PICKUP;
         }
     }
 }

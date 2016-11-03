@@ -13,12 +13,14 @@ public class PickItem : MonoBehaviour
     private const int BASE_KNIFE_AMOUNT_ON_PICKUP = 10;
 
     private ShowItems _showItems;
+    private InventoryManager _inventoryManager;
 
     private bool _soundPlayed;
 
     private void Start()
     {
         _showItems = GameObject.Find("ItemCanvas").GetComponent<ShowItems>();
+        _inventoryManager = Player.GetPlayer().GetComponent<InventoryManager>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -27,23 +29,21 @@ public class PickItem : MonoBehaviour
         {
             if (gameObject.tag == "BaseKnifeItem")
             {
-                collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition += BASE_KNIFE_AMOUNT_ON_PICKUP;
-                _showItems.KnifeAmmoChange(collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
+                collider.GetComponent<PlayerThrowingWeaponsMunitions>().AddKnifeAmmo(BASE_KNIFE_AMOUNT_ON_PICKUP);
+                _inventoryManager.EnableKnife();
             }
             else if (gameObject.tag == "BaseAxeItem")
             {
-                collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition += BASE_AXE_AMOUNT_ON_PICKUP;
-                _showItems.AxeAmmoChange(collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
+                collider.GetComponent<PlayerThrowingWeaponsMunitions>().AddAxeAmmo(BASE_AXE_AMOUNT_ON_PICKUP);
+                _inventoryManager.EnableAxe();
             }
             else if (gameObject.tag == "KnifePickableItem")
             {
-                collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition += KNIFE_AMOUNT_ON_PICKUP;
-                _showItems.KnifeAmmoChange(collider.GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition);
+                collider.GetComponent<PlayerThrowingWeaponsMunitions>().AddKnifeAmmo(KNIFE_AMOUNT_ON_PICKUP);
             }
             else if (gameObject.tag == "AxePickableItem")
             {
-                collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition += AXE_AMOUNT_ON_PICKUP;
-                _showItems.AxeAmmoChange(collider.GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition);
+                collider.GetComponent<PlayerThrowingWeaponsMunitions>().AddAxeAmmo(AXE_AMOUNT_ON_PICKUP);
             }
             else if (gameObject.tag == "FeatherItem")
             {

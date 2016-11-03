@@ -7,7 +7,6 @@ public class PlayerBasicAttackManager : MonoBehaviour
     [SerializeField]
     private int _baseDamage = 100;
 
-    private Animator _anim;
 
     private string[] _enemiesTags;
     private string[] _bossesTags;
@@ -16,7 +15,6 @@ public class PlayerBasicAttackManager : MonoBehaviour
     {
         _enemiesTags = new string[] { "Scarab", "Bat", "Skeltal" };
         _bossesTags = new string[] { "Behemoth", "Phoenix", "Neptune" };
-        _anim = GameObject.Find("CharacterSprite").GetComponent<Animator>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)

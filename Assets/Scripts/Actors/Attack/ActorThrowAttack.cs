@@ -33,34 +33,41 @@ public class ActorThrowAttack : MonoBehaviour
     [SerializeField]
     private float _attackCooldown = 1f;
 
+    private int _ammoUsedPerThrow = 1;
+
     private WeaponType _selectedWeapon;
     private bool _canUseThrowAttack = true;
 
     private InputManager _inputManager;
     private InventoryManager _inventoryManager;
-    private AudioSourcePlayer _soundPlayer;
     private PlayerThrowingWeaponsMunitions _munitions;
-
+    private ShowItems _showItems;
+    private FlipPlayer _flipPlayer;
 
     private delegate void OnSelectedThrowAttackHandler();
     private event OnSelectedThrowAttackHandler OnSelectedThrowAttack;
 
-    public delegate void OnThrowAttackUsedHandler(WeaponType weaponType);
-    public event OnThrowAttackUsedHandler OnThrowAttackUsed;
-    //private ShowItems _showItems;
+    public delegate void OnKnifeAmmoUsedHandler(int ammoUsedOnThrow);
+    public event OnKnifeAmmoUsedHandler OnKnifeAmmoUsed;
+
+    public delegate void OnAxeAmmoUsedHandler(int ammoUsedOnThrow);
+    public event OnAxeAmmoUsedHandler OnAxeAmmoUsed;
 
     private void Start()
     {
-        /*_inputManager = GetComponentInChildren<InputManager>();
-        _inputManager.OnThrowAttackChangeButtonPressed += OnChangeWeaponType;
+        _inputManager = GetComponentInChildren<InputManager>();
+        _inputManager.OnThrowAttackChangeButtonPressed += OnSwitchWeapon;
 
         _inventoryManager = GetComponent<InventoryManager>();
-        _inventoryManager.OnEnableWeapon += OnThrowableWeaponChange;*/
+        _inventoryManager.OnEnableAxe += SelectAxe;
+        _inventoryManager.OnEnableKnife += SelectKnife;
+
+        _showItems = GameObject.Find("ItemCanvas").GetComponent<ShowItems>();
+
+        _flipPlayer = GetComponent<FlipPlayer>();
 
         _inputManager.OnThrowAttack += OnThrowAttack;
 
-        _soundPlayer = GetComponent<AudioSourcePlayer>();
-        //_showItems = GameObject.Find("ItemCanvas").GetComponent<ShowItems>();
         _munitions = GetComponent<PlayerThrowingWeaponsMunitions>();
         _selectedWeapon = WeaponType.None;
     }
@@ -72,7 +79,6 @@ public class ActorThrowAttack : MonoBehaviour
             _canUseThrowAttack = false;
             OnSelectedThrowAttack();
             Invoke("EnableThrowAttack", _attackCooldown);
-            OnThrowAttackUsed(_selectedWeapon);
         }
     }
 
@@ -86,75 +92,90 @@ public class ActorThrowAttack : MonoBehaviour
         _canUseThrowAttack = true;
     }
 
+    private bool HasKnifeAmmo()
+    {
+        return _munitions.KnifeAmmo > 0;
+    }
+
+    private bool HasAxeAmmo()
+    {
+        return _munitions.AxeAmmo > 0;
+    }
+
+    private void InstantiateThrowWeapon(GameObject weapon, Vector2 initialPosition, Vector3 initialRotation, Vector2 initialVelocity, Vector2 initialDirection)
+    {
+        GameObject newWeapon;
+
+        newWeapon = (GameObject)Instantiate(weapon, initialPosition, transform.rotation);
+        newWeapon.transform.eulerAngles = initialRotation;
+        newWeapon.GetComponent<Rigidbody2D>().velocity = initialVelocity;
+        newWeapon.transform.localScale = initialDirection;
+    }
+
     private void OnKnifeAttack()
     {
-        if (GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition > 0)
+        if (HasKnifeAmmo())
         {
-            _soundPlayer.Play(1);
-            GameObject newKnife;
+            InstantiateThrowWeapon(_knife,
+                new Vector2(transform.position.x + _weaponSpawnDistanceFromPlayer, transform.position.y),
+                new Vector3(),
+                new Vector2(_flipPlayer.IsFacingRight ? _knifeSpeed : -_knifeSpeed, 0),
+                new Vector2(_flipPlayer.IsFacingRight ? _knife.transform.localScale.x : -_knife.transform.localScale.x, _knife.transform.localScale.y));
 
-            newKnife = (GameObject)Instantiate(_knife, new Vector2(transform.position.x + _weaponSpawnDistanceFromPlayer, transform.position.y), transform.rotation);
-            newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<FlipPlayer>().IsFacingRight ? _knifeSpeed : -_knifeSpeed, 0);
-            newKnife.GetComponent<SpriteRenderer>().flipX = !GetComponent<FlipPlayer>().IsFacingRight;
-            _munitions.KnifeMunition--;
-            if(_inventoryManager.HasInfiniteKnives && _munitions.KnifeMunition == 0)
-            {
-                _munitions.KnifeMunition += 1;
-            }
-
-            //_showItems.KnifeAmmoChange(_munitions.KnifeMunition);
+            OnKnifeAmmoUsed(_ammoUsedPerThrow);
         }
     }
 
     private void OnAxeAttack()
     {
-        if (GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition > 0)
+        if (HasAxeAmmo())
         {
-            _soundPlayer.Play(2);
-            GameObject newAxe;
+            InstantiateThrowWeapon(_axe,
+                new Vector2(transform.position.x, transform.position.y + _axeThrowingHeight),
+                new Vector3(0, 0, _axeInitialRotation),
+                new Vector2(_flipPlayer.IsFacingRight ? _axeHorinzontalSpeed : -_axeHorinzontalSpeed, _axeVerticalSpeed),
+                new Vector2(_axe.transform.localScale.x, _flipPlayer.IsFacingRight ? _axe.transform.localScale.y : -_axe.transform.localScale.y));
 
-            newAxe = (GameObject)Instantiate(_axe, new Vector2(transform.position.x, transform.position.y + _axeThrowingHeight), transform.rotation);
-            newAxe.transform.eulerAngles = new Vector3(0, 0, _axeInitialRotation);
-            newAxe.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<FlipPlayer>().IsFacingRight ? _axeHorinzontalSpeed : -_axeHorinzontalSpeed, _axeVerticalSpeed);
-            newAxe.transform.localScale = new Vector2(newAxe.transform.localScale.x, GetComponent<FlipPlayer>().IsFacingRight ? newAxe.transform.localScale.y : -newAxe.transform.localScale.y);
-            _munitions.AxeMunition--;
-            if (_inventoryManager.HasInfiniteAxes && _munitions.AxeMunition == 0)
-            {
-                _munitions.AxeMunition += 1;
-            }
-
-            //_showItems.AxeAmmoChange(_munitions.AxeMunition);
+            OnAxeAmmoUsed(_ammoUsedPerThrow);
         }
     }
 
-    private void OnThrowableWeaponChange(WeaponType weaponTypes)
+    private void OnSwitchWeapon()
     {
-        switch (weaponTypes)
+        switch (_selectedWeapon)
         {
             case WeaponType.Axe:
                 {
-                    OnSelectedThrowAttack += OnAxeAttack;
-                    OnSelectedThrowAttack -= OnKnifeAttack;
+                    if (_inventoryManager.KnifeEnabled)
+                    {
+                        SelectKnife();
+                    }
                     break;
                 }
             case WeaponType.Knife:
                 {
-                    OnSelectedThrowAttack -= OnAxeAttack;
-                    OnSelectedThrowAttack += OnKnifeAttack;
+                    if (_inventoryManager.AxeEnabled)
+                    {
+                        SelectAxe();
+                    }
                     break;
                 }
         }
     }
 
-    private void OnChangeWeaponType()
+    private void SelectAxe()
     {
-        /*if (_inventoryManager.KnifeActive && GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition > 0)
-        {
-            OnThrowableWeaponChange(WeaponType.Axe);
-        }
-        else if (_inventoryManager.AxeActive && GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition > 0)
-        {
-            OnThrowableWeaponChange(WeaponType.Knife);
-        }*/
+        OnSelectedThrowAttack += OnAxeAttack;
+        OnSelectedThrowAttack -= OnKnifeAttack;
+        _selectedWeapon = WeaponType.Axe;
+        _showItems.SelectAxe();
+    }
+
+    private void SelectKnife()
+    {
+        OnSelectedThrowAttack -= OnAxeAttack;
+        OnSelectedThrowAttack += OnKnifeAttack;
+        _selectedWeapon = WeaponType.Knife;
+        _showItems.SelectKnife();
     }
 }

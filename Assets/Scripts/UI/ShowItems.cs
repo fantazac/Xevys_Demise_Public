@@ -10,6 +10,7 @@ public class ShowItems : MonoBehaviour
 
     private Text _knifeText;
     private Text _axeText;
+    
     private SpriteRenderer _selectedWeaponHighlight;
     private SpriteRenderer _selectedIronBootsHighlight;
     private SpriteRenderer _knifeSpriteRenderer;
@@ -22,7 +23,9 @@ public class ShowItems : MonoBehaviour
     private SpriteRenderer _airArtefactRenderer;
     private SpriteRenderer _waterArtefactRenderer;
     private SpriteRenderer _fireArtefactRenderer;
+
     private InventoryManager _inventoryManager;
+    private PlayerThrowingWeaponsMunitions _munitions;
 
     private void Start()
     {
@@ -34,13 +37,20 @@ public class ShowItems : MonoBehaviour
         _axeSpriteRenderer = GameObject.Find("WeaponSelectAxe").GetComponent<SpriteRenderer>();
         _featherSpriteRenderer = GameObject.Find("FeatherFrame").GetComponent<SpriteRenderer>();
         _ironBootsSpriteRenderer = GameObject.Find("IronBootsFrame").GetComponent<SpriteRenderer>();
-        _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
+        _inventoryManager = Player.GetPlayer().GetComponent<InventoryManager>();
+        _munitions = Player.GetPlayer().GetComponent<PlayerThrowingWeaponsMunitions>();
         _bubbleSpriteRenderer = GameObject.Find("BubbleFrame").GetComponent<SpriteRenderer>();
         _fireProofArmorRenderer = GameObject.Find("FireProofArmorFrame").GetComponent<SpriteRenderer>();
         _earthArtefactRenderer = GameObject.Find("EarthArtefactFrame").GetComponent<SpriteRenderer>();
         _airArtefactRenderer = GameObject.Find("AirArtefactFrame").GetComponent<SpriteRenderer>();
         _waterArtefactRenderer = GameObject.Find("WaterArtefactFrame").GetComponent<SpriteRenderer>();
         _fireArtefactRenderer = GameObject.Find("FireArtefactFrame").GetComponent<SpriteRenderer>();
+
+        _inventoryManager.OnEnableAxe += EnableAxe;
+        _inventoryManager.OnEnableKnife += EnableKnife;
+
+        _munitions.OnAxeAmmoChanged += AxeAmmoChange;
+        _munitions.OnKnifeAmmoChanged += KnifeAmmoChange;
 
         _knifeText.enabled = false;
         _axeText.enabled = false;
@@ -63,46 +73,40 @@ public class ShowItems : MonoBehaviour
 
     public void KnifeAmmoChange(int total)
     {
-        if (!_inventoryManager.KnifeEnabled)
-        {
-            _inventoryManager.EnableKnife();
-            _knifeSpriteRenderer.enabled = true;
-            _knifeText.enabled = true;
-            KnifeSelect();
-        }
         _knifeText.text = total.ToString();
     }
 
     public void AxeAmmoChange(int total)
     {
-        if (!_inventoryManager.AxeEnabled)
-        {
-            _inventoryManager.EnableAxe();
-            _axeSpriteRenderer.enabled = true;
-            _axeText.enabled = true;
-            AxeSelect();
-        }
         _axeText.text = total.ToString();
     }
 
-    public void KnifeSelect()
+    public void SelectKnife()
     {
-        if (!_selectedWeaponHighlight.enabled)
-        {
-            _selectedWeaponHighlight.enabled = true;
-        }
         _selectedWeaponHighlight.transform.position = new Vector3(_knifeSpriteRenderer.transform.position.x,
             _knifeSpriteRenderer.transform.position.y, _knifeSpriteRenderer.transform.position.z + Z_OFFSET_ITEM_SELECT);
     }
 
-    public void AxeSelect()
+    public void SelectAxe()
     {
-        if (!_selectedWeaponHighlight.enabled)
-        {
-            _selectedWeaponHighlight.enabled = true;
-        }
         _selectedWeaponHighlight.transform.position = new Vector3(_axeSpriteRenderer.transform.position.x,
             _axeSpriteRenderer.transform.position.y, _axeSpriteRenderer.transform.position.z + Z_OFFSET_ITEM_SELECT);
+    }
+
+    private void EnableKnife()
+    {
+        _selectedWeaponHighlight.enabled = true;
+        _knifeSpriteRenderer.enabled = true;
+        _knifeText.enabled = true;
+        SelectKnife();
+    }
+
+    private void EnableAxe()
+    {
+        _selectedWeaponHighlight.enabled = true;
+        _axeSpriteRenderer.enabled = true;
+        _axeText.enabled = true;
+        SelectAxe();
     }
 
     public void IronBootsSelect()

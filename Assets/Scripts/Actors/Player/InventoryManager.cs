@@ -20,8 +20,11 @@ public class InventoryManager : MonoBehaviour
     public bool WaterArtefactEnabled { get; private set; }
     public bool FireArtefactEnabled { get; private set; }
 
-    public delegate void OnEnableWeaponHandler(WeaponType weaponTypes);
-    public event OnEnableWeaponHandler OnEnableWeapon;
+    public delegate void OnEnableKnifeHandler();
+    public event OnEnableKnifeHandler OnEnableKnife;
+
+    public delegate void OnEnableAxeHandler();
+    public event OnEnableAxeHandler OnEnableAxe;
 
     public void SetInfiniteAmmoEvent(GameObject ammoObject)
     {
@@ -44,20 +47,14 @@ public class InventoryManager : MonoBehaviour
     {
         KnifeEnabled = true;
 
-        if (OnEnableWeapon != null)
-        {
-            OnEnableWeapon(WeaponType.Knife);
-        }
+        OnEnableKnife();
     }
 
     public void EnableAxe()
     {
         AxeEnabled = true;
 
-        if (OnEnableWeapon != null)
-        {
-            OnEnableWeapon(WeaponType.Axe);
-        }
+        OnEnableAxe();
     }
 
     public void EnableIronBoots()
