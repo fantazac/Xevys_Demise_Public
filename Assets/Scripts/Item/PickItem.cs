@@ -12,14 +12,12 @@ public class PickItem : MonoBehaviour
     private const int BASE_AXE_AMOUNT_ON_PICKUP = 10;
     private const int BASE_KNIFE_AMOUNT_ON_PICKUP = 10;
 
-    private ShowItems _showItems;
     private InventoryManager _inventoryManager;
 
     private bool _soundPlayed;
 
     private void Start()
     {
-        _showItems = GameObject.Find("ItemCanvas").GetComponent<ShowItems>();
         _inventoryManager = Player.GetPlayer().GetComponent<InventoryManager>();
     }
 
