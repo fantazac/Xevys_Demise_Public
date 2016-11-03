@@ -27,9 +27,9 @@ public class PlayerGroundMovement : PlayerMovement
         if (!IsCrouching && Player.GetPlayer().GetComponent<Rigidbody2D>().velocity.y == 0)
         {
             IsCrouching = true;
-            _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = false;      
-            _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND * CROUCHING_OFFSET);
-            _playerBoxColliderFeet.offset = new Vector2(_playerBoxColliderFeet.offset.x, FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
+            _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = false;
+            _playerBoxColliderFeet.GetComponent<FollowPlayerPosition>().enabled = false;
+            _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND * CROUCHING_OFFSET);                     
         }   
     }
 
@@ -43,8 +43,8 @@ public class PlayerGroundMovement : PlayerMovement
         {
             IsCrouching = false;
             _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = true;
+            _playerBoxColliderFeet.GetComponent<FollowPlayerPosition>().enabled = true;
             _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND);
-            _playerBoxColliderFeet.offset = new Vector2(_playerBoxColliderFeet.offset.x, FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND);
         }       
     }
 
