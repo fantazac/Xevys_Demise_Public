@@ -8,7 +8,7 @@ public class FallDamage: MonoBehaviour
     private KnockbackOnDamageTaken _knockback;
     private InvincibilityAfterBeingHit _invincibility;
 
-    private int _fallingCount = 0;
+    private float _fallingCount = 0;
 
     private void Start()
     {
@@ -23,14 +23,14 @@ public class FallDamage: MonoBehaviour
 
     private void OnFalling()
     {
-        _fallingCount++;
+        _fallingCount += Time.deltaTime;
     }
 
     private void OnLanding()
     {
-        if (_fallingCount > 50 && !_invincibility.IsFlickering && _playerHealth && _playerHealth.HealthPoint > 0)
+        if (_fallingCount > 1 && !_invincibility.IsFlickering && _playerHealth && _playerHealth.HealthPoint > 0)
         {
-            _playerHealth.Hit(Mathf.Clamp(_fallingCount * 4, _fallingCount * 4, (int)_playerHealth.HealthPoint));
+            _playerHealth.Hit((int)Mathf.Clamp(_fallingCount * 50, _fallingCount * 50, _playerHealth.HealthPoint));
             _knockback.KnockbackPlayer(new Vector2(GameObject.FindGameObjectWithTag("Player").transform.position.x, 
                 GameObject.FindGameObjectWithTag("Player").transform.position.y - 1));
             _invincibility.StartFlicker();

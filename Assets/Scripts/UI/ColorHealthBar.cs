@@ -7,7 +7,7 @@ public class ColorHealthBar : MonoBehaviour
     [SerializeField]
     public const int MAX_HEALTH = 1000;
     [SerializeField]
-    public const float HP_MULTIPLICATOR_FOR_COLOR = 0.0020f;
+    public const float HP_MULTIPLICATOR_FOR_COLOR = 0.0010f;
 
     [SerializeField]
     private Color _color;
@@ -16,7 +16,7 @@ public class ColorHealthBar : MonoBehaviour
     private Image _healthBarImage;
     private Health _health;
 
-	private void Start ()
+	private void Start()
 	{
 	    _health = Player.GetPlayer().GetComponent<Health>();
         _healthBar = GameObject.Find("HealthBar").GetComponent<Transform>();
@@ -27,15 +27,15 @@ public class ColorHealthBar : MonoBehaviour
         _health.OnHealthChanged += OnHealthChanged;
 	}
 
-    private void OnHealthChanged(int healthPoints)
+    private void OnHealthChanged(int hitPoints)
     {
         if (_healthBar.localScale.x > 0)
         {
             // Change la couleur de la barre de vie en fonction du % de vie restant
-            if (_health.HealthPoint + healthPoints >= 50f * MAX_HEALTH / 100f)
+            if (_health.HealthPoint - Mathf.Abs(hitPoints) >= 50f * MAX_HEALTH / 100f)
             {
                 Color interpolatedColor = _healthBarImage.color;
-                interpolatedColor.r = _healthBarImage.color.r + (healthPoints * HP_MULTIPLICATOR_FOR_COLOR);
+                interpolatedColor.r = _healthBarImage.color.r + (Mathf.Abs(hitPoints) * HP_MULTIPLICATOR_FOR_COLOR);
                 interpolatedColor.g = 1;
                 interpolatedColor.b = 0;
                 interpolatedColor.a = 1;
@@ -45,7 +45,7 @@ public class ColorHealthBar : MonoBehaviour
             {
                 Color interpolatedColor = _healthBarImage.color;
                 interpolatedColor.r = 1;
-                interpolatedColor.g = _healthBarImage.color.g - (healthPoints * HP_MULTIPLICATOR_FOR_COLOR);
+                interpolatedColor.g = _healthBarImage.color.g - (Mathf.Abs(hitPoints) * HP_MULTIPLICATOR_FOR_COLOR);
                 interpolatedColor.b = 0;
                 interpolatedColor.a = 1;
                 _healthBarImage.color = interpolatedColor;
