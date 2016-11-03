@@ -6,6 +6,11 @@ public class RotateAxe : MonoBehaviour
     [SerializeField]
     private float _rotationByFrame = 5f;
 
+    private void Start()
+    {
+        _rotationByFrame *= transform.localScale.x;
+    }
+
     void Update()
     {
         if (GetComponentInChildren<PolygonCollider2D>().isTrigger && GetComponentInChildren<PolygonCollider2D>().isTrigger)

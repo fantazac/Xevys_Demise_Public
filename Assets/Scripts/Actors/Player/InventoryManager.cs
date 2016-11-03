@@ -3,15 +3,9 @@ using System.Collections;
 
 public class InventoryManager : MonoBehaviour
 {
-    public delegate void OnThrowableWeaponChangeHandler(WeaponTypes weaponTypes);
-    public event OnThrowableWeaponChangeHandler OnThrowableWeaponChange;
-
-    public enum WeaponTypes { Knife, Axe }
 
     public bool KnifeEnabled { get; private set; }
     public bool AxeEnabled { get; private set; }
-    public bool KnifeActive { get; set; }
-    public bool AxeActive { get; set; }
     public bool IronBootsEnabled { get; private set; }
     public bool IronBootsActive { get; set; }
     public bool FeatherEnabled { get; private set; }
@@ -25,6 +19,9 @@ public class InventoryManager : MonoBehaviour
     public bool EarthArtefactEnabled { get; private set; }
     public bool WaterArtefactEnabled { get; private set; }
     public bool FireArtefactEnabled { get; private set; }
+
+    public delegate void OnEnableWeaponHandler(WeaponType weaponTypes);
+    public event OnEnableWeaponHandler OnEnableWeapon;
 
     public void SetInfiniteAmmoEvent(GameObject ammoObject)
     {
@@ -47,9 +44,9 @@ public class InventoryManager : MonoBehaviour
     {
         KnifeEnabled = true;
 
-        if (OnThrowableWeaponChange != null)
+        if (OnEnableWeapon != null)
         {
-            OnThrowableWeaponChange(WeaponTypes.Knife);
+            OnEnableWeapon(WeaponType.Knife);
         }
     }
 
@@ -57,9 +54,9 @@ public class InventoryManager : MonoBehaviour
     {
         AxeEnabled = true;
 
-        if (OnThrowableWeaponChange != null)
+        if (OnEnableWeapon != null)
         {
-            OnThrowableWeaponChange(WeaponTypes.Axe);
+            OnEnableWeapon(WeaponType.Axe);
         }
     }
 
