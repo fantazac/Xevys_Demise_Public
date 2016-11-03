@@ -22,7 +22,6 @@ public class ActorBasicAttack : MonoBehaviour
     private Animator _anim;
 
     private bool _isAttacking = false;
-    private bool _canDoReverseAttack = false;
     private float _attackFrequency;
 
     private void Start()
