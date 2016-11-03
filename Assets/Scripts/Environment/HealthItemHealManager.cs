@@ -12,6 +12,7 @@ public class HealthItemHealManager : MonoBehaviour
             GameObject.FindGameObjectWithTag("Player").GetComponent<Health>().HealthPoint < GameObject.FindGameObjectWithTag("Player").GetComponent<Health>().MaxHealth)
         {
             GameObject.FindGameObjectWithTag("Player").GetComponent<Health>().Heal(_healPoints);
+            Destroy(gameObject);
         }
     } 
 }
