@@ -27,9 +27,7 @@ public class PlayerGroundMovement : PlayerMovement
         if (!IsCrouching)
         {
             IsCrouching = true;
-            _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = false;
-            _playerSpriteRenderer.transform.position = new Vector3(_playerSpriteRenderer.transform.position.x, _playerSpriteRenderer.transform.position.y
-                + CROUCHING_SPRITE_POSITION_OFFSET, _playerSpriteRenderer.transform.position.z);           
+            _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = false;      
             _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND * CROUCHING_OFFSET);
             _playerBoxColliderFeet.offset = new Vector2(_playerBoxColliderFeet.offset.x, FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
         }   

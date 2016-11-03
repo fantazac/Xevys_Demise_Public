@@ -135,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        _anim.SetFloat("Speed", Mathf.Abs(Input.GetAxis("Horizontal")));
+        _anim.SetFloat("Speed", Mathf.Abs(Player.GetPlayer().GetComponent<Rigidbody2D>().velocity.x));
         _anim.SetBool("IsJumping", IsJumping() && _rigidbody.velocity.y > 0);
         _anim.SetBool("IsFalling", IsJumping() && _rigidbody.velocity.y < 0);
         _anim.SetBool("IsCrouching", IsCrouching);

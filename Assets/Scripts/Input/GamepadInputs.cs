@@ -71,10 +71,14 @@ public class GamepadInputs : MonoBehaviour
                         OnMove(Vector3.right, true);
                     }
                 }
+                else
+                {
+                    OnStop();
+                }
 
                 if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
                 {
-                    if (state.ThumbSticks.Left.Y < 0)
+                    if (state.ThumbSticks.Left.Y < 0 && state.ThumbSticks.Left.X == 0)
                     {
                         OnUnderwaterControl(true);
                         OnCrouch();
@@ -85,7 +89,7 @@ public class GamepadInputs : MonoBehaviour
                     }
                 }
 
-                if (state.ThumbSticks.Left.Y >= 0 && !Input.GetKey(KeyCode.S))
+                if (state.ThumbSticks.Left.Y >= 0)
                 {
                     OnStandingUp();
                     if (state.ThumbSticks.Left.Y > 0)
