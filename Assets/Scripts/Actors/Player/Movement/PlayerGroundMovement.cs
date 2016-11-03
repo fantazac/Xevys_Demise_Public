@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 public class PlayerGroundMovement : PlayerMovement
@@ -11,7 +12,7 @@ public class PlayerGroundMovement : PlayerMovement
             return;
         }
 
-        if (!_isKnockedBack && !_isCrouching)
+        if (!IsKnockedBack && !IsCrouching)
         {
             _rigidbody.velocity = new Vector2(vector.x * _speed, _rigidbody.velocity.y);
             Flip(goesRight);
@@ -24,7 +25,7 @@ public class PlayerGroundMovement : PlayerMovement
         {
             return;
         }
-        if (!IsCrouching && Player.GetPlayer().GetComponent<Rigidbody2D>().velocity.y == 0)
+        if (!IsCrouching && _rigidbody.velocity == Vector2.zero)
         {
             IsCrouching = true;
             _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = false;
