@@ -58,6 +58,7 @@ public class GamepadInputs : MonoBehaviour
 
     private void Update()
     {
+        
         foreach (PlayerIndex player in Enum.GetValues(typeof(PlayerIndex)))
         {
             GamePadState state = GamePad.GetState(player);

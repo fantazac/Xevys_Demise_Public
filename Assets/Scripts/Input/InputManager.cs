@@ -77,14 +77,35 @@ public class InputManager : MonoBehaviour
         _gamepadInputs.OnThrowAttack += InputsOnThrowAttack;
         _gamepadInputs.OnThrowAttackChangeButtonPressed += InputsOnThrowAttackChangeButtonPressed;
         _gamepadInputs.OnEnterPortal += InputsOnEnterPortal;
-        _gamepadInputs.OnPause += InputsOnPause;
+        _gamepadInputs.OnPause += InputsOnPause;        
+    }
 
-        foreach (PlayerIndex player in Enum.GetValues(typeof(PlayerIndex)))
+    private void Update()
+    {
+        if (!_keyboardInputs.enabled && _gamepadInputs.enabled && Input.anyKeyDown)
         {
-            if (GamePad.GetState(player).IsConnected)
+            _keyboardInputs.enabled = true;
+            _gamepadInputs.enabled = false;
+        }
+        else if (_keyboardInputs.enabled && !_gamepadInputs.enabled)
+        {
+            foreach (PlayerIndex player in Enum.GetValues(typeof(PlayerIndex)))
             {
-                _keyboardInputs.enabled = false;
-            }
+                GamePadState state = GamePad.GetState(player);
+                if (state.Buttons.A == ButtonState.Pressed || state.Buttons.B == ButtonState.Pressed ||
+                    state.Buttons.X == ButtonState.Pressed || state.Buttons.Y == ButtonState.Pressed ||
+                    state.Buttons.Back == ButtonState.Pressed || state.Buttons.Start == ButtonState.Pressed ||
+                    state.Buttons.LeftShoulder == ButtonState.Pressed ||
+                    state.Buttons.RightShoulder == ButtonState.Pressed ||
+                    state.ThumbSticks.Left.X != 0 || state.ThumbSticks.Left.Y != 0 ||
+                    state.ThumbSticks.Right.Y != 0 || state.ThumbSticks.Right.Y != 0 ||
+                    state.DPad.Left == ButtonState.Pressed || state.DPad.Right == ButtonState.Pressed ||
+                    state.DPad.Up == ButtonState.Pressed || state.DPad.Down == ButtonState.Pressed)
+                {
+                    _keyboardInputs.enabled = false;
+                    _gamepadInputs.enabled = true;
+                }
+            }           
         }
     }
 
