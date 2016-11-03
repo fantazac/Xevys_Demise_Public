@@ -6,8 +6,6 @@ public class InventoryManager : MonoBehaviour
 
     public bool KnifeEnabled { get; private set; }
     public bool AxeEnabled { get; private set; }
-    public bool KnifeActive { get; set; }
-    public bool AxeActive { get; set; }
     public bool IronBootsEnabled { get; private set; }
     public bool IronBootsActive { get; set; }
     public bool FeatherEnabled { get; private set; }
