@@ -61,8 +61,7 @@ public class PhoenixAI : MonoBehaviour
         _onBossDefeated.onDefeated -= OnPhoenixDefeated;
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void FixedUpdate()
     {
         //This status allows Phoenix to watch the player and either charge on him after a few seconds or flee.
         if (_status == PhoenixStatus.FLY)
@@ -87,7 +86,7 @@ public class PhoenixAI : MonoBehaviour
         _attackCooldownTimeLeft += Time.fixedDeltaTime;
         if (_attackCooldownTimeLeft > ATTACK_DELAY)
         {
-            _playerPosition = GameObject.Find("Character").transform.position;
+            _playerPosition = Player.GetPlayer().transform.position;//GameObject.Find("Character").transform.position;
             transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_playerPosition.y - transform.position.y) / (_playerPosition.x - transform.position.x)));
             _attackCooldownTimeLeft = 0;
             _rigidbody.isKinematic = true;
@@ -95,7 +94,7 @@ public class PhoenixAI : MonoBehaviour
         }
         else
         {
-            float playerDistance = Vector2.Distance(GameObject.Find("Character").transform.position, transform.position);
+            float playerDistance = Vector2.Distance(Player.GetPlayer().transform.position, transform.position);
             if (playerDistance < PLAYER_APPROACH_LIMIT)
             {
                 int randomNumber = _rng.Next();

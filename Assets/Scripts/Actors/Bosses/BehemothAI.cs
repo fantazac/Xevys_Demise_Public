@@ -50,7 +50,7 @@ public class BehemothAI : MonoBehaviour
         _onBossDefeated.onDefeated -= OnBehemothDefeated;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         //Wait allows Behemoth to face the player and prepare to charge.
         if (_status == BehemothStatus.WAIT)
