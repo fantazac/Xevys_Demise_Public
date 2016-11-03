@@ -46,8 +46,16 @@ public class ShowItems : MonoBehaviour
         _waterArtefactRenderer = GameObject.Find("WaterArtefactFrame").GetComponent<SpriteRenderer>();
         _fireArtefactRenderer = GameObject.Find("FireArtefactFrame").GetComponent<SpriteRenderer>();
 
-        _inventoryManager.OnEnableAxe += EnableAxe;
-        _inventoryManager.OnEnableKnife += EnableKnife;
+        _inventoryManager.OnEnableAxe += OnEnableAxe;
+        _inventoryManager.OnEnableKnife += OnEnableKnife;
+        _inventoryManager.OnEnableFeather += OnEnableFeather;
+        _inventoryManager.OnEnableIronBoots += OnEnableIronBoots;
+        _inventoryManager.OnEnableBubble += OnEnableBubble;
+        _inventoryManager.OnEnableFireProofArmor += OnEnableFireProofArmor;
+        _inventoryManager.OnEnableAirArtefact += OnEnableAirArtefact;
+        _inventoryManager.OnEnableEarthArtefact += OnEnableEarthArtefact;
+        _inventoryManager.OnEnableWaterArtefact += OnEnableWaterArtefact;
+        _inventoryManager.OnEnableFireArtefact += OnEnableFireArtefact;
 
         _munitions.OnAxeAmmoChanged += AxeAmmoChange;
         _munitions.OnKnifeAmmoChanged += KnifeAmmoChange;
@@ -71,12 +79,12 @@ public class ShowItems : MonoBehaviour
             _ironBootsSpriteRenderer.transform.position.y, _ironBootsSpriteRenderer.transform.position.z + Z_OFFSET_ITEM_SELECT);
     }
 
-    public void KnifeAmmoChange(int total)
+    private void KnifeAmmoChange(int total)
     {
         _knifeText.text = total.ToString();
     }
 
-    public void AxeAmmoChange(int total)
+    private void AxeAmmoChange(int total)
     {
         _axeText.text = total.ToString();
     }
@@ -93,7 +101,7 @@ public class ShowItems : MonoBehaviour
             _axeSpriteRenderer.transform.position.y, _axeSpriteRenderer.transform.position.z + Z_OFFSET_ITEM_SELECT);
     }
 
-    private void EnableKnife()
+    private void OnEnableKnife()
     {
         _selectedWeaponHighlight.enabled = true;
         _knifeSpriteRenderer.enabled = true;
@@ -101,7 +109,7 @@ public class ShowItems : MonoBehaviour
         SelectKnife();
     }
 
-    private void EnableAxe()
+    private void OnEnableAxe()
     {
         _selectedWeaponHighlight.enabled = true;
         _axeSpriteRenderer.enabled = true;
@@ -114,42 +122,42 @@ public class ShowItems : MonoBehaviour
         _selectedIronBootsHighlight.enabled = !_selectedIronBootsHighlight.enabled;
     }
 
-    public void FeatherEnable()
+    private void OnEnableFeather()
     {
         _featherSpriteRenderer.enabled = true;
     }
 
-    public void IronBootsEnable()
+    private void OnEnableIronBoots()
     {
         _ironBootsSpriteRenderer.enabled = true;
     }
 
-    public void BubbleEnable()
+    private void OnEnableBubble()
     {
         _bubbleSpriteRenderer.enabled = true;
     }
 
-    public void FireProofArmorEnable()
+    private void OnEnableFireProofArmor()
     {
         _fireProofArmorRenderer.enabled = true;
     }
 
-    public void EarthArtefactEnable()
+    private void OnEnableEarthArtefact()
     {
         _earthArtefactRenderer.enabled = true;
     }
 
-    public void AirArtefactEnable()
+    private void OnEnableAirArtefact()
     {
         _airArtefactRenderer.enabled = true;
     }
 
-    public void WaterArtefactEnable()
+    private void OnEnableWaterArtefact()
     {
         _waterArtefactRenderer.enabled = true;
     }
 
-    public void FireArtefactEnable()
+    private void OnEnableFireArtefact()
     {
         _fireArtefactRenderer.enabled = true;
     }

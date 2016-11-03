@@ -12,14 +12,12 @@ public class PickItem : MonoBehaviour
     private const int BASE_AXE_AMOUNT_ON_PICKUP = 10;
     private const int BASE_KNIFE_AMOUNT_ON_PICKUP = 10;
 
-    private ShowItems _showItems;
     private InventoryManager _inventoryManager;
 
     private bool _soundPlayed;
 
     private void Start()
     {
-        _showItems = GameObject.Find("ItemCanvas").GetComponent<ShowItems>();
         _inventoryManager = Player.GetPlayer().GetComponent<InventoryManager>();
     }
 
@@ -48,42 +46,42 @@ public class PickItem : MonoBehaviour
             else if (gameObject.tag == "FeatherItem")
             {
                 collider.GetComponentInChildren<InventoryManager>().EnableFeather();
-                _showItems.FeatherEnable();
+                _inventoryManager.EnableFeather();
             }
             else if (gameObject.tag == "IronBootsItem")
             {
                 collider.GetComponentInChildren<InventoryManager>().EnableIronBoots();
-                _showItems.IronBootsEnable();
+                _inventoryManager.EnableIronBoots();
             }
             else if (gameObject.tag == "BubbleItem")
             {
                 collider.GetComponentInChildren<InventoryManager>().EnableBubble();
-                _showItems.BubbleEnable();
+                _inventoryManager.EnableBubble();
             }
             else if (gameObject.tag == "FireProofArmorItem")
             {
                 collider.GetComponentInChildren<InventoryManager>().EnableFireProofArmor();
-                _showItems.FireProofArmorEnable();
+                _inventoryManager.EnableFireProofArmor();
             }
             else if (gameObject.tag == "EarthArtefactItem")
             {
                 collider.GetComponentInChildren<InventoryManager>().EnableEarthArtefact();
-                _showItems.EarthArtefactEnable();
+                _inventoryManager.EnableEarthArtefact();
             }
             else if (gameObject.tag == "AirArtefactItem")
             {
                 collider.GetComponentInChildren<InventoryManager>().EnableAirArtefact();
-                _showItems.AirArtefactEnable();
+                _inventoryManager.EnableAirArtefact();
             }
             else if (gameObject.tag == "WaterArtefactItem")
             {
                 collider.GetComponentInChildren<InventoryManager>().EnableWaterArtefact();
-                _showItems.WaterArtefactEnable();
+                _inventoryManager.EnableWaterArtefact();
             }
             else if (gameObject.tag == "FireArtefactItem")
             {
                 collider.GetComponentInChildren<InventoryManager>().EnableFireArtefact();
-                _showItems.FireArtefactEnable();
+                _inventoryManager.EnableFireArtefact();
             }
 
 

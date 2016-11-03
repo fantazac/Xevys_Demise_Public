@@ -8,10 +8,11 @@ public class AxeBladeHitWall : MonoBehaviour
         if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "LevelWall" || collider.gameObject.tag == "Spike"
            || (collider.gameObject.tag == "FlyingPlatform" && transform.parent.GetComponent<Rigidbody2D>().velocity.y < 0))
         {
-            transform.parent.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            transform.parent.GetComponent<Rigidbody2D>().gravityScale = 0;
+            GetComponentInParent<RotateAxe>().Rotate = false;
+            GetComponentInParent<Rigidbody2D>().velocity = Vector2.zero;
+            GetComponentInParent<Rigidbody2D>().gravityScale = 0;
             GetComponent<PolygonCollider2D>().isTrigger = false;
-            transform.parent.GetComponent<DestroyProjectile>().TouchesGround = true;
+            GetComponentInParent<DestroyProjectile>().TouchesGround = true;
         }
     }
 }
