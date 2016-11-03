@@ -51,6 +51,7 @@ public class GamepadInputs : MonoBehaviour
     private bool _yButtonReady = true;
     private bool _aButtonReady = true;
     private bool _upButtonReady = true;
+    private float standingCooldownOnRelease = 0;
 
     private void Update()
     {
@@ -71,13 +72,18 @@ public class GamepadInputs : MonoBehaviour
                         OnMove(Vector3.right, true);
                     }
                 }
+                else
+                {
+                    OnStop();
+                }
 
                 if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
                 {
-                    if (state.ThumbSticks.Left.Y < 0)
-                    {
+                    if (state.ThumbSticks.Left.Y < 0 && state.ThumbSticks.Left.X == 0)
+                    {                      
                         OnUnderwaterControl(true);
                         OnCrouch();
+                        
                         if (state.Buttons.A == ButtonState.Pressed)
                         {
                             OnJumpDown();
@@ -85,9 +91,15 @@ public class GamepadInputs : MonoBehaviour
                     }
                 }
 
-                if (state.ThumbSticks.Left.Y >= 0 && !Input.GetKey(KeyCode.S))
+                if (state.ThumbSticks.Left.Y >= 0)
                 {
-                    OnStandingUp();
+                    standingCooldownOnRelease += Time.deltaTime;
+                    if (standingCooldownOnRelease > 0.16f)
+                    {
+                        standingCooldownOnRelease = 0;
+                        OnStandingUp();
+                    }
+                    
                     if (state.ThumbSticks.Left.Y > 0)
                     {
                         OnUnderwaterControl(false);

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 public class PlayerGroundMovement : PlayerMovement
@@ -11,7 +12,7 @@ public class PlayerGroundMovement : PlayerMovement
             return;
         }
 
-        if (!_isKnockedBack && !_isCrouching)
+        if (!IsKnockedBack && !IsCrouching)
         {
             _rigidbody.velocity = new Vector2(vector.x * _speed, _rigidbody.velocity.y);
             Flip(goesRight);
@@ -24,14 +25,12 @@ public class PlayerGroundMovement : PlayerMovement
         {
             return;
         }
-        if (!IsCrouching)
+        if (!IsCrouching && _rigidbody.velocity == Vector2.zero)
         {
             IsCrouching = true;
             _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = false;
-            _playerSpriteRenderer.transform.position = new Vector3(_playerSpriteRenderer.transform.position.x, _playerSpriteRenderer.transform.position.y
-                + CROUCHING_SPRITE_POSITION_OFFSET, _playerSpriteRenderer.transform.position.z);           
-            _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND * CROUCHING_OFFSET);
-            _playerBoxColliderFeet.offset = new Vector2(_playerBoxColliderFeet.offset.x, FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND * CROUCHING_OFFSET);
+            _playerBoxColliderFeet.GetComponent<FollowPlayerPosition>().enabled = false;
+            _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND * CROUCHING_OFFSET);                     
         }   
     }
 
@@ -45,8 +44,8 @@ public class PlayerGroundMovement : PlayerMovement
         {
             IsCrouching = false;
             _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = true;
+            _playerBoxColliderFeet.GetComponent<FollowPlayerPosition>().enabled = true;
             _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND);
-            _playerBoxColliderFeet.offset = new Vector2(_playerBoxColliderFeet.offset.x, FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND);
         }       
     }
 
@@ -57,7 +56,7 @@ public class PlayerGroundMovement : PlayerMovement
             return;
         }
 
-        if (!_isKnockedBack)
+        if (!IsKnockedBack && !IsCrouching)
         {
             if (!IsJumping())
             {

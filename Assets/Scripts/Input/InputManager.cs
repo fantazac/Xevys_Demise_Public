@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using UnityEngine;
+using XInputDotNetPure;
 
 public class InputManager : MonoBehaviour
 {
@@ -72,6 +73,12 @@ public class InputManager : MonoBehaviour
         _gamepadInputs.OnThrowAttack += InputsOnThrowAttack;
         _gamepadInputs.OnThrowAttackChangeButtonPressed += InputsOnThrowAttackChangeButtonPressed;
         _gamepadInputs.OnEnterPortal += InputsOnEnterPortal;
+
+        foreach(PlayerIndex player in Enum.GetValues(typeof(PlayerIndex)))
+        if (GamePad.GetState(player).IsConnected)
+        {
+            _keyboardInputs.enabled = false;
+        }
     }
 
     private void InputsOnMove(Vector3 movement, bool goesRight)
