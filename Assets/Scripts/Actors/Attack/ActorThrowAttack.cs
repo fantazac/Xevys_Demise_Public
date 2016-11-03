@@ -10,37 +10,30 @@ public class ActorThrowAttack : MonoBehaviour
     private GameObject _knife;
 
     [SerializeField]
-    private GameObject _axeFacingLeft;
+    private GameObject _axe;
 
     [SerializeField]
-    private GameObject _axeFacingRight;
+    private float _weaponSpawnDistanceFromPlayer = 0f;
 
     [SerializeField]
-    private float WEAPON_SPAWN_DISTANCE_FROM_PLAYER = 0f;
+    private float _axeThrowingHeight = 1f;
 
     [SerializeField]
-    private float AXE_THROWING_HEIGHT = 1f;
+    private float _knifeSpeed = 15f;
 
     [SerializeField]
-    private float KNIFE_SPEED = 15f;
+    private float _axeHorinzontalSpeed = 6f;
 
     [SerializeField]
-    private float AXE_X_SPEED = 6f;
+    private float _axeVerticalSpeed = 14.5f;
 
     [SerializeField]
-    private float AXE_Y_SPEED = 14.5f;
+    private float _axeInitialRotation = 90f;
 
     [SerializeField]
-    private float AXE_INITIAL_ROTATION = 90f;
+    private float _attackCooldown = 1f;
 
-    [SerializeField]
-    private const int ATTACK_COOLDOWN = 50;
-
-    [SerializeField]
-    private const int WEAPON_Z_POSITION = 0;
-
-    private int _knifeThrowCDCount;
-    private int _axeThrowCDCount;
+    private float _throwCDCount;
 
     private InputManager _inputManager;
     private InventoryManager _inventoryManager;
@@ -52,43 +45,39 @@ public class ActorThrowAttack : MonoBehaviour
     private void Start()
     {
         _inputManager = GetComponentInChildren<InputManager>();
-        _inputManager.OnThrowAttackChangeButtonPressed += OnThrowableWeaponChangeButtonPressed;
+        _inputManager.OnThrowAttackChangeButtonPressed += OnChangeWeaponType;
 
-        _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
+        _inventoryManager = GetComponent<InventoryManager>();
         _inventoryManager.OnThrowableWeaponChange += OnThrowableWeaponChange;
 
         _soundPlayer = GetComponent<AudioSourcePlayer>();
+
         _showItems = GameObject.Find("ItemCanvas").GetComponent<ShowItems>();
 
         _munitions = GetComponent<PlayerThrowingWeaponsMunitions>();
 
-        _knifeThrowCDCount = ATTACK_COOLDOWN;
-        _axeThrowCDCount = ATTACK_COOLDOWN;
+        _throwCDCount = _attackCooldown;
     }
 
     private void Update()
     {
-        if (_knifeThrowCDCount < ATTACK_COOLDOWN)
+        if (_throwCDCount < _attackCooldown)
         {
-            _knifeThrowCDCount++;
-        }
-        if (_axeThrowCDCount < ATTACK_COOLDOWN)
-        {
-            _axeThrowCDCount++;
+            _throwCDCount++;
         }
     }
 
     private void OnKnifeAttack()
     {
-        if (_knifeThrowCDCount >= ATTACK_COOLDOWN && GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition > 0)
+        if (_throwCDCount >= _attackCooldown && GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition > 0)
         {
             _soundPlayer.Play(1);
             GameObject newKnife;
 
-            newKnife = (GameObject)Instantiate(_knife, new Vector3(transform.position.x + WEAPON_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, WEAPON_Z_POSITION), transform.rotation);
-            newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<FlipPlayer>().IsFacingRight ? KNIFE_SPEED : -KNIFE_SPEED, 0);
+            newKnife = (GameObject)Instantiate(_knife, new Vector2(transform.position.x + _weaponSpawnDistanceFromPlayer, transform.position.y), transform.rotation);
+            newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<FlipPlayer>().IsFacingRight ? _knifeSpeed : -_knifeSpeed, 0);
             newKnife.GetComponent<SpriteRenderer>().flipX = !GetComponent<FlipPlayer>().IsFacingRight;
-            _knifeThrowCDCount = 0;
+            _throwCDCount = 0;
             _munitions.KnifeMunition--;
             if(_inventoryManager.HasInfiniteKnives && _munitions.KnifeMunition == 0)
             {
@@ -101,16 +90,16 @@ public class ActorThrowAttack : MonoBehaviour
 
     private void OnAxeAttack()
     {
-        if (_axeThrowCDCount >= ATTACK_COOLDOWN && GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition > 0)
+        if (_throwCDCount >= _attackCooldown && GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition > 0)
         {
             _soundPlayer.Play(2);
             GameObject newAxe;
 
-            newAxe = (GameObject)Instantiate(_axeFacingRight, new Vector3(transform.position.x, transform.position.y + AXE_THROWING_HEIGHT, WEAPON_Z_POSITION), transform.rotation);
-            newAxe.GetComponent<Rigidbody2D>().rotation = AXE_INITIAL_ROTATION;
-            newAxe.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<FlipPlayer>().IsFacingRight ? AXE_X_SPEED : -AXE_X_SPEED, AXE_Y_SPEED);
-            newAxe.GetComponent<SpriteRenderer>().flipY = !GetComponent<FlipPlayer>().IsFacingRight;
-            _axeThrowCDCount = 0;
+            newAxe = (GameObject)Instantiate(_axe, new Vector2(transform.position.x, transform.position.y + _axeThrowingHeight), transform.rotation);
+            newAxe.transform.eulerAngles = new Vector3(0, 0, _axeInitialRotation);
+            newAxe.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<FlipPlayer>().IsFacingRight ? _axeHorinzontalSpeed : -_axeHorinzontalSpeed, _axeVerticalSpeed);
+            newAxe.transform.localScale = new Vector2(newAxe.transform.localScale.x, GetComponent<FlipPlayer>().IsFacingRight ? newAxe.transform.localScale.y : -newAxe.transform.localScale.y);
+            _throwCDCount = 0;
             _munitions.AxeMunition--;
             if (_inventoryManager.HasInfiniteAxes && _munitions.AxeMunition == 0)
             {
@@ -150,7 +139,7 @@ public class ActorThrowAttack : MonoBehaviour
         }
     }
 
-    private void OnThrowableWeaponChangeButtonPressed()
+    private void OnChangeWeaponType()
     {
         if (_inventoryManager.KnifeActive && GetComponent<PlayerThrowingWeaponsMunitions>().AxeMunition > 0)
         {
