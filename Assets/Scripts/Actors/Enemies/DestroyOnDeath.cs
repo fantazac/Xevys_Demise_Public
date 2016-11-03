@@ -5,6 +5,10 @@ public class DestroyOnDeath : MonoBehaviour
 {
     [SerializeField]
     private int _deathSoundIndex = -1;
+
+    [SerializeField]
+    private bool _destroyParent = false;
+
     private AudioSourcePlayer _audioSourcePlayer;
     private bool _deathSoundPlayed = false;
 
@@ -37,5 +41,9 @@ public class DestroyOnDeath : MonoBehaviour
     {
         GetComponent<DropItems>().Drop();
         Destroy(gameObject);
+        if (_destroyParent)
+        {
+            Destroy(transform.parent.gameObject);
+        }
     }
 }
