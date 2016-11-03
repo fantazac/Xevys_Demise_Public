@@ -3,7 +3,6 @@ using System.Collections;
 
 public class InventoryManager : MonoBehaviour
 {
-
     public bool KnifeEnabled { get; private set; }
     public bool AxeEnabled { get; private set; }
     public bool IronBootsEnabled { get; private set; }
@@ -26,6 +25,30 @@ public class InventoryManager : MonoBehaviour
     public delegate void OnEnableAxeHandler();
     public event OnEnableAxeHandler OnEnableAxe;
 
+    public delegate void OnEnableFeatherHandler();
+    public event OnEnableFeatherHandler OnEnableFeather;
+
+    public delegate void OnEnableIronBootsHandler();
+    public event OnEnableIronBootsHandler OnEnableIronBoots;
+
+    public delegate void OnEnableBubbleHandler();
+    public event OnEnableBubbleHandler OnEnableBubble;
+
+    public delegate void OnEnableFireProofArmorHandler();
+    public event OnEnableFireProofArmorHandler OnEnableFireProofArmor;
+
+    public delegate void OnEnableAirArtefactHandler();
+    public event OnEnableAirArtefactHandler OnEnableAirArtefact;
+
+    public delegate void OnEnableEarthArtefactHandler();
+    public event OnEnableEarthArtefactHandler OnEnableEarthArtefact;
+
+    public delegate void OnEnableWaterArtefactHandler();
+    public event OnEnableWaterArtefactHandler OnEnableWaterArtefact;
+
+    public delegate void OnEnableFireArtefactHandler();
+    public event OnEnableFireArtefactHandler OnEnableFireArtefact;
+
     public void SetInfiniteAmmoEvent(GameObject ammoObject)
     {
         ammoObject.GetComponent<InfiniteAmmoWhileInPickupRoom>().OnSetInfiniteAmmo += SetInfiniteAmmo;
@@ -44,56 +67,92 @@ public class InventoryManager : MonoBehaviour
     }
 
     public void EnableKnife()
-    {
-        KnifeEnabled = true;
-
-        OnEnableKnife();
+    {        
+        if (OnEnableKnife != null)
+        {
+            KnifeEnabled = true;
+            OnEnableKnife();
+        }      
     }
 
     public void EnableAxe()
     {
-        AxeEnabled = true;
-
-        OnEnableAxe();
+        if (OnEnableAxe != null)
+        {
+            AxeEnabled = true;
+            OnEnableAxe();
+        }       
     }
 
     public void EnableIronBoots()
     {
-        IronBootsEnabled = true;
+        if (OnEnableIronBoots != null)
+        {
+            IronBootsEnabled = true;
+            OnEnableIronBoots();
+        }
     }
 
     public void EnableFeather()
     {
-        FeatherEnabled = true;
+        if (OnEnableFeather != null)
+        {
+            FeatherEnabled = true;
+            OnEnableFeather();
+        }
     }
 
     public void EnableBubble()
     {
-        BubbleEnabled = true;
+        if (OnEnableBubble != null)
+        {
+            BubbleEnabled = true;
+            OnEnableBubble();
+        }
     }
 
     public void EnableFireProofArmor()
     {
-        FireProofArmorEnabled = true;
+        if (OnEnableFireProofArmor != null)
+        {
+            FireProofArmorEnabled = true;
+            OnEnableFireProofArmor();
+        }
     }
 
     public void EnableEarthArtefact()
     {
-        EarthArtefactEnabled = true;
+        if (OnEnableEarthArtefact != null)
+        {
+            EarthArtefactEnabled = true;
+            OnEnableEarthArtefact();
+        }
     }
 
     public void EnableAirArtefact()
     {
-        AirArtefactEnabled = true;
+        if (OnEnableAirArtefact != null)
+        {
+            AirArtefactEnabled = true;
+            OnEnableAirArtefact();
+        }
     }
 
     public void EnableWaterArtefact()
     {
-        WaterArtefactEnabled = true;
+        if (OnEnableWaterArtefact != null)
+        {
+            WaterArtefactEnabled = true;
+            OnEnableWaterArtefact();
+        }
     }
 
     public void EnableFireArtefact()
     {
-        FireArtefactEnabled = true;
+        if (OnEnableFireArtefact != null)
+        {
+            FireArtefactEnabled = true;
+            OnEnableFireArtefact();
+        }
     }
 }
