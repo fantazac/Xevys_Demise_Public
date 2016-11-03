@@ -39,6 +39,9 @@ public class KeyboardInputs : MonoBehaviour {
     public delegate void KeyboardOnEnterPortalHandler();
     public event KeyboardOnEnterPortalHandler OnEnterPortal;
 
+    public delegate void KeyboardOnPauseHandler();
+    public event KeyboardOnPauseHandler OnPause;
+
     private void Update()
     {
         if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.S))
@@ -106,6 +109,10 @@ public class KeyboardInputs : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Q))
         {
             OnThrowAttackChangeButtonPressed();
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            OnPause();
         }
     }
 }
