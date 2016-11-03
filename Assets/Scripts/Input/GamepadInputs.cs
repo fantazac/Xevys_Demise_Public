@@ -42,6 +42,9 @@ public class GamepadInputs : MonoBehaviour
     public delegate void GamepadOnEnterPortalHandler();
     public event GamepadOnEnterPortalHandler OnEnterPortal;
 
+    public delegate void GamepadOnPauseHandler();
+    public event GamepadOnPauseHandler OnPause;
+
     private float _joysticksXAxisDeadZone = 0.1f;
     private float _joysticksYAxisDeadZone = 1f;
 
@@ -51,6 +54,7 @@ public class GamepadInputs : MonoBehaviour
     private bool _yButtonReady = true;
     private bool _aButtonReady = true;
     private bool _upButtonReady = true;
+    private bool _startButtonReady = true;
 
     private void Update()
     {
@@ -85,7 +89,7 @@ public class GamepadInputs : MonoBehaviour
                     }
                 }
 
-                if (state.ThumbSticks.Left.Y >= 0 && !Input.GetKey(KeyCode.S))
+                if (state.ThumbSticks.Left.Y >= 0)
                 {
                     OnStandingUp();
                     if (state.ThumbSticks.Left.Y > 0)
@@ -161,6 +165,15 @@ public class GamepadInputs : MonoBehaviour
                 if (state.Buttons.RightShoulder == ButtonState.Released && !_rightShoulderReady)
                 {
                     _rightShoulderReady = true;
+                }
+                if (state.Buttons.Start == ButtonState.Pressed && _startButtonReady)
+                {
+                    OnPause();
+                    _startButtonReady = false;
+                }
+                if (state.Buttons.Start == ButtonState.Released && !_startButtonReady)
+                {
+                    _startButtonReady = true;
                 }
             }
         }
