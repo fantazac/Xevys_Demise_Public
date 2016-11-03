@@ -1,7 +1,6 @@
 ﻿using System;
 using System.CodeDom;
 using UnityEngine;
-using XInputDotNetPure;
 
 public class InputManager : MonoBehaviour
 {
@@ -41,6 +40,9 @@ public class InputManager : MonoBehaviour
     public delegate void OnEnterPortalHandler();
     public event OnEnterPortalHandler OnEnterPortal;
 
+    public delegate void OnPauseHandler();
+    public event OnPauseHandler OnPause;
+
     private KeyboardInputs _keyboardInputs;
     private GamepadInputs _gamepadInputs;
 
@@ -59,6 +61,7 @@ public class InputManager : MonoBehaviour
         _keyboardInputs.OnThrowAttack += InputsOnThrowAttack;
         _keyboardInputs.OnThrowAttackChangeButtonPressed += InputsOnThrowAttackChangeButtonPressed;
         _keyboardInputs.OnEnterPortal += InputsOnEnterPortal;
+        _keyboardInputs.OnPause += InputsOnPause;
 
         _gamepadInputs = GetComponentInChildren<GamepadInputs>();
         _gamepadInputs.OnMove += InputsOnMove;
@@ -73,12 +76,7 @@ public class InputManager : MonoBehaviour
         _gamepadInputs.OnThrowAttack += InputsOnThrowAttack;
         _gamepadInputs.OnThrowAttackChangeButtonPressed += InputsOnThrowAttackChangeButtonPressed;
         _gamepadInputs.OnEnterPortal += InputsOnEnterPortal;
-
-        foreach(PlayerIndex player in Enum.GetValues(typeof(PlayerIndex)))
-        if (GamePad.GetState(player).IsConnected)
-        {
-            _keyboardInputs.enabled = false;
-        }
+        _gamepadInputs.OnPause += InputsOnPause;
     }
 
     private void InputsOnMove(Vector3 movement, bool goesRight)
@@ -142,5 +140,10 @@ public class InputManager : MonoBehaviour
     private void InputsOnEnterPortal()
     {
         OnEnterPortal();
+    }
+
+    private void InputsOnPause()
+    {
+        OnPause();
     }
 }

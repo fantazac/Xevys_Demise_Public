@@ -42,6 +42,9 @@ public class GamepadInputs : MonoBehaviour
     public delegate void GamepadOnEnterPortalHandler();
     public event GamepadOnEnterPortalHandler OnEnterPortal;
 
+    public delegate void GamepadOnPauseHandler();
+    public event GamepadOnPauseHandler OnPause;
+
     private float _joysticksXAxisDeadZone = 0.1f;
     private float _joysticksYAxisDeadZone = 1f;
 
@@ -51,7 +54,7 @@ public class GamepadInputs : MonoBehaviour
     private bool _yButtonReady = true;
     private bool _aButtonReady = true;
     private bool _upButtonReady = true;
-    private float standingCooldownOnRelease = 0;
+    private bool _startButtonReady = true;
 
     private void Update()
     {
@@ -72,18 +75,13 @@ public class GamepadInputs : MonoBehaviour
                         OnMove(Vector3.right, true);
                     }
                 }
-                else
-                {
-                    OnStop();
-                }
 
                 if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
                 {
-                    if (state.ThumbSticks.Left.Y < 0 && state.ThumbSticks.Left.X == 0)
-                    {                      
+                    if (state.ThumbSticks.Left.Y < 0)
+                    {
                         OnUnderwaterControl(true);
                         OnCrouch();
-                        
                         if (state.Buttons.A == ButtonState.Pressed)
                         {
                             OnJumpDown();
@@ -93,13 +91,7 @@ public class GamepadInputs : MonoBehaviour
 
                 if (state.ThumbSticks.Left.Y >= 0)
                 {
-                    standingCooldownOnRelease += Time.deltaTime;
-                    if (standingCooldownOnRelease > 0.16f)
-                    {
-                        standingCooldownOnRelease = 0;
-                        OnStandingUp();
-                    }
-                    
+                    OnStandingUp();
                     if (state.ThumbSticks.Left.Y > 0)
                     {
                         OnUnderwaterControl(false);
@@ -173,6 +165,15 @@ public class GamepadInputs : MonoBehaviour
                 if (state.Buttons.RightShoulder == ButtonState.Released && !_rightShoulderReady)
                 {
                     _rightShoulderReady = true;
+                }
+                if (state.Buttons.Start == ButtonState.Pressed && _startButtonReady)
+                {
+                    OnPause();
+                    _startButtonReady = false;
+                }
+                if (state.Buttons.Start == ButtonState.Released && !_startButtonReady)
+                {
+                    _startButtonReady = true;
                 }
             }
         }
