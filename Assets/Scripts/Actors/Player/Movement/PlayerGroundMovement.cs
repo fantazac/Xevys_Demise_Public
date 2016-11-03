@@ -24,7 +24,7 @@ public class PlayerGroundMovement : PlayerMovement
         {
             return;
         }
-        if (!IsCrouching)
+        if (!IsCrouching && Player.GetPlayer().GetComponent<Rigidbody2D>().velocity.y == 0)
         {
             IsCrouching = true;
             _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = false;      
@@ -55,7 +55,7 @@ public class PlayerGroundMovement : PlayerMovement
             return;
         }
 
-        if (!_isKnockedBack)
+        if (!IsKnockedBack && !IsCrouching)
         {
             if (!IsJumping())
             {
