@@ -75,6 +75,10 @@ public class GamepadInputs : MonoBehaviour
                         OnMove(Vector3.right, true);
                     }
                 }
+                else
+                {
+                    OnStop();
+                }
 
                 if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
                 {
