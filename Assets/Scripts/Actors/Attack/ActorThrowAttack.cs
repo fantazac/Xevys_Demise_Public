@@ -31,7 +31,7 @@ public class ActorThrowAttack : MonoBehaviour
     private float _axeInitialRotation = 90f;
 
     [SerializeField]
-    private float _attackCooldown = 1f;
+    private float _attackCooldown = 0.8f;
 
     private int _ammoUsedPerThrow = 1;
 
