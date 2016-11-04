@@ -6,6 +6,10 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void OnMove(Vector3 vector, bool goesRight)
     {
+        /* BEN_CORRECTION
+         * 
+         * NE PAS FAIRE CELA (je parle des « return; » pour arrêter l'exécution d'une méthode).
+         */
         if (!enabled)
         {
             return;

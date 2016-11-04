@@ -63,6 +63,10 @@ public class PlayerWaterMovement : PlayerMovement
             return;
         }
 
+        /* BEN_CORRECTION
+         * 
+         * Ne pas faire de GameObject.Find à répétition. (voir GameObject.Find("CharacterTouchesGround")).
+         */
         if (!IsJumping() && !_isKnockedBack && GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
         {
             GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().DisablePlatformHitbox();

@@ -8,6 +8,11 @@ public class Health : MonoBehaviour
     private float _health = 1000f;
     [SerializeField]
     private int _hitSoundIndex = -1;
+
+    /* BEN_CORRECTION
+     * 
+     * Pas de sa responsabilité. Utilisez des évènements.
+     */
     private AudioSourcePlayer _soundPlayer;
 
     public float HealthPoint { get { return _health; } set { _health = value; } }

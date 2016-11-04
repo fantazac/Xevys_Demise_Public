@@ -13,6 +13,12 @@ public class ActivateArtefactOnBossDefeated : MonoBehaviour {
         if (_artefactGuardian != null)
         {
             gameObject.transform.parent.gameObject.SetActive(false);
+            /* BEN_CORRECTION
+             * 
+             * Pourquoi ne pas aller plutôt chercher le composant "Health" et s'abonner
+             * à un évènemetn "OnDeath". « OnBossDefeated » ne serait peut-être plus nécessaire (ou du
+             * moins, dans sa forme actuelle).
+             */
             _onBossDefeated = _artefactGuardian.GetComponent<OnBossDefeated>();
             _onBossDefeated.onDefeated += OnGuardianDefeated;
         }

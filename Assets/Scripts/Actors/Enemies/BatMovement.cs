@@ -53,6 +53,14 @@ public class BatMovement : MonoBehaviour
 
         _playerDetectionHitbox.transform.position = new Vector3(transform.position.x, _playerDetectionHitbox.transform.position.y, transform.position.z);
 
+        /* BEN_CORRECTION
+         * 
+         * Tout ce qui est "longue condition" devrait être extraite dans une méthode pour que l'on en
+         * comprenne le sens tout de suite. Tout condition longue (2 parties ou plus) peut se résumer 
+         * à un appel de méthode.
+         * 
+         * À faire partout où c'est nécessaire.
+         */
         if (!_goingDown && _isInPosition && _playerDetectionHitbox.GetComponent<DetectPlayer>().DetectedPlayer)
         {
             _goingDown = true;

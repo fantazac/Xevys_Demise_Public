@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_CORRECTION
+ * 
+ * Manager ? Ça manager rien.
+ * 
+ * C'est un "Hazard" (dommages environnementaux), donc le nommer en conséquence.
+ */
 public class FireDamageManager : MonoBehaviour
 {
     [SerializeField]
@@ -30,6 +36,10 @@ public class FireDamageManager : MonoBehaviour
             coll.gameObject.GetComponent<KnockbackOnDamageTaken>().KnockbackPlayer(transform.position);
             coll.gameObject.GetComponent<InvincibilityAfterBeingHit>().StartFlicker();
 
+            /* BEN_CORRECTION
+             * 
+             * Encore un Cooldown ? Utilisez une coroutine.
+             */
             _damageTimer = _baseDamageTimer;
         }
     }

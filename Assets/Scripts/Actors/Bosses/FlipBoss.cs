@@ -1,6 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_CORRECTION
+ * 
+ * Ça représente le sens du boss ? Pourquoi cela ne parrait pas dans le nom ?
+ * 
+ * Aussi, ça ressemble beaucoup à "FlipPlayer". Possible fusion entre les deux ?
+ * Usage d'héritage ?
+ */
 public class FlipBoss : MonoBehaviour {
 
     [SerializeField]
@@ -33,6 +40,13 @@ public class FlipBoss : MonoBehaviour {
         }
     }
 
+    /* BEN_CORRECTION
+     * 
+     * "Check" pour moi veut dire que cela retourne quelque chose...et c'est pas ça du tout que je vois.
+     * 
+     * TRÈS mal nommé. Pourquoi pas "FlipTowardPlayer" ? Mettez un verbe d'action dans les méthodes! S'il
+     * n'y a pas de verbe d'action, c'est généralement mauvais signe.
+     */
     public void CheckPlayerPosition()
     {
         if (player.transform.position.x > transform.position.x)

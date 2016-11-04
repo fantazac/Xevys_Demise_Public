@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_CORRECTION
+ * 
+ * Autrement dit, détruit l'objet lorsque cela reçoit des dégats d'un projectile ?
+ */
 public class DestroyTriggerGameObject : MonoBehaviour
 {
 

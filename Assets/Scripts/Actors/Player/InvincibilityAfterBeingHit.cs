@@ -1,6 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_CORRECTION
+ * 
+ * Je suis peut-être pas encore rendu là, mais avez vous une classe qui représente l'état du joueur ?
+ * Par exemple, s'il est invincible ?
+ * 
+ * De ce que je constate, ceci est plus un composant qui altère le visuel. Il ne devrait donc pas géré
+ * l'état du joueur en même temps.
+ */
 public class InvincibilityAfterBeingHit : MonoBehaviour
 {
 

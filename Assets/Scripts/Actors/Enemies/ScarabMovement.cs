@@ -13,6 +13,15 @@ public class ScarabMovement : MonoBehaviour
     [SerializeField]
     private bool allowBacktracking = false;
 
+    /* BEN_REVIEW
+     * 
+     * Je dis cela comme cela, mais ce serait bien que la détection du sol sur lequel il marche se
+     * fasse tout seul. Wishlist...
+     * 
+     * EDIT : Nevermind, je sais pourquoi maintenant... PAR CONTRE, ne devriez vous pas faire 
+     * deux composants ? Ce sont deux types de mouvement différents non ? Il pourait y avoir deux prefabs
+     * de scarabs en fonction du type de mouvement.
+     */
     [SerializeField]
     private GameObject _attachedWall;
 
@@ -152,6 +161,10 @@ public class ScarabMovement : MonoBehaviour
         }
     }
 
+    /* BEN_CORRECTION
+     * 
+     * Devrait retourner le target au lieu de l'assigner directement à l'attribut.
+     */
     private void FindTarget()
     {
         if (_target == transform.position)
@@ -193,6 +206,10 @@ public class ScarabMovement : MonoBehaviour
         }
     }
 
+    /* BEN_CORRECTION
+     * 
+     * Un autre composant devrait s'occuper du visuel en fonction de l'état du GameObject.
+     */
     public void SetSpriteDirection()
     {
         if (_attachedWall != null)

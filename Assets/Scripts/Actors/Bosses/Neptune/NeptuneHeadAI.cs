@@ -144,8 +144,19 @@ public class NeptuneHeadAI : MonoBehaviour
 
     protected void MoveInTrajectory()
     {
-        
         transform.position = Vector2.MoveTowards(transform.position, _targetedPoint, SPEED * Time.fixedDeltaTime);
+        /* BEN_CORRECTION
+         * 
+         * Ça m'a pris facilement 20 minutes pour lire tout le fichier et le comprendre. Faudrait pas
+         * que ce soit le cas.
+         * 
+         * Pour les classes compliqués, il faut pas hésiter à découper au maximum en méthodes. Par exemple,
+         * ces conditions peuvent facilement être transformés en méthodes plus petites qui retournent un boolean.
+         * 
+         * Fait en sorte que ce soit lisible pratiquement comme si c'était du texte.
+         * 
+         * C'est la même chose pour tous les autres Boss en passant.
+         */
         if (_targetedPoint == _southWestLimit && transform.position.x <= _southWestLimit.x && transform.position.y <= _southWestLimit.y)
         {
             _targetedPoint = _northWestLimit;

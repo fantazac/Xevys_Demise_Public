@@ -31,6 +31,11 @@ public class BehemothAI : MonoBehaviour
     private FlipBoss _flipBoss;
     private OnBossDefeated _onBossDefeated;
 
+    /* BEN_CORRECTION
+     * 
+     * « _random » peut-être ? Ne faites pas d'abbréviations sauf si l'abbréviation elle même est
+     * plus utilisée que les mots qu'elle représente (tel que HTML, XML, http, etc...).
+     */
     private System.Random _rng = new System.Random();
     private BehemothStatus _status = BehemothStatus.WAIT;
     private float _timeLeft = CHARGE_TIME;
@@ -135,6 +140,14 @@ public class BehemothAI : MonoBehaviour
         }
     }
 
+    /* BEN_CORRECTION
+     * 
+     * Update ? Ça dit pas grand chose. Rend ça plus clair, quitte à ce que le nom de la méthode soit
+     * un peu plus long.
+     * 
+     * On est pas en 1990 où le nombre de caractère d'une ligne de code était limité à 80 et le nom des
+     * variables ne dépassait pas 8 caractères!
+     */
     private void StunUpdate()
     {
         _timeLeft -= Time.fixedDeltaTime;

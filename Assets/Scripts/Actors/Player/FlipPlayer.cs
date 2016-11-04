@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_CORRECTION
+ * 
+ * Similaire à "FlipBoss".
+ */
 public class FlipPlayer : MonoBehaviour
 {
 

@@ -1,6 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_CORRECTION
+ * 
+ * Je ne peut pas m'empêcher de constater que cela fait plus que juste "DestroyOnDeath". Cela
+ * déclanche l'animation de mort, cela déclanche le son de mort, cela désactive la physique
+ * et cela instancie un "Drop".
+ * 
+ * Donc, quatre composants :
+ * 
+ *  - PlayDeathAnimationOnDeath
+ *  - PlayDeathSoundOnDeath
+ *  - DropItemOnDeathAnimationEnd
+ *  - DestroyOnDeathAnimationEnd
+ */
 public class DestroyOnDeath : MonoBehaviour
 {
     [SerializeField]
@@ -33,6 +46,10 @@ public class DestroyOnDeath : MonoBehaviour
         }
     }
 
+    /* BEN_REVIEW
+     * 
+     * J'ai de la misère à trouver quand c'est appelé. Quelque qu'une peut me dire où ?
+     */
     protected void Destroy()
     {
         GetComponent<DropItems>().Drop();

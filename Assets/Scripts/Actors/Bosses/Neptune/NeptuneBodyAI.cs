@@ -3,6 +3,10 @@ using System.Collections;
 
 public class NeptuneBodyAI : NeptuneHeadAI {
 
+    /* BEN_CORRECTION
+     * 
+     * Mot clé de visibilité manquant. Private ?
+     */
     NeptuneHeadAI _neptuneHead;
 
     private bool _isLastPart;

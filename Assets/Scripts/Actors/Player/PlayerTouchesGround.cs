@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_CORRECTION
+ * 
+ * À fusionnner avec un composant qui représente l'état du joueur 
+ * (Invincible, dans l'eau, sur le sol, vole, etc...)
+ */
 public class PlayerTouchesGround : MonoBehaviour
 {
 

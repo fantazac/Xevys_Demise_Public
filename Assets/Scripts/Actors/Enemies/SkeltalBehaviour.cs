@@ -22,6 +22,12 @@ public abstract class SkeltalBehaviour : MonoBehaviour
     //In the upcoming development, it would be wise to implement this variable into a component.
     protected bool _isFacingRight;
 
+    /* BEN_CORRECTION
+     * 
+     * Commentaire inutile.
+     * 
+     * Aussi, protected virtual et non pas virtual protected.
+     */
     // Use this for initialization
     virtual protected void Start()
     {

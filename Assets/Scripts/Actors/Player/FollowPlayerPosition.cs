@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_CORRECTION
+ * 
+ * Peut-être utilisé pour toutes sortes de choses, pas juste pour le player. À déplacer et à renommer.
+ */
 public class FollowPlayerPosition : MonoBehaviour
 {
 

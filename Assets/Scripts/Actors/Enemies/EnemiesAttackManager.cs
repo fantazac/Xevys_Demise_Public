@@ -25,6 +25,14 @@ public class EnemiesAttackManager : MonoBehaviour
             !collider.GetComponent<InvincibilityAfterBeingHit>().IsFlickering &&
             _damageTimer <= 0)
         {
+            /* BEN_CORRECTION
+             * 
+             * Le simple fait d'appeller "Hit" sur le player devrait déclancher le reste. En fait, il
+             * devrait y avoir un évènement sur "Health" auquel les deux autres composants 
+             * (KnockbackOnDamageTaken et InvincibilityAfterBeingHit) sont abbonnés.
+             * 
+             * Ce serait pas plus simple et plus logique ?
+             */
             collider.GetComponent<Health>().Hit(_baseDamage);
             collider.GetComponent<KnockbackOnDamageTaken>().KnockbackPlayer(transform.position);
             collider.GetComponent<InvincibilityAfterBeingHit>().StartFlicker();

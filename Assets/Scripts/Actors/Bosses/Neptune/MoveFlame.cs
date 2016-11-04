@@ -9,6 +9,10 @@ public class MoveFlame : MonoBehaviour
 
     private void Start()
     {
+        /* BEN_CORRECTION
+         * 
+         * Euh....il y a de meilleurs façon de faire cela. Je vois cela comme du code dupliqué.
+         */
         if (transform.eulerAngles.z == 0)
         {
             _direction = new Vector3(0, SPEED, transform.position.z);

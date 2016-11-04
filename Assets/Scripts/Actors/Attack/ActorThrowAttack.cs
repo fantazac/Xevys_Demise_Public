@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 
+/* BEN_CORRECTION
+ * 
+ * Mal nommé. C'est plus pour le joueur non ?
+ */
 public class ActorThrowAttack : MonoBehaviour
 {
 
@@ -53,10 +57,24 @@ public class ActorThrowAttack : MonoBehaviour
         _inputManager = GetComponentInChildren<InputManager>();
         _inputManager.OnThrowAttackChangeButtonPressed += OnThrowableWeaponChangeButtonPressed;
 
+        /* BEN_CORRECTION
+         * 
+         * Il y a un singleton pour cela maintenant. Utiliser ce qui existe.
+         */
         _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
         _inventoryManager.OnThrowableWeaponChange += OnThrowableWeaponChange;
 
+        /* BEN_CORRECTION
+         * 
+         * Sortir le son des components. Si je revois un autre erreur du genre, je ne le mentionnerai
+         * pas à nouveau pour ne pas perdre trop de temps dans la correction.
+         */
         _soundPlayer = GetComponent<AudioSourcePlayer>();
+
+        /* BEN_CORRECTION
+         * 
+         * Devrait être un évènement à la place. Le composant s'abonne ensuite à cet évènement.
+         */
         _showItems = GameObject.Find("SelectedWeaponCanvas").GetComponent<ShowItems>();
 
         _knifeThrowCDCount = ATTACK_COOLDOWN;
@@ -77,11 +95,38 @@ public class ActorThrowAttack : MonoBehaviour
 
     private void OnKnifeAttack()
     {
+        /* BEN_CORRECTION
+         * 
+         * Tout ce qui est Cooldown devrait utiliser une coroutine. Utilisez les fonctionalitées Unity.
+         * Habituez-vous à utiliser les coroutines. Chez Frima, ils les utilient beaucoup.
+         * 
+         * Ce n'est pas le seul endroit où il y a ce problème. J'ai pas mis de commentaire partout.
+         */
+        /* BEN_CORRECTION
+         * 
+         * Obtention multiple du même component (PlayerThrowingWeaponsMunitions). Trop lourd.
+         */
         if (_knifeThrowCDCount >= ATTACK_COOLDOWN && GetComponent<PlayerThrowingWeaponsMunitions>().KnifeMunition > 0)
         {
             _soundPlayer.Play(1);
             GameObject newKnife;
 
+            /* BEN_REVIEW
+             * 
+             * Je veux que vous commenciez à faire des "Factories" pour tout ce qui est "GameObject" à
+             * instancier.
+             * 
+             * Vos factories peuvent être des "Singletons", à moins que vous vous lanciez dans un système
+             * d'injection des dépendances.
+             * 
+             * Il y a plein d'autres endroits où des "Factories" peuvent être utilisées. En passant, vous vous
+             * souvenez ce que je disais quand je vous ai rencontré en équipe, que je serais plus sévère ?
+             * C'est ça que je veux dire : prochaine correction, je veux voir des factories.
+             */
+             /* BEN_CORRECTION
+              * 
+              * Obtention multiple du même component (FlipPlayer). Trop lourd.
+              */
             newKnife = (GameObject)Instantiate(_knife, new Vector3(transform.position.x + WEAPON_SPAWN_DISTANCE_FROM_PLAYER, transform.position.y, WEAPON_Z_POSITION), transform.rotation);
             newKnife.GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<FlipPlayer>().IsFacingRight ? KNIFE_SPEED : -KNIFE_SPEED, 0);
             newKnife.GetComponent<SpriteRenderer>().flipX = !GetComponent<FlipPlayer>().IsFacingRight;

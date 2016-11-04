@@ -41,6 +41,10 @@ public class MultipleTriggerDoor : MonoBehaviour
             _door.GetComponent<RetractDoor>().Retract = true;
         }
 
+        /* BEN_CORRECTION
+         * 
+         * Lancer un évènement à la place. Un autre composant devrait s'y attacher pour jouer le son.
+         */
         if (_soundPlayed && !GetComponent<AudioSource>().isPlaying)
         {
             Destroy(gameObject);
