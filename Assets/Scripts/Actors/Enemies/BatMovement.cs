@@ -16,17 +16,17 @@ public class BatMovement : MonoBehaviour
     [SerializeField]
     private float _lowestY = 0;
 
+    [SerializeField]
+    private float _immobileDurationOnGround = 1;
+
     private AudioSourcePlayer _soundPlayer;
     private Animator _animator;
 
-    private const float DOWN_SPEED = 6;
-    private const float UP_SPEED = 3;
-    private const int COOLDOWN_BEFORE_GOING_UP = 35;
+    private DetectPlayer _detectPlayer;
+    private float _playerDetectionHitboxInitialYPosition;
 
-    private bool _isInPosition = true;
-    private bool _startCooldown = false;
-    private bool _goingDown = false;
-    private int _cooldownCount = 0;
+    private const float DOWN_SPEED = 5.5f;
+    private const float UP_SPEED = 3;
 
     private Vector3 _target;
     private Vector3 _initialPosition;
@@ -34,63 +34,68 @@ public class BatMovement : MonoBehaviour
     private float _minX = 0;
     private float _maxX = 0;
 
+    public delegate void OnBatMovementHandler();
+    public event OnBatMovementHandler OnBatMovement;
+
+    public delegate void OnBatReachedTargetHandler();
+    public event OnBatReachedTargetHandler OnBatReachedTarget;
+
     private void Start()
     {
+        _detectPlayer = _playerDetectionHitbox.GetComponent<DetectPlayer>();
+        _detectPlayer.OnDetectedPlayer += StartMovementDown;
+        _playerDetectionHitboxInitialYPosition = _playerDetectionHitbox.GetComponent<Transform>().position.y;
+
         _initialPosition = transform.position;
         _minX = _initialPosition.x - _leftDistance;
         _maxX = _initialPosition.x + _rightDistance;
-        _soundPlayer = GetComponent<AudioSourcePlayer>();
         _animator = GetComponent<Animator>();
     }
 
-    private void Update()
+    private void StartMovementDown()
     {
-        if (transform.position.y < _lowestY)
+        _animator.SetBool("IsFlying", true);
+        OnBatMovement();
+        StartCoroutine("MoveDown");
+    }
+
+    private IEnumerator MoveDown()
+    {
+        while (transform.position.y > _lowestY)
         {
-            transform.position = new Vector3(transform.position.x, _lowestY, transform.position.z);
-            _startCooldown = true;
+            transform.position = new Vector3(transform.position.x, transform.position.y - (DOWN_SPEED * Time.deltaTime), transform.position.z);
+
+            yield return null;
         }
+        transform.position = new Vector3(transform.position.x, _lowestY, transform.position.z);
+        Invoke("StartMovementUp", _immobileDurationOnGround);
+    }
 
-        _playerDetectionHitbox.transform.position = new Vector3(transform.position.x, _playerDetectionHitbox.transform.position.y, transform.position.z);
+    private void StartMovementUp()
+    {
+        FindTarget();
+        StartCoroutine("MoveUp");
+    }
 
-        if (!_goingDown && _isInPosition && _playerDetectionHitbox.GetComponent<DetectPlayer>().DetectedPlayer)
-        {
-            _goingDown = true;
-            _soundPlayer.Play(0);
-            _animator.SetBool("IsFlying", true);
-        }
-
-        if (!_isInPosition && !_goingDown && !_startCooldown)
+    private IEnumerator MoveUp()
+    {
+        while (transform.position.y < _target.y)
         {
             transform.position = Vector3.MoveTowards(new Vector3(transform.position.x, transform.position.y, transform.position.z), _target, UP_SPEED * Time.deltaTime);
-            if (transform.position.y == _target.y)
-            {
-                _isInPosition = true;
-                _soundPlayer.Stop(0);
-                _animator.SetBool("IsFlying", false);
-            }
-        }
-        else if (!_startCooldown && _goingDown)
-        {
-            if (_isInPosition)
-            {
-                _isInPosition = false;
-            }
 
-            transform.position = new Vector3(transform.position.x, transform.position.y - (DOWN_SPEED * Time.deltaTime), transform.position.z);
+            yield return null;
         }
+        transform.position = _target;
+        StopMovement();
+    }
 
-        if (_startCooldown && _cooldownCount < COOLDOWN_BEFORE_GOING_UP)
-        {
-            _cooldownCount++;
-        }            
-        else if (_startCooldown)
-        {
-            _startCooldown = false;
-            _cooldownCount = 0;
-            _goingDown = false;
-            FindTarget();
-        }
+    private void StopMovement()
+    {
+        OnBatReachedTarget();
+        _playerDetectionHitbox.transform.position = 
+            new Vector3(transform.position.x, _playerDetectionHitboxInitialYPosition, transform.position.z);
+        _animator.SetBool("IsFlying", false);
+        _detectPlayer.EnableHitbox();
     }
 
     private void FindTarget()
@@ -100,10 +105,6 @@ public class BatMovement : MonoBehaviour
 
     public bool CloseToTop()
     {
-        if(Vector2.Distance((Vector2)transform.position, _target) < 1 || _isInPosition)
-        {
-            return true;
-        }
-        return false;
+        return Vector2.Distance((Vector2)transform.position, _target) < 1;
     }
 }

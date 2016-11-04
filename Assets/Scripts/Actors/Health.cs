@@ -19,6 +19,9 @@ public class Health : MonoBehaviour
     public delegate void OnHealthChangedHandler(int healPoints);
     public event OnHealthChangedHandler OnHealthChanged;
 
+    public delegate void OnDeathHandler();
+    public event OnDeathHandler OnDeath;
+
     private void Start()
     {
         MaxHealth = _health;
@@ -37,17 +40,22 @@ public class Health : MonoBehaviour
 
     public void Hit(int hitPoints)
     {
-        //to change
-        if(OnDamageTaken != null)
-        {
-            OnDamageTaken(-hitPoints);
-        }
-        
+        OnDamageTaken(-hitPoints);
         OnHealthChanged(-hitPoints);
+        //enlever le "player" quand cest codé
+        if(IsDead() && gameObject.tag != "Player")
+        {
+            OnDeath();
+        }
     }
 
     private void ChangeHealth(int healthPointsToAdd)
     {
         HealthPoint += healthPointsToAdd;
+    }
+
+    private bool IsDead()
+    {
+        return _health <= 0;
     }
 }

@@ -21,7 +21,7 @@ public class OnItemDrop : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    public void Initialise(float amountToDrop, float id, Collider2D collider)
+    public void Initialise(float amountToDrop, int id, Collider2D collider)
     {
         if ((collider.gameObject.tag == "Bat" && collider.GetComponent<BatMovement>().CloseToTop()) || (collider.gameObject.tag == "Scarab" && collider.GetComponent<ScarabMovement>().OnBottomOfPlatform()))
         {
