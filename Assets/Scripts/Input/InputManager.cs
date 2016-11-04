@@ -82,31 +82,31 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        if (!_keyboardInputs.enabled && _gamepadInputs.enabled && Input.anyKeyDown)
+        // Un seul schéma de contrôle est activé à la fois.
+        // Si le joueur appuie sur une touche du support qui n'est pas actif,
+        // on change le schéma de contrôle.
+
+        if ((!_keyboardInputs.enabled && _gamepadInputs.enabled && Input.anyKeyDown) ||
+            (_keyboardInputs.enabled && !_gamepadInputs.enabled && PlayerIsUsingGamepad()))
         {
-            _keyboardInputs.enabled = true;
-            _gamepadInputs.enabled = false;
+            _keyboardInputs.enabled = !_keyboardInputs.enabled;
+            _gamepadInputs.enabled = !_gamepadInputs.enabled;
         }
-        else if (_keyboardInputs.enabled && !_gamepadInputs.enabled)
-        {
-            foreach (PlayerIndex player in Enum.GetValues(typeof(PlayerIndex)))
-            {
-                GamePadState state = GamePad.GetState(player);
-                if (state.Buttons.A == ButtonState.Pressed || state.Buttons.B == ButtonState.Pressed ||
+    }
+
+    private bool PlayerIsUsingGamepad()
+    {
+        GamePadState state = GamePad.GetState(PlayerIndex.One);
+        return (state.Buttons.A == ButtonState.Pressed || state.Buttons.B == ButtonState.Pressed ||
                     state.Buttons.X == ButtonState.Pressed || state.Buttons.Y == ButtonState.Pressed ||
-                    state.Buttons.Back == ButtonState.Pressed || state.Buttons.Start == ButtonState.Pressed ||
-                    state.Buttons.LeftShoulder == ButtonState.Pressed ||
-                    state.Buttons.RightShoulder == ButtonState.Pressed ||
                     state.ThumbSticks.Left.X != 0 || state.ThumbSticks.Left.Y != 0 ||
                     state.ThumbSticks.Right.Y != 0 || state.ThumbSticks.Right.Y != 0 ||
+                    state.Buttons.LeftShoulder == ButtonState.Pressed ||
+                    state.Buttons.RightShoulder == ButtonState.Pressed ||
+                    state.Buttons.Back == ButtonState.Pressed || state.Buttons.Start == ButtonState.Pressed ||                                    
                     state.DPad.Left == ButtonState.Pressed || state.DPad.Right == ButtonState.Pressed ||
-                    state.DPad.Up == ButtonState.Pressed || state.DPad.Down == ButtonState.Pressed)
-                {
-                    _keyboardInputs.enabled = false;
-                    _gamepadInputs.enabled = true;
-                }
-            }           
-        }
+                    state.DPad.Up == ButtonState.Pressed || state.DPad.Down == ButtonState.Pressed);
+
     }
 
     private void InputsOnMove(Vector3 movement, bool goesRight)
