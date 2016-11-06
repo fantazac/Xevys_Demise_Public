@@ -27,7 +27,6 @@ public class DestroyEnemyOnDeath : MonoBehaviour
         _hitbox.enabled = false;
     }
 
-
     private void Destroy()
     {
         Destroy(gameObject);

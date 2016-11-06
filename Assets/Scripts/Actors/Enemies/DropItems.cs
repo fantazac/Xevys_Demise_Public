@@ -20,7 +20,7 @@ public class DropItems : MonoBehaviour
     {
         GetComponent<Health>().OnDeath += SetupDrop;
 
-        _inventoryManager = Player.GetPlayer().GetComponent<InventoryManager>();
+        _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
 
         InitializeDrops();
     }

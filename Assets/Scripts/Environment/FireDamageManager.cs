@@ -5,32 +5,29 @@ public class FireDamageManager : MonoBehaviour
 {
     [SerializeField]
     private int _baseDamage = 100;
-    private int _baseDamageTimer;
 
-    private int _damageTimer = 0;
+    private Health _health;
+    private KnockbackOnDamageTaken _knockback;
+    private InventoryManager _inventoryManager;
 
     private void Start()
     {
-        _baseDamageTimer = (int)GameObject.Find("Character").GetComponent<InvincibilityAfterBeingHit>().InvincibilityTime;
+        _health = StaticObjects.GetPlayer().GetComponent<Health>();
+        _knockback = StaticObjects.GetPlayer().GetComponent<KnockbackOnDamageTaken>();
+        _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
     }
 
-    private void Update()
+    private void OnTriggerStay2D(Collider2D collider)
     {
-        _damageTimer--;
-    }
-
-    private void OnTriggerStay2D(Collider2D coll)
-    {
-        if (coll.gameObject.tag == "Player" &&
-            !GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>().FireProofArmorEnabled &&
-            !coll.gameObject.GetComponent<InvincibilityAfterBeingHit>().IsFlickering &&
-            _damageTimer <= 0)
+        if (CanAttackPlayer(collider))
         {
-            coll.gameObject.GetComponent<Health>().Hit(_baseDamage);
-            coll.gameObject.GetComponent<KnockbackOnDamageTaken>().KnockbackPlayer(transform.position);
-            coll.gameObject.GetComponent<InvincibilityAfterBeingHit>().StartFlicker();
-
-            _damageTimer = _baseDamageTimer;
+            _health.Hit(_baseDamage);
+            _knockback.KnockbackPlayer(transform.position);
         }
+    }
+
+    private bool CanAttackPlayer(Collider2D collider)
+    {
+        return !PlayerState.IsInvincible && collider.gameObject.tag == "Player" && !_inventoryManager.FireProofArmorEnabled;
     }
 }

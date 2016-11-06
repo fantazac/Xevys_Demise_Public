@@ -7,7 +7,7 @@ public class PlayerFloatingInteraction : MonoBehaviour
 
     private void Start()
     {
-        _player = Player.GetPlayer();
+        _player = StaticObjects.GetPlayer();
     }
 
     public void OnTriggerEnter2D(Collider2D collider)

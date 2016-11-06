@@ -75,11 +75,11 @@ public class VulcanAI : MonoBehaviour
                 _criticalStatus = (_health.HealthPoint <= _halfHealth);
                 if (_criticalStatus)
                 {
-                    if (Player.GetPlayer().transform.position.x < _spawnPositions[0] / 2)
+                    if (StaticObjects.GetPlayer().transform.position.x < _spawnPositions[0] / 2)
                     {
                         transform.position = new Vector3(_spawnPositions[0], transform.position.y, transform.position.z);
                     }
-                    else if (Player.GetPlayer().transform.position.x > _spawnPositions[4] / 2)
+                    else if (StaticObjects.GetPlayer().transform.position.x > _spawnPositions[4] / 2)
                     {
                         transform.position = new Vector3(_spawnPositions[4], transform.position.y, transform.position.z);
                     }

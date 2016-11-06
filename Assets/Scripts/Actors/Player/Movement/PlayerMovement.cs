@@ -125,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool PlayerTouchesGround()
     {
-        return Player.GetPlayer().GetComponent<PlayerTouchesGround>().OnGround;
+        return StaticObjects.GetPlayer().GetComponent<PlayerTouchesGround>().OnGround;
     }
 
     private bool PlayerTouchesFlyingPlatform()

@@ -5,31 +5,27 @@ public class EnemiesAttackManager : MonoBehaviour
 {
     [SerializeField]
     private int _baseDamage = 100;
-    private int _baseDamageTimer;
 
-    private int _damageTimer = 0;
+    private Health _health;
+    private KnockbackOnDamageTaken _knockback;
 
     private void Start()
     {
-        _baseDamageTimer = (int)GameObject.Find("Character").GetComponent<InvincibilityAfterBeingHit>().InvincibilityTime;
-    }
-
-    private void Update()
-    {
-        _damageTimer--;
+        _health = StaticObjects.GetPlayer().GetComponent<Health>();
+        _knockback = StaticObjects.GetPlayer().GetComponent<KnockbackOnDamageTaken>();
     }
 
     private void OnTriggerStay2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == "Player" &&
-            !collider.GetComponent<InvincibilityAfterBeingHit>().IsFlickering &&
-            _damageTimer <= 0)
+        if (CanAttackPlayer(collider))
         {
-            collider.GetComponent<Health>().Hit(_baseDamage);
-            collider.GetComponent<KnockbackOnDamageTaken>().KnockbackPlayer(transform.position);
-            collider.GetComponent<InvincibilityAfterBeingHit>().StartFlicker();
-
-            _damageTimer = _baseDamageTimer;
+            _health.Hit(_baseDamage);
+            _knockback.KnockbackPlayer(transform.position);
         }
+    }
+
+    private bool CanAttackPlayer(Collider2D collider)
+    {
+        return !PlayerState.IsInvincible && collider.gameObject.tag == "Player";
     }
 }

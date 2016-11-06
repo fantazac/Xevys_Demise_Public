@@ -42,7 +42,7 @@ public class Health : MonoBehaviour
     {
         OnDamageTaken(-hitPoints);
         OnHealthChanged(-hitPoints);
-        //enlever le "player" quand cest codé
+        //enlever le "player" quand cest codé, ceci prévient qu'il se fasse frapper à chaque frame
         if(IsDead() && gameObject.tag != "Player")
         {
             OnDeath();

@@ -18,7 +18,7 @@ public class PickItem : MonoBehaviour
 
     private void Start()
     {
-        _inventoryManager = Player.GetPlayer().GetComponent<InventoryManager>();
+        _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
