@@ -80,14 +80,14 @@ public class InputManager : MonoBehaviour
         _gamepadInputs.OnPause += InputsOnPause;        
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         // Un seul schéma de contrôle est activé à la fois.
         // Si le joueur appuie sur une touche du support qui n'est pas actif,
         // on change le schéma de contrôle.
 
         if ((!_keyboardInputs.enabled && _gamepadInputs.enabled && Input.anyKeyDown) ||
-            (_keyboardInputs.enabled && !_gamepadInputs.enabled && PlayerIsUsingGamepad()))
+            (!_gamepadInputs.enabled && _keyboardInputs.enabled && PlayerIsUsingGamepad()))
         {
             _keyboardInputs.enabled = !_keyboardInputs.enabled;
             _gamepadInputs.enabled = !_gamepadInputs.enabled;
