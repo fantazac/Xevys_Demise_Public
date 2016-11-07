@@ -86,12 +86,23 @@ public class InputManager : MonoBehaviour
         // Si le joueur appuie sur une touche du support qui n'est pas actif,
         // on change le schéma de contrôle.
 
-        if ((!_keyboardInputs.enabled && _gamepadInputs.enabled && Input.anyKeyDown) ||
+        if ((!_keyboardInputs.enabled && _gamepadInputs.enabled && PlayerIsUsingKeyboard()) ||
             (!_gamepadInputs.enabled && _keyboardInputs.enabled && PlayerIsUsingGamepad()))
         {
             _keyboardInputs.enabled = !_keyboardInputs.enabled;
             _gamepadInputs.enabled = !_gamepadInputs.enabled;
         }
+    }
+
+    private bool PlayerIsUsingKeyboard()
+    {
+        return (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) ||
+                Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) ||
+                Input.GetKey(KeyCode.Q) || Input.GetKey(KeyCode.E) ||
+                Input.GetKey(KeyCode.K) || Input.GetKey(KeyCode.L) ||
+                Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.Escape) ||
+                Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) ||
+                Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow));
     }
 
     private bool PlayerIsUsingGamepad()
