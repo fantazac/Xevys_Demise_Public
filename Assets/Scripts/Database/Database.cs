@@ -6,30 +6,76 @@ using System;
 
 public class Database : MonoBehaviour
 {
-    private IDbCommand dbcmd;
+    private IDbConnection _dbconn;
+    private IDbCommand _dbcmd;
+
+    private InventoryManager _inventoryManager;
+    
+    //TEMP
+    private int accountID = 1;
 
     private void Start()
     {
-        string conn = "URI=file:" + Application.dataPath + "/Database/Database.db"; //Path to database.
-        IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(conn);
-        dbconn.Open(); //Open connection to the database.
-        dbcmd = dbconn.CreateCommand();
+        string conn = "URI=file:" + Application.dataPath + "/Database/Database.db";
+        _dbconn = (IDbConnection)new SqliteConnection(conn);
+        _dbcmd = _dbconn.CreateCommand();
 
-        GetStaff();
-        AddStaff();
+        _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
+        _inventoryManager.OnEnableKnife += EnableKnife;
+        _inventoryManager.OnEnableAxe += EnableAxe;
 
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
+        CreateStatsRecord();
     }
-    
+
+    private void OnApplicationQuit()
+    {
+        //TEMP
+        _dbconn.Open();
+        string sqlQuery = "DELETE FROM STATS";
+        _dbcmd.CommandText = sqlQuery;
+        _dbcmd.ExecuteNonQuery();
+        _dbconn.Close();
+
+        _dbcmd.Dispose();
+        _dbcmd = null;
+        _dbconn = null;
+    }
+
+    private void CreateStatsRecord()
+    {
+        _dbconn.Open();
+        string sqlQuery = "INSERT INTO STATS (STATS_ID, SECONDS_PLAYED, NB_KILLED_SCARABS, NB_KILLED_BATS, NB_KILLED_SKELTALS, NB_DEATHS, KNIFE_PICKED, AXE_PICKED, FEATHER_PICKED, BOOTS_PICKED, BUBBLE_PICKED, ARMOR_PICKED, ARTEFACT1_PICKED, ARTEFACT2_PICKED, ARTEFACT3_PICKED, ARTEFACT4_PICKED, GAME_COMPLETED, ACCOUNT_ID)" + 
+            "VALUES (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, " + accountID + ")";
+        _dbcmd.CommandText = sqlQuery;
+        _dbcmd.ExecuteNonQuery();
+        _dbconn.Close();
+    }
+
+    private void EnableKnife()
+    {
+        _dbconn.Open();
+        string sqlQuery = "UPDATE STATS SET KNIFE_PICKED = 1 WHERE ACCOUNT_ID = " + accountID;
+        _dbcmd.CommandText = sqlQuery;
+        _dbcmd.ExecuteNonQuery();
+        _dbconn.Close();
+    }
+
+    private void EnableAxe()
+    {
+        _dbconn.Open();
+        string sqlQuery = "UPDATE STATS SET AXE_PICKED = 1 WHERE ACCOUNT_ID = " + accountID;
+        _dbcmd.CommandText = sqlQuery;
+        _dbcmd.ExecuteNonQuery();
+        _dbconn.Close();
+    }
+
+
+    //SELECT example
     private void GetStaff()
     {
         string sqlQuery = "SELECT name, role, number " + "FROM Staff";
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
+        _dbcmd.CommandText = sqlQuery;
+        IDataReader reader = _dbcmd.ExecuteReader();
 
         while (reader.Read())
         {
@@ -43,10 +89,11 @@ public class Database : MonoBehaviour
         reader = null;
     }
 
+    //INSERT INTO example
     private void AddStaff()
     {
         string sqlQuery = "INSERT INTO Staff (name, role, number)" + "VALUES (\"Vince\", \"character\", 21)";
-        dbcmd.CommandText = sqlQuery;
-        dbcmd.ExecuteNonQuery();
+        _dbcmd.CommandText = sqlQuery;
+        _dbcmd.ExecuteNonQuery();
     }
 }
