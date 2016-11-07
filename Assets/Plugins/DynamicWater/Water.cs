@@ -37,6 +37,7 @@ public class Water : MonoBehaviour
     //Our meshes and colliders
     private GameObject[] _meshobjects;
     private GameObject[] _colliders;
+    public GameObject[] Colliders { get { return _colliders; } }
     private Mesh[] _meshes;
 
     //The properties of our water
@@ -141,7 +142,6 @@ public class Water : MonoBehaviour
 
             //Add a WaterDetector and make sure they're triggers
             _colliders[i].GetComponent<BoxCollider2D>().isTrigger = true;
-            _colliders[i].AddComponent<WaterDetector>();
 
         }
 

@@ -3,21 +3,34 @@ using System.Collections;
 
 public class DetectPlayer : MonoBehaviour
 {
-    public bool DetectedPlayer { get; private set; }
+    private BoxCollider2D _hitbox;
+
+    public delegate void OnDetectedPlayerHandler();
+    public event OnDetectedPlayerHandler OnDetectedPlayer;
+
+    private void Start()
+    {
+        _hitbox = GetComponent<BoxCollider2D>();
+    }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "Player")
         {
-            DetectedPlayer = true;
+            DisableHitbox();
+            OnDetectedPlayer();
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collider)
+    public void EnableHitbox()
     {
-        if (collider.gameObject.tag == "Player")
-        {
-            DetectedPlayer = false;
-        }
+        _hitbox.enabled = true;
+        _hitbox.isTrigger = true;
+    }
+
+    private void DisableHitbox()
+    {
+        _hitbox.isTrigger = false;
+        _hitbox.enabled = false;
     }
 }

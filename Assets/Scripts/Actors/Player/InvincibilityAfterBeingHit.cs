@@ -5,49 +5,60 @@ public class InvincibilityAfterBeingHit : MonoBehaviour
 {
 
     [SerializeField]
-    private const float INVINCIBILITY_TIME = 120;
+    private float _invincibilityTime = 2f;
+
     [SerializeField]
-    private const float FLICKER_INTERVAL = 5;
+    private float _flickerInterval = 0.12f;
 
-    private float _invincibilityCount = 0;
-    private bool _flickerSprite = false;
+    private float _coroutineInvincibilityTime = 0;
+    private float _invincibilityTimeCount = 0;
 
-    public float InvincibilityTime { get { return INVINCIBILITY_TIME; } }
-    public bool IsFlickering { get { return _flickerSprite; } }
+    private Health _health;
 
-    private void FixedUpdate()
+    private WaitForSeconds _coroutineWait;
+
+    public delegate void OnInvincibilityFinishedHandler();
+    public event OnInvincibilityFinishedHandler OnInvincibilityFinished;
+
+    public delegate void OnInvincibilityEnabledHandler();
+    public event OnInvincibilityEnabledHandler OnInvincibilityEnabled;
+
+    private void Start()
     {
-        if (_flickerSprite && _invincibilityCount == INVINCIBILITY_TIME - (FLICKER_INTERVAL * 2))
-        {
-            _flickerSprite = false;
-            GetComponentInChildren<SpriteRenderer>().color = Color.white;
-            _invincibilityCount = 0;
-        }
-        else if (_flickerSprite)
-        {
-            StartFlicker();
-        }
+        _coroutineInvincibilityTime = _invincibilityTime - (_flickerInterval * 2);
+
+        _health = StaticObjects.GetPlayer().GetComponent<Health>();
+        _health.OnDamageTaken += StartFlicker;
+
+        _coroutineWait = new WaitForSeconds(_flickerInterval);
+    }
+
+    private void InvincibilityFinished()
+    {
+        _invincibilityTimeCount = 0;
+        OnInvincibilityFinished();
     }
 
     private IEnumerator Flicker()
     {
-
-        if (_invincibilityCount % (FLICKER_INTERVAL * 2) < FLICKER_INTERVAL)
-        {
-            GetComponentInChildren<SpriteRenderer>().color = Color.white;
-        }
-        else
+        while (_invincibilityTimeCount < _coroutineInvincibilityTime)
         {
             GetComponentInChildren<SpriteRenderer>().color = Color.gray;
-        }
-        _invincibilityCount++;
+            yield return _coroutineWait;
 
-        return null;
+            _invincibilityTimeCount += Time.deltaTime + _flickerInterval;
+
+            GetComponentInChildren<SpriteRenderer>().color = Color.white;
+            yield return _coroutineWait;
+
+            _invincibilityTimeCount += Time.deltaTime + _flickerInterval;
+        }
+        Invoke("InvincibilityFinished", _flickerInterval * 2);
     }
 
-    public void StartFlicker()
+    public void StartFlicker(int hitPoints)
     {
-        _flickerSprite = true;
+        OnInvincibilityEnabled();
         StartCoroutine("Flicker");
     }
 }

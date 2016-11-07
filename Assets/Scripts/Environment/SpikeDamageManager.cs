@@ -7,31 +7,27 @@ public class SpikeDamageManager : MonoBehaviour
 {
     [SerializeField]
     private int _baseDamage = 100;
-    private int _baseDamageTimer;
 
-    private int _damageTimer = 0;
+    private Health _health;
+    private KnockbackOnDamageTaken _knockback;
 
     private void Start()
     {
-        _baseDamageTimer = (int)GameObject.Find("Character").GetComponent<InvincibilityAfterBeingHit>().InvincibilityTime;
+        _health = StaticObjects.GetPlayer().GetComponent<Health>();
+        _knockback = StaticObjects.GetPlayer().GetComponent<KnockbackOnDamageTaken>();
     }
 
-    private void Update()
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        _damageTimer--;
-    }
-
-    private void OnCollisionStay2D(Collision2D coll)
-    {
-        if (coll.gameObject.tag == "Player" &&
-            !coll.gameObject.GetComponent<InvincibilityAfterBeingHit>().IsFlickering &&
-            _damageTimer <= 0)
+        if (CanAttackPlayer(collision))
         {
-            coll.gameObject.GetComponent<Health>().Hit(_baseDamage);
-            coll.gameObject.GetComponent<KnockbackOnDamageTaken>().KnockbackPlayer(transform.position);
-            coll.gameObject.GetComponent<InvincibilityAfterBeingHit>().StartFlicker();
-
-            _damageTimer = _baseDamageTimer;
+            _health.Hit(_baseDamage);
+            _knockback.KnockbackPlayer(transform.position);
         }
+    }
+
+    private bool CanAttackPlayer(Collision2D collision)
+    {
+        return !PlayerState.IsInvincible && collision.gameObject.tag == "Player";
     }
 }
