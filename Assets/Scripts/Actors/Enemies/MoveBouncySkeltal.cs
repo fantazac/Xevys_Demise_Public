@@ -4,47 +4,49 @@ using System.Collections;
 public class MoveBouncySkeltal : SkeltalBehaviour
 {
     [SerializeField]
-    private float _rightHeightLimit;
+    private float _leftDistance = 0;
+
     [SerializeField]
-    private float _leftHeightLimit;
+    private float _rightDistance = 0;
+
+    [SerializeField]
+    private float _leftEdgeHeight = 0;
+
+    [SerializeField]
+    private float _rightEdgeHeight = 0;
+
+    [SerializeField]
+    private float _maximumHeightFromGround = 0;
+
+    [SerializeField]
+    private float _timeInAir = 1.5f;
+
+    [SerializeField]
+    private float _unitsPerSecond = 2f;
 
     private float _newHeight;
-    private const float BOUNCY_SPEED = 0.1f;
-    private float _bounceApex;
 
-    [SerializeField]
-    private float _bounceHeight;
+    private float _initialVerticalSpeed = 0;
+    private float _verticalAcceleration = 0;
+
+    private const float HALF_VALUE = 0.5f;
 
     protected override void Start()
     {
+        //formule pour trouver l'accélération verticale par rapport au temps et à la hauteur maximale
+        //_verticalAcceleration = -_maximumHeightFromGround / (HALF_VALUE * _halfOfTimeInAir * _halfOfTimeInAir);
+
         base.Start();
-        if (_bounceHeight == 0)
-        {
-            _bounceHeight = 1;
-        }
-        _bounceHeight = Mathf.Abs(_bounceHeight);
-        _bounceApex = (_initialPosition.x - _leftLimit + _initialPosition.x + _rightLimit) / 2;
     }
 
-    protected override bool UpdateSkeltal()
+    private void InitializeArcVariables()
     {
-        _newHeight = -((transform.position.x + (_isFacingRight ? BOUNCY_SPEED : -BOUNCY_SPEED) - (_initialPosition.x - _leftLimit)) 
-                    * (transform.position.x + (_isFacingRight ? BOUNCY_SPEED : -BOUNCY_SPEED) - (_initialPosition.x + _rightLimit)))/_bounceHeight + _initialPosition.y;
-        transform.position = new Vector2(transform.position.x + (_isFacingRight ? BOUNCY_SPEED : -BOUNCY_SPEED), _newHeight);
 
-        if (_isFacingRight && transform.position.x > _bounceApex && transform.position.y <= _initialPosition.y + _rightHeightLimit)
-        {
-            return true;
-        }
-        if (!_isFacingRight && transform.position.x < _bounceApex && transform.position.y <= _initialPosition.y + _leftHeightLimit)
-        {
-            return true;
-        }
-        if ((_isFacingRight && transform.position.x >= _initialPosition.x + _rightLimit) || (!_isFacingRight && transform.position.x <= _initialPosition.x - _leftLimit))
-        {
-            return true;
-        }
+    }
 
-        return false;
+    protected override IEnumerator SkeltalMovement()
+    {
+
+        yield return null;
     }
 }
