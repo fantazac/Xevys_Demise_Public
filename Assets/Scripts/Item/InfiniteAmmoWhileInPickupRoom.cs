@@ -27,7 +27,7 @@ public class InfiniteAmmoWhileInPickupRoom : MonoBehaviour
         _triggerToDisable = _triggerToDisableInfiniteAmmo.GetComponent<ActivateTrigger>();
         _triggerToDisable.OnTrigger += DisableInfiniteAmmo;
 
-        Player.GetPlayer().GetComponent<InventoryManager>().SetInfiniteAmmoEvent(gameObject);
+        StaticObjects.GetPlayer().GetComponent<InventoryManager>().SetInfiniteAmmoEvent(gameObject);
     }
 
     private void EnableInfiniteAmmo()

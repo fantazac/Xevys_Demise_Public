@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom;
 using UnityEngine;
+using XInputDotNetPure;
 
 public class InputManager : MonoBehaviour
 {
@@ -76,7 +77,36 @@ public class InputManager : MonoBehaviour
         _gamepadInputs.OnThrowAttack += InputsOnThrowAttack;
         _gamepadInputs.OnThrowAttackChangeButtonPressed += InputsOnThrowAttackChangeButtonPressed;
         _gamepadInputs.OnEnterPortal += InputsOnEnterPortal;
-        _gamepadInputs.OnPause += InputsOnPause;
+        _gamepadInputs.OnPause += InputsOnPause;        
+    }
+
+    private void FixedUpdate()
+    {
+        // Un seul schéma de contrôle est activé à la fois.
+        // Si le joueur appuie sur une touche du support qui n'est pas actif,
+        // on change le schéma de contrôle.
+
+        if ((!_keyboardInputs.enabled && _gamepadInputs.enabled && Input.anyKeyDown) ||
+            (!_gamepadInputs.enabled && _keyboardInputs.enabled && PlayerIsUsingGamepad()))
+        {
+            _keyboardInputs.enabled = !_keyboardInputs.enabled;
+            _gamepadInputs.enabled = !_gamepadInputs.enabled;
+        }
+    }
+
+    private bool PlayerIsUsingGamepad()
+    {
+        GamePadState state = GamePad.GetState(PlayerIndex.One);
+        return (state.Buttons.A == ButtonState.Pressed || state.Buttons.B == ButtonState.Pressed ||
+                    state.Buttons.X == ButtonState.Pressed || state.Buttons.Y == ButtonState.Pressed ||
+                    state.ThumbSticks.Left.X != 0 || state.ThumbSticks.Left.Y != 0 ||
+                    state.ThumbSticks.Right.Y != 0 || state.ThumbSticks.Right.Y != 0 ||
+                    state.Buttons.LeftShoulder == ButtonState.Pressed ||
+                    state.Buttons.RightShoulder == ButtonState.Pressed ||
+                    state.Buttons.Back == ButtonState.Pressed || state.Buttons.Start == ButtonState.Pressed ||                                    
+                    state.DPad.Left == ButtonState.Pressed || state.DPad.Right == ButtonState.Pressed ||
+                    state.DPad.Up == ButtonState.Pressed || state.DPad.Down == ButtonState.Pressed);
+
     }
 
     private void InputsOnMove(Vector3 movement, bool goesRight)

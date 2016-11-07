@@ -30,7 +30,7 @@ public class ActivateTrigger : MonoBehaviour
 
     private void Start()
     {
-        _playerInventory = Player.GetPlayer().GetComponent<InventoryManager>();
+        _playerInventory = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)

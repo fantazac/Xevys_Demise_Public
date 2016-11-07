@@ -74,6 +74,5 @@ public class MoveObjectOnTrigger : MonoBehaviour
             yield return null;
         }
         OnFinishedMoving();
-        yield return null;
     }
 }

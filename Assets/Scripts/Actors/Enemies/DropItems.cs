@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class DropItems : MonoBehaviour
 {
@@ -8,36 +8,67 @@ public class DropItems : MonoBehaviour
     private GameObject[] _items;
 
     [SerializeField]
-    private int[] _dropRates;
+    private List<int> _dropRates;
 
-    private GameObject[] _itemsToDrop;
-    private int _itemsDroppedCount = 0;
+    private List<GameObject> _itemsToDrop;
 
-    public void Drop()
+    private float _timeBeforeDrop = 0.2f;
+
+    private InventoryManager _inventoryManager;
+
+    private void Start()
     {
-        _itemsToDrop = new GameObject[_items.Length];
+        GetComponent<Health>().OnDeath += SetupDrop;
 
-        for (int i = 0; i < _items.Length; i++)
+        _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
+
+        InitializeDrops();
+    }
+
+    private void InitializeDrops()
+    {
+        _itemsToDrop = new List<GameObject>();
+
+        foreach (GameObject item in _items)
         {
-            if (Random.Range(0, 100) < _dropRates[i])
+            if (Random.Range(0, 100) < _dropRates[0])
             {
-                if ((_items[i].gameObject.tag != "AxeDrop" && _items[i].gameObject.tag != "KnifeDrop") ||
-                    (_items[i].gameObject.tag == "AxeDrop" && Player.GetPlayer().GetComponent<InventoryManager>().AxeEnabled) ||
-                    (_items[i].gameObject.tag == "KnifeDrop" && Player.GetPlayer().GetComponent<InventoryManager>().KnifeEnabled))
-                {
-                    _itemsToDrop[_itemsDroppedCount++] = _items[i];
-                }
+                _itemsToDrop.Add(item);
+            }
+            _dropRates.RemoveAt(0);
+        }
+    }
+
+    private void SetupDrop()
+    {
+        Invoke("Drop", _timeBeforeDrop);
+    }
+
+    private void Drop()
+    {
+        int itemCount = 0;
+        foreach (GameObject itemToDrop in _itemsToDrop)
+        {
+            if (CanDropItem(itemToDrop))
+            {
+                GameObject item = (GameObject)Instantiate(itemToDrop, transform.position, new Quaternion());
+                item.GetComponent<OnItemDrop>().Initialise(_itemsToDrop.Count, itemCount++, GetComponent<Collider2D>());
             }
         }
+    }
 
-        for (int j = 0; j < _itemsToDrop.Length; j++)
-        {
-            if (_itemsToDrop[j] == null)
-            {
-                break;
-            }
-            GameObject item = (GameObject)Instantiate(_itemsToDrop[j], transform.position, new Quaternion());
-            item.GetComponent<OnItemDrop>().Initialise(_itemsDroppedCount, j, GetComponent<Collider2D>());
-        }
+    private bool CanDropItem(GameObject item)
+    {
+        return CanDropAxe(item) || CanDropKnife(item);
+    }
+
+    private bool CanDropKnife(GameObject item)
+    {
+        return _inventoryManager.KnifeEnabled && item.tag == "KnifeDrop";
+    }
+
+    private bool CanDropAxe(GameObject item)
+    {
+        return _inventoryManager.AxeEnabled && item.tag == "AxeDrop";
     }
 }

@@ -27,7 +27,7 @@ public class CameraManager : MonoBehaviour
 
     void Start()
     {
-        focusObject = Player.GetPlayer();
+        focusObject = StaticObjects.GetPlayer();
 
         if (focusObject != null)
         {

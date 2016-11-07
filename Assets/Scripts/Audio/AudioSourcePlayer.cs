@@ -42,4 +42,9 @@ public class AudioSourcePlayer : MonoBehaviour
     {
         return _audioSources[0];
     }
+
+    public AudioSource GetAudioSource(int index)
+    {
+        return _audioSources[index];
+    }
 }

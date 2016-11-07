@@ -37,8 +37,8 @@ public class ShowItems : MonoBehaviour
         _axeSpriteRenderer = GameObject.Find("WeaponSelectAxe").GetComponent<SpriteRenderer>();
         _featherSpriteRenderer = GameObject.Find("FeatherFrame").GetComponent<SpriteRenderer>();
         _ironBootsSpriteRenderer = GameObject.Find("IronBootsFrame").GetComponent<SpriteRenderer>();
-        _inventoryManager = Player.GetPlayer().GetComponent<InventoryManager>();
-        _munitions = Player.GetPlayer().GetComponent<PlayerThrowingWeaponsMunitions>();
+        _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
+        _munitions = StaticObjects.GetPlayer().GetComponent<PlayerThrowingWeaponsMunitions>();
         _bubbleSpriteRenderer = GameObject.Find("BubbleFrame").GetComponent<SpriteRenderer>();
         _fireProofArmorRenderer = GameObject.Find("FireProofArmorFrame").GetComponent<SpriteRenderer>();
         _earthArtefactRenderer = GameObject.Find("EarthArtefactFrame").GetComponent<SpriteRenderer>();

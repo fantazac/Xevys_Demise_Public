@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using XInputDotNetPure;
 
-public class GamepadInputs : MonoBehaviour
+public class GamepadInputs: MonoBehaviour
 {
 
     public delegate void GamepadOnMoveHandler(Vector3 movement, bool goesRight);
@@ -58,123 +58,124 @@ public class GamepadInputs : MonoBehaviour
 
     private void Update()
     {
-        foreach (PlayerIndex player in Enum.GetValues(typeof(PlayerIndex)))
+        GamePadState state = GamePad.GetState(PlayerIndex.One);
+
+        if (state.IsConnected)
         {
-            GamePadState state = GamePad.GetState(player);
-
-            if (state.IsConnected)
+            if (Math.Abs(state.ThumbSticks.Left.X) > _joysticksXAxisDeadZone)
             {
-                if (Math.Abs(state.ThumbSticks.Left.X) > _joysticksXAxisDeadZone)
+                if (state.ThumbSticks.Left.X < 0)
                 {
-                    if (state.ThumbSticks.Left.X < 0)
-                    {
-                        OnMove(Vector3.left, false);
-                    }
-                    else
-                    {
-                        OnMove(Vector3.right, true);
-                    }
+                    OnMove(Vector3.left, false);
                 }
-
-                if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
+                else
                 {
-                    if (state.ThumbSticks.Left.Y < 0)
-                    {
-                        OnUnderwaterControl(true);
-                        OnCrouch();
-                        if (state.Buttons.A == ButtonState.Pressed)
-                        {
-                            OnJumpDown();
-                        }
-                    }
+                    OnMove(Vector3.right, true);
                 }
+            }
+            else
+            {
+                OnStop();
+            }
 
-                if (state.ThumbSticks.Left.Y >= 0)
+            if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
+            {
+                if (state.ThumbSticks.Left.Y < 0)
                 {
-                    OnStandingUp();
-                    if (state.ThumbSticks.Left.Y > 0)
+                    OnUnderwaterControl(true);
+                    OnCrouch();
+                    if (state.Buttons.A == ButtonState.Pressed)
                     {
-                        OnUnderwaterControl(false);
-                        if (_upButtonReady)
-                        {
-                            _upButtonReady = false;
-                            OnEnterPortal();
-                        }
+                        OnJumpDown();
                     }
                 }
+            }
 
-                if (!_upButtonReady && state.ThumbSticks.Left.Y <= 0)
+            if (state.ThumbSticks.Left.Y >= 0)
+            {
+                OnStandingUp();
+                if (state.ThumbSticks.Left.Y > 0)
                 {
-                    _upButtonReady = true;
-                }
-
-                if (state.Buttons.A == ButtonState.Pressed && _aButtonReady && state.ThumbSticks.Left.Y != -_joysticksYAxisDeadZone)
-                {
-                    _aButtonReady = false;
-                    OnJump();
-                }
-                if (state.Buttons.A == ButtonState.Released && !_aButtonReady)
-                {
-                    _aButtonReady = true;
-                }
-
-                if (state.Buttons.Y == ButtonState.Pressed && _yButtonReady)
-                {
-                    _yButtonReady = false;
-                    OnIronBootsEquip();
-                }
-                if (state.Buttons.Y == ButtonState.Released && !_yButtonReady)
-                {
-                    _yButtonReady = true;
-                }
-
-                if (state.Buttons.X == ButtonState.Pressed && _xButtonReady)
-                {
-                    _xButtonReady = false;
-                    OnBasicAttack();
-                }
-                if (state.Buttons.X == ButtonState.Released && !_xButtonReady)
-                {
-                    _xButtonReady = true;
-                }
-
-                if (state.Buttons.B == ButtonState.Pressed)
-                {
-                    if (OnThrowAttack != null)
+                    OnUnderwaterControl(false);
+                    if (_upButtonReady)
                     {
-                        OnThrowAttack();
+                        _upButtonReady = false;
+                        OnEnterPortal();
                     }
                 }
+            }
 
-                if (state.Buttons.LeftShoulder == ButtonState.Pressed && _leftShoulderReady)
-                {
-                    _leftShoulderReady = false;
-                    OnThrowAttackChangeButtonPressed();
-                }
+            if (!_upButtonReady && state.ThumbSticks.Left.Y <= 0)
+            {
+                _upButtonReady = true;
+            }
 
-                if (state.Buttons.LeftShoulder == ButtonState.Released && !_leftShoulderReady)
-                {
-                    _leftShoulderReady = true;
-                }
+            if (state.Buttons.A == ButtonState.Pressed && _aButtonReady && state.ThumbSticks.Left.Y != -_joysticksYAxisDeadZone)
+            {
+                _aButtonReady = false;
+                OnJump();
+            }
+            if (state.Buttons.A == ButtonState.Released && !_aButtonReady)
+            {
+                _aButtonReady = true;
+            }
 
-                if (state.Buttons.RightShoulder == ButtonState.Pressed && _rightShoulderReady)
+            if (state.Buttons.Y == ButtonState.Pressed && _yButtonReady)
+            {
+                _yButtonReady = false;
+                OnIronBootsEquip();
+            }
+            if (state.Buttons.Y == ButtonState.Released && !_yButtonReady)
+            {
+                _yButtonReady = true;
+            }
+
+            if (state.Buttons.X == ButtonState.Pressed && _xButtonReady)
+            {
+                _xButtonReady = false;
+                OnBasicAttack();
+            }
+            if (state.Buttons.X == ButtonState.Released && !_xButtonReady)
+            {
+                _xButtonReady = true;
+            }
+
+            if (state.Buttons.B == ButtonState.Pressed)
+            {
+                if (OnThrowAttack != null)
                 {
-                    _rightShoulderReady = false;
-                    OnThrowAttackChangeButtonPressed();
+                    OnThrowAttack();
                 }
-                if (state.Buttons.RightShoulder == ButtonState.Released && !_rightShoulderReady)
-                {
-                    _rightShoulderReady = true;
-                }
-                if (state.Buttons.Start == ButtonState.Pressed && _startButtonReady)
-                {
-                    OnPause();
-                    _startButtonReady = false;
-                }
-                if (state.Buttons.Start == ButtonState.Released && !_startButtonReady)
-                {
-                    _startButtonReady = true;
-                }
+            }
+
+            if (state.Buttons.LeftShoulder == ButtonState.Pressed && _leftShoulderReady)
+            {
+                _leftShoulderReady = false;
+                OnThrowAttackChangeButtonPressed();
+            }
+
+            if (state.Buttons.LeftShoulder == ButtonState.Released && !_leftShoulderReady)
+            {
+                _leftShoulderReady = true;
+            }
+
+            if (state.Buttons.RightShoulder == ButtonState.Pressed && _rightShoulderReady)
+            {
+                _rightShoulderReady = false;
+                OnThrowAttackChangeButtonPressed();
+            }
+            if (state.Buttons.RightShoulder == ButtonState.Released && !_rightShoulderReady)
+            {
+                _rightShoulderReady = true;
+            }
+            if (state.Buttons.Start == ButtonState.Pressed && _startButtonReady)
+            {
+                OnPause();
+                _startButtonReady = false;
+            }
+            if (state.Buttons.Start == ButtonState.Released && !_startButtonReady)
+            {
+                _startButtonReady = true;
             }
         }
     }

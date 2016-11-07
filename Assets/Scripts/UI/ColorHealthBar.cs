@@ -18,7 +18,7 @@ public class ColorHealthBar : MonoBehaviour
 
 	private void Start()
 	{
-	    _health = Player.GetPlayer().GetComponent<Health>();
+	    _health = StaticObjects.GetPlayer().GetComponent<Health>();
         _healthBar = GameObject.Find("HealthBar").GetComponent<Transform>();
 	    _healthBarImage = GameObject.Find("HealthBar").GetComponent<Image>();
 	    _color = new Color(0, 1, 0, 1);
