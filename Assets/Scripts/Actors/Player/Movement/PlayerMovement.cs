@@ -178,7 +178,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDeath()
     {
-        Speed = 0;
-        JumpingSpeed = 0;
+        _anim.SetBool("IsDamaged", true);
+        _anim.SetBool("IsDead", true);
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 }
