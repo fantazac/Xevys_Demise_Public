@@ -3,16 +3,21 @@ using System.Collections;
 
 public class MoveFireball : MonoBehaviour
 {
-    private const float HORIZONTAL_SPEED = 100f;
-    private const float VERTICAL_SPEED = 100f;
+    private const float HORIZONTAL_SPEED = 10;
+    private const float VERTICAL_SPEED = 6;
+    private const float VULCAN_RIGHT_PIT_INDEX = 3;
 
+    private GameObject _vulcan;
+    private FlipBoss _vulcanFlipBoss;
     private Rigidbody2D _rigidbody;
     private Vector3 _direction;
 
     bool _criticalStatus = false;
 
-	private void Start ()
+    private void Start()
     {
+        _vulcan = GameObject.Find("Vulcan");
+        _vulcanFlipBoss = _vulcan.GetComponent<FlipBoss>();
         if (transform.localEulerAngles.z == 0)
         {
             _criticalStatus = true;
@@ -21,22 +26,29 @@ public class MoveFireball : MonoBehaviour
         _rigidbody.isKinematic = _criticalStatus;
         if (_criticalStatus)
         {
-            _direction = new Vector3(GameObject.Find("Vulcan").GetComponent<FlipBoss>().Orientation * HORIZONTAL_SPEED/100, 0, 0);
+            _direction = new Vector3(_vulcanFlipBoss.Orientation * HORIZONTAL_SPEED * Time.fixedDeltaTime, 0, 0);
+        }
+        else
+        {
+            _rigidbody.velocity = new Vector2(_vulcanFlipBoss.Orientation * HORIZONTAL_SPEED,
+                (GameObject.Find("Vulcan").GetComponent<VulcanAI>().CurrentIndex == VULCAN_RIGHT_PIT_INDEX ^
+                _vulcanFlipBoss.IsFacingLeft ? -VERTICAL_SPEED : VERTICAL_SPEED));
         }
     }
-	
-	private void FixedUpdate ()
+
+    private void FixedUpdate()
     {
         if (_criticalStatus)
         {
             transform.position += _direction;
         }
-        else
-        {
-            _rigidbody.AddForce(transform.right * GetComponent<FlipBoss>().Orientation * HORIZONTAL_SPEED);
-            _rigidbody.AddForce(transform.up * VERTICAL_SPEED);
-        }
-	}
+    }
 
-    private void 
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.gameObject.tag == "Wall")
+        {
+            Destroy(gameObject);
+        }
+    }
 }

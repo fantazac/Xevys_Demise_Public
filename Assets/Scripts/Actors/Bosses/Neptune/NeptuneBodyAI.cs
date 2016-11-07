@@ -3,7 +3,7 @@ using System.Collections;
 
 public class NeptuneBodyAI : NeptuneHeadAI {
 
-    NeptuneHeadAI _neptuneHead;
+    private NeptuneHeadAI _neptuneHead;
 
     private bool _isLastPart;
 
@@ -24,7 +24,7 @@ public class NeptuneBodyAI : NeptuneHeadAI {
 
     protected override void RotateAndFlip()
     {
-        _flipBoss.CheckSpecificPointForFlip(_targetedPoint);
+        _flipBoss.FlipTowardsSpecificPoint(_targetedPoint);
         transform.localScale = new Vector2(transform.localScale.x, -1 * transform.localScale.y);
         transform.rotation = Quaternion.identity;
         transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_targetedPoint.y - transform.position.y) / (_targetedPoint.x - transform.position.x) + (_isLastPart ? 90 : 0)));

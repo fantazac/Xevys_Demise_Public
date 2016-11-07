@@ -12,10 +12,10 @@ public class FlipBoss : MonoBehaviour {
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = StaticObjects.GetPlayer();
     }
 
-    public void CheckSpecificPointForFlip(Vector2 point)
+    public void FlipTowardsSpecificPoint(Vector2 point)
     {
         if (point.x > transform.position.x)
         {
@@ -33,7 +33,7 @@ public class FlipBoss : MonoBehaviour {
         }
     }
 
-    public void CheckPlayerPosition()
+    public void FlipTowardsPlayer()
     {
         if (player.transform.position.x > transform.position.x)
         {

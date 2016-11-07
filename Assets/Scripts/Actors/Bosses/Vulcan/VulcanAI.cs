@@ -37,14 +37,16 @@ public class VulcanAI : MonoBehaviour
     private float _halfHealth;
     private bool _hasShotFireball = false;
 
-    private void Start ()
+    public int CurrentIndex { get; private set; }
+
+    private void Start()
     {
         _halfHealth = GetComponent<Health>().HealthPoint / 2;
         _status = VulcanStatus.LOWERED;
         _initialHeight = transform.position.y;
         _bodyHeight = transform.localScale.y;
         _spawnPositions = new float[5];
-        for (int x  = -2; x < 3; x++)
+        for (int x = -2; x < 3; x++)
         {
             _spawnPositions[x + 2] = transform.position.x + x * transform.localScale.x;
         }
@@ -53,105 +55,123 @@ public class VulcanAI : MonoBehaviour
         _flipBoss = GetComponent<FlipBoss>();
         _animator = GetComponent<Animator>();
         _onBossDefeated = GetComponent<OnBossDefeated>();
-        _onBossDefeated.onDefeated += OnVulcanDefeated;
+        _onBossDefeated.OnDefeated += OnVulcanDefeated;
     }
 
     private void OnDestroy()
     {
-        _onBossDefeated.onDefeated -= OnVulcanDefeated;
+        _onBossDefeated.OnDefeated -= OnVulcanDefeated;
     }
 
     private void FixedUpdate()
     {
-        _flipBoss.CheckPlayerPosition();
         if (_status == VulcanStatus.LOWERED)
         {
-            if (_timeLeft > 0)
-            {
-                _timeLeft -= Time.fixedDeltaTime;
-            }
-            else
-            {
-                _criticalStatus = true;// (_health.HealthPoint <= _halfHealth);
-                if (_criticalStatus)
-                {
-                    if (StaticObjects.GetPlayer().transform.position.x < _spawnPositions[0] / 2)
-                    {
-                        transform.position = new Vector3(_spawnPositions[0], transform.position.y, transform.position.z);
-                    }
-                    else if (StaticObjects.GetPlayer().transform.position.x > _spawnPositions[4] / 2)
-                    {
-                        transform.position = new Vector3(_spawnPositions[4], transform.position.y, transform.position.z);
-                    }
-                    else
-                    {
-                        transform.position = new Vector3(_spawnPositions[2], transform.position.y, transform.position.z);
-                    }
-                }
-                else
-                {
-                    int randomPosition = _rng.Next() % 2 * 2 + 1;
-                    transform.position = new Vector3(_spawnPositions[randomPosition], transform.position.y, transform.position.z);
-                }
-                //_animator.SetInteger("State", 2);
-                _rigidbody.isKinematic = false;
-                _rigidbody.AddForce(transform.up * VERTICAL_SPEED);
-                _timeLeft = STANDING_TIME;
-                _status = VulcanStatus.RAISING;
-            }
+            UpdateWhenLowered();
         }
         else if (_status == VulcanStatus.RAISING)
         {
-            if (transform.position.y >= _initialHeight + _bodyHeight)
-            {
-                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
-                _rigidbody.isKinematic = true;
-                _status = VulcanStatus.STANDING;
-            }
+            UpdateWhenRaising();
         }
         else if (_status == VulcanStatus.STANDING)
         {
-            if (_timeLeft > 0)
-            {
-                _timeLeft -= Time.fixedDeltaTime;
-                if (_timeLeft < 2 && !_hasShotFireball)
-                {
-                    var fireball = Instantiate(_fireball, new Vector3(transform.position.x + _flipBoss.Orientation * 4.5f , transform.position.y + 1.7f + (_criticalStatus ? 0 : 1.8f)), Quaternion.identity);
-                    if (!_criticalStatus)
-                    {
-                        ((GameObject)fireball).transform.Rotate(0, 0, _flipBoss.Orientation * 60);
-                    }
-                    ((GameObject)fireball).SetActive(true);
-                    _hasShotFireball = true;
-                }
-
-            }
-            else
-            {
-                _hasShotFireball = false;
-                _rigidbody.isKinematic = false;
-                _status = VulcanStatus.RETREATING;
-            }
+            UpdateWhenStanding();
         }
         else if (_status == VulcanStatus.RETREATING)
         {
-            //When Vulcan has only half his vitality left, he lowers towards the player.
-            if (transform.position.y > _initialHeight)
+            UpdateWhenRetreating();
+        }
+    }
+
+    private void UpdateWhenLowered()
+    {
+        if (_timeLeft > 0)
+        {
+            _timeLeft -= Time.fixedDeltaTime;
+        }
+        else
+        {
+            _criticalStatus = (_health.HealthPoint <= _halfHealth);
+            if (_criticalStatus)
             {
-                if (_health.HealthPoint <= _halfHealth)
+                if (StaticObjects.GetPlayer().transform.position.x < _spawnPositions[0] / 2)
                 {
-                    _flipBoss.CheckPlayerPosition();
-                    _rigidbody.AddForce(transform.right * _flipBoss.Orientation * HORIZONTAL_SPEED);
+                    transform.position = new Vector3(_spawnPositions[0], transform.position.y, transform.position.z);
+                }
+                else if (StaticObjects.GetPlayer().transform.position.x > _spawnPositions[4] / 2)
+                {
+                    transform.position = new Vector3(_spawnPositions[4], transform.position.y, transform.position.z);
+                }
+                else
+                {
+                    transform.position = new Vector3(_spawnPositions[2], transform.position.y, transform.position.z);
                 }
             }
             else
             {
-                //_health.HealthPoint -= 100;
-                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
-                _timeLeft = LOWERED_TIME;
-                _rigidbody.isKinematic = true;
-                _status = VulcanStatus.LOWERED;
+                CurrentIndex = _rng.Next() % 2 * 2 + 1;
+                transform.position = new Vector3(_spawnPositions[CurrentIndex], transform.position.y, transform.position.z);
             }
+            _flipBoss.FlipTowardsPlayer();
+            //_animator.SetInteger("State", 2);
+            _rigidbody.isKinematic = false;
+            _rigidbody.AddForce(transform.up * VERTICAL_SPEED);
+            _timeLeft = STANDING_TIME;
+            _status = VulcanStatus.RAISING;
+        }
+    }
+
+    private void UpdateWhenRaising()
+    {
+        if (transform.position.y >= _initialHeight + _bodyHeight)
+        {
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
+            _rigidbody.isKinematic = true;
+            _status = VulcanStatus.STANDING;
+        }
+    }
+
+    private void UpdateWhenStanding()
+    {
+        if (_timeLeft > 0)
+        {
+            _timeLeft -= Time.fixedDeltaTime;
+            if (_timeLeft < 2 && !_hasShotFireball)
+            {
+                var fireball = Instantiate(_fireball, new Vector3(transform.position.x + _flipBoss.Orientation * 4.5f, transform.position.y + 1.7f + (_criticalStatus ? 0 : 1.8f)), Quaternion.identity);
+                if (!_criticalStatus)
+                {
+                    ((GameObject)fireball).transform.Rotate(0, 0, 60);
+                }
+                ((GameObject)fireball).SetActive(true);
+                _hasShotFireball = true;
+            }
+        }
+        else
+        {
+            _hasShotFireball = false;
+            _rigidbody.isKinematic = false;
+            _status = VulcanStatus.RETREATING;
+        }
+    }
+
+    private void UpdateWhenRetreating()
+    {
+        //When Vulcan has only half his vitality left, he lowers towards the player.
+        if (transform.position.y > _initialHeight)
+        {
+            if (_health.HealthPoint <= _halfHealth)
+            {
+                _flipBoss.FlipTowardsPlayer();
+                _rigidbody.AddForce(transform.right * _flipBoss.Orientation * HORIZONTAL_SPEED);
+            }
+        }
+        else
+        {
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
+            _timeLeft = LOWERED_TIME;
+            _rigidbody.isKinematic = true;
+            _status = VulcanStatus.LOWERED;
         }
     }
 
