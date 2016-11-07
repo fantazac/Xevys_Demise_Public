@@ -3,9 +3,12 @@ using System.Collections;
 
 public class PauseMenuAnimationManager : MonoBehaviour
 {
+
+    public delegate void OnFadeTriggerHandler(string fade);
+    public event OnFadeTriggerHandler OnFade;
+
     private PauseMenuInputs _pauseMenuInputs;
     private Animator _slideAnimator;
-    private Animator _fadeAnimator;
     private bool _active;
 
     private void Start()
@@ -13,7 +16,6 @@ public class PauseMenuAnimationManager : MonoBehaviour
         _pauseMenuInputs = GetComponent<PauseMenuInputs>();
         _pauseMenuInputs.TriggerAnimations += AnimatePauseMenu;
         _slideAnimator = GetComponent<Animator>();
-        _fadeAnimator = transform.parent.GetComponentInChildren<Animator>();
         _active = false;
     }
 
@@ -51,11 +53,11 @@ public class PauseMenuAnimationManager : MonoBehaviour
 
     private void FadeIn()
     {
-        _fadeAnimator.SetTrigger("FadeIn");
+        OnFade("FadeIn");
     }
 
     private void FadeOut()
     {
-        _fadeAnimator.SetTrigger("FadeOut");
+        OnFade("FadeOut");
     }
 }
