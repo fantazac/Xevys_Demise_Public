@@ -108,15 +108,15 @@ public class ScarabMovementWithPoints : ScarabMovement
     {
         if (_initialDirection == ScarabDirection.Down)
         {
-            transform.Rotate(Vector3.forward * 90);
+            transform.Rotate(Vector3.forward * MAX_ROTATION);
         }
         else if (_initialDirection == ScarabDirection.Up)
         {
-            transform.Rotate(Vector3.forward * -90);
+            transform.Rotate(Vector3.forward * -MAX_ROTATION);
         }
         else if (_initialDirection == ScarabDirection.Right)
         {
-            transform.Rotate(Vector3.forward * 180);
+            transform.Rotate(Vector3.forward * MAX_ROTATION * 2);
         }
     }
 

@@ -7,5 +7,4 @@ public enum ScarabDirection
     Left,
     Down,
     Right,
-    Empty,
 }
