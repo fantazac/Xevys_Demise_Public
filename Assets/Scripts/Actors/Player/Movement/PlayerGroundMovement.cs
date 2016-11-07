@@ -40,7 +40,7 @@ public class PlayerGroundMovement : PlayerMovement
         {
             return;
         }
-        if (IsCrouching)
+        if (IsCrouching && !_anim.GetBool("IsAttacking"))
         {
             IsCrouching = false;
             _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = true;
