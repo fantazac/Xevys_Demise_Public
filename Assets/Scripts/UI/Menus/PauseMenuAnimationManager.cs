@@ -19,6 +19,16 @@ public class PauseMenuAnimationManager : MonoBehaviour
         _active = false;
     }
 
+    private void SlideOutAnimationEnded()
+    {
+        _pauseMenuInputs.CanSlide = true;
+    }
+
+    private void SlideInAnimationEnded()
+    {
+        _pauseMenuInputs.CanSlide = true;
+    }
+
     private void AnimatePauseMenu()
     {
         if (!_active)
@@ -37,6 +47,7 @@ public class PauseMenuAnimationManager : MonoBehaviour
     {
         _slideAnimator.SetTrigger("SlideIn");
         _active = true;
+        _pauseMenuInputs.CanSlide = false;
     }
 
     private void EnableIdleAnimation()
@@ -49,6 +60,7 @@ public class PauseMenuAnimationManager : MonoBehaviour
     {
         _slideAnimator.SetTrigger("SlideOut");
         _active = false;
+        _pauseMenuInputs.CanSlide = false;
     }
 
     private void FadeIn()
