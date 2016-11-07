@@ -89,6 +89,8 @@ public class InputManager : MonoBehaviour
         if ((!_keyboardInputs.enabled && _gamepadInputs.enabled && PlayerIsUsingKeyboard()) ||
             (!_gamepadInputs.enabled && _keyboardInputs.enabled && PlayerIsUsingGamepad()))
         {
+            OnStandingUp();
+            OnStop();       
             _keyboardInputs.enabled = !_keyboardInputs.enabled;
             _gamepadInputs.enabled = !_gamepadInputs.enabled;
         }
