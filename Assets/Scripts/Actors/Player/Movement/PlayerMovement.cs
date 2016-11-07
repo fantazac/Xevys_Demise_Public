@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        _anim = GameObject.Find("CharacterSprite").GetComponent<Animator>();
+        _anim = StaticObjects.GetPlayer().GetComponentInChildren<Animator>();
         _playerSpriteRenderer = GameObject.Find("CharacterSprite").GetComponent<SpriteRenderer>();
         _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
         _playerBoxCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>();
@@ -130,6 +130,7 @@ public class PlayerMovement : MonoBehaviour
         return _touchesGroundHitbox.GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform;
     }
 
+    // À modifier absolument
     private void Update()
     {
         _anim.SetFloat("Speed", Mathf.Abs(_rigidbody.velocity.x));
