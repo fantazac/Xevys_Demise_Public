@@ -30,6 +30,7 @@ public class PlayerGroundMovement : PlayerMovement
             IsCrouching = true;
             _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = false;
             _playerBoxColliderFeet.GetComponent<FollowPlayerPosition>().enabled = false;
+            _basicAttackBox.size = new Vector2(_basicAttackBox.size.x, ATTACK_BOX_COLLIDER_Y_WHEN_STAND * CROUCHING_OFFSET);
             _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND * CROUCHING_OFFSET);                     
         }   
     }
@@ -40,11 +41,12 @@ public class PlayerGroundMovement : PlayerMovement
         {
             return;
         }
-        if (IsCrouching)
+        if (IsCrouching && !_anim.GetBool("IsAttacking"))
         {
             IsCrouching = false;
             _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = true;
             _playerBoxColliderFeet.GetComponent<FollowPlayerPosition>().enabled = true;
+            _basicAttackBox.size = new Vector2(_basicAttackBox.size.x, ATTACK_BOX_COLLIDER_Y_WHEN_STAND);
             _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND);
         }       
     }
