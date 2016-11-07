@@ -8,8 +8,6 @@ public class PlayerMovement : MonoBehaviour
     protected BoxCollider2D _basicAttackBox;
     protected BoxCollider2D _playerBoxCollider;
     protected BoxCollider2D _playerBoxColliderFeet;
-    protected BoxCollider2D _playerBoxColliderTorso;
-    protected CircleCollider2D _playerCircleColliderTorso;
     protected SpriteRenderer _playerSpriteRenderer;
     protected InventoryManager _inventoryManager;
     protected Animator _anim;
@@ -33,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     protected const float FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.45f;
     protected const float TORSO_CIRCLE_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = 0.21f;
     protected const float TORSO_BOX_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.4f;
+    protected const float ATTACK_BOX_COLLIDER_Y_WHEN_STAND = 3.415288f;
     protected const float CROUCHING_OFFSET = 0.6f;
     protected const float CROUCHING_SPRITE_POSITION_OFFSET = 0.35f;
 
@@ -57,8 +56,6 @@ public class PlayerMovement : MonoBehaviour
         _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
         _playerBoxCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>();
         _playerBoxColliderFeet = GameObject.Find("CharacterTouchesGround").GetComponent<BoxCollider2D>();
-        _playerBoxColliderTorso = GameObject.Find("CharacterWaterHitbox").GetComponent<BoxCollider2D>();
-        _playerCircleColliderTorso = GameObject.Find("CharacterFloatingHitbox").GetComponent<CircleCollider2D>();
         _spriteTransform = _anim.GetComponent<Transform>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _inputManager = GetComponentInChildren<InputManager>();
