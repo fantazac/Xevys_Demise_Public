@@ -4,6 +4,9 @@ using System.Collections;
 
 public class PlayerGroundMovement : PlayerMovement
 {
+    private const float TIME_TO_WAIT_BEFORE_CROUCH_ALLOWED = 0.3f;
+
+    private bool _stoppedEnoughToCrouch = false;
 
     protected override void OnMove(Vector3 vector, bool goesRight)
     {
@@ -11,12 +14,24 @@ public class PlayerGroundMovement : PlayerMovement
         {
             return;
         }
-
+ 
         if (!IsKnockedBack && !IsCrouching)
         {
+            _stoppedEnoughToCrouch = false;
             _rigidbody.velocity = new Vector2(vector.x * _speed, _rigidbody.velocity.y);
             Flip(goesRight);
         }
+    }
+
+    private IEnumerator CountTimeSinceStoppedCoroutine()
+    {
+        float counter = 0;
+        while (counter < TIME_TO_WAIT_BEFORE_CROUCH_ALLOWED)
+        {
+            counter += Time.deltaTime;
+            yield return null;
+        }
+        _stoppedEnoughToCrouch = true;
     }
 
     protected override void OnCrouch()
@@ -25,13 +40,18 @@ public class PlayerGroundMovement : PlayerMovement
         {
             return;
         }
-        if (!IsCrouching && _rigidbody.velocity == Vector2.zero)
+        if (_rigidbody.velocity == Vector2.zero)
         {
-            IsCrouching = true;
-            _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = false;
-            _playerBoxColliderFeet.GetComponent<FollowPlayerPosition>().enabled = false;
-            _basicAttackBox.size = new Vector2(_basicAttackBox.size.x, ATTACK_BOX_COLLIDER_Y_WHEN_STAND * CROUCHING_OFFSET);
-            _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND * CROUCHING_OFFSET);                     
+            _anim.SetBool("IsCrouching", true);
+
+            if (_stoppedEnoughToCrouch)
+            {
+                IsCrouching = true;
+                _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = false;
+                _playerBoxColliderFeet.GetComponent<FollowPlayerPosition>().enabled = false;
+                _basicAttackBox.size = new Vector2(_basicAttackBox.size.x, ATTACK_BOX_COLLIDER_Y_WHEN_STAND * CROUCHING_OFFSET);
+                _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND * CROUCHING_OFFSET);
+            }         
         }   
     }
 
@@ -41,7 +61,7 @@ public class PlayerGroundMovement : PlayerMovement
         {
             return;
         }
-        if (IsCrouching && !_anim.GetBool("IsAttacking"))
+        if (!_anim.GetBool("IsAttacking"))
         {
             IsCrouching = false;
             _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = true;
@@ -92,8 +112,13 @@ public class PlayerGroundMovement : PlayerMovement
             return;
         }
 
-        if (!_isKnockedBack)
+        if (!_stoppedEnoughToCrouch)
         {
+            StartCoroutine("CountTimeSinceStoppedCoroutine");
+        }
+
+        if (!_isKnockedBack)
+        {           
             if (_rigidbody.velocity.x < 1 && GetComponent<FlipPlayer>().IsFacingRight || _rigidbody.velocity.x > -1 && !GetComponent<FlipPlayer>().IsFacingRight)
             {
                 _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);

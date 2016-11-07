@@ -46,14 +46,14 @@ public class Health : MonoBehaviour
         if (!IsDead())
         {
             OnDamageTaken(-hitPoints);
-            OnHealthChanged(-hitPoints);
+            OnHealthChanged(-hitPoints);        
             if (IsDead())
             {
                 OnDeath();
             }
-            else
-            {
-                _knockback.KnockbackPlayer(positionAttacker);
+            else if (gameObject.tag == "Player")
+            {               
+                _knockback.KnockbackPlayer(positionAttacker);              
             }
         }
     }

@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     protected Transform _spriteTransform;
     protected ShowItems _showItems;
     protected GameObject _touchesGroundHitbox;
+    protected Health _playerHealth;
 
     public delegate void OnFallingHandler();
     public event OnFallingHandler OnFalling;
@@ -62,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
         _basicAttackBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
         _showItems = GameObject.Find("ItemCanvas").GetComponent<ShowItems>();
         _touchesGroundHitbox = GameObject.Find("CharacterTouchesGround");
+        _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
 
         _inputManager.OnMove += OnMove;
         _inputManager.OnJump += OnJump;
@@ -71,6 +73,7 @@ public class PlayerMovement : MonoBehaviour
         _inputManager.OnStop += OnStop;
         _inputManager.OnCrouch += OnCrouch;
         _inputManager.OnStandingUp += OnStandingUp;
+        _playerHealth.OnDeath += OnDeath;
 
         _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
     }
@@ -171,5 +174,11 @@ public class PlayerMovement : MonoBehaviour
     {
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, verticalVelocity);
+    }
+
+    private void OnDeath()
+    {
+        Speed = 0;
+        JumpingSpeed = 0;
     }
 }
