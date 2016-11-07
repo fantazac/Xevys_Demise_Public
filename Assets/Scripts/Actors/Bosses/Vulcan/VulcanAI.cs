@@ -72,7 +72,7 @@ public class VulcanAI : MonoBehaviour
             }
             else
             {
-                _criticalStatus = (_health.HealthPoint <= _halfHealth);
+                _criticalStatus = true;// (_health.HealthPoint <= _halfHealth);
                 if (_criticalStatus)
                 {
                     if (Player.GetPlayer().transform.position.x < _spawnPositions[0] / 2)
@@ -116,7 +116,7 @@ public class VulcanAI : MonoBehaviour
                 _timeLeft -= Time.fixedDeltaTime;
                 if (_timeLeft < 2 && !_hasShotFireball)
                 {
-                    var fireball = Instantiate(_fireball, new Vector3(transform.position.x + _flipBoss.Orientation * 4 , transform.position.y + 5), Quaternion.identity);
+                    var fireball = Instantiate(_fireball, new Vector3(transform.position.x + _flipBoss.Orientation * 4.5f , transform.position.y + 1.7f + (_criticalStatus ? 0 : 1.8f)), Quaternion.identity);
                     if (!_criticalStatus)
                     {
                         ((GameObject)fireball).transform.Rotate(0, 0, _flipBoss.Orientation * 60);
