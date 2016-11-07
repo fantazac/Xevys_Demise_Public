@@ -56,7 +56,7 @@ public class SkeltalBehaviour : MonoBehaviour
         StartCoroutine("SkeltalAttack");
     }
 
-    protected void StartSkeltalMovement()
+    protected virtual void StartSkeltalMovement()
     {
         StartCoroutine("SkeltalMovement");
     }

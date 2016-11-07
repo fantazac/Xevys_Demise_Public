@@ -4,13 +4,13 @@ using System.Collections;
 public class MoveJumpySkeltal : SkeltalBehaviour
 {
     [SerializeField]
-    protected float _maximumHeightFromGround = 2.5f;
+    private float _maximumHeightFromGround = 2.5f;
 
     [SerializeField]
-    protected float _timeInAir = 1.5f;
+    private float _timeInAir = 1.5f;
 
     private float _timeInAirCount = 0;
-    private float _newHeight = 0;
+    private float _newYPosition = 0;
 
     private float _initialVerticalSpeed = 0;
     private float _verticalAcceleration = 0;
@@ -37,10 +37,10 @@ public class MoveJumpySkeltal : SkeltalBehaviour
         while (_timeInAirCount < _timeInAir)
         {
             //formule de physique pour calculer la hauteur à laquelle est rendu l'objet par rapport au temps, l'accélération verticale et la vitesse initiale
-            _newHeight = _initialPosition.y + (_initialVerticalSpeed * _timeInAirCount) +
+            _newYPosition = _initialPosition.y + (_initialVerticalSpeed * _timeInAirCount) +
                 (HALF_VALUE * _verticalAcceleration * _timeInAirCount * _timeInAirCount);
 
-            transform.position = new Vector3(transform.position.x, _newHeight, transform.position.z);
+            transform.position = new Vector3(transform.position.x, _newYPosition, transform.position.z);
             _timeInAirCount += Time.deltaTime;
 
             yield return null;
