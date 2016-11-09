@@ -30,6 +30,8 @@ public class DestroyProjectile : MonoBehaviour
         if (_touchesGround)
         {
             Destroy(gameObject, _delayAfterWallCollision);
+            OnProjectileDestroyed(gameObject);
+            _touchesGround = false;
         }
         else if (_destroyNow)
         {

@@ -4,20 +4,30 @@ using System.Collections;
 public class XevyPlayerInteraction : MonoBehaviour
 {
     FlipBoss _flipBoss;
-    GameObject _player;
+
+    public bool IsFocusedOnPlayer { get; set;}
 
     private void Start()
     {
-	
+        IsFocusedOnPlayer = true;
+        _flipBoss = GetComponent<FlipBoss>();
 	}
+
+    private void Update()
+    {
+        if (IsFocusedOnPlayer)
+        {
+            _flipBoss.FlipTowardsPlayer();
+        }
+    }
 
     public bool CheckPlayerProximity()
     {
-        return false;
+        return (Vector2.Distance(StaticObjects.GetPlayer().transform.position, transform.position) < 3);
     }
 
     public bool CheckAlignmentWithPlayer()
     {
-        return false;
+        return (Mathf.Abs(transform.position.y - StaticObjects.GetPlayer().transform.position.y) < 2.5f);
     }
 }

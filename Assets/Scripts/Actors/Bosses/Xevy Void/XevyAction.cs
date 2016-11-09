@@ -24,7 +24,7 @@ public class XevyAction: MonoBehaviour
     public void Block()
     {
         GetComponent<SpriteRenderer>().color = Color.red;
-       // _clawHitbox.enabled = false;
+        //_clawHitbox.enabled = false;
         //_xevyHitbox.enabled = false;
     }
 
@@ -58,26 +58,29 @@ public class XevyAction: MonoBehaviour
 
     public void MeleeAttack()
     {
-
+        EarthAttack();
+        ClawAttack();
+        //_clawHitbox.enabled = true;
     }
 
     private void FireAttack()
     {
-
+        //(GameObject)Instantiate(_fireBall, initialPosition, transform.rotation);
     }
 
     private void AirAttack()
     {
-
+        //(GameObject)Instantiate(_airSpike, initialPosition, transform.rotation);
     }
 
     private void EarthAttack()
     {
-
+        //(GameObject)Instantiate(_earthThorns, initialPosition, transform.rotation);
     }
 
     private void ClawAttack()
     {
         _clawHitbox.enabled = true;
+        //Flee
     }
 }
