@@ -63,10 +63,16 @@ public class NeptuneHeadAI : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _onBossDefeated = GetComponent<OnBossDefeated>();
-        _onBossDefeated.onDefeated += OnNeptuneDefeated;
+        _onBossDefeated.OnDefeated += OnNeptuneDefeated;
         InitializePoints();
         RotateAndFlip();
     }
+
+    private void OnDestroy()
+    {
+        _onBossDefeated.OnDefeated -= OnNeptuneDefeated;
+    }
+
 
     protected void InitializePoints()
     {
@@ -79,7 +85,7 @@ public class NeptuneHeadAI : MonoBehaviour
         _southWestLimit = new Vector2(_origin.x - _horizontalLimit, _origin.y - _verticalLimit);
         _northWestLimit = new Vector2(_origin.x - _horizontalLimit, _origin.y + _verticalLimit);
         _targetedPoint = (_flipBoss.IsFacingLeft ? _southWestLimit : _southEastLimit);
-        _flipBoss.CheckSpecificPointForFlip(_targetedPoint);
+        _flipBoss.FlipTowardsSpecificPoint(_targetedPoint);
     }
 
     private void Update()
@@ -128,6 +134,7 @@ public class NeptuneHeadAI : MonoBehaviour
                 }
                 var flame = Instantiate(_flame, transform.position + new Vector3(xPosition, yPosition), Quaternion.identity);
                 ((GameObject)flame).transform.Rotate(0, 0, x * 45);
+                //Improvement for Flame start() should come here and be in conditions above.
                 ((GameObject)flame).SetActive(true);
             }
         }
@@ -170,7 +177,7 @@ public class NeptuneHeadAI : MonoBehaviour
 
     protected virtual void RotateAndFlip()
     {
-        _flipBoss.CheckSpecificPointForFlip(_targetedPoint);
+        _flipBoss.FlipTowardsSpecificPoint(_targetedPoint);
         transform.localScale = new Vector2(transform.localScale.x, -1 * transform.localScale.y);
         transform.rotation = Quaternion.identity;
         transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_targetedPoint.y - transform.position.y) / (_targetedPoint.x - transform.position.x)) + (_flipBoss.IsFacingLeft ? 270 : 90));

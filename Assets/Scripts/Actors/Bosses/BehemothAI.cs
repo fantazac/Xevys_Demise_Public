@@ -42,12 +42,12 @@ public class BehemothAI : MonoBehaviour
         _flipBoss = GetComponent<FlipBoss>();
         _animator = GetComponent<Animator>();
         _onBossDefeated = GetComponent<OnBossDefeated>();
-        _onBossDefeated.onDefeated += OnBehemothDefeated;
+        _onBossDefeated.OnDefeated += OnBehemothDefeated;
     }
 
     private void OnDestroy()
     {
-        _onBossDefeated.onDefeated -= OnBehemothDefeated;
+        _onBossDefeated.OnDefeated -= OnBehemothDefeated;
     }
 
     private void FixedUpdate()
@@ -55,29 +55,29 @@ public class BehemothAI : MonoBehaviour
         //Wait allows Behemoth to face the player and prepare to charge.
         if (_status == BehemothStatus.WAIT)
         {
-            WaitUpdate();
+            UpdateWhenWaiting();
         }
         //Charge status makes Behemoth aims for the wall for the amount of time in seconds decided above.
         //Notice that Behemoth feigning really close to the wall makes him directly crash into it instead.
         else if (_status == BehemothStatus.CHARGE)
         {
-            ChargeUpdate();
+            UpdateWhenCharging();
         }
         //Stuck is a status of one second during which Behemoth backs off and then goes into the Stun status.
         else if (_status == BehemothStatus.STRUCK)
         {
-            StruckUpdate();
+            UpdateWhenStruckWall();
         }
         //Stun status allows the player to attack Behemoth for the amount of seconds specified in STUN_TIME.
         else if (_status == BehemothStatus.STUN)
         {
-            StunUpdate();
+            UpdateWhenStunned();
         }
     }
 
-    private void WaitUpdate()
+    private void UpdateWhenWaiting()
     {
-        _flipBoss.CheckPlayerPosition();
+        _flipBoss.FlipTowardsPlayer();
         if (_timeLeft > 0)
         {
             _timeLeft -= Time.fixedDeltaTime;
@@ -98,7 +98,7 @@ public class BehemothAI : MonoBehaviour
         }
     }
 
-    private void ChargeUpdate()
+    private void UpdateWhenCharging()
     {
         _timeLeft -= Time.fixedDeltaTime;
         if (_timeLeft > 0)
@@ -119,7 +119,7 @@ public class BehemothAI : MonoBehaviour
         }
     }
 
-    private void StruckUpdate()
+    private void UpdateWhenStruckWall()
     {
         if (_timeLeft > 0)
         {
@@ -135,7 +135,7 @@ public class BehemothAI : MonoBehaviour
         }
     }
 
-    private void StunUpdate()
+    private void UpdateWhenStunned()
     {
         _timeLeft -= Time.fixedDeltaTime;
         if (_timeLeft <= 0)

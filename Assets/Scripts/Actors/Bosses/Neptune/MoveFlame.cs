@@ -52,7 +52,6 @@ public class MoveFlame : MonoBehaviour
     {
         if (collider.gameObject.tag == "Wall")
         {
-            GetComponent<SpriteRenderer>().color = Color.black;
             Destroy(gameObject);
         }
     }
