@@ -12,6 +12,9 @@ public class DestroyProjectile : MonoBehaviour
     public bool TouchesGround { get { return _touchesGround; } set { _touchesGround = value; } }
     public bool DestroyNow { set { _destroyNow = value; } }
 
+    public delegate void OnProjectileDestroyedHandler(GameObject projectile);
+    public event OnProjectileDestroyedHandler OnProjectileDestroyed;
+
     void Start()
     {
         if (gameObject.tag != "Knife")
@@ -30,6 +33,7 @@ public class DestroyProjectile : MonoBehaviour
         }
         else if (_destroyNow)
         {
+            OnProjectileDestroyed(gameObject);
             Destroy(gameObject);
         }
     }

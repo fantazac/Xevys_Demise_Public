@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class XevyPlayerIntaraction : MonoBehaviour
+public class XevyPlayerInteraction : MonoBehaviour
 {
     FlipBoss _flipBoss;
     GameObject _player;
@@ -11,12 +11,12 @@ public class XevyPlayerIntaraction : MonoBehaviour
 	
 	}
 
-    private bool CheckPlayerProximity()
+    public bool CheckPlayerProximity()
     {
         return false;
     }
 
-    private bool CheckAlignmentWithPlayer()
+    public bool CheckAlignmentWithPlayer()
     {
         return false;
     }
