@@ -2,6 +2,7 @@
 using System.Collections;
 using Mono.Data.Sqlite;
 using System.Data;
+using System.IO;
 using System;
 
 public class Database : MonoBehaviour
@@ -29,7 +30,7 @@ public class Database : MonoBehaviour
 
     private void Start()
     {
-        string conn = "URI=file:" + Application.dataPath + "/Database/Database.db";
+        string conn = "URI=file:" + Application.persistentDataPath + "/Database.db";
         _dbconn = (IDbConnection)new SqliteConnection(conn);
         _dbcmd = _dbconn.CreateCommand();
 
