@@ -22,10 +22,13 @@ public class Health : MonoBehaviour
     public delegate void OnDeathHandler();
     public event OnDeathHandler OnDeath;
 
+    private KnockbackOnDamageTaken _knockback;
+
     private void Start()
     {
         MaxHealth = _health;
         OnHealthChanged += ChangeHealth;
+        _knockback = StaticObjects.GetPlayer().GetComponent<KnockbackOnDamageTaken>();
     }
 
     public void Heal(int healPoints)
@@ -38,14 +41,20 @@ public class Health : MonoBehaviour
         OnHealthChanged(healPoints);
     }
 
-    public void Hit(int hitPoints)
+    public void Hit(int hitPoints, Vector2 positionAttacker)
     {
-        OnDamageTaken(-hitPoints);
-        OnHealthChanged(-hitPoints);
-        //enlever le "player" quand cest codé, ceci prévient qu'il se fasse frapper à chaque frame
-        if(IsDead() && gameObject.tag != "Player")
+        if (!IsDead())
         {
-            OnDeath();
+            OnDamageTaken(-hitPoints);
+            OnHealthChanged(-hitPoints);        
+            if (IsDead())
+            {
+                OnDeath();
+            }
+            else if (gameObject.tag == "Player")
+            {               
+                _knockback.KnockbackPlayer(positionAttacker);              
+            }
         }
     }
 
