@@ -1,29 +1,42 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 
 public class MoveWalkerSkeltal : SkeltalBehaviour
 {
-    protected const float WALKER_SPEED = 0.1f;
-    private Animator _animator;
+    [SerializeField]
+    protected float _leftDistance = 0;
 
-    protected override void Start()
+    [SerializeField]
+    protected float _rightDistance = 0;
+
+    [SerializeField]
+    private float _unitsPerSecond = 2f;
+
+    protected override IEnumerator SkeltalMovement()
     {
-        base.Start();
-        _animator = GetComponent<Animator>();
+        while (!IsOnAnEdge())
+        {
+            transform.position = new Vector3(transform.position.x +
+                (_flipSkeltal.IsFacingRight ? _unitsPerSecond * Time.deltaTime : -_unitsPerSecond * Time.deltaTime),
+                transform.position.y, transform.position.z);
+
+            yield return null;
+        }
+        SkeltalMovementFinished();
     }
 
-    protected override bool UpdateSkeltal()
+    private bool IsOnAnEdge()
     {
-        transform.position = new Vector2(transform.position.x + (_isFacingRight ? WALKER_SPEED : -WALKER_SPEED), transform.position.y);
+        return IsOnRightEdge() || IsOnLeftEdge();
+    }
 
-        if ((_isFacingRight && transform.position.x >= _initialPosition.x + _rightLimit) || (!_isFacingRight && transform.position.x <= _initialPosition.x - _leftLimit))
-        {
-            _animator.SetBool("IsMoving", false);
-            return true;
-        }
+    private bool IsOnRightEdge()
+    {
+        return _flipSkeltal.IsFacingRight && transform.position.x >= _initialPosition.x + _rightDistance;
+    }
 
-        _animator.SetBool("IsMoving", true);
-        return false;
+    private bool IsOnLeftEdge()
+    {
+        return !_flipSkeltal.IsFacingRight && transform.position.x <= _initialPosition.x - _leftDistance;
     }
 }
