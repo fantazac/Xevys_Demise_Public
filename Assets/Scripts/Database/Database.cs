@@ -9,9 +9,23 @@ public class Database : MonoBehaviour
     private IDbConnection _dbconn;
     private IDbCommand _dbcmd;
 
-    private InventoryManager _inventoryManager;
-
+    //TEMP
     private int _accountID = 0;
+
+    private int _nbScarabsKilled = 0;
+    private int _nbBatsKilled = 0;
+    private int _nbSkeltalsKilled = 0;
+
+    private int _knifeEnabled = 0;
+    private int _axeEnabled = 0;
+    private int _featherEnabled = 0;
+    private int _bootsEnabled = 0;
+    private int _bubbleEnabled = 0;
+    private int _armorEnabled = 0;
+    private int _earthArtefactEnabled = 0;
+    private int _airArtefactEnabled = 0;
+    private int _waterArtefactEnabled = 0;
+    private int _fireArtefactEnabled = 0;
 
     private void Start()
     {
@@ -19,17 +33,19 @@ public class Database : MonoBehaviour
         _dbconn = (IDbConnection)new SqliteConnection(conn);
         _dbcmd = _dbconn.CreateCommand();
 
-        _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
-        _inventoryManager.OnEnableKnife += EnableKnife;
-        _inventoryManager.OnEnableAxe += EnableAxe;
-        _inventoryManager.OnEnableFeather += EnableFeather;
-        _inventoryManager.OnEnableIronBoots += EnableBoots;
-        _inventoryManager.OnEnableBubble += EnableBubble;
-        _inventoryManager.OnEnableFireProofArmor += EnableArmor;
-        _inventoryManager.OnEnableEarthArtefact += EnableEarthArtefact;
-        _inventoryManager.OnEnableAirArtefact += EnableAirArtefact;
-        _inventoryManager.OnEnableWaterArtefact += EnableWaterArtefact;
-        _inventoryManager.OnEnableFireArtefact += EnableFireArtefact;
+        InventoryManager inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
+        inventoryManager.OnEnableKnife += EnableKnife;
+        inventoryManager.OnEnableAxe += EnableAxe;
+        inventoryManager.OnEnableFeather += EnableFeather;
+        inventoryManager.OnEnableIronBoots += EnableBoots;
+        inventoryManager.OnEnableBubble += EnableBubble;
+        inventoryManager.OnEnableFireProofArmor += EnableArmor;
+        inventoryManager.OnEnableEarthArtefact += EnableEarthArtefact;
+        inventoryManager.OnEnableAirArtefact += EnableAirArtefact;
+        inventoryManager.OnEnableWaterArtefact += EnableWaterArtefact;
+        inventoryManager.OnEnableFireArtefact += EnableFireArtefact;
+
+        DestroyEnemyOnDeath.OnEnemyDeath += EnemyKilled;
 
         CreateAccount("Test");
         CreateStatsRecord();
@@ -55,8 +71,8 @@ public class Database : MonoBehaviour
     private void CreateAccount(string username)
     {
         _dbconn.Open();
-        string sqlQuery = "INSERT INTO ACCOUNT (ACCOUNT_ID, USERNAME)" +
-            "VALUES (0, \"" + username + "\")";
+        string sqlQuery = String.Format("INSERT INTO ACCOUNT (ACCOUNT_ID, USERNAME)" +
+            "VALUES (0, \"{0}\")", username);
         _dbcmd.CommandText = sqlQuery;
         _dbcmd.ExecuteNonQuery();
 
@@ -66,101 +82,87 @@ public class Database : MonoBehaviour
     private void CreateStatsRecord()
     {
         _dbconn.Open();
-        string sqlQuery = "INSERT INTO STATS (STATS_ID, SECONDS_PLAYED, NB_KILLED_SCARABS, NB_KILLED_BATS, NB_KILLED_SKELTALS, NB_DEATHS, KNIFE_PICKED, AXE_PICKED, FEATHER_PICKED, BOOTS_PICKED, BUBBLE_PICKED, ARMOR_PICKED, ARTEFACT1_PICKED, ARTEFACT2_PICKED, ARTEFACT3_PICKED, ARTEFACT4_PICKED, GAME_COMPLETED, ACCOUNT_ID)" + 
-            "VALUES (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, " + _accountID + ")";
+        string sqlQuery = String.Format("INSERT INTO STATS (STATS_ID, SECONDS_PLAYED, NB_KILLED_SCARABS, NB_KILLED_BATS, NB_KILLED_SKELTALS, NB_DEATHS, KNIFE_PICKED, AXE_PICKED, FEATHER_PICKED, BOOTS_PICKED, BUBBLE_PICKED, ARMOR_PICKED, ARTEFACT1_PICKED, ARTEFACT2_PICKED, ARTEFACT3_PICKED, ARTEFACT4_PICKED, GAME_COMPLETED, ACCOUNT_ID)" + 
+            "VALUES (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, {0})", _accountID);
         _dbcmd.CommandText = sqlQuery;
         _dbcmd.ExecuteNonQuery();
         _dbconn.Close();
+    }
+
+    private void SaveStats()
+    {
+        _dbconn.Open();
+        string sqlQuery = String.Format("UPDATE STATS SET NB_KILLED_SCARABS = {0}, NB_KILLED_BATS = {1}, NB_KILLED_SKELTALS = {2}, KNIFE_PICKED = {3}, AXE_PICKED = {4}, FEATHER_PICKED = {5}, BOOTS_PICKED = {6}, BUBBLE_PICKED = {7}, ARMOR_PICKED = {8}, ARTEFACT1_PICKED = {9}, ARTEFACT2_PICKED = {10}, ARTEFACT3_PICKED = {11}, ARTEFACT4_PICKED = {12} WHERE ACCOUNT_ID = {13}",
+            _nbScarabsKilled, _nbBatsKilled, _nbSkeltalsKilled, _knifeEnabled, _axeEnabled, _featherEnabled, _bootsEnabled, _bubbleEnabled, _armorEnabled, _earthArtefactEnabled, _airArtefactEnabled, _waterArtefactEnabled, _fireArtefactEnabled, _accountID);
+        _dbcmd.CommandText = sqlQuery;
+        _dbcmd.ExecuteNonQuery();
+        _dbconn.Close();
+    }
+
+    private void EnemyKilled(string tag)
+    {
+        if(tag == "Scarab")
+        {
+            _nbScarabsKilled++;
+        }
+        else if(tag == "Bat")
+        {
+            _nbBatsKilled++;
+        }
+        else if(tag == "Skeltal")
+        {
+            _nbSkeltalsKilled++;
+        }
     }
 
     private void EnableKnife()
     {
-        _dbconn.Open();
-        string sqlQuery = "UPDATE STATS SET KNIFE_PICKED = 1 WHERE ACCOUNT_ID = " + _accountID;
-        _dbcmd.CommandText = sqlQuery;
-        _dbcmd.ExecuteNonQuery();
-        _dbconn.Close();
+        _knifeEnabled = 1;
     }
 
     private void EnableAxe()
     {
-        _dbconn.Open();
-        string sqlQuery = "UPDATE STATS SET AXE_PICKED = 1 WHERE ACCOUNT_ID = " + _accountID;
-        _dbcmd.CommandText = sqlQuery;
-        _dbcmd.ExecuteNonQuery();
-        _dbconn.Close();
+        _knifeEnabled = 1;
     }
 
     private void EnableFeather()
     {
-        _dbconn.Open();
-        string sqlQuery = "UPDATE STATS SET FEATHER_PICKED = 1 WHERE ACCOUNT_ID = " + _accountID;
-        _dbcmd.CommandText = sqlQuery;
-        _dbcmd.ExecuteNonQuery();
-        _dbconn.Close();
+        _featherEnabled = 1;
     }
 
     private void EnableBoots()
     {
-        _dbconn.Open();
-        string sqlQuery = "UPDATE STATS SET BOOTS_PICKED = 1 WHERE ACCOUNT_ID = " + _accountID;
-        _dbcmd.CommandText = sqlQuery;
-        _dbcmd.ExecuteNonQuery();
-        _dbconn.Close();
+        _bootsEnabled = 1;
     }
 
     private void EnableBubble()
     {
-        _dbconn.Open();
-        string sqlQuery = "UPDATE STATS SET BUBBLE_PICKED = 1 WHERE ACCOUNT_ID = " + _accountID;
-        _dbcmd.CommandText = sqlQuery;
-        _dbcmd.ExecuteNonQuery();
-        _dbconn.Close();
+        _bubbleEnabled = 1;
     }
 
     private void EnableArmor()
     {
-        _dbconn.Open();
-        string sqlQuery = "UPDATE STATS SET ARMOR_PICKED = 1 WHERE ACCOUNT_ID = " + _accountID;
-        _dbcmd.CommandText = sqlQuery;
-        _dbcmd.ExecuteNonQuery();
-        _dbconn.Close();
+        _armorEnabled = 1;
     }
 
     private void EnableEarthArtefact()
     {
-        _dbconn.Open();
-        string sqlQuery = "UPDATE STATS SET ARTEFACT1_PICKED = 1 WHERE ACCOUNT_ID = " + _accountID;
-        _dbcmd.CommandText = sqlQuery;
-        _dbcmd.ExecuteNonQuery();
-        _dbconn.Close();
+        _earthArtefactEnabled = 1;
     }
 
     private void EnableAirArtefact()
     {
-        _dbconn.Open();
-        string sqlQuery = "UPDATE STATS SET ARTEFACT2_PICKED = 1 WHERE ACCOUNT_ID = " + _accountID;
-        _dbcmd.CommandText = sqlQuery;
-        _dbcmd.ExecuteNonQuery();
-        _dbconn.Close();
+        _airArtefactEnabled = 1;
     }
 
     private void EnableWaterArtefact()
     {
-        _dbconn.Open();
-        string sqlQuery = "UPDATE STATS SET ARTEFACT3_PICKED = 1 WHERE ACCOUNT_ID = " + _accountID;
-        _dbcmd.CommandText = sqlQuery;
-        _dbcmd.ExecuteNonQuery();
-        _dbconn.Close();
+        _waterArtefactEnabled = 1;
     }
 
     private void EnableFireArtefact()
     {
-        _dbconn.Open();
-        string sqlQuery = "UPDATE STATS SET ARTEFACT4_PICKED = 1 WHERE ACCOUNT_ID = " + _accountID;
-        _dbcmd.CommandText = sqlQuery;
-        _dbcmd.ExecuteNonQuery();
-        _dbconn.Close();
+        _fireArtefactEnabled = 1;
     }
 
 
