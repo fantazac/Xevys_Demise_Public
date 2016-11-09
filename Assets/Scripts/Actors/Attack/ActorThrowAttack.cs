@@ -53,9 +53,6 @@ public class ActorThrowAttack : MonoBehaviour
     public delegate void OnAxeAmmoUsedHandler(int ammoUsedOnThrow);
     public event OnAxeAmmoUsedHandler OnAxeAmmoUsed;
 
-    public delegate void OnKnifeThrownHandler(GameObject knife);
-    public event OnKnifeThrownHandler OnKnifeThrown;
-
     private void Start()
     {
         _inputManager = GetComponentInChildren<InputManager>();
@@ -113,7 +110,6 @@ public class ActorThrowAttack : MonoBehaviour
         newWeapon.transform.eulerAngles = initialRotation;
         newWeapon.GetComponent<Rigidbody2D>().velocity = initialVelocity;
         newWeapon.transform.localScale = initialDirection;
-        OnKnifeThrown(newWeapon);
     }
 
     private void OnKnifeAttack()
