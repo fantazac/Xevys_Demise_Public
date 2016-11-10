@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class HealthItemHealManager : MonoBehaviour
+public class HealthItemHeal : MonoBehaviour
 {
     [SerializeField]
     private int _healPoints = 200;
