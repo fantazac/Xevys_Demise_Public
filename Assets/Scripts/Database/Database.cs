@@ -55,16 +55,6 @@ public class Database : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        //TEMP
-        _dbconn.Open();
-        string sqlQuery = "DELETE FROM STATS";
-        _dbcmd.CommandText = sqlQuery;
-        _dbcmd.ExecuteNonQuery();
-        sqlQuery = "DELETE FROM ACCOUNT";
-        _dbcmd.CommandText = sqlQuery;
-        _dbcmd.ExecuteNonQuery();
-        _dbconn.Close();
-
         _dbcmd.Dispose();
         _dbcmd = null;
         _dbconn = null;
@@ -150,21 +140,25 @@ public class Database : MonoBehaviour
     private void EnableEarthArtefact()
     {
         _earthArtefactEnabled = 1;
+        SaveStats();
     }
 
     private void EnableAirArtefact()
     {
         _airArtefactEnabled = 1;
+        SaveStats();
     }
 
     private void EnableWaterArtefact()
     {
         _waterArtefactEnabled = 1;
+        SaveStats();
     }
 
     private void EnableFireArtefact()
     {
         _fireArtefactEnabled = 1;
+        SaveStats();
     }
 
 
