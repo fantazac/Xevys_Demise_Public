@@ -69,9 +69,8 @@ public class ScarabMovement : MonoBehaviour
     protected virtual bool CanStartRotation() { return _canRotate; }
     protected virtual void FindTarget() { }
 
-    public bool OnBottomOfPlatform()
+    public bool IsNotOnTopOfPlatform()
     {
-        return transform.rotation.eulerAngles.z > 170 || transform.rotation.eulerAngles.z < -170;
+        return transform.rotation.eulerAngles.z != 0;
     }
-
 }

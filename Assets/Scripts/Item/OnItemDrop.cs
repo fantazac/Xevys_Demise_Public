@@ -9,7 +9,7 @@ public class OnItemDrop : MonoBehaviour
 
     private const float TERMINAL_SPEED = -10;
     private const float INITIAL_SPEED = 5.5f;
-    private const float ROTATE_SPEED = 10;
+    private const float ROTATE_SPEED = 420;
     private const float DISTANCE_BETWEEN_ITEMS = 0.6f;
 
     private Vector3 _target = Vector3.zero;
@@ -23,7 +23,8 @@ public class OnItemDrop : MonoBehaviour
 
     public void Initialise(float amountToDrop, int id, Collider2D collider)
     {
-        if ((collider.gameObject.tag == "Bat" && collider.GetComponent<BatMovement>().CloseToTop()) || (collider.gameObject.tag == "Scarab" && collider.GetComponent<ScarabMovementWithPoints>().OnBottomOfPlatform()))
+        if ((collider.gameObject.tag == "Bat" && collider.GetComponent<BatMovement>().CloseToTop()) 
+            || (collider.gameObject.tag == "Scarab" && collider.GetComponent<ScarabMovement>().IsNotOnTopOfPlatform()))
         {
             GetComponent<Rigidbody2D>().velocity = new Vector2(((amountToDrop - 1) * (-DISTANCE_BETWEEN_ITEMS / 2) + (id * DISTANCE_BETWEEN_ITEMS)), 0);
         }
@@ -40,7 +41,7 @@ public class OnItemDrop : MonoBehaviour
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, TERMINAL_SPEED);
         }
 
-        if (_target != Vector3.zero && _target == transform.position)
+        if (_target != Vector3.zero && _target == transform.position && transform.rotation.eulerAngles.z == 0)
         {
             GameObject.Instantiate(_pickableItem, transform.position, new Quaternion());
             Destroy(gameObject);
@@ -48,11 +49,12 @@ public class OnItemDrop : MonoBehaviour
 
         if (_target != Vector3.zero)
         {
-            if (!(transform.rotation.eulerAngles.z > -1 && transform.rotation.eulerAngles.z < 1))
+            if (!(transform.rotation.eulerAngles.z > -ROTATE_SPEED * Time.deltaTime 
+                && transform.rotation.eulerAngles.z < ROTATE_SPEED * Time.deltaTime))
             {
-                transform.Rotate(Vector3.back * ROTATE_SPEED);
+                transform.Rotate(Vector3.back * ROTATE_SPEED * Time.deltaTime);
             }
-            else if (transform.rotation.eulerAngles.z != 0)
+            else
             {
                 transform.rotation = new Quaternion();
             }
@@ -60,17 +62,17 @@ public class OnItemDrop : MonoBehaviour
         }
         else
         {
-            transform.Rotate(Vector3.back * ROTATE_SPEED);
+            //transform.Rotate(Vector3.back * ROTATE_SPEED * Time.deltaTime);
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (_target == Vector3.zero && (collider.gameObject.tag == "Wall" ||
-            (collider.gameObject.tag == "FlyingPlatform" && _rigidbody.velocity.y < -2)))
+        if (_target == Vector3.zero && (collision.gameObject.tag == "Wall" ||
+            (collision.gameObject.tag == "FlyingPlatform" && collision.transform.position.y + 0.25f < transform.position.y)))
         {
-            _target = new Vector3(transform.position.x, transform.position.y + 0.6f, transform.position.z);
             Destroy(_rigidbody);
+            _target = new Vector3(transform.position.x, transform.position.y + 0.6f, transform.position.z);
         }
     }
 }
