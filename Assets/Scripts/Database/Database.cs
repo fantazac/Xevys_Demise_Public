@@ -31,8 +31,6 @@ public class Database : MonoBehaviour
 
     private void Start()
     {
-        //UnityEngine.Object[] objects = Resources.LoadAll("");
-        //File.WriteAllBytes(Application.persistentDataPath + "/Database.db", ObjectToByteArray(objects));
         File.Copy(Path.Combine(Application.streamingAssetsPath, "Database.db"), Path.Combine(Application.persistentDataPath, "Database.db"), true);
         string conn = "URI=file:" + Path.Combine(Application.persistentDataPath, "Database.db");
         _dbconn = (IDbConnection)new SqliteConnection(conn);
@@ -70,7 +68,6 @@ public class Database : MonoBehaviour
             "VALUES (0, \"{0}\")", username);
         _dbcmd.CommandText = sqlQuery;
         _dbcmd.ExecuteNonQuery();
-
         _dbconn.Close();
     }
 
@@ -143,37 +140,21 @@ public class Database : MonoBehaviour
     private void EnableEarthArtefact()
     {
         _earthArtefactEnabled = 1;
-        SaveStats();
     }
 
     private void EnableAirArtefact()
     {
         _airArtefactEnabled = 1;
-        SaveStats();
     }
 
     private void EnableWaterArtefact()
     {
         _waterArtefactEnabled = 1;
-        SaveStats();
     }
 
     private void EnableFireArtefact()
     {
         _fireArtefactEnabled = 1;
-        SaveStats();
-    }
-
-    private byte[] ObjectToByteArray(object obj)
-    {
-        if (obj == null)
-            return null;
-        BinaryFormatter bf = new BinaryFormatter();
-        using (MemoryStream ms = new MemoryStream())
-        {
-            bf.Serialize(ms, obj);
-            return ms.ToArray();
-        }
     }
 
 
