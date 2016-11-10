@@ -81,7 +81,7 @@ public class Database : MonoBehaviour
         _dbconn.Close();
     }
 
-    private void SaveStats()
+    public void SaveStats()
     {
         _dbconn.Open();
         string sqlQuery = String.Format("UPDATE STATS SET NB_KILLED_SCARABS = {0}, NB_KILLED_BATS = {1}, NB_KILLED_SKELTALS = {2}, KNIFE_PICKED = {3}, AXE_PICKED = {4}, FEATHER_PICKED = {5}, BOOTS_PICKED = {6}, BUBBLE_PICKED = {7}, ARMOR_PICKED = {8}, ARTEFACT1_PICKED = {9}, ARTEFACT2_PICKED = {10}, ARTEFACT3_PICKED = {11}, ARTEFACT4_PICKED = {12} WHERE ACCOUNT_ID = {13}",
