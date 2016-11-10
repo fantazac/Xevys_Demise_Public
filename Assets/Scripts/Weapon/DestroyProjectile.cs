@@ -38,7 +38,11 @@ public class DestroyProjectile : MonoBehaviour
         }
         else if (_destroyNow)
         {
-            OnProjectileDestroyed(gameObject);
+            if (OnProjectileDestroyed != null)
+            {
+                OnProjectileDestroyed(gameObject);
+            }
+            
             Destroy(gameObject);
         }
     }
