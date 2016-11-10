@@ -8,17 +8,17 @@ public class XevyMovement : MonoBehaviour
 	    
 	}
 
-    private void StepBack()
+    public void StepBack()
     {
 
     }
 
-    private void JumpOntoPlatform()
+    public void JumpOntoPlatform()
     {
 
     }
 
-    private void Flee()
+    public void Flee()
     {
 
     }

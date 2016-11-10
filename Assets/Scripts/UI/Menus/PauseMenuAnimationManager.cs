@@ -3,9 +3,12 @@ using System.Collections;
 
 public class PauseMenuAnimationManager : MonoBehaviour
 {
+
+    public delegate void OnFadeTriggerHandler(string fade);
+    public event OnFadeTriggerHandler OnFade;
+
     private PauseMenuInputs _pauseMenuInputs;
     private Animator _slideAnimator;
-    private Animator _fadeAnimator;
     private bool _active;
 
     private void Start()
@@ -13,8 +16,17 @@ public class PauseMenuAnimationManager : MonoBehaviour
         _pauseMenuInputs = GetComponent<PauseMenuInputs>();
         _pauseMenuInputs.TriggerAnimations += AnimatePauseMenu;
         _slideAnimator = GetComponent<Animator>();
-        _fadeAnimator = transform.parent.GetComponentInChildren<Animator>();
         _active = false;
+    }
+
+    private void SlideOutAnimationEnded()
+    {
+        _pauseMenuInputs.CanSlide = true;
+    }
+
+    private void SlideInAnimationEnded()
+    {
+        _pauseMenuInputs.CanSlide = true;
     }
 
     private void AnimatePauseMenu()
@@ -35,6 +47,7 @@ public class PauseMenuAnimationManager : MonoBehaviour
     {
         _slideAnimator.SetTrigger("SlideIn");
         _active = true;
+        _pauseMenuInputs.CanSlide = false;
     }
 
     private void EnableIdleAnimation()
@@ -47,15 +60,16 @@ public class PauseMenuAnimationManager : MonoBehaviour
     {
         _slideAnimator.SetTrigger("SlideOut");
         _active = false;
+        _pauseMenuInputs.CanSlide = false;
     }
 
     private void FadeIn()
     {
-        _fadeAnimator.SetTrigger("FadeIn");
+        OnFade("FadeIn");
     }
 
     private void FadeOut()
     {
-        _fadeAnimator.SetTrigger("FadeOut");
+        OnFade("FadeOut");
     }
 }
