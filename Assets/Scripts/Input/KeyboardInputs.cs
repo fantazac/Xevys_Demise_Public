@@ -46,12 +46,14 @@ public class KeyboardInputs : MonoBehaviour {
 
     // TODO faire de quoi de propre
     private ActorBasicAttack _actorBasicAttack;
+    private PlayerGroundMovement _playerGroundMovement;
 
     private void Start()
     {
         _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
         _playerHealth.OnDeath += OnDeath;
         _actorBasicAttack = StaticObjects.GetPlayer().GetComponent<ActorBasicAttack>();
+        _playerGroundMovement = StaticObjects.GetPlayer().GetComponent<PlayerGroundMovement>();
     }
 
     private void Update()
@@ -88,7 +90,8 @@ public class KeyboardInputs : MonoBehaviour {
             OnJump();
         }
 
-        if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && 
+            ((!_actorBasicAttack.IsAttacking() && !_playerGroundMovement.IsCrouching) || _playerGroundMovement.IsCrouching))
         {
             OnCrouch();
         }

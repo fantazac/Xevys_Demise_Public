@@ -60,12 +60,14 @@ public class GamepadInputs: MonoBehaviour
 
     // TODO faire de quoi de propre
     private ActorBasicAttack _actorBasicAttack;
+    private PlayerGroundMovement _playerGroundMovement;
 
     private void Start()
     {
         _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
         _playerHealth.OnDeath += OnDeath;
         _actorBasicAttack = StaticObjects.GetPlayer().GetComponent<ActorBasicAttack>();
+        _playerGroundMovement = StaticObjects.GetPlayer().GetComponent<PlayerGroundMovement>();
     }
 
     private void Update()
@@ -96,7 +98,8 @@ public class GamepadInputs: MonoBehaviour
 
         if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
         {
-            if (state.ThumbSticks.Left.Y < 0)
+            if (state.ThumbSticks.Left.Y < 0 &&
+            ((!_actorBasicAttack.IsAttacking() && !_playerGroundMovement.IsCrouching) || _playerGroundMovement.IsCrouching))
             {
                 OnUnderwaterControl(true);
                 OnCrouch();
