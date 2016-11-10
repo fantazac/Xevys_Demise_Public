@@ -44,19 +44,27 @@ public class KeyboardInputs : MonoBehaviour {
 
     private Health _playerHealth;
 
+    // TODO faire de quoi de propre
+    private ActorBasicAttack _actorBasicAttack;
+
     private void Start()
     {
         _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
         _playerHealth.OnDeath += OnDeath;
+        _actorBasicAttack = StaticObjects.GetPlayer().GetComponent<ActorBasicAttack>();
     }
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            OnBasicAttack();
+        }
+        else if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.S) && !_actorBasicAttack.IsAttacking())
         {
             OnMove(Vector3.left, false);
         }
-        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !_actorBasicAttack.IsAttacking())
         {
             OnMove(Vector3.right, true);
         }
@@ -102,11 +110,6 @@ public class KeyboardInputs : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.E))
         {
             OnIronBootsEquip();
-        }
-
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            OnBasicAttack();
         }
 
         if (Input.GetKey(KeyCode.L))
