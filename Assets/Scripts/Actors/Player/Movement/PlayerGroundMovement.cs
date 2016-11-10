@@ -170,14 +170,14 @@ public class PlayerGroundMovement : PlayerMovement
         }
     }
 
-    public override bool IsJumping()
+    /*public override bool IsJumping()
     {
         return !(((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround
                 && !GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
                 || (GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform && _rigidbody.velocity.y == 0)
                 || _rigidbody.velocity == Vector2.zero)
                 && !(_rigidbody.velocity.y > 0));
-    }
+    }*/
 
     protected override void UpdateMovement()
     {
@@ -198,7 +198,7 @@ public class PlayerGroundMovement : PlayerMovement
             _knockbackCount++;
         }
 
-        if (!IsJumping() && _inventoryManager.FeatherEnabled && !_canDoubleJump)
+        if (!IsJumping() && PlayerTouchesGround() && _inventoryManager.FeatherEnabled && !_canDoubleJump)
         {
             _canDoubleJump = true;
         }

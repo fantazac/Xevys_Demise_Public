@@ -31,7 +31,7 @@ public class DestroyEnemyOnDeath : MonoBehaviour
 
     private void Destroy()
     {
-        OnEnemyDeath(tag);
+        //OnEnemyDeath(tag);
         Destroy(gameObject);
         if (_destroyParent)
         {
