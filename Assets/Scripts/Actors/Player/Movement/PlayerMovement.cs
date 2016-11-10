@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     protected BoxCollider2D _playerBoxColliderFeet;
     protected SpriteRenderer _playerSpriteRenderer;
     protected InventoryManager _inventoryManager;
+    protected PlayerTouchesGround _playerTouchesGround;
     protected Animator _anim;
     protected Transform _spriteTransform;
     protected ShowItems _showItems;
@@ -64,7 +65,8 @@ public class PlayerMovement : MonoBehaviour
         _showItems = GameObject.Find("ItemCanvas").GetComponent<ShowItems>();
         _touchesGroundHitbox = GameObject.Find("CharacterTouchesGround");
         _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
-
+        _playerTouchesGround = GetComponentInChildren<PlayerTouchesGround>();
+        
         _inputManager.OnMove += OnMove;
         _inputManager.OnJump += OnJump;
         _inputManager.OnJumpDown += OnJumpDown;
@@ -123,9 +125,9 @@ public class PlayerMovement : MonoBehaviour
         return PlayerTouchesGround() && !PlayerTouchesFlyingPlatform();
     }
 
-    private bool PlayerTouchesGround()
+    protected bool PlayerTouchesGround()
     {
-        return StaticObjects.GetPlayer().GetComponent<PlayerTouchesGround>().OnGround;
+        return _playerTouchesGround.OnGround;
     }
 
     private bool PlayerTouchesFlyingPlatform()
