@@ -12,6 +12,8 @@ public class OnItemDrop : MonoBehaviour
     private const float ROTATE_SPEED = 420;
     private const float DISTANCE_BETWEEN_ITEMS = 0.6f;
 
+    private Quaternion _currentAngles;
+
     private Vector3 _target = Vector3.zero;
 
     private Rigidbody2D _rigidbody;
@@ -62,17 +64,20 @@ public class OnItemDrop : MonoBehaviour
         }
         else
         {
-            //transform.Rotate(Vector3.back * ROTATE_SPEED * Time.deltaTime);
+            transform.Rotate(Vector3.back * ROTATE_SPEED * Time.deltaTime);
         }
+        _currentAngles = transform.rotation;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
         if (_target == Vector3.zero && (collision.gameObject.tag == "Wall" ||
             (collision.gameObject.tag == "FlyingPlatform" && collision.transform.position.y + 0.25f < transform.position.y)))
         {
             Destroy(_rigidbody);
             _target = new Vector3(transform.position.x, transform.position.y + 0.6f, transform.position.z);
+            transform.rotation = _currentAngles;
         }
     }
 }
