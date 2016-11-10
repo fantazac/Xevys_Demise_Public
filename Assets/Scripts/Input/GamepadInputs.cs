@@ -58,17 +58,29 @@ public class GamepadInputs: MonoBehaviour
     private bool _upButtonReady = true;
     private bool _startButtonReady = true;
 
+    // TODO faire de quoi de propre
+    private ActorBasicAttack _actorBasicAttack;
+    private PlayerGroundMovement _playerGroundMovement;
+
     private void Start()
     {
         _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
         _playerHealth.OnDeath += OnDeath;
+        _actorBasicAttack = StaticObjects.GetPlayer().GetComponent<ActorBasicAttack>();
+        _playerGroundMovement = StaticObjects.GetPlayer().GetComponent<PlayerGroundMovement>();
     }
 
     private void Update()
     {
         GamePadState state = GamePad.GetState(PlayerIndex.One);
 
-        if (Math.Abs(state.ThumbSticks.Left.X) > _joysticksXAxisDeadZone)
+        if (state.Buttons.X == ButtonState.Pressed && _xButtonReady)
+        {
+            _xButtonReady = false;
+            OnBasicAttack();
+        }
+
+        else if (Math.Abs(state.ThumbSticks.Left.X) > _joysticksXAxisDeadZone && !_actorBasicAttack.IsAttacking())
         {
             if (state.ThumbSticks.Left.X < 0)
             {
@@ -86,7 +98,8 @@ public class GamepadInputs: MonoBehaviour
 
         if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
         {
-            if (state.ThumbSticks.Left.Y < 0)
+            if (state.ThumbSticks.Left.Y < 0 &&
+            ((!_actorBasicAttack.IsAttacking() && !_playerGroundMovement.IsCrouching) || _playerGroundMovement.IsCrouching))
             {
                 OnUnderwaterControl(true);
                 OnCrouch();
@@ -136,11 +149,6 @@ public class GamepadInputs: MonoBehaviour
             _yButtonReady = true;
         }
 
-        if (state.Buttons.X == ButtonState.Pressed && _xButtonReady)
-        {
-            _xButtonReady = false;
-            OnBasicAttack();
-        }
         if (state.Buttons.X == ButtonState.Released && !_xButtonReady)
         {
             _xButtonReady = true;

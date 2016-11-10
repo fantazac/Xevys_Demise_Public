@@ -71,4 +71,9 @@ public class ActorBasicAttack : MonoBehaviour
     {
         _attackHitBox.GetComponent<BoxCollider2D>().enabled = false;
     }
+
+    public bool IsAttacking()
+    {
+        return _isAttacking;
+    }
 }

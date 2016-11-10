@@ -47,8 +47,6 @@ public class PlayerGroundMovement : PlayerMovement
             if (_stoppedEnoughToCrouch)
             {
                 IsCrouching = true;
-                _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = false;
-                _playerBoxColliderFeet.GetComponent<FollowPlayerPosition>().enabled = false;
                 _basicAttackBox.size = new Vector2(_basicAttackBox.size.x, ATTACK_BOX_COLLIDER_Y_WHEN_STAND * CROUCHING_OFFSET);
                 _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND * CROUCHING_OFFSET);
             }         
@@ -64,8 +62,6 @@ public class PlayerGroundMovement : PlayerMovement
         if (!_anim.GetBool("IsAttacking"))
         {
             IsCrouching = false;
-            _playerSpriteRenderer.GetComponent<FollowPlayerPosition>().enabled = true;
-            _playerBoxColliderFeet.GetComponent<FollowPlayerPosition>().enabled = true;
             _basicAttackBox.size = new Vector2(_basicAttackBox.size.x, ATTACK_BOX_COLLIDER_Y_WHEN_STAND);
             _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND);
         }       
@@ -170,15 +166,6 @@ public class PlayerGroundMovement : PlayerMovement
         }
     }
 
-    /*public override bool IsJumping()
-    {
-        return !(((GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround
-                && !GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
-                || (GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform && _rigidbody.velocity.y == 0)
-                || _rigidbody.velocity == Vector2.zero)
-                && !(_rigidbody.velocity.y > 0));
-    }*/
-
     protected override void UpdateMovement()
     {
         if (!enabled)
@@ -209,5 +196,4 @@ public class PlayerGroundMovement : PlayerMovement
         }
 
     }
-
 }

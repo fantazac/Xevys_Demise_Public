@@ -4,6 +4,7 @@ using Mono.Data.Sqlite;
 using System.Data;
 using System.IO;
 using System;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class Database : MonoBehaviour
 {
@@ -30,8 +31,10 @@ public class Database : MonoBehaviour
 
     private void Start()
     {
-        File.Copy(Path.Combine(Application.dataPath, "Resources/Database.db"), Path.Combine(Application.persistentDataPath, "Database.db"), true);
-        string conn = "URI=file:" + Application.persistentDataPath + "/Database.db";
+        //UnityEngine.Object[] objects = Resources.LoadAll("");
+        //File.WriteAllBytes(Application.persistentDataPath + "/Database.db", ObjectToByteArray(objects));
+        File.Copy(Path.Combine(Application.streamingAssetsPath, "Database.db"), Path.Combine(Application.persistentDataPath, "Database.db"), true);
+        string conn = "URI=file:" + Path.Combine(Application.persistentDataPath, "Database.db");
         _dbconn = (IDbConnection)new SqliteConnection(conn);
         _dbcmd = _dbconn.CreateCommand();
 
@@ -159,6 +162,18 @@ public class Database : MonoBehaviour
     {
         _fireArtefactEnabled = 1;
         SaveStats();
+    }
+
+    private byte[] ObjectToByteArray(object obj)
+    {
+        if (obj == null)
+            return null;
+        BinaryFormatter bf = new BinaryFormatter();
+        using (MemoryStream ms = new MemoryStream())
+        {
+            bf.Serialize(ms, obj);
+            return ms.ToArray();
+        }
     }
 
 

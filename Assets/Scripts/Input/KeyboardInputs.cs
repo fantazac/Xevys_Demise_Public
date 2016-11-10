@@ -44,19 +44,29 @@ public class KeyboardInputs : MonoBehaviour {
 
     private Health _playerHealth;
 
+    // TODO faire de quoi de propre
+    private ActorBasicAttack _actorBasicAttack;
+    private PlayerGroundMovement _playerGroundMovement;
+
     private void Start()
     {
         _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
         _playerHealth.OnDeath += OnDeath;
+        _actorBasicAttack = StaticObjects.GetPlayer().GetComponent<ActorBasicAttack>();
+        _playerGroundMovement = StaticObjects.GetPlayer().GetComponent<PlayerGroundMovement>();
     }
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            OnBasicAttack();
+        }
+        else if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.S) && !_actorBasicAttack.IsAttacking())
         {
             OnMove(Vector3.left, false);
         }
-        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !_actorBasicAttack.IsAttacking())
         {
             OnMove(Vector3.right, true);
         }
@@ -80,7 +90,8 @@ public class KeyboardInputs : MonoBehaviour {
             OnJump();
         }
 
-        if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && 
+            ((!_actorBasicAttack.IsAttacking() && !_playerGroundMovement.IsCrouching) || _playerGroundMovement.IsCrouching))
         {
             OnCrouch();
         }
@@ -102,11 +113,6 @@ public class KeyboardInputs : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.E))
         {
             OnIronBootsEquip();
-        }
-
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            OnBasicAttack();
         }
 
         if (Input.GetKey(KeyCode.L))
