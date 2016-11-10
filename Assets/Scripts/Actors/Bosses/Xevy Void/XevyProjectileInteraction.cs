@@ -16,6 +16,12 @@ public class XevyProjectileInteraction : MonoBehaviour
         _throwAttack.OnAxeThrown += OnAxeThrown;
 	}
 
+    private void Destroy()
+    {
+        _throwAttack.OnKnifeThrown -= OnKnifeThrown;
+        _throwAttack.OnAxeThrown -= OnAxeThrown;
+    }
+
     public bool CheckKnivesDistance()
     {
         foreach (KeyValuePair<GameObject, float> knife in _knivesDictionary)

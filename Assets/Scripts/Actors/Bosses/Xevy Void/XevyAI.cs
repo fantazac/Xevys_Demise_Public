@@ -28,7 +28,7 @@ public class XevyAI : MonoBehaviour
 
     private XevyStatus _status;
     public XevyLastAttack LastAttack { get; set; }
-    private float _vulnerableStatusTimer;
+    private float _vulnerableStatusTimer = VULNERABLE_STATUS_COOLDOWN;
     private float _sameAttackCount;
 
     private void Start()
@@ -43,11 +43,15 @@ public class XevyAI : MonoBehaviour
 
     private void FixedUpdate()
     {
+        _movement.MovementUpdate();
+        _playerInteraction.IsFocusedOnPlayer = false;
         if (_status == XevyStatus.IDLE)
         {
-            _playerInteraction.IsFocusedOnPlayer = true;
+            //_playerInteraction.IsFocusedOnPlayer = true;
             UpdateWhenIdle();
+            _status = XevyStatus.VULNERABLE;
         }
+        
         else if (_status == XevyStatus.BLOCKING)
         {
             _playerInteraction.IsFocusedOnPlayer = true;
@@ -58,6 +62,7 @@ public class XevyAI : MonoBehaviour
             _playerInteraction.IsFocusedOnPlayer = false;
             UpdateWhenHealing();
         }
+        
         else if (_status == XevyStatus.VULNERABLE)
         {
             _playerInteraction.IsFocusedOnPlayer = false;
@@ -79,7 +84,7 @@ public class XevyAI : MonoBehaviour
             _status = XevyStatus.VULNERABLE;
             if (playerProximity && healthStatus)
             {
-                _action.MeleeAttack();
+                _movement.Bounce();//_action.MeleeAttack();
             }
             else if (!playerProximity && healthStatus)
             {
@@ -119,14 +124,17 @@ public class XevyAI : MonoBehaviour
 
     private void UpdateWhenVulnerable()
     {
-        if (_vulnerableStatusTimer <= 0)
+        if (_movement.MovementStatus == XevyMovement.XevyMovementStatus.NONE)
         {
-            _vulnerableStatusTimer = VULNERABLE_STATUS_COOLDOWN;
-            _status = XevyStatus.IDLE;
-        }
-        else
-        {
-            _vulnerableStatusTimer -= Time.fixedDeltaTime;
+            if (_vulnerableStatusTimer <= 0)
+            {
+                _vulnerableStatusTimer = VULNERABLE_STATUS_COOLDOWN;
+                _status = XevyStatus.IDLE;
+            }
+            else
+            {
+                _vulnerableStatusTimer -= Time.fixedDeltaTime;
+            }
         }
     }
 }
