@@ -23,7 +23,7 @@ public class XevyPlayerInteraction : MonoBehaviour
 
     public bool CheckPlayerProximity()
     {
-        return (Vector2.Distance(StaticObjects.GetPlayer().transform.position, transform.position) < 3);
+        return (Vector2.Distance(StaticObjects.GetPlayer().transform.position, transform.position) < 10);
     }
 
     public bool CheckAlignmentWithPlayer()
