@@ -53,12 +53,12 @@ public class PhoenixAI : MonoBehaviour
         _flipBoss = GetComponent<FlipBoss>();
         _animator = GetComponent<Animator>();
         _onBossDefeated = GetComponent<OnBossDefeated>();
-        _onBossDefeated.onDefeated += OnPhoenixDefeated;
+        _onBossDefeated.OnDefeated += OnPhoenixDefeated;
     }
 
     private void OnDestroy()
     {
-        _onBossDefeated.onDefeated -= OnPhoenixDefeated;
+        _onBossDefeated.OnDefeated -= OnPhoenixDefeated;
     }
 
     private void FixedUpdate()
@@ -66,23 +66,23 @@ public class PhoenixAI : MonoBehaviour
         //This status allows Phoenix to watch the player and either charge on him after a few seconds or flee.
         if (_status == PhoenixStatus.FLY)
         {
-            FlyUpdate();
+            UpdateWhenFlying();
         }
         //Flee status makes Phoenix go to a neighbouring point in order to avoid the player.
         else if (_status == PhoenixStatus.FLEE)
         {
-            FleeUpdate();
+            UpdateWhenFleeing();
         }
         //In this status, Phoenix dives on the player in a parabolic path, allowing the latter to strike its head.
         else if (_status == PhoenixStatus.ATTACK)
         {
-            AttackUpdate();
+            UpdateWhenAttacking();
         }
     }
 
-    private void FlyUpdate()
+    private void UpdateWhenFlying()
     {
-        _flipBoss.CheckPlayerPosition();
+        _flipBoss.FlipTowardsPlayer();
         _attackCooldownTimeLeft += Time.fixedDeltaTime;
         if (_attackCooldownTimeLeft > ATTACK_DELAY)
         {
@@ -123,13 +123,13 @@ public class PhoenixAI : MonoBehaviour
         }
     }
 
-    private void FleeUpdate()
+    private void UpdateWhenFleeing()
     {
         transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _closestPoint, SPEED * Time.fixedDeltaTime);
         CheckForFlyStatus();
     }
 
-    private void AttackUpdate()
+    private void UpdateWhenAttacking()
     {
         transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _playerPosition, SPEED * Time.fixedDeltaTime);
 
@@ -178,7 +178,7 @@ public class PhoenixAI : MonoBehaviour
         transform.rotation = Quaternion.identity;
         _rigidbody.isKinematic = true;
         _attackCooldownTimeLeft = 0;
-        _flipBoss.CheckSpecificPointForFlip(_closestPoint);
+        _flipBoss.FlipTowardsSpecificPoint(_closestPoint);
         transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_closestPoint.y - transform.position.y) / (_closestPoint.x - transform.position.x)));
         _status = PhoenixStatus.FLEE;
     }

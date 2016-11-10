@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     protected Transform _spriteTransform;
     protected ShowItems _showItems;
     protected GameObject _touchesGroundHitbox;
+    protected Health _playerHealth;
 
     public delegate void OnFallingHandler();
     public event OnFallingHandler OnFalling;
@@ -51,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        _anim = GameObject.Find("CharacterSprite").GetComponent<Animator>();
+        _anim = StaticObjects.GetPlayer().GetComponentInChildren<Animator>();
         _playerSpriteRenderer = GameObject.Find("CharacterSprite").GetComponent<SpriteRenderer>();
         _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
         _playerBoxCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<BoxCollider2D>();
@@ -62,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
         _basicAttackBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
         _showItems = GameObject.Find("ItemCanvas").GetComponent<ShowItems>();
         _touchesGroundHitbox = GameObject.Find("CharacterTouchesGround");
+        _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
 
         _inputManager.OnMove += OnMove;
         _inputManager.OnJump += OnJump;
@@ -71,6 +73,7 @@ public class PlayerMovement : MonoBehaviour
         _inputManager.OnStop += OnStop;
         _inputManager.OnCrouch += OnCrouch;
         _inputManager.OnStandingUp += OnStandingUp;
+        _playerHealth.OnDeath += OnDeath;
 
         _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
     }
@@ -130,6 +133,7 @@ public class PlayerMovement : MonoBehaviour
         return _touchesGroundHitbox.GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform;
     }
 
+    // À modifier absolument
     private void Update()
     {
         _anim.SetFloat("Speed", Mathf.Abs(_rigidbody.velocity.x));
@@ -170,5 +174,12 @@ public class PlayerMovement : MonoBehaviour
     {
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, verticalVelocity);
+    }
+
+    private void OnDeath()
+    {
+        _anim.SetBool("IsDamaged", true);
+        _anim.SetBool("IsDead", true);
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 }

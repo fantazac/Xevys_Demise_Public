@@ -14,7 +14,7 @@ public class ActivateArtefactOnBossDefeated : MonoBehaviour {
         {
             gameObject.transform.parent.gameObject.SetActive(false);
             _onBossDefeated = _artefactGuardian.GetComponent<OnBossDefeated>();
-            _onBossDefeated.onDefeated += OnGuardianDefeated;
+            _onBossDefeated.OnDefeated += OnGuardianDefeated;
         }
     }
 
@@ -22,7 +22,7 @@ public class ActivateArtefactOnBossDefeated : MonoBehaviour {
     {
         if (_artefactGuardian != null && _onBossDefeated != null)
         {
-            _onBossDefeated.onDefeated -= OnGuardianDefeated;
+            _onBossDefeated.OnDefeated -= OnGuardianDefeated;
         }
     }
 
