@@ -12,32 +12,25 @@ public class ScaleHealthBar : MonoBehaviour
     private void Start()
     {
         _health = StaticObjects.GetPlayer().GetComponent<Health>();
-        _healthBar = GameObject.Find("HealthBar").GetComponent<Transform>();
+        _healthBar = StaticObjects.GetHealthBar().GetComponent<Transform>();
         _initialRectangleX = _healthBar.localScale.x;
 
         _health.OnHealthChanged += OnHealthChanged;
     }
 
-    private void FixedUpdate()
-    {
-        if (_healthBarIsScaling)
-        {
-            Vector3 finalSize = new Vector3(_initialRectangleX - (100 - ((_health.HealthPoint - 10) * 100) / 1000) * _initialRectangleX / 100,
-                    _healthBar.localScale.y, _healthBar.localScale.z);
-            _healthBar.localScale = Vector3.Lerp(_healthBar.localScale, finalSize, Time.fixedDeltaTime);
-
-            if (_healthBar.localScale == finalSize)
-            {
-                _healthBarIsScaling = false;
-            }
-        }
-    }
-
     private void OnHealthChanged(int hitPoints)
     {
-        if (_healthBar.localScale.x > 0)
+        StartCoroutine("ScaleHealthBarCouroutine", 
+            new Vector3(_initialRectangleX - (100 - ((_health.HealthPoint - 10) * 100) / 1000) * _initialRectangleX / 100,
+                   _healthBar.localScale.y, _healthBar.localScale.z));
+    }
+
+    private IEnumerator ScaleHealthBarCouroutine(Vector3 finalSize)
+    {
+        while (_healthBar.localScale != finalSize)
         {
-            _healthBarIsScaling = true;
+            _healthBar.localScale = Vector3.Lerp(_healthBar.localScale, finalSize, Time.fixedDeltaTime);
+            yield return null;
         }
     }
 }
