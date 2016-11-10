@@ -29,3 +29,6 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+Assets/Plugins/Mono.Data.Sqlite.dll.meta
+Assets/Plugins/System.Data.dll.meta
+Assets/Plugins/sqlite3.dll.meta

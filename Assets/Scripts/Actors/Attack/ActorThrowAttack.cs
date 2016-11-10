@@ -53,6 +53,12 @@ public class ActorThrowAttack : MonoBehaviour
     public delegate void OnAxeAmmoUsedHandler(int ammoUsedOnThrow);
     public event OnAxeAmmoUsedHandler OnAxeAmmoUsed;
 
+    public delegate void OnKnifeThrownHandler(GameObject knife);
+    public event OnKnifeThrownHandler OnKnifeThrown;
+
+    public delegate void OnAxeThrownHandler(GameObject axe);
+    public event OnAxeThrownHandler OnAxeThrown;
+
     private void Start()
     {
         _inputManager = GetComponentInChildren<InputManager>();
@@ -110,6 +116,15 @@ public class ActorThrowAttack : MonoBehaviour
         newWeapon.transform.eulerAngles = initialRotation;
         newWeapon.GetComponent<Rigidbody2D>().velocity = initialVelocity;
         newWeapon.transform.localScale = initialDirection;
+
+        if (newWeapon.tag == "Knife")
+        {
+            OnKnifeThrown(newWeapon);
+        }
+        else if (newWeapon.tag == "Axe")
+        {
+            OnAxeThrown(newWeapon);
+        }
     }
 
     private void OnKnifeAttack()
@@ -121,8 +136,8 @@ public class ActorThrowAttack : MonoBehaviour
                 new Vector3(),
                 new Vector2(_flipPlayer.IsFacingRight ? _knifeSpeed : -_knifeSpeed, 0),
                 new Vector2(_flipPlayer.IsFacingRight ? _knife.transform.localScale.x : -_knife.transform.localScale.x, _knife.transform.localScale.y));
-
             OnKnifeAmmoUsed(_ammoUsedPerThrow);
+
         }
     }
 
@@ -135,7 +150,6 @@ public class ActorThrowAttack : MonoBehaviour
                 new Vector3(0, 0, _axeInitialRotation),
                 new Vector2(_flipPlayer.IsFacingRight ? _axeHorinzontalSpeed : -_axeHorinzontalSpeed, _axeVerticalSpeed),
                 new Vector2(_axe.transform.localScale.x, _flipPlayer.IsFacingRight ? _axe.transform.localScale.y : -_axe.transform.localScale.y));
-
             OnAxeAmmoUsed(_ammoUsedPerThrow);
         }
     }
