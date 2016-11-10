@@ -5,7 +5,6 @@ public class ScaleHealthBar : MonoBehaviour
 {
 
     private float _initialRectangleX;
-    private bool _healthBarIsScaling = false;
     private Transform _healthBar;
     private Health _health;
 
