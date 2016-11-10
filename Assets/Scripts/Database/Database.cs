@@ -30,6 +30,7 @@ public class Database : MonoBehaviour
 
     private void Start()
     {
+        File.Copy(Path.Combine(Application.dataPath, "Resources/Database.db"), Path.Combine(Application.persistentDataPath, "Database.db"), true);
         string conn = "URI=file:" + Application.persistentDataPath + "/Database.db";
         _dbconn = (IDbConnection)new SqliteConnection(conn);
         _dbcmd = _dbconn.CreateCommand();
