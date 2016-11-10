@@ -57,7 +57,7 @@ public class ActorThrowAttack : MonoBehaviour
     public event OnKnifeThrownHandler OnKnifeThrown;
 
     public delegate void OnAxeThrownHandler(GameObject axe);
-    public event OnKnifeThrownHandler OnAxeThrown;
+    public event OnAxeThrownHandler OnAxeThrown;
 
     private void Start()
     {
@@ -108,7 +108,7 @@ public class ActorThrowAttack : MonoBehaviour
         return _munitions.AxeAmmo > 0;
     }
 
-    private GameObject InstantiateThrowWeapon(GameObject weapon, Vector2 initialPosition, Vector3 initialRotation, Vector2 initialVelocity, Vector2 initialDirection)
+    private void InstantiateThrowWeapon(GameObject weapon, Vector2 initialPosition, Vector3 initialRotation, Vector2 initialVelocity, Vector2 initialDirection)
     {
         GameObject newWeapon;
 
@@ -116,6 +116,7 @@ public class ActorThrowAttack : MonoBehaviour
         newWeapon.transform.eulerAngles = initialRotation;
         newWeapon.GetComponent<Rigidbody2D>().velocity = initialVelocity;
         newWeapon.transform.localScale = initialDirection;
+
         if (newWeapon.tag == "Knife")
         {
             OnKnifeThrown(newWeapon);
@@ -124,7 +125,6 @@ public class ActorThrowAttack : MonoBehaviour
         {
             OnAxeThrown(newWeapon);
         }
-        return newWeapon;
     }
 
     private void OnKnifeAttack()
