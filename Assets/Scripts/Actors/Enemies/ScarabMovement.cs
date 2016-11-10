@@ -4,229 +4,74 @@ using System.Collections;
 public class ScarabMovement : MonoBehaviour
 {
 
-    [SerializeField]
-    private Vector3[] _points;
+    protected Vector3[] _points;
 
-    [SerializeField]
-    private bool[] _rotationDirections;
+    protected const float MAX_ROTATION = 90f;
+    protected const float ROTATION_SPEED = 1.8f;
+    protected const float MOVEMENT_SPEED = 1f;
 
-    [SerializeField]
-    private bool allowBacktracking = false;
+    protected float _halfOfScarabWidth;
 
-    [SerializeField]
-    private GameObject _attachedWall;
+    protected bool _canRotate = true;
+    protected float _rotateCount = 0;
+    protected float _frameRotation = 0;
 
-    [SerializeField]
-    private ScarabDirection[] _initialDirections;
+    protected int _selectedTargetPoint;
 
-    private const float MAX_ROTATION = 90;
-    private const float ROTATION_SPEED = 5;
+    protected Vector3 _rotationDirection;
 
-    private Vector3 _wallPosition;
-    private Vector3 _wallScale;
+    protected Vector3 _target;
 
-    private bool goesBackwards = false;
-    private bool _rotate = false;
-    private bool _currentRotateDirection = false;
-    private float _rotateCount = 0;
-
-    private int _currentPoint;
-
-    private Vector3 _target;
-
-    private void Start()
+    protected void StartMovementTowardsNewTarget()
     {
-        if (_attachedWall != null)
-        {
-            _points = new Vector3[4];
-
-            _wallPosition = _attachedWall.GetComponent<Transform>().position;
-            _wallScale = _attachedWall.GetComponent<Transform>().localScale;
-
-            _points[0] = new Vector2(_wallPosition.x - _wallScale.x / 2 - transform.localScale.x / 2, _wallPosition.y - _wallScale.y / 2 - transform.localScale.y / 2);
-            _points[1] = new Vector2(_wallPosition.x + _wallScale.x / 2 + transform.localScale.x / 2, _wallPosition.y - _wallScale.y / 2 - transform.localScale.y / 2);
-            _points[2] = new Vector2(_wallPosition.x + _wallScale.x / 2 + transform.localScale.x / 2, _wallPosition.y + _wallScale.y / 2 + transform.localScale.y / 2);
-            _points[3] = new Vector2(_wallPosition.x - _wallScale.x / 2 - transform.localScale.x / 2, _wallPosition.y + _wallScale.y / 2 + transform.localScale.y / 2);
-
-            _currentPoint = Random.Range(0, _points.Length);
-
-            _target = _points[_currentPoint];
-            transform.position = _points[_currentPoint];
-            FindTarget();
-            SetSpriteDirection();
-        }
-        else if (_points.Length > 0)
-        {
-            _currentPoint = Random.Range(0, _points.Length - 1);
-
-            _target = _points[_currentPoint];
-            transform.position = _points[_currentPoint];
-            FindTarget();
-            SetSpriteDirection();
-        }
-
+        FindTarget();
+        StartCoroutine("MoveTowardsTarget");
     }
 
-    private void Update()
+    protected void MovementFinished()
     {
-        if (_attachedWall != null)
-        {
-            RectangularMovementUpdate();
-        }
-        else
-        {
-            IrregularMovementUpdate();
-        }
+        StartMovementTowardsNewTarget();
     }
 
-    private void RectangularMovementUpdate()
+    protected void RotationFinished()
     {
-        if (_target != transform.position)
-        {
-            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _target, 1 * Time.deltaTime);
-            if (Vector3.Distance(_target, transform.position) <= transform.localScale.x / ROTATION_SPEED)
-            {
-                _rotate = true;
-            }
-        }
-        else
-        {
-            FindTarget();
-        }
-
-        if (_rotate)
-        {
-            if (_rotateCount < MAX_ROTATION)
-            {
-                _rotateCount += ROTATION_SPEED;
-                transform.Rotate(Vector3.forward * ROTATION_SPEED);
-            }
-
-            else
-            {
-                _rotate = false;
-                _rotateCount = 0;
-            }
-        }
+        _rotateCount = 0;
+        _canRotate = true;
     }
 
-    private void IrregularMovementUpdate()
+    protected IEnumerator Rotate()
     {
-        if (_target != transform.position)
+        while (true)
         {
-            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _target, 1 * Time.deltaTime);
-            if (Vector3.Distance(_target, transform.position) <= transform.localScale.x / ROTATION_SPEED && _currentPoint != 0 && _currentPoint != _points.Length - 1)
+            _frameRotation = MAX_ROTATION * Time.deltaTime * ROTATION_SPEED;
+            if (_rotateCount + _frameRotation > MAX_ROTATION)
             {
-                _rotate = true;
-                _currentRotateDirection = _rotationDirections[_currentPoint];
-                if (!goesBackwards)
-                {
-                    _currentRotateDirection = !_currentRotateDirection;
-                }
+                transform.Rotate(_rotationDirection * (MAX_ROTATION - _rotateCount));
+                break;
             }
-        }
-        else
-        {
-            FindTarget();
-        }
+            _rotateCount += _frameRotation;
+            transform.Rotate(_rotationDirection * _frameRotation);
 
-        if (_rotate)
-        {
-            if (_rotateCount < MAX_ROTATION)
-            {
-                _rotateCount += ROTATION_SPEED;
-                if (_currentRotateDirection)
-                {
-                    transform.Rotate(Vector3.forward * ROTATION_SPEED);
-                }
-                else
-                {
-                    transform.Rotate(Vector3.back * ROTATION_SPEED);
-                }
-            }
-            else
-            {
-                _rotate = false;
-                _rotateCount = 0;
-            }
+            yield return null;
         }
+        RotationFinished();
     }
 
-    private void FindTarget()
+    protected bool IsCloseToTarget()
     {
-        if (_target == transform.position)
-        {
-            if (allowBacktracking)
-            {
-                if (goesBackwards)
-                {
-                    if (_currentPoint == 0)
-                    {
-                        GetComponent<SpriteRenderer>().flipX = !GetComponent<SpriteRenderer>().flipX;
-                        goesBackwards = false;
-                        _target = _points[++_currentPoint];
-                    }
-                    else
-                    {
-                        _target = _points[--_currentPoint];
-                    }
-
-                }
-                else
-                {
-                    if (_currentPoint == _points.Length - 1)
-                    {
-                        GetComponent<SpriteRenderer>().flipX = !GetComponent<SpriteRenderer>().flipX;
-                        goesBackwards = true;
-                        _target = _points[--_currentPoint];
-                    }
-                    else
-                    {
-                        _target = _points[++_currentPoint];
-                    }
-                }
-            }
-            else
-            {
-                _target = _points[(++_currentPoint) % _points.Length];
-            }
-        }
+        return Vector3.Distance(_target, transform.position) < _halfOfScarabWidth;
     }
 
-    public void SetSpriteDirection()
-    {
-        if (_attachedWall != null)
-        {
-            transform.Rotate(Vector3.forward * 90 * (_currentPoint + 1));
-        }
-        else
-        {
-            if (_initialDirections[_currentPoint] == ScarabDirection.Down)
-            {
-                transform.Rotate(Vector3.forward * 90);
-            }
-            else if (_initialDirections[_currentPoint] == ScarabDirection.Up)
-            {
-                transform.Rotate(Vector3.forward * -90);
-            }
-            else if (_initialDirections[_currentPoint] == ScarabDirection.Right)
-            {
-                transform.Rotate(Vector3.forward * 180);
-            }
-        }
-    }
+    protected virtual void Start() { }
+    protected virtual void StartRotation() { }
+    protected virtual IEnumerator MoveTowardsTarget() { yield return null; }
+    protected virtual void InitializeSpriteDirection() { }
+    protected virtual bool CanStartRotation() { return _canRotate; }
+    protected virtual void FindTarget() { }
 
     public bool OnBottomOfPlatform()
     {
         return transform.rotation.eulerAngles.z > 170 || transform.rotation.eulerAngles.z < -170;
     }
-}
 
-public enum ScarabDirection
-{
-    Up,
-    Left,
-    Down,
-    Right,
-    Empty,
 }

@@ -9,20 +9,17 @@ public class SpikeDamageManager : MonoBehaviour
     private int _baseDamage = 100;
 
     private Health _health;
-    private KnockbackOnDamageTaken _knockback;
 
     private void Start()
     {
         _health = StaticObjects.GetPlayer().GetComponent<Health>();
-        _knockback = StaticObjects.GetPlayer().GetComponent<KnockbackOnDamageTaken>();
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (CanAttackPlayer(collision))
         {
-            _health.Hit(_baseDamage);
-            _knockback.KnockbackPlayer(transform.position);
+            _health.Hit(_baseDamage, transform.position);
         }
     }
 

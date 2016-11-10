@@ -8,8 +8,8 @@ public class OnBossDefeated : MonoBehaviour
     private BoxCollider2D _boxCollider;
     private PolygonCollider2D _polygonCollider;
 
-    public delegate void OnDefeated();
-    public event OnDefeated onDefeated;
+    public delegate void OnDefeatedHandler();
+    public event OnDefeatedHandler OnDefeated;
 
     private void Start()
     {
@@ -26,7 +26,7 @@ public class OnBossDefeated : MonoBehaviour
             _isDead = true;
             _boxCollider.enabled = false;
             _polygonCollider.enabled = false;
-            onDefeated();
+            OnDefeated();
         }
     }
 }
