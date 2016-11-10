@@ -105,6 +105,6 @@ public class BatMovement : MonoBehaviour
 
     public bool CloseToTop()
     {
-        return Vector2.Distance((Vector2)transform.position, _target) < 1;
+        return _initialPosition.y - transform.position.y < 1;
     }
 }
