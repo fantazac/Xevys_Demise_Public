@@ -3,7 +3,6 @@ using System.Collections;
 
 public class UIAnimationManager : MonoBehaviour
 {
-    [SerializeField]
     private PauseMenuInputs _pauseMenuInputs;
 
     private GameObject _uIPanel;
@@ -12,7 +11,8 @@ public class UIAnimationManager : MonoBehaviour
 
     private void Start()
     {
-        _uIPanel = GameObject.Find("Canvas").transform.GetChild(1).gameObject;
+        _pauseMenuInputs = StaticObjects.GetPauseMenu().GetComponent<PauseMenuInputs>();
+        _uIPanel = StaticObjects.GetPanelUI(); 
         _animator = GetComponent<Animator>();
         _pauseMenuInputs.TriggerAnimations += FadeUI;
         _active = true;
@@ -20,7 +20,6 @@ public class UIAnimationManager : MonoBehaviour
 
     private void FadeUI()
     {
-    Debug.Log(_active);
         if (!_active)
         {
             FadeIn();

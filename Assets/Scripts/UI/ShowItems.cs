@@ -11,11 +11,12 @@ public class ShowItems : MonoBehaviour
     private Text _knifeText;
     private Text _axeText;
     
-    private Image _selectedWeaponHighlight;
-    private Image _selectedIronBootsHighlight;
+    private Image _knifeHighlight;
     private Image _knifeSpriteRenderer;
+    private Image _axeHighlight;
     private Image _axeSpriteRenderer;
     private Image _featherSpriteRenderer;
+    private Image _ironBootsHighlight;
     private Image _ironBootsSpriteRenderer;
     private Image _bubbleSpriteRenderer;
     private Image _fireProofArmorRenderer;
@@ -33,19 +34,19 @@ public class ShowItems : MonoBehaviour
         _axeText = GameObject.Find("AxeAmmo").GetComponent<Text>();
 
         GameObject itemCanvas = GameObject.Find("ItemCanvas");
-        _knifeSpriteRenderer = itemCanvas.transform.GetChild(0).GetComponent<Image>();  
-        _axeSpriteRenderer = itemCanvas.transform.GetChild(1).GetComponent<Image>();
-        _featherSpriteRenderer = itemCanvas.transform.GetChild(2).GetComponent<Image>();
-        _ironBootsSpriteRenderer = itemCanvas.transform.GetChild(3).GetComponent<Image>();
-        _bubbleSpriteRenderer = itemCanvas.transform.GetChild(4).GetComponent<Image>();
-        _fireProofArmorRenderer = itemCanvas.transform.GetChild(5).GetComponent<Image>();
-        _earthArtefactRenderer = itemCanvas.transform.GetChild(6).GetComponent<Image>();
-        _airArtefactRenderer = itemCanvas.transform.GetChild(7).GetComponent<Image>();
-        _waterArtefactRenderer = itemCanvas.transform.GetChild(8).GetComponent<Image>();
-        _fireArtefactRenderer = itemCanvas.transform.GetChild(9).GetComponent<Image>();
-
-        /*_selectedWeaponHighlight = itemCanvas.transform.GetChild(10).GetComponent<Image>();
-        _selectedIronBootsHighlight = itemCanvas.transform.GetChild(11).GetComponent<Image>();*/
+        _knifeHighlight = itemCanvas.transform.GetChild(0).GetComponent<Image>();
+        _knifeSpriteRenderer = itemCanvas.transform.GetChild(1).GetComponent<Image>();
+        _axeHighlight = itemCanvas.transform.GetChild(2).GetComponent<Image>();
+        _axeSpriteRenderer = itemCanvas.transform.GetChild(3).GetComponent<Image>();
+        _featherSpriteRenderer = itemCanvas.transform.GetChild(4).GetComponent<Image>();
+        _ironBootsHighlight = itemCanvas.transform.GetChild(5).GetComponent<Image>();
+        _ironBootsSpriteRenderer = itemCanvas.transform.GetChild(6).GetComponent<Image>();
+        _bubbleSpriteRenderer = itemCanvas.transform.GetChild(7).GetComponent<Image>();
+        _fireProofArmorRenderer = itemCanvas.transform.GetChild(8).GetComponent<Image>();
+        _earthArtefactRenderer = itemCanvas.transform.GetChild(9).GetComponent<Image>();
+        _airArtefactRenderer = itemCanvas.transform.GetChild(10).GetComponent<Image>();
+        _waterArtefactRenderer = itemCanvas.transform.GetChild(11).GetComponent<Image>();
+        _fireArtefactRenderer = itemCanvas.transform.GetChild(12).GetComponent<Image>();
 
         _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
         _munitions = StaticObjects.GetPlayer().GetComponent<PlayerThrowingWeaponsMunitions>();
@@ -66,8 +67,9 @@ public class ShowItems : MonoBehaviour
 
         _knifeText.enabled = false;
         _axeText.enabled = false;
-        /*_selectedWeaponHighlight.enabled = false;
-        _selectedIronBootsHighlight.enabled = false;*/
+        _knifeHighlight.enabled = false;
+        _axeHighlight.enabled = false;
+        _ironBootsHighlight.enabled = false;
         _knifeSpriteRenderer.enabled = false;
         _axeSpriteRenderer.enabled = false;
         _featherSpriteRenderer.enabled = false;
@@ -78,9 +80,6 @@ public class ShowItems : MonoBehaviour
         _airArtefactRenderer.enabled = false;
         _waterArtefactRenderer.enabled = false;
         _fireArtefactRenderer.enabled = false;
-
-        /*_selectedIronBootsHighlight.transform.position = new Vector3(_ironBootsSpriteRenderer.transform.position.x,
-            _ironBootsSpriteRenderer.transform.position.y, _ironBootsSpriteRenderer.transform.position.z + Z_OFFSET_ITEM_SELECT);*/
     }
 
     private void KnifeAmmoChange(int total)
@@ -95,19 +94,18 @@ public class ShowItems : MonoBehaviour
 
     public void SelectKnife()
     {
-        /*_selectedWeaponHighlight.transform.position = new Vector3(_knifeSpriteRenderer.transform.position.x,
-            _knifeSpriteRenderer.transform.position.y, _knifeSpriteRenderer.transform.position.z + Z_OFFSET_ITEM_SELECT);*/
+        _knifeHighlight.enabled = true;
+        _axeHighlight.enabled = false;
     }
 
     public void SelectAxe()
     {
-        /*_selectedWeaponHighlight.transform.position = new Vector3(_axeSpriteRenderer.transform.position.x,
-            _axeSpriteRenderer.transform.position.y, _axeSpriteRenderer.transform.position.z + Z_OFFSET_ITEM_SELECT);*/
+        _axeHighlight.enabled = true;
+        _knifeHighlight.enabled = false;
     }
 
     private void OnEnableKnife()
     {
-        /*_selectedWeaponHighlight.enabled = true;*/
         _knifeSpriteRenderer.enabled = true;
         _knifeText.enabled = true;
         SelectKnife();
@@ -115,7 +113,6 @@ public class ShowItems : MonoBehaviour
 
     private void OnEnableAxe()
     {
-        /*_selectedWeaponHighlight.enabled = true;*/
         _axeSpriteRenderer.enabled = true;
         _axeText.enabled = true;
         SelectAxe();
@@ -123,7 +120,7 @@ public class ShowItems : MonoBehaviour
 
     public void IronBootsSelect()
     {
-        /*_selectedIronBootsHighlight.enabled = !_selectedIronBootsHighlight.enabled;*/
+        _ironBootsHighlight.enabled = !_ironBootsHighlight.enabled;
     }
 
     private void OnEnableFeather()
