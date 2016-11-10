@@ -4,7 +4,7 @@ using System.Collections;
 public class ScaleHealthBar : MonoBehaviour
 {
     [SerializeField]
-    private const float FINAL_SIZE_MARGIN = 0.0002f;
+    private const float FINAL_SIZE_MARGIN = 0.00015f;
     [SerializeField]
     private const int SCALING_SPEED = 4;
 
