@@ -15,7 +15,7 @@ public class PauseMenuInputs : MonoBehaviour
 
     private void Start()
     {
-        _inputManager = GameObject.Find("Character").GetComponentInChildren<InputManager>();
+        _inputManager = StaticObjects.GetPlayer().GetComponentInChildren<InputManager>();
         _inputManager.OnPause += PauseMenuTriggered;
         _canSlide = true;
     }

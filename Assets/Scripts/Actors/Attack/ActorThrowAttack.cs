@@ -117,11 +117,11 @@ public class ActorThrowAttack : MonoBehaviour
         newWeapon.GetComponent<Rigidbody2D>().velocity = initialVelocity;
         newWeapon.transform.localScale = initialDirection;
 
-        if (newWeapon.tag == "Knife")
+        if (newWeapon.tag == "Knife" && OnKnifeThrown != null)
         {
             OnKnifeThrown(newWeapon);
         }
-        else if (newWeapon.tag == "Axe")
+        else if (newWeapon.tag == "Axe" && OnKnifeThrown != null)
         {
             OnAxeThrown(newWeapon);
         }

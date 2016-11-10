@@ -3,11 +3,11 @@ using System.Collections;
 
 public class PauseMenuFadeListener : MonoBehaviour
 {
-    [SerializeField]
     private PauseMenuAnimationManager _pauseMenuAnimationManager;
 
     void Start()
     {
+        _pauseMenuAnimationManager = StaticObjects.GetPauseMenu().GetComponent<PauseMenuAnimationManager>();
         _pauseMenuAnimationManager.OnFade += Fade;
     }
 
