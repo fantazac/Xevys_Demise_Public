@@ -7,7 +7,7 @@ public class PauseMenuFadeListener : MonoBehaviour
 
     void Start()
     {
-        _pauseMenuAnimationManager = StaticObjects.GetPauseMenu().GetComponent<PauseMenuAnimationManager>();
+        _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
         _pauseMenuAnimationManager.OnFade += Fade;
     }
 
