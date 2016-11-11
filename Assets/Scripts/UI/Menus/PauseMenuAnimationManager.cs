@@ -13,7 +13,7 @@ public class PauseMenuAnimationManager : MonoBehaviour
 
     private void Start()
     {
-        _pauseMenuInputs = GetComponent<PauseMenuInputs>();
+        _pauseMenuInputs = GetComponentInChildren<PauseMenuInputs>();
         _pauseMenuInputs.TriggerAnimations += AnimatePauseMenu;
         _slideAnimator = GetComponent<Animator>();
         _active = false;
@@ -48,12 +48,6 @@ public class PauseMenuAnimationManager : MonoBehaviour
         _slideAnimator.SetTrigger("SlideIn");
         _active = true;
         _pauseMenuInputs.CanSlide = false;
-    }
-
-    private void EnableIdleAnimation()
-    {
-        _slideAnimator.SetTrigger("Idle");
-        _slideAnimator.SetTrigger("Unactive");
     }
 
     private void SlideOut()

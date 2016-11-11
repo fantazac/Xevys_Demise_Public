@@ -11,7 +11,7 @@ public class UIAnimationManager : MonoBehaviour
 
     private void Start()
     {
-        _pauseMenuInputs = StaticObjects.GetPauseMenu().GetComponent<PauseMenuInputs>();
+        _pauseMenuInputs = StaticObjects.GetPauseMenuPanel().GetComponentInChildren<PauseMenuInputs>();
         _uIPanel = StaticObjects.GetPanelUI(); 
         _animator = GetComponent<Animator>();
         _pauseMenuInputs.TriggerAnimations += FadeUI;
