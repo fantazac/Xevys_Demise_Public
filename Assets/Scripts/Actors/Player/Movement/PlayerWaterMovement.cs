@@ -72,7 +72,7 @@ public class PlayerWaterMovement : PlayerMovement
 
     public override bool IsJumping()
     {
-        return !((GetComponent<Rigidbody2D>().velocity.y == 0 && _isFloating) || GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround);
+        return !((GetComponent<Rigidbody2D>().velocity.y == 0 && _isFloating) || _playerTouchesGround.OnGround);
     }
 
     protected override void UpdateMovement()
