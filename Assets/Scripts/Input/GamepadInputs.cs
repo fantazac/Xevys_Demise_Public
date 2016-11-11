@@ -58,16 +58,10 @@ public class GamepadInputs: MonoBehaviour
     private bool _upButtonReady = true;
     private bool _startButtonReady = true;
 
-    // TODO faire de quoi de propre
-    private ActorBasicAttack _actorBasicAttack;
-    private PlayerGroundMovement _playerGroundMovement;
-
     private void Start()
     {
         _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
         _playerHealth.OnDeath += OnDeath;
-        _actorBasicAttack = StaticObjects.GetPlayer().GetComponent<ActorBasicAttack>();
-        _playerGroundMovement = StaticObjects.GetPlayer().GetComponent<PlayerGroundMovement>();
     }
 
     private void Update()
