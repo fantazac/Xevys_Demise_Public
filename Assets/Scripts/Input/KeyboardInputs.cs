@@ -62,11 +62,11 @@ public class KeyboardInputs : MonoBehaviour {
         {
             OnBasicAttack();
         }
-        else if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.S) && !_actorBasicAttack.IsAttacking())
+        else if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.S))
         {
             OnMove(Vector3.left, false);
         }
-        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S) && !_actorBasicAttack.IsAttacking())
+        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S))
         {
             OnMove(Vector3.right, true);
         }
@@ -90,8 +90,7 @@ public class KeyboardInputs : MonoBehaviour {
             OnJump();
         }
 
-        if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && 
-            ((!_actorBasicAttack.IsAttacking() && !_playerGroundMovement.IsCrouching) || _playerGroundMovement.IsCrouching))
+        if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
         {
             OnCrouch();
         }

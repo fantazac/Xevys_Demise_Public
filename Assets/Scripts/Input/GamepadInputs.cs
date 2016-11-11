@@ -80,7 +80,7 @@ public class GamepadInputs: MonoBehaviour
             OnBasicAttack();
         }
 
-        else if (Math.Abs(state.ThumbSticks.Left.X) > _joysticksXAxisDeadZone && !_actorBasicAttack.IsAttacking())
+        else if (Math.Abs(state.ThumbSticks.Left.X) > _joysticksXAxisDeadZone)
         {
             if (state.ThumbSticks.Left.X < 0)
             {
@@ -98,8 +98,7 @@ public class GamepadInputs: MonoBehaviour
 
         if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
         {
-            if (state.ThumbSticks.Left.Y < 0 &&
-            ((!_actorBasicAttack.IsAttacking() && !_playerGroundMovement.IsCrouching) || _playerGroundMovement.IsCrouching))
+            if (state.ThumbSticks.Left.Y < 0)
             {
                 OnUnderwaterControl(true);
                 OnCrouch();
