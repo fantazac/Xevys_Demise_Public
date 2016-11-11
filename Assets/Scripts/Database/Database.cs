@@ -4,6 +4,7 @@ using Mono.Data.Sqlite;
 using System.Data;
 using System.IO;
 using System;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class Database : MonoBehaviour
 {
@@ -13,25 +14,25 @@ public class Database : MonoBehaviour
     //TEMP
     private int _accountID = 0;
 
-    private int _nbScarabsKilled = 0;
-    private int _nbBatsKilled = 0;
-    private int _nbSkeltalsKilled = 0;
+    private int _nbScarabsKilled;
+    private int _nbBatsKilled;
+    private int _nbSkeltalsKilled;
 
-    private int _knifeEnabled = 0;
-    private int _axeEnabled = 0;
-    private int _featherEnabled = 0;
-    private int _bootsEnabled = 0;
-    private int _bubbleEnabled = 0;
-    private int _armorEnabled = 0;
-    private int _earthArtefactEnabled = 0;
-    private int _airArtefactEnabled = 0;
-    private int _waterArtefactEnabled = 0;
-    private int _fireArtefactEnabled = 0;
+    private int _knifeEnabled;
+    private int _axeEnabled;
+    private int _featherEnabled;
+    private int _bootsEnabled;
+    private int _bubbleEnabled;
+    private int _armorEnabled;
+    private int _earthArtefactEnabled;
+    private int _airArtefactEnabled;
+    private int _waterArtefactEnabled;
+    private int _fireArtefactEnabled;
 
     private void Start()
     {
-        File.Copy(Path.Combine(Application.dataPath, "Resources/Database.db"), Path.Combine(Application.persistentDataPath, "Database.db"), true);
-        string conn = "URI=file:" + Application.persistentDataPath + "/Database.db";
+        File.Copy(Path.Combine(Application.streamingAssetsPath, "Database.db"), Path.Combine(Application.persistentDataPath, "Database.db"), true);
+        string conn = "URI=file:" + Path.Combine(Application.persistentDataPath, "Database.db");
         _dbconn = (IDbConnection)new SqliteConnection(conn);
         _dbcmd = _dbconn.CreateCommand();
 
@@ -67,7 +68,6 @@ public class Database : MonoBehaviour
             "VALUES (0, \"{0}\")", username);
         _dbcmd.CommandText = sqlQuery;
         _dbcmd.ExecuteNonQuery();
-
         _dbconn.Close();
     }
 
@@ -81,7 +81,7 @@ public class Database : MonoBehaviour
         _dbconn.Close();
     }
 
-    private void SaveStats()
+    public void SaveStats()
     {
         _dbconn.Open();
         string sqlQuery = String.Format("UPDATE STATS SET NB_KILLED_SCARABS = {0}, NB_KILLED_BATS = {1}, NB_KILLED_SKELTALS = {2}, KNIFE_PICKED = {3}, AXE_PICKED = {4}, FEATHER_PICKED = {5}, BOOTS_PICKED = {6}, BUBBLE_PICKED = {7}, ARMOR_PICKED = {8}, ARTEFACT1_PICKED = {9}, ARTEFACT2_PICKED = {10}, ARTEFACT3_PICKED = {11}, ARTEFACT4_PICKED = {12} WHERE ACCOUNT_ID = {13}",
@@ -140,25 +140,21 @@ public class Database : MonoBehaviour
     private void EnableEarthArtefact()
     {
         _earthArtefactEnabled = 1;
-        SaveStats();
     }
 
     private void EnableAirArtefact()
     {
         _airArtefactEnabled = 1;
-        SaveStats();
     }
 
     private void EnableWaterArtefact()
     {
         _waterArtefactEnabled = 1;
-        SaveStats();
     }
 
     private void EnableFireArtefact()
     {
         _fireArtefactEnabled = 1;
-        SaveStats();
     }
 
 

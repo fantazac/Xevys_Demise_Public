@@ -5,48 +5,46 @@ using UnityEngine.UI;
 
 public class ShowItems : MonoBehaviour
 {
-    [SerializeField]
-    private const int Z_OFFSET_ITEM_SELECT = 5;
-
     private Text _knifeText;
     private Text _axeText;
     
     private Image _knifeHighlight;
-    private Image _knifeSpriteRenderer;
+    private Image _knifeImage;
     private Image _axeHighlight;
-    private Image _axeSpriteRenderer;
-    private Image _featherSpriteRenderer;
+    private Image _axeImage;
+    private Image _featherImage;
     private Image _ironBootsHighlight;
-    private Image _ironBootsSpriteRenderer;
-    private Image _bubbleSpriteRenderer;
-    private Image _fireProofArmorRenderer;
-    private Image _earthArtefactRenderer;
-    private Image _airArtefactRenderer;
-    private Image _waterArtefactRenderer;
-    private Image _fireArtefactRenderer;
+    private Image _ironBootsImage;
+    private Image _bubbleImage;
+    private Image _fireProofArmorImage;
+    private Image _earthArtefactImage;
+    private Image _airArtefactImage;
+    private Image _waterArtefactImage;
+    private Image _fireArtefactImage;
 
     private InventoryManager _inventoryManager;
     private PlayerThrowingWeaponsMunitions _munitions;
 
     private void Start()
     {
-        _knifeText = GameObject.Find("KnifeAmmo").GetComponent<Text>();
-        _axeText = GameObject.Find("AxeAmmo").GetComponent<Text>();
+        GameObject itemCanvas = StaticObjects.GetItemCanvas();
 
-        GameObject itemCanvas = GameObject.Find("ItemCanvas");
+        // Ne pas changer l'ordre : c'est celui des GameObjects de ItemCanvas
         _knifeHighlight = itemCanvas.transform.GetChild(0).GetComponent<Image>();
-        _knifeSpriteRenderer = itemCanvas.transform.GetChild(1).GetComponent<Image>();
+        _knifeImage = itemCanvas.transform.GetChild(1).GetComponent<Image>();
+        _knifeText = itemCanvas.transform.GetChild(1).GetComponentInChildren<Text>();
         _axeHighlight = itemCanvas.transform.GetChild(2).GetComponent<Image>();
-        _axeSpriteRenderer = itemCanvas.transform.GetChild(3).GetComponent<Image>();
-        _featherSpriteRenderer = itemCanvas.transform.GetChild(4).GetComponent<Image>();
+        _axeImage = itemCanvas.transform.GetChild(3).GetComponent<Image>();
+        _axeText = itemCanvas.transform.GetChild(3).GetComponentInChildren<Text>();
+        _featherImage = itemCanvas.transform.GetChild(4).GetComponent<Image>();
         _ironBootsHighlight = itemCanvas.transform.GetChild(5).GetComponent<Image>();
-        _ironBootsSpriteRenderer = itemCanvas.transform.GetChild(6).GetComponent<Image>();
-        _bubbleSpriteRenderer = itemCanvas.transform.GetChild(7).GetComponent<Image>();
-        _fireProofArmorRenderer = itemCanvas.transform.GetChild(8).GetComponent<Image>();
-        _earthArtefactRenderer = itemCanvas.transform.GetChild(9).GetComponent<Image>();
-        _airArtefactRenderer = itemCanvas.transform.GetChild(10).GetComponent<Image>();
-        _waterArtefactRenderer = itemCanvas.transform.GetChild(11).GetComponent<Image>();
-        _fireArtefactRenderer = itemCanvas.transform.GetChild(12).GetComponent<Image>();
+        _ironBootsImage = itemCanvas.transform.GetChild(6).GetComponent<Image>();
+        _bubbleImage = itemCanvas.transform.GetChild(7).GetComponent<Image>();
+        _fireProofArmorImage = itemCanvas.transform.GetChild(8).GetComponent<Image>();
+        _earthArtefactImage = itemCanvas.transform.GetChild(9).GetComponent<Image>();
+        _airArtefactImage = itemCanvas.transform.GetChild(10).GetComponent<Image>();
+        _waterArtefactImage = itemCanvas.transform.GetChild(11).GetComponent<Image>();
+        _fireArtefactImage = itemCanvas.transform.GetChild(12).GetComponent<Image>();
 
         _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
         _munitions = StaticObjects.GetPlayer().GetComponent<PlayerThrowingWeaponsMunitions>();
@@ -70,16 +68,16 @@ public class ShowItems : MonoBehaviour
         _knifeHighlight.enabled = false;
         _axeHighlight.enabled = false;
         _ironBootsHighlight.enabled = false;
-        _knifeSpriteRenderer.enabled = false;
-        _axeSpriteRenderer.enabled = false;
-        _featherSpriteRenderer.enabled = false;
-        _ironBootsSpriteRenderer.enabled = false;
-        _bubbleSpriteRenderer.enabled = false;
-        _fireProofArmorRenderer.enabled = false;
-        _earthArtefactRenderer.enabled = false;
-        _airArtefactRenderer.enabled = false;
-        _waterArtefactRenderer.enabled = false;
-        _fireArtefactRenderer.enabled = false;
+        _knifeImage.enabled = false;
+        _axeImage.enabled = false;
+        _featherImage.enabled = false;
+        _ironBootsImage.enabled = false;
+        _bubbleImage.enabled = false;
+        _fireProofArmorImage.enabled = false;
+        _earthArtefactImage.enabled = false;
+        _airArtefactImage.enabled = false;
+        _waterArtefactImage.enabled = false;
+        _fireArtefactImage.enabled = false;
     }
 
     private void KnifeAmmoChange(int total)
@@ -106,14 +104,14 @@ public class ShowItems : MonoBehaviour
 
     private void OnEnableKnife()
     {
-        _knifeSpriteRenderer.enabled = true;
+        _knifeImage.enabled = true;
         _knifeText.enabled = true;
         SelectKnife();
     }
 
     private void OnEnableAxe()
     {
-        _axeSpriteRenderer.enabled = true;
+        _axeImage.enabled = true;
         _axeText.enabled = true;
         SelectAxe();
     }
@@ -125,41 +123,41 @@ public class ShowItems : MonoBehaviour
 
     private void OnEnableFeather()
     {
-        _featherSpriteRenderer.enabled = true;
+        _featherImage.enabled = true;
     }
 
     private void OnEnableIronBoots()
     {
-        _ironBootsSpriteRenderer.enabled = true;
+        _ironBootsImage.enabled = true;
     }
 
     private void OnEnableBubble()
     {
-        _bubbleSpriteRenderer.enabled = true;
+        _bubbleImage.enabled = true;
     }
 
     private void OnEnableFireProofArmor()
     {
-        _fireProofArmorRenderer.enabled = true;
+        _fireProofArmorImage.enabled = true;
     }
 
     private void OnEnableEarthArtefact()
     {
-        _earthArtefactRenderer.enabled = true;
+        _earthArtefactImage.enabled = true;
     }
 
     private void OnEnableAirArtefact()
     {
-        _airArtefactRenderer.enabled = true;
+        _airArtefactImage.enabled = true;
     }
 
     private void OnEnableWaterArtefact()
     {
-        _waterArtefactRenderer.enabled = true;
+        _waterArtefactImage.enabled = true;
     }
 
     private void OnEnableFireArtefact()
     {
-        _fireArtefactRenderer.enabled = true;
+        _fireArtefactImage.enabled = true;
     }
 }

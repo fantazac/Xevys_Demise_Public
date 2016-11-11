@@ -18,64 +18,37 @@ public class PlayerWaterMovement : PlayerMovement
 
     protected override void OnMove(Vector3 vector, bool goesRight)
     {
-        if (!enabled)
+        if (enabled)
         {
-            return;
-        }
-
-        if (!_isKnockedBack)
-        {
-            _rigidbody.velocity = new Vector2(vector.x * _speed * SPEED_REDUCTION_FACTOR_IN_WATER, _rigidbody.velocity.y);
-            Flip(goesRight);
-        }
+            base.OnMove(new Vector2(vector.x * SPEED_REDUCTION_FACTOR_IN_WATER, vector.y), goesRight);
+        }       
     }
 
     protected override void OnJump()
     {
-        if (!enabled)
+        if (enabled)
         {
-            return;
-        }
-
-        if (!_isKnockedBack)
-        {
-            if (!IsJumping() && _inventoryManager.IronBootsActive)
+            if (!_isKnockedBack && !IsCrouching)
             {
-                _isFloating = false;
-
-                ChangePlayerVerticalVelocity(_jumpingSpeed * WATER_ACCELERATION_FACTOR);
-                ChangeGravity();
+                if (!IsJumping())
+                {
+                    _isFloating = false;
+                    if (_inventoryManager.IronBootsActive)
+                    {
+                        ChangePlayerVerticalVelocity(_jumpingSpeed * WATER_ACCELERATION_FACTOR);
+                    }
+                    else
+                    {
+                        ChangePlayerVerticalVelocity(_jumpingSpeed / (WATER_ACCELERATION_FACTOR - (PRECISION_MARGIN * WATER_ACCELERATION_FACTOR)));
+                    }
+                    ChangeGravity();
+                }
             }
-            else if (!IsJumping())
-            {
-                _isFloating = false;
-
-                ChangePlayerVerticalVelocity(_jumpingSpeed / (WATER_ACCELERATION_FACTOR - (PRECISION_MARGIN * WATER_ACCELERATION_FACTOR)));
-                ChangeGravity();
-            }
-        }
-    }
-
-    protected override void OnJumpDown()
-    {
-        if (!enabled)
-        {
-            return;
-        }
-
-        if (!IsJumping() && !_isKnockedBack && GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().OnFlyingPlatform)
-        {
-            GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesFlyingPlatform>().DisablePlatformHitbox();
-        }
+        }     
     }
 
     protected override void OnUnderwaterControl(bool goesDown)
     {
-        if (!enabled)
-        {
-            return;
-        }
-
         if ((goesDown && _inventoryManager.IronBootsActive) || (!goesDown && !_inventoryManager.IronBootsActive))
         {
             _waterYSpeed = INITIAL_WATER_FALLING_SPEED * WATER_ACCELERATION_FACTOR;
@@ -88,44 +61,13 @@ public class PlayerWaterMovement : PlayerMovement
 
     protected override void OnIronBootsEquip()
     {
-        if (!enabled)
+        if (enabled)
         {
-            return;
-        }
-
-        if (_inventoryManager.IronBootsEnabled)
-        {
-            _showItems.IronBootsSelect();
-            _inventoryManager.IronBootsActive = !_inventoryManager.IronBootsActive;
-        }
-    }
-
-    protected override void OnStop()
-    {
-        if (!enabled)
-        {
-            return;
-        }
-
-        if (!_isKnockedBack)
-        {
-            if (_rigidbody.velocity.x < 1 && GetComponent<FlipPlayer>().IsFacingRight || _rigidbody.velocity.x > -1 && !GetComponent<FlipPlayer>().IsFacingRight)
+            if (_inventoryManager.IronBootsEnabled)
             {
-                _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+                base.OnIronBootsEquip();
             }
-            else
-            {
-                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x * SPEED_REDUCTION_WHEN_STOPPING, _rigidbody.velocity.y);
-                if (GetComponent<FlipPlayer>().IsFacingRight)
-                {
-                    _rigidbody.AddForce(new Vector2(-LINEAR_DRAG, 0));
-                }
-                else
-                {
-                    _rigidbody.AddForce(new Vector2(LINEAR_DRAG, 0));
-                }
-            }
-        }
+        }      
     }
 
     public override bool IsJumping()
@@ -135,79 +77,75 @@ public class PlayerWaterMovement : PlayerMovement
 
     protected override void UpdateMovement()
     {
+        if (enabled)
+        {
+            if (_isKnockedBack && _knockbackCount == KNOCKBACK_DURATION)
+            {
+                _isKnockedBack = false;
+                _knockbackCount = 0;
+            }
+            else if (_isKnockedBack)
+            {
+                _knockbackCount++;
+            }
 
-        if (!enabled)
-        {
-            return;
-        }
+            if (_inventoryManager.IronBootsActive)
+            {
+                if (_rigidbody.velocity.y <= 0)
+                {
+                    _rigidbody.gravityScale = 0;
+                }
+                else
+                {
+                    _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE / GRAVITY_DIVISION_FACTOR_ON_GROUND_UNDERWATER;
+                }
 
-        if (_isKnockedBack && _knockbackCount == KNOCKBACK_DURATION)
-        {
-            _isKnockedBack = false;
-            _knockbackCount = 0;
-        }
-        else if (_isKnockedBack)
-        {
-            _knockbackCount++;
-        }
-
-        if (_inventoryManager.IronBootsActive)
-        {
-            if (_rigidbody.velocity.y <= 0)
+                if (_rigidbody.gravityScale == 0)
+                {
+                    if (_rigidbody.velocity.y > (-_waterYSpeed + PRECISION_MARGIN))
+                    {
+                        ChangePlayerVerticalVelocity(_rigidbody.velocity.y - PRECISION_MARGIN);
+                    }
+                    else if (_rigidbody.velocity.y < (-_waterYSpeed - PRECISION_MARGIN))
+                    {
+                        ChangePlayerVerticalVelocity(_rigidbody.velocity.y + PRECISION_MARGIN);
+                    }
+                    else
+                    {
+                        ChangePlayerVerticalVelocity(_rigidbody.velocity.y);
+                    }
+                }
+            }
+            else
             {
                 _rigidbody.gravityScale = 0;
-            }
-            else
-            {
-                _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE / GRAVITY_DIVISION_FACTOR_ON_GROUND_UNDERWATER;
-            }
 
-            if (_rigidbody.gravityScale == 0)
-            {
-                if (_rigidbody.velocity.y > (-_waterYSpeed + PRECISION_MARGIN))
+                if (_isFloating)
                 {
-                    ChangePlayerVerticalVelocity(_rigidbody.velocity.y - PRECISION_MARGIN);
+                    if (_rigidbody.velocity.y > MINIMUM_SPEED_TO_CONTINUE_JUMPING)
+                    {
+                        ChangePlayerVerticalVelocity(_rigidbody.velocity.y - MINIMUM_SPEED_TO_CONTINUE_JUMPING - PRECISION_MARGIN);
+                    }
+                    else
+                    {
+                        ChangePlayerVerticalVelocity(0);
+                    }
                 }
-                else if (_rigidbody.velocity.y < (-_waterYSpeed - PRECISION_MARGIN))
+                else if (_rigidbody.velocity.y > (_waterYSpeed + (PRECISION_MARGIN * 2)))
                 {
-                    ChangePlayerVerticalVelocity(_rigidbody.velocity.y + PRECISION_MARGIN);
+                    ChangePlayerVerticalVelocity(_rigidbody.velocity.y - (PRECISION_MARGIN * 5 * Time.deltaTime * 60));
+                }
+                else if (_rigidbody.velocity.y < (_waterYSpeed - (PRECISION_MARGIN * 2)))
+                {
+                    ChangePlayerVerticalVelocity(_rigidbody.velocity.y + (PRECISION_MARGIN * 5 * Time.deltaTime * 60));
                 }
                 else
                 {
-                    ChangePlayerVerticalVelocity(_rigidbody.velocity.y);
+                    ChangePlayerVerticalVelocity(_waterYSpeed);
                 }
             }
-        }
-        else
-        {
-            _rigidbody.gravityScale = 0;
 
-            if (_isFloating)
-            {
-                if (_rigidbody.velocity.y > MINIMUM_SPEED_TO_CONTINUE_JUMPING)
-                {
-                    ChangePlayerVerticalVelocity(_rigidbody.velocity.y - MINIMUM_SPEED_TO_CONTINUE_JUMPING - PRECISION_MARGIN);
-                }
-                else
-                {
-                    ChangePlayerVerticalVelocity(0);
-                }
-            }
-            else if (_rigidbody.velocity.y > (_waterYSpeed + (PRECISION_MARGIN * 2)))
-            {
-                ChangePlayerVerticalVelocity(_rigidbody.velocity.y - (PRECISION_MARGIN * 5 * Time.deltaTime * 60));
-            }
-            else if (_rigidbody.velocity.y < (_waterYSpeed - (PRECISION_MARGIN * 2)))
-            {
-                ChangePlayerVerticalVelocity(_rigidbody.velocity.y + (PRECISION_MARGIN * 5 * Time.deltaTime * 60));
-            }
-            else
-            {
-                ChangePlayerVerticalVelocity(_waterYSpeed);
-            }
-        }
-
-        _waterYSpeed = INITIAL_WATER_FALLING_SPEED;
+            _waterYSpeed = INITIAL_WATER_FALLING_SPEED;
+        }       
     }
-
 }
