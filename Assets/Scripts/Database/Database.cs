@@ -14,20 +14,20 @@ public class Database : MonoBehaviour
     //TEMP
     private int _accountID = 0;
 
-    private int _nbScarabsKilled = 0;
-    private int _nbBatsKilled = 0;
-    private int _nbSkeltalsKilled = 0;
+    private int _nbScarabsKilled;
+    private int _nbBatsKilled;
+    private int _nbSkeltalsKilled;
 
-    private int _knifeEnabled = 0;
-    private int _axeEnabled = 0;
-    private int _featherEnabled = 0;
-    private int _bootsEnabled = 0;
-    private int _bubbleEnabled = 0;
-    private int _armorEnabled = 0;
-    private int _earthArtefactEnabled = 0;
-    private int _airArtefactEnabled = 0;
-    private int _waterArtefactEnabled = 0;
-    private int _fireArtefactEnabled = 0;
+    private int _knifeEnabled;
+    private int _axeEnabled;
+    private int _featherEnabled;
+    private int _bootsEnabled;
+    private int _bubbleEnabled;
+    private int _armorEnabled;
+    private int _earthArtefactEnabled;
+    private int _airArtefactEnabled;
+    private int _waterArtefactEnabled;
+    private int _fireArtefactEnabled;
 
     private void Start()
     {
