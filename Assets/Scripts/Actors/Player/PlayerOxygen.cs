@@ -4,9 +4,11 @@ using System.Collections;
 public class PlayerOxygen : MonoBehaviour
 {
     [SerializeField]
-    private float TIME_BEFORE_OXYGEN_MISSING = 5;
+    private float _timeBeforeOxygenMissing = 5;
     [SerializeField]
-    private float INTERVAL_BETWEEN_HITS = 2;
+    private float _intervalBetweenHits = 1.5f;
+    [SerializeField]
+    private int _damageOnHit = 50;
 
     private PlayerFloatingInteraction _playerFloating;
     private Health _playerHealth;
@@ -39,7 +41,7 @@ public class PlayerOxygen : MonoBehaviour
     private IEnumerator OxygenManagerCoroutine()
     {
         _coroutineStarted = true;
-        while (_oxygenCounter < TIME_BEFORE_OXYGEN_MISSING)
+        while (_oxygenCounter < _timeBeforeOxygenMissing)
         {
             if (_playerGotOutOfWater)
             {
@@ -59,10 +61,10 @@ public class PlayerOxygen : MonoBehaviour
                 break;
             }
             _oxygenCounter += Time.deltaTime;
-            if (_oxygenCounter >= INTERVAL_BETWEEN_HITS)
+            if (_oxygenCounter >= _intervalBetweenHits)
             {
                 _oxygenCounter = 0;
-                _playerHealth.Hit(100, Vector2.zero);            
+                _playerHealth.Hit(_damageOnHit, Vector2.zero);            
             }
             yield return null;
         }
