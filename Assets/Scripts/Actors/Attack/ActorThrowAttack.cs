@@ -44,6 +44,8 @@ public class ActorThrowAttack : MonoBehaviour
     private ShowItems _showItems;
     private FlipPlayer _flipPlayer;
 
+    private WaitForSeconds _enableAttackDelay;
+
     private delegate void OnSelectedThrowAttackHandler();
     private event OnSelectedThrowAttackHandler OnSelectedThrowAttack;
 
@@ -76,6 +78,8 @@ public class ActorThrowAttack : MonoBehaviour
 
         _munitions = GetComponent<PlayerThrowingWeaponsMunitions>();
         _selectedWeapon = WeaponType.None;
+
+        _enableAttackDelay = new WaitForSeconds(_attackCooldown);
     }
 
     private void OnThrowAttack()
@@ -84,7 +88,7 @@ public class ActorThrowAttack : MonoBehaviour
         {
             _canUseThrowAttack = false;
             OnSelectedThrowAttack();
-            Invoke("EnableThrowAttack", _attackCooldown);
+            StartCoroutine("EnableThrowAttack");
         }
     }
 
@@ -93,8 +97,10 @@ public class ActorThrowAttack : MonoBehaviour
         return _canUseThrowAttack && _selectedWeapon != WeaponType.None;
     }
 
-    private void EnableThrowAttack()
+    private IEnumerator EnableThrowAttack()
     {
+        yield return _enableAttackDelay;
+
         _canUseThrowAttack = true;
     }
 

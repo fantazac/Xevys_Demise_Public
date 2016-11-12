@@ -10,8 +10,8 @@ public class FallDamage: MonoBehaviour
 
     private void Start()
     {
-        _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
-        _playerMovement = StaticObjects.GetPlayer().GetComponent<PlayerGroundMovement>();
+        _playerHealth = GetComponent<Health>();
+        _playerMovement = GetComponent<PlayerGroundMovement>();
 
         _playerMovement.OnFalling += OnFalling;
         _playerMovement.OnLanding += OnLanding;
@@ -27,8 +27,7 @@ public class FallDamage: MonoBehaviour
         if (_fallingCount > 1 && !PlayerState.IsInvincible && _playerHealth && _playerHealth.HealthPoint > 0)
         {
             _playerHealth.Hit((int)Mathf.Clamp(_fallingCount * 50, _fallingCount * 50, _playerHealth.HealthPoint), 
-                new Vector2(StaticObjects.GetPlayer().transform.position.x,
-                StaticObjects.GetPlayer().transform.position.y - 1));
+                new Vector2(transform.position.x, transform.position.y - 1));
         }
 
         _fallingCount = 0;
