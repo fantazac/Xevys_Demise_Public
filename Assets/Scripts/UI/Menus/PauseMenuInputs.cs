@@ -41,4 +41,9 @@ public class PauseMenuInputs : MonoBehaviour
     {
         _pauseMenuEventSystem.SetSelectedGameObject( isActive ? transform.GetChild(1).transform.GetChild(0).gameObject : null );
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
