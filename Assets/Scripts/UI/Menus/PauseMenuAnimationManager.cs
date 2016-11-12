@@ -7,6 +7,9 @@ public class PauseMenuAnimationManager : MonoBehaviour
     public delegate void OnFadeTriggerHandler(string fade);
     public event OnFadeTriggerHandler OnFade;
 
+    public delegate void OnPauseMenuStateChangedHandler(bool isActive);
+    public event OnPauseMenuStateChangedHandler OnPauseMenuStateChanged;
+
     private PauseMenuInputs _pauseMenuInputs;
     private Animator _slideAnimator;
     private bool _active;
@@ -35,11 +38,13 @@ public class PauseMenuAnimationManager : MonoBehaviour
         {
             SlideIn();
             FadeIn();
+            OnPauseMenuStateChanged(_active);
         }
         else
         {
             SlideOut();
             FadeOut();
+            OnPauseMenuStateChanged(_active);
         }
     }
 
