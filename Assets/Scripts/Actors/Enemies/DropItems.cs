@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class DropItems : MonoBehaviour
 {
@@ -12,7 +13,10 @@ public class DropItems : MonoBehaviour
 
     private List<GameObject> _itemsToDrop;
 
+    private int itemToDropCount = 0;
+
     private float _timeBeforeDrop = 0.2f;
+    private WaitForSeconds _dropsDelay;
 
     private InventoryManager _inventoryManager;
 
@@ -21,6 +25,8 @@ public class DropItems : MonoBehaviour
         GetComponent<Health>().OnDeath += SetupDrop;
 
         _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
+
+        _dropsDelay = new WaitForSeconds(_timeBeforeDrop);
 
         InitializeDrops();
     }
@@ -41,18 +47,19 @@ public class DropItems : MonoBehaviour
 
     private void SetupDrop()
     {
-        Invoke("Drop", _timeBeforeDrop);
+        StartCoroutine("Drop");
     }
 
-    private void Drop()
+    private IEnumerator Drop()
     {
-        int itemCount = 0;
+        yield return _dropsDelay;
+
         foreach (GameObject itemToDrop in _itemsToDrop)
         {
             if (CanDropItem(itemToDrop))
             {
                 GameObject item = (GameObject)Instantiate(itemToDrop, transform.position, new Quaternion());
-                item.GetComponent<OnItemDrop>().Initialise(_itemsToDrop.Count, itemCount++, GetComponent<Collider2D>());
+                item.GetComponent<OnItemDrop>().Initialise(_itemsToDrop.Count, itemToDropCount++, GetComponent<Collider2D>());
             }
         }
     }

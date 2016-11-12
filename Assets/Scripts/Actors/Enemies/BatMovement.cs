@@ -19,6 +19,8 @@ public class BatMovement : MonoBehaviour
     [SerializeField]
     private float _immobileDurationOnGround = 1;
 
+    private WaitForSeconds _onGroundDelay;
+
     private AudioSourcePlayer _soundPlayer;
     private Animator _animator;
 
@@ -50,16 +52,18 @@ public class BatMovement : MonoBehaviour
         _minX = _initialPosition.x - _leftDistance;
         _maxX = _initialPosition.x + _rightDistance;
         _animator = GetComponent<Animator>();
+
+        _onGroundDelay = new WaitForSeconds(_immobileDurationOnGround);
     }
 
     private void StartMovementDown()
     {
         _animator.SetBool("IsFlying", true);
         OnBatMovement();
-        StartCoroutine("MoveDown");
+        StartCoroutine("MoveBat");
     }
 
-    private IEnumerator MoveDown()
+    private IEnumerator MoveBat()
     {
         while (transform.position.y > _lowestY)
         {
@@ -68,17 +72,10 @@ public class BatMovement : MonoBehaviour
             yield return null;
         }
         transform.position = new Vector3(transform.position.x, _lowestY, transform.position.z);
-        Invoke("StartMovementUp", _immobileDurationOnGround);
-    }
 
-    private void StartMovementUp()
-    {
+        yield return _onGroundDelay;
+
         FindTarget();
-        StartCoroutine("MoveUp");
-    }
-
-    private IEnumerator MoveUp()
-    {
         while (transform.position.y < _target.y)
         {
             transform.position = Vector3.MoveTowards(new Vector3(transform.position.x, transform.position.y, transform.position.z), _target, UP_SPEED * Time.deltaTime);

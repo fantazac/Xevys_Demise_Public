@@ -16,6 +16,10 @@ public class ActorBasicAttack : MonoBehaviour
 
     private float _attackDuration;
 
+    private WaitForSeconds _finishedAttackDelay;
+    private WaitForSeconds _finishAttackAnimDelay;
+    private WaitForSeconds _allowNewAttackDelay;
+
     private InputManager _inputManager;
     private GameObject _attackHitBox;
     private AudioSourcePlayer _soundPlayer;
@@ -34,6 +38,10 @@ public class ActorBasicAttack : MonoBehaviour
         _soundPlayer = GetComponent<AudioSourcePlayer>();
 
         _inputManager.OnBasicAttack += OnBasicAttack;
+
+        _allowNewAttackDelay = new WaitForSeconds(_attackFrequency * ATTACK_COOLDOWN_MULTIPLIER);
+        _finishAttackAnimDelay = new WaitForSeconds(_attackFrequency);
+        _finishedAttackDelay = new WaitForSeconds(_attackDuration);
     }
 
     private void OnBasicAttack()
@@ -51,24 +59,30 @@ public class ActorBasicAttack : MonoBehaviour
         _anim.SetBool("IsAttacking", _isAttacking);
         _soundPlayer.Play(_soundId);
         _attackHitBox.GetComponent<BoxCollider2D>().enabled = true;
-        Invoke("OnBasicAttackFinished", _attackDuration);
-        Invoke("FinishAttackAnimation", _attackFrequency);
-        Invoke("AllowNewAttack", _attackFrequency * ATTACK_COOLDOWN_MULTIPLIER);
+        StartCoroutine("OnBasicAttackFinished");
+        StartCoroutine("FinishAttackAnimation");
+        StartCoroutine("AllowNewAttack");
     }
 
-    private void FinishAttackAnimation()
+    private IEnumerator FinishAttackAnimation()
     {
+        yield return _finishAttackAnimDelay;
+
         _anim.speed = INITIAL_ANIMATION_SPEED;
         _anim.SetBool("IsAttacking", false);
     }
 
-    private void AllowNewAttack()
+    private IEnumerator AllowNewAttack()
     {
+        yield return _allowNewAttackDelay;
+
         _isAttacking = false;
     }
 
-    private void OnBasicAttackFinished()
+    private IEnumerator OnBasicAttackFinished()
     {
+        yield return _finishedAttackDelay;
+
         _attackHitBox.GetComponent<BoxCollider2D>().enabled = false;
     }
 
