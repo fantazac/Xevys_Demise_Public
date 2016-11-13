@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     protected const float TERMINAL_SPEED = -18;
     protected const float SPEED_REDUCTION_WHEN_STOPPING = 0.94f;
     protected const float LINEAR_DRAG = 30f;
-    protected const float KNOCKBACK_DURATION = 15;
+    protected const float KNOCKBACK_DURATION = 0.25f;
     protected const float PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND = 0.8622845f;
     protected const float PLAYER_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.008171797f;
     protected const float FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.45f;

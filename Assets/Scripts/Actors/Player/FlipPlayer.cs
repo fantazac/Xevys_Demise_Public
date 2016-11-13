@@ -18,5 +18,4 @@ public class FlipPlayer : MonoBehaviour
         }
         return false;
     }
-
 }

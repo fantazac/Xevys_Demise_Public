@@ -97,14 +97,14 @@ public class PlayerGroundMovement : PlayerMovement
         {
             _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
 
-            if (_isKnockedBack && _knockbackCount == KNOCKBACK_DURATION)
+            if (_isKnockedBack && _knockbackCount >= KNOCKBACK_DURATION)
             {
                 _isKnockedBack = false;
                 _knockbackCount = 0;
             }
             else if (_isKnockedBack)
             {
-                _knockbackCount++;
+                _knockbackCount += Time.deltaTime;
             }
 
             if (!IsJumping() && PlayerTouchesGround() && _inventoryManager.FeatherEnabled && !_canDoubleJump)

@@ -24,8 +24,9 @@ public class FallDamage: MonoBehaviour
 
     private void OnLanding()
     {
-        if (_fallingCount > 1 && !PlayerState.IsInvincible && _playerHealth && _playerHealth.HealthPoint > 0)
+        if (_fallingCount > 1 && !PlayerState.IsInvincible && _playerHealth.HealthPoint > 0)
         {
+            //qu'est-ce qui se passe ici? alex
             _playerHealth.Hit((int)Mathf.Clamp(_fallingCount * 50, _fallingCount * 50, _playerHealth.HealthPoint), 
                 new Vector2(transform.position.x, transform.position.y - 1));
         }
