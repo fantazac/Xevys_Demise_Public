@@ -7,6 +7,8 @@ using System;
 
 public class Database : MonoBehaviour
 {
+    [SerializeField]
+    private bool _loadStats = false;
     public delegate void OnInventoryReloadedHandler(bool knifeEnabled, bool axeEnabled, bool featherEnabled, bool bootsEnabled, bool bubbleEnabled, bool armorEnabled, bool earthArtefactEnabled, bool airArtefactEnabled, bool waterArtefactEnabled, bool fireArtefactEnabled);
     public static event OnInventoryReloadedHandler OnInventoryReloaded;
 
@@ -37,17 +39,27 @@ public class Database : MonoBehaviour
 
     private void Start()
     {
-        File.Copy(Path.Combine(Application.streamingAssetsPath, "Database.db"), Path.Combine(Application.persistentDataPath, "Database.db"), true);
+        if(!_loadStats)
+        {
+            File.Copy(Path.Combine(Application.streamingAssetsPath, "Database.db"), Path.Combine(Application.persistentDataPath, "Database.db"), true);
+        }
         string conn = "URI=file:" + Path.Combine(Application.persistentDataPath, "Database.db");
         _dbconn = (IDbConnection)new SqliteConnection(conn);
         _dbcmd = _dbconn.CreateCommand();
 
+        if (_loadStats)
+        {
+            LoadStats();
+        }
+        else
+        {
+            CreateAccount("Test");
+            CreateStatsRecord();
+            CreateSettings();
+        }
+        
         _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
         DestroyEnemyOnDeath.OnEnemyDeath += EnemyKilled;
-
-        CreateAccount("Test");
-        CreateStatsRecord();
-        CreateSettings();
     }
 
     private void OnApplicationQuit()
