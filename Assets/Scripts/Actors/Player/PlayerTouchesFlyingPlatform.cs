@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerTouchesFlyingPlatform : MonoBehaviour
 {
-    private const float ENABLE_HITBOX_CD = 0.22f;
+    private const float ENABLE_HITBOX_CD = 0.3f;
 
     private GameObject _flyingPlatform;
 

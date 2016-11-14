@@ -103,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
 
     protected virtual void OnStop()
     {
-        if (!_isKnockedBack)
+        if (PlayerIsMoving() && !_isKnockedBack)
         {
             if (PlayerIsAlmostStopped())
             {
@@ -140,7 +140,8 @@ public class PlayerMovement : MonoBehaviour
 
     public virtual bool IsJumping()
     {
-        return !((PlayerIsOnGround() || VerticalVelocityIsZeroOnFlyingPlatform() || PlayerIsNotMoving()) && !(VerticalVelocityIsPositive()));
+        return !((PlayerIsOnGround() || VerticalVelocityIsZeroOnFlyingPlatform() || PlayerIsImmobile())
+            && !VerticalVelocityIsPositive());
     }
 
     private bool VerticalVelocityIsPositive()
@@ -153,9 +154,14 @@ public class PlayerMovement : MonoBehaviour
         return _playerTouchesFlyingPlatform.OnFlyingPlatform && _rigidbody.velocity.y == 0;
     }
 
-    private bool PlayerIsNotMoving()
+    private bool PlayerIsImmobile()
     {
         return _rigidbody.velocity == Vector2.zero;
+    }
+
+    private bool PlayerIsMoving()
+    {
+        return _rigidbody.velocity.x != 0;
     }
 
     private bool PlayerIsOnGround()
@@ -198,6 +204,16 @@ public class PlayerMovement : MonoBehaviour
         return _rigidbody.velocity.x > -1 && !_flipPlayer.IsFacingRight;
     }
 
+    private bool PlayerIsFalling()
+    {
+        return IsJumping() && _rigidbody.velocity.y < 0;
+    }
+
+    private bool PlayerIsJumping()
+    {
+        return IsJumping() && _rigidbody.velocity.y > 0;
+    }
+
     private void MovePlayer(Vector3 vector, bool goesRight)
     {
         _rigidbody.velocity = new Vector2(vector.x * _horizontalSpeed, _rigidbody.velocity.y);
@@ -208,25 +224,19 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         _anim.SetFloat("Speed", Mathf.Abs(_rigidbody.velocity.x));
-        _anim.SetBool("IsJumping", IsJumping() && _rigidbody.velocity.y > 0);
-        _anim.SetBool("IsFalling", IsJumping() && _rigidbody.velocity.y < 0);
+        _anim.SetBool("IsJumping", PlayerIsJumping());
+        _anim.SetBool("IsFalling", PlayerIsFalling());
         _anim.SetBool("IsCrouching", IsCrouching);
 
-        if (IsJumping() && _rigidbody.velocity.y < 0)
+        if (PlayerIsFalling())
         {
             _wasFalling = true;
-            if (OnFalling != null)
-            {
-                OnFalling();
-            }
+            OnFalling();
         }
         else if (_wasFalling)
         {
             _wasFalling = false;
-            if (OnLanding != null)
-            {
-                OnLanding();
-            }
+            OnLanding();
         }
 
         UpdateMovement();
@@ -234,11 +244,11 @@ public class PlayerMovement : MonoBehaviour
 
     protected void Flip(bool goesRight)
     {
-        Transform animTransform = _anim.GetComponent<Transform>();
         if (GetComponent<FlipPlayer>().Flip(goesRight))
         {
             _basicAttackBox.offset = new Vector2(_basicAttackBox.offset.x * -1, _basicAttackBox.offset.y);
-            animTransform.localScale = new Vector3(-1 * animTransform.localScale.x, animTransform.localScale.y, animTransform.localScale.z);
+            _anim.transform.localScale = new Vector3(-1 * _anim.transform.localScale.x,
+                _anim.transform.localScale.y, _anim.transform.localScale.z);
         }
     }
 
