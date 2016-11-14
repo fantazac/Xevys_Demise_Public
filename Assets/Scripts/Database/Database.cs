@@ -69,10 +69,8 @@ public class Database : MonoBehaviour
         }
     }
 
-    private void OnApplicationQuit()
+    public void OnApplicationQuit()
     {
-        SaveStats();
-
         _dbcmd.Dispose();
         _dbcmd = null;
         _dbconn = null;
@@ -157,7 +155,7 @@ public class Database : MonoBehaviour
         _fireArtefactEnabled = Convert.ToInt32(_inventoryManager.FireArtefactEnabled);
     }
 
-    private void SaveStats()
+    public void SaveStats()
     {
         _dbconn.Open();
         string sqlQuery = String.Format("UPDATE STATS SET NB_KILLED_SCARABS = {0}, NB_KILLED_BATS = {1}, NB_KILLED_SKELTALS = {2}, KNIFE_PICKED = {3}, KNIFE_AMMO = {4}, AXE_PICKED = {5}, AXE_AMMO = {6}, FEATHER_PICKED = {7}, BOOTS_PICKED = {8}, BUBBLE_PICKED = {9}, ARMOR_PICKED = {10}, ARTEFACT1_PICKED = {11}, ARTEFACT2_PICKED = {12}, ARTEFACT3_PICKED = {13}, ARTEFACT4_PICKED = {14} " +
