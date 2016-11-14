@@ -31,6 +31,7 @@ public class PlayerThrowingWeaponsMunitions : MonoBehaviour
     {
         KnifeAmmo = _inventoryManager.HasInfiniteKnives && KnifeAmmo <= ammoUsedOnThrow ?
             KnifeAmmo = 1 : KnifeAmmo -= ammoUsedOnThrow;
+        Debug.Log(KnifeAmmo);
         OnAxeAmmoChanged(KnifeAmmo);
     }
 
