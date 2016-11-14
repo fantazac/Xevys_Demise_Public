@@ -39,6 +39,7 @@ public class PlayerOxygen : MonoBehaviour
     private IEnumerator OxygenManagerCoroutine()
     {
         yield return new WaitForSeconds(_timeBeforeOxygenMissing);
+
         while (_playerWaterMovement.enabled && !_playerWaterMovement.IsFloating)
         {
             _playerHealth.Hit(_damageOnHit, Vector2.zero);
