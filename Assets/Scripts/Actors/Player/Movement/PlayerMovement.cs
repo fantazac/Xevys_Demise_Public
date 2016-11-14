@@ -98,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!IsJumping() && !_isKnockedBack && _playerTouchesFlyingPlatform.OnFlyingPlatform)
         {
-            _playerTouchesFlyingPlatform.DisablePlatformHitbox();
+            _playerTouchesFlyingPlatform.DropFromPlatform();
         }
     }
 
