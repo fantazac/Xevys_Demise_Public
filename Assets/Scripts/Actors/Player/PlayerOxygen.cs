@@ -32,12 +32,17 @@ public class PlayerOxygen : MonoBehaviour
     private IEnumerator OxygenManagerCoroutine()
     {
         yield return new WaitForSeconds(_timeBeforeOxygenMissing);
-
         while (_playerWaterMovement.enabled && !_playerWaterMovement.IsFloating)
         {
             _playerHealth.Hit(_damageOnHit, Vector2.zero);
-
+            Debug.Log(time);
+            time = 0;
             yield return new WaitForSeconds(_intervalBetweenHits);
         }
+    }
+    float time = 0;
+    private void Update()
+    {
+        time += Time.deltaTime;
     }
 }
