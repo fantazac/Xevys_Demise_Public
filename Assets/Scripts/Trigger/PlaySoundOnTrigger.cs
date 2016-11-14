@@ -11,22 +11,31 @@ public class PlaySoundOnTrigger : MonoBehaviour
     public delegate void OnSoundFinishedHandler();
     public event OnSoundFinishedHandler OnSoundFinished;
 
+    private float _soundClipLength;
+
+    private WaitForSeconds _finishedSoundDelay;
+
     private void Start()
     {
         _trigger = GetComponent<ActivateTrigger>();
         _trigger.OnTrigger += Play;
 
         _audioSourcePlayer = GetComponent<AudioSourcePlayer>();
+
+        _soundClipLength = _audioSourcePlayer.GetAudioSource().clip.length;
+        _finishedSoundDelay = new WaitForSeconds(_soundClipLength);
     }
 
     private void Play()
     {
         _audioSourcePlayer.Play();
-        Invoke("SoundIsFinished", _audioSourcePlayer.GetAudioSource().clip.length);
+        StartCoroutine("SoundIsFinished");
     }
 
-    private void SoundIsFinished()
+    private IEnumerator SoundIsFinished()
     {
+        yield return _finishedSoundDelay;
+
         OnSoundFinished();
     }
 

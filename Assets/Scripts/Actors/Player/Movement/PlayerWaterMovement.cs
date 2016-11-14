@@ -72,7 +72,7 @@ public class PlayerWaterMovement : PlayerMovement
 
     public override bool IsJumping()
     {
-        return !((GetComponent<Rigidbody2D>().velocity.y == 0 && _isFloating) || GameObject.Find("CharacterTouchesGround").GetComponent<PlayerTouchesGround>().OnGround);
+        return !((GetComponent<Rigidbody2D>().velocity.y == 0 && _isFloating) || _playerTouchesGround.OnGround);
     }
 
     protected override void UpdateMovement()
@@ -143,6 +143,17 @@ public class PlayerWaterMovement : PlayerMovement
                 {
                     ChangePlayerVerticalVelocity(_waterYSpeed);
                 }
+
+                
+            }
+
+            if(_canDoubleJump && _inventoryManager.IronBootsActive)
+            {
+                _canDoubleJump = false;
+            }
+            else if (!IsJumping() && _inventoryManager.FeatherEnabled && !_canDoubleJump)
+            {
+                _canDoubleJump = true;
             }
 
             _waterYSpeed = INITIAL_WATER_FALLING_SPEED;

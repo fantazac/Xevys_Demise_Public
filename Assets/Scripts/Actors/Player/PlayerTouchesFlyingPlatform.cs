@@ -3,25 +3,18 @@ using System.Collections;
 
 public class PlayerTouchesFlyingPlatform : MonoBehaviour
 {
-    private const int ENABLE_HITBOX_CD = 20;
+    private const float ENABLE_HITBOX_CD = 0.22f;
 
     private GameObject _flyingPlatform;
-    private bool _playerTouchesFlyingPlatform = false;
-    private int _enableHitboxCount;
 
-    public bool OnFlyingPlatform { get { return _playerTouchesFlyingPlatform; } set { _playerTouchesFlyingPlatform = value; } }
+    public bool OnFlyingPlatform { get; set; }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "FlyingPlatform")
         {
-            if (_flyingPlatform != null)
-            {
-                EnablePlatformHitbox();
-            }
-
             _flyingPlatform = collider.gameObject;
-            _playerTouchesFlyingPlatform = true;
+            OnFlyingPlatform = true;
         }
     }
 
@@ -29,47 +22,24 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
     {
         if (collider.gameObject.tag == "FlyingPlatform")
         {
-            _playerTouchesFlyingPlatform = false;
+            OnFlyingPlatform = false;
         }
     }
 
-    public void DisablePlatformHitbox()
+    public void DropFromPlatform()
     {
-        if (_flyingPlatform != null)
-        {
-            _flyingPlatform.GetComponent<BoxCollider2D>().enabled = false;
-            _playerTouchesFlyingPlatform = false;
-            GetComponent<PlayerTouchesGround>().OnGround = false;
-            _enableHitboxCount = 0;
-        }
-
+        StartCoroutine("LetPlayerThroughPlatform");
     }
 
-    private void EnablePlatformHitbox()
+    private IEnumerator LetPlayerThroughPlatform()
     {
-        if (_flyingPlatform != null)
-        {
-            _flyingPlatform.GetComponent<BoxCollider2D>().enabled = true;
-            _flyingPlatform = null;
-            _enableHitboxCount = ENABLE_HITBOX_CD + 1;
-        }
+        _flyingPlatform.GetComponent<BoxCollider2D>().enabled = false;
+        OnFlyingPlatform = false;
+        GetComponent<PlayerTouchesGround>().OnGround = false;
 
-    }
+        yield return new WaitForSeconds(ENABLE_HITBOX_CD);
 
-    private void Start()
-    {
-        _enableHitboxCount = ENABLE_HITBOX_CD + 1;
-    }
-
-    private void Update()
-    {
-        if (_flyingPlatform != null && !_playerTouchesFlyingPlatform && _enableHitboxCount == ENABLE_HITBOX_CD)
-        {
-            EnablePlatformHitbox();
-        }
-        else if (_enableHitboxCount < ENABLE_HITBOX_CD)
-        {
-            _enableHitboxCount++;
-        }  
+        _flyingPlatform.GetComponent<BoxCollider2D>().enabled = true;
+        _flyingPlatform = null;
     }
 }

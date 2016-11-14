@@ -4,11 +4,9 @@ using System.Collections.Generic;
 
 public class PlayerThrowingWeaponsMunitions : MonoBehaviour
 {
-    private int _axeAmmo = 0;
-    private int _knifeAmmo = 0;
 
-    public int AxeAmmo { get { return _axeAmmo; } }
-    public int KnifeAmmo { get { return _knifeAmmo; } }
+    public int AxeAmmo { get; private set; }
+    public int KnifeAmmo { get; private set; }
 
     private InventoryManager _inventoryManager;
     private ActorThrowAttack _throwAttack;
@@ -31,34 +29,28 @@ public class PlayerThrowingWeaponsMunitions : MonoBehaviour
 
     private void KnifeAmmoUsed(int ammoUsedOnThrow)
     {
-        _knifeAmmo -= ammoUsedOnThrow;
-        if (_inventoryManager.HasInfiniteKnives && KnifeAmmo == 0)
-        {
-            _knifeAmmo += 1;
-        }
-        OnKnifeAmmoChanged(_knifeAmmo);
+        KnifeAmmo = _inventoryManager.HasInfiniteKnives && KnifeAmmo <= ammoUsedOnThrow ?
+            KnifeAmmo = 1 : KnifeAmmo -= ammoUsedOnThrow;
+        OnAxeAmmoChanged(KnifeAmmo);
     }
 
     private void AxeAmmoUsed(int ammoUsedOnThrow)
     {
-        _axeAmmo -= ammoUsedOnThrow;
-        if (_inventoryManager.HasInfiniteAxes && AxeAmmo == 0)
-        {
-            _axeAmmo += 1;
-        }
-        OnAxeAmmoChanged(_axeAmmo);
+        AxeAmmo = _inventoryManager.HasInfiniteAxes && AxeAmmo <= ammoUsedOnThrow ?
+            AxeAmmo = 1 : AxeAmmo -= ammoUsedOnThrow;
+        OnAxeAmmoChanged(AxeAmmo);
     }
 
     public void AddKnifeAmmo(int ammoToAdd)
     {
-        _knifeAmmo += ammoToAdd;
-        OnKnifeAmmoChanged(_knifeAmmo);
+        KnifeAmmo += ammoToAdd;
+        OnKnifeAmmoChanged(KnifeAmmo);
     }
 
     public void AddAxeAmmo(int ammoToAdd)
     {
-        _axeAmmo += ammoToAdd;
-        OnAxeAmmoChanged(_axeAmmo);
+        AxeAmmo += ammoToAdd;
+        OnAxeAmmoChanged(AxeAmmo);
     }
 
     public void ReloadAmmo(int knifeAmmo, int axeAmmo)

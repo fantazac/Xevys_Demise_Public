@@ -16,10 +16,15 @@ public class ActorBasicAttack : MonoBehaviour
 
     private float _attackDuration;
 
+    private WaitForSeconds _finishedAttackDelay;
+    private WaitForSeconds _finishAttackAnimDelay;
+    private WaitForSeconds _allowNewAttackDelay;
+
     private InputManager _inputManager;
-    private GameObject _attackHitBox;
+    private BoxCollider2D _attackHitBox;
     private AudioSourcePlayer _soundPlayer;
     private Animator _anim;
+    private PlayerGroundMovement _playerGroundMovement;
 
     private bool _isAttacking = false;
     private float _attackFrequency;
@@ -29,16 +34,21 @@ public class ActorBasicAttack : MonoBehaviour
         _attackFrequency = BASIC_ATTACK_SPEED / _attackSpeed;
         _attackDuration = _attackFrequency * ATTACK_DURATION_MULTIPLIER;
         _inputManager = GetComponentInChildren<InputManager>();
-        _attackHitBox = GameObject.Find("CharacterBasicAttackBox");
+        _attackHitBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
         _anim = GameObject.Find("CharacterSprite").GetComponent<Animator>();
         _soundPlayer = GetComponent<AudioSourcePlayer>();
+        _playerGroundMovement = GetComponent<PlayerGroundMovement>();
 
         _inputManager.OnBasicAttack += OnBasicAttack;
+
+        _allowNewAttackDelay = new WaitForSeconds(_attackFrequency * ATTACK_COOLDOWN_MULTIPLIER);
+        _finishAttackAnimDelay = new WaitForSeconds(_attackFrequency);
+        _finishedAttackDelay = new WaitForSeconds(_attackDuration);
     }
 
     private void OnBasicAttack()
     {
-        if (!_isAttacking)
+        if (!_isAttacking && !_playerGroundMovement.IsKnockedBack)
         {
             ActivateBasicAttack();
         }
@@ -50,26 +60,32 @@ public class ActorBasicAttack : MonoBehaviour
         _anim.speed = _attackSpeed;
         _anim.SetBool("IsAttacking", _isAttacking);
         _soundPlayer.Play(_soundId);
-        _attackHitBox.GetComponent<BoxCollider2D>().enabled = true;
-        Invoke("OnBasicAttackFinished", _attackDuration);
-        Invoke("FinishAttackAnimation", _attackFrequency);
-        Invoke("AllowNewAttack", _attackFrequency * ATTACK_COOLDOWN_MULTIPLIER);
+        _attackHitBox.enabled = true;
+        StartCoroutine("OnBasicAttackFinished");
+        StartCoroutine("FinishAttackAnimation");
+        StartCoroutine("AllowNewAttack");
     }
 
-    private void FinishAttackAnimation()
+    private IEnumerator FinishAttackAnimation()
     {
+        yield return _finishAttackAnimDelay;
+
         _anim.speed = INITIAL_ANIMATION_SPEED;
         _anim.SetBool("IsAttacking", false);
     }
 
-    private void AllowNewAttack()
+    private IEnumerator AllowNewAttack()
     {
+        yield return _allowNewAttackDelay;
+
         _isAttacking = false;
     }
 
-    private void OnBasicAttackFinished()
+    private IEnumerator OnBasicAttackFinished()
     {
-        _attackHitBox.GetComponent<BoxCollider2D>().enabled = false;
+        yield return _finishedAttackDelay;
+
+        _attackHitBox.enabled = false;
     }
 
     public bool IsAttacking()

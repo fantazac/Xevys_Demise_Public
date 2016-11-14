@@ -106,17 +106,17 @@ public class ScarabMovementWithPoints : ScarabMovement
 
     protected override void InitializeSpriteDirection()
     {
-        if (_initialDirection == ScarabDirection.Down)
+        switch (_initialDirection)
         {
-            transform.Rotate(Vector3.forward * MAX_ROTATION);
-        }
-        else if (_initialDirection == ScarabDirection.Up)
-        {
-            transform.Rotate(Vector3.forward * -MAX_ROTATION);
-        }
-        else if (_initialDirection == ScarabDirection.Right)
-        {
-            transform.Rotate(Vector3.forward * MAX_ROTATION * 2);
+            case ScarabDirection.Down:
+                transform.Rotate(Vector3.forward * MAX_ROTATION);
+                break;
+            case ScarabDirection.Up:
+                transform.Rotate(Vector3.forward * -MAX_ROTATION);
+                break;
+            case ScarabDirection.Right:
+                transform.Rotate(Vector3.forward * MAX_ROTATION * 2);
+                break;
         }
     }
 

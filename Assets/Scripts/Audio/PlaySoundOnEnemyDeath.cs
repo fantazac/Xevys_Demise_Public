@@ -15,27 +15,31 @@ public class PlaySoundOnEnemyDeath : MonoBehaviour
 
     private float _soundDuration = 0;
 
+    private WaitForSeconds _finishedSoundDelay;
+
     private void Start()
     {
         _health = GetComponent<Health>();
         _health.OnDeath += PlayDeathSound;
 
         _audioSourcePlayer = GetComponent<AudioSourcePlayer>();
+
+        _soundDuration = _audioSourcePlayer.GetAudioSource(_deathSoundIndex).clip.length;
+        _finishedSoundDelay = new WaitForSeconds(_soundDuration);
     }
 
     private void PlayDeathSound()
     {
-        if (_deathSoundIndex > -1)
-        {
-            _audioSourcePlayer.StopAll();
-            _audioSourcePlayer.Play(_deathSoundIndex);
-            _soundDuration = _audioSourcePlayer.GetAudioSource(_deathSoundIndex).clip.length;
-        }
-        Invoke("DeathSoundFinished", _soundDuration);
+        _audioSourcePlayer.StopAll();
+        _audioSourcePlayer.Play(_deathSoundIndex);
+
+        StartCoroutine("DeathSoundFinished");
     }
 
-    private void DeathSoundFinished()
+    private IEnumerator DeathSoundFinished()
     {
+        yield return _finishedSoundDelay;
+
         OnDeathSoundFinished();
     }
 }

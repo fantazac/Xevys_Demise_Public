@@ -68,12 +68,12 @@ public class PlayerGroundMovement : PlayerMovement
             {
                 _anim.SetBool("IsCrouching", true);
 
-                if (_stoppedEnoughToCrouch)
-                {
+                //if (_stoppedEnoughToCrouch)
+                //{
                     IsCrouching = true;
                     _basicAttackBox.size = new Vector2(_basicAttackBox.size.x, ATTACK_BOX_COLLIDER_Y_WHEN_STAND * CROUCHING_OFFSET);
                     _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND * CROUCHING_OFFSET);
-                }
+                //}
             }
         }     
     }
@@ -97,14 +97,14 @@ public class PlayerGroundMovement : PlayerMovement
         {
             _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
 
-            if (_isKnockedBack && _knockbackCount == KNOCKBACK_DURATION)
+            if (_isKnockedBack && _knockbackCount >= KNOCKBACK_DURATION)
             {
                 _isKnockedBack = false;
                 _knockbackCount = 0;
             }
             else if (_isKnockedBack)
             {
-                _knockbackCount++;
+                _knockbackCount += Time.deltaTime;
             }
 
             if (!IsJumping() && PlayerTouchesGround() && _inventoryManager.FeatherEnabled && !_canDoubleJump)
