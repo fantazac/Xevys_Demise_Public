@@ -6,7 +6,7 @@ public class StaticObjects : MonoBehaviour
 {
     private static GameObject _player;
     private static GameObject _panelUI;
-    private static GameObject _pauseMenu;
+    private static GameObject _pauseMenuPanel;
     private static GameObject _healthBar;
     private static GameObject _itemCanvas;
 
@@ -14,7 +14,7 @@ public class StaticObjects : MonoBehaviour
     {
         _player = GameObject.Find("Character");
         _panelUI = GameObject.Find("PanelUI");
-        _pauseMenu = GameObject.Find("PauseMenu");
+        _pauseMenuPanel = GameObject.Find("PauseMenuPanel");
         _healthBar = GameObject.Find("HealthBar");
         _itemCanvas = GameObject.Find("ItemCanvas");
     }
@@ -29,9 +29,9 @@ public class StaticObjects : MonoBehaviour
         return _panelUI;
     }
 
-    public static GameObject GetPauseMenu()
+    public static GameObject GetPauseMenuPanel()
     {
-        return _pauseMenu;
+        return _pauseMenuPanel;
     }
 
     public static GameObject GetHealthBar()

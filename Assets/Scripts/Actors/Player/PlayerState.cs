@@ -9,8 +9,8 @@ public class PlayerState : MonoBehaviour
 
     private void Start()
     {
-        _invincibility = StaticObjects.GetPlayer().GetComponent<InvincibilityAfterBeingHit>();
-        _invincibility.OnInvincibilityEnabled += EnableInvincibility;
+        _invincibility = GetComponent<InvincibilityAfterBeingHit>();
+        _invincibility.OnInvincibilityStarted += EnableInvincibility;
         _invincibility.OnInvincibilityFinished += DisableInvincibility;
     }
 

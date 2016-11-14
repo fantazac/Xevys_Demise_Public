@@ -4,20 +4,31 @@ using System.Collections;
 public class KnockbackOnDamageTaken : MonoBehaviour
 {
     private const float KNOCKBACK_SPEED = 5;
-    private const float TIME_DAMAGE_ANIMATION_PLAYS = 0.5f;
+    private const float TIME_DAMAGE_ANIMATION_PLAYS = 0.25f;
 
-    private Animator _anim;
+    private WaitForSeconds _damageAnimDelay;
 
+    private PlayerGroundMovement _playerGroundMovement;
+
+    public delegate void OnKnockbackStartedHandler();
+    public event OnKnockbackStartedHandler OnKnockbackStarted;
+
+    public delegate void OnKnockbackFinishedHandler();
+    public event OnKnockbackFinishedHandler OnKnockbackFinished;
+
+    //Sortir l'anim de ce component
     private void Start()
     {
-        _anim = StaticObjects.GetPlayer().GetComponentInChildren<Animator>();
+        _playerGroundMovement = GetComponent<PlayerGroundMovement>();
+
+        _damageAnimDelay = new WaitForSeconds(TIME_DAMAGE_ANIMATION_PLAYS);
     }
 
     public void KnockbackPlayer(Vector2 positionEnemy)
     {
-        _anim.SetBool("IsDamaged", true);
-        StartCoroutine("DamageAnimationCoroutine");
-        GetComponent<PlayerGroundMovement>().IsKnockedBack = true;
+        OnKnockbackStarted();
+        StartCoroutine("StopDamageAnimation");
+        _playerGroundMovement.IsKnockedBack = true;
 
         if (transform.position.x < positionEnemy.x)
         {
@@ -31,14 +42,10 @@ public class KnockbackOnDamageTaken : MonoBehaviour
         GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, KNOCKBACK_SPEED);
     }
 
-    private IEnumerator DamageAnimationCoroutine()
+    private IEnumerator StopDamageAnimation()
     {
-        float counter = 0;
-        while (counter < TIME_DAMAGE_ANIMATION_PLAYS)
-        {
-            counter += Time.deltaTime;
-            yield return null;
-        }
-        _anim.SetBool("IsDamaged", false);
+        yield return _damageAnimDelay;
+
+        OnKnockbackFinished();
     }
 }

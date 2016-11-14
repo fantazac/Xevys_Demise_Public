@@ -49,6 +49,55 @@ public class InventoryManager : MonoBehaviour
     public delegate void OnEnableFireArtefactHandler();
     public event OnEnableFireArtefactHandler OnEnableFireArtefact;
 
+    public void Start()
+    {
+        Database.OnInventoryReloaded += ReloadInventory;
+    }
+
+    public void ReloadInventory(bool knifeEnabled, bool axeEnabled, bool featherEnabled, bool bootsEnabled, bool bubbleEnabled, bool armorEnabled, bool earthArtefactEnabled, bool airArtefactEnabled, bool waterArtefactEnabled, bool fireArtefactEnabled)
+    {
+        if(knifeEnabled)
+        {
+            EnableKnife();
+        }
+        if(axeEnabled)
+        {
+            EnableAxe();
+        }
+        if(featherEnabled)
+        {
+            EnableFeather();
+        }
+        if(bootsEnabled)
+        {
+            EnableIronBoots();
+        }
+        if(bubbleEnabled)
+        {
+            EnableBubble();
+        }
+        if(armorEnabled)
+        {
+            EnableFireProofArmor();
+        }
+        if(earthArtefactEnabled)
+        {
+            EnableEarthArtefact();
+        }
+        if(airArtefactEnabled)
+        {
+            EnableAirArtefact();
+        }
+        if(waterArtefactEnabled)
+        {
+            EnableWaterArtefact();
+        }
+        if(fireArtefactEnabled)
+        {
+            EnableFireArtefact();
+        }
+    }
+
     public void SetInfiniteAmmoEvent(GameObject ammoObject)
     {
         ammoObject.GetComponent<InfiniteAmmoWhileInPickupRoom>().OnSetInfiniteAmmo += SetInfiniteAmmo;

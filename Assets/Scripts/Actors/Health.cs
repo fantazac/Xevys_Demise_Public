@@ -6,6 +6,7 @@ public class Health : MonoBehaviour
 {
     [SerializeField]
     private float _health = 1000f;
+
     public float MaxHealth { get; private set; }
 
     public float HealthPoint { get { return _health; } set { _health = value; } }
@@ -28,6 +29,7 @@ public class Health : MonoBehaviour
     {
         MaxHealth = _health;
         OnHealthChanged += ChangeHealth;
+
         _knockback = StaticObjects.GetPlayer().GetComponent<KnockbackOnDamageTaken>();
     }
 

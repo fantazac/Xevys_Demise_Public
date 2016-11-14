@@ -17,11 +17,13 @@ public class InvincibilityAfterBeingHit : MonoBehaviour
 
     private WaitForSeconds _coroutineWait;
 
+    private WaitForSeconds _finishInvincibilityDelay;
+
     public delegate void OnInvincibilityFinishedHandler();
     public event OnInvincibilityFinishedHandler OnInvincibilityFinished;
 
     public delegate void OnInvincibilityEnabledHandler();
-    public event OnInvincibilityEnabledHandler OnInvincibilityEnabled;
+    public event OnInvincibilityEnabledHandler OnInvincibilityStarted;
 
     private void Start()
     {
@@ -31,12 +33,8 @@ public class InvincibilityAfterBeingHit : MonoBehaviour
         _health.OnDamageTaken += StartFlicker;
 
         _coroutineWait = new WaitForSeconds(_flickerInterval);
-    }
 
-    private void InvincibilityFinished()
-    {
-        _invincibilityTimeCount = 0;
-        OnInvincibilityFinished();
+        _finishInvincibilityDelay = new WaitForSeconds(_flickerInterval * 2);
     }
 
     private IEnumerator Flicker()
@@ -53,12 +51,16 @@ public class InvincibilityAfterBeingHit : MonoBehaviour
 
             _invincibilityTimeCount += Time.deltaTime + _flickerInterval;
         }
-        Invoke("InvincibilityFinished", _flickerInterval * 2);
+
+        yield return _finishInvincibilityDelay;
+
+        _invincibilityTimeCount = 0;
+        OnInvincibilityFinished();
     }
 
     public void StartFlicker(int hitPoints)
     {
-        OnInvincibilityEnabled();
+        OnInvincibilityStarted();
         StartCoroutine("Flicker");
     }
 }

@@ -36,24 +36,15 @@ public class KeyboardInputs : MonoBehaviour {
     public delegate void KeyboardOnThrowAttackChangeButtonPressedHandler();
     public event KeyboardOnThrowAttackChangeButtonPressedHandler OnThrowAttackChangeButtonPressed;
 
-    public delegate void KeyboardOnEnterPortalHandler();
-    public event KeyboardOnEnterPortalHandler OnEnterPortal;
-
     public delegate void KeyboardOnPauseHandler();
     public event KeyboardOnPauseHandler OnPause;
 
     private Health _playerHealth;
 
-    // TODO faire de quoi de propre
-    private ActorBasicAttack _actorBasicAttack;
-    private PlayerGroundMovement _playerGroundMovement;
-
     private void Start()
     {
         _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
         _playerHealth.OnDeath += OnDeath;
-        _actorBasicAttack = StaticObjects.GetPlayer().GetComponent<ActorBasicAttack>();
-        _playerGroundMovement = StaticObjects.GetPlayer().GetComponent<PlayerGroundMovement>();
     }
 
     private void Update()
@@ -102,11 +93,6 @@ public class KeyboardInputs : MonoBehaviour {
         if (Input.GetKey(KeyCode.W))
         {
             OnUnderwaterControl(false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            OnEnterPortal();
         }
 
         if (Input.GetKeyDown(KeyCode.E))

@@ -12,7 +12,7 @@ public class PlayDeathAnimation : MonoBehaviour
         _health = GetComponent<Health>();
         _health.OnDeath += OnDeath;
 
-        _animator = GetComponent<Animator>();
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void OnDeath()

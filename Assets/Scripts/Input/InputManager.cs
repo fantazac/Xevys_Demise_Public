@@ -38,9 +38,6 @@ public class InputManager : MonoBehaviour
     public delegate void OnThrowAttackChangeButtonPressedHandler();
     public event OnThrowAttackChangeButtonPressedHandler OnThrowAttackChangeButtonPressed;
 
-    public delegate void OnEnterPortalHandler();
-    public event OnEnterPortalHandler OnEnterPortal;
-
     public delegate void OnPauseHandler();
     public event OnPauseHandler OnPause;
 
@@ -61,7 +58,6 @@ public class InputManager : MonoBehaviour
         _keyboardInputs.OnStandingUp += InputsOnStandingUp;
         _keyboardInputs.OnThrowAttack += InputsOnThrowAttack;
         _keyboardInputs.OnThrowAttackChangeButtonPressed += InputsOnThrowAttackChangeButtonPressed;
-        _keyboardInputs.OnEnterPortal += InputsOnEnterPortal;
         _keyboardInputs.OnPause += InputsOnPause;
 
         _gamepadInputs = GetComponentInChildren<GamepadInputs>();
@@ -76,7 +72,6 @@ public class InputManager : MonoBehaviour
         _gamepadInputs.OnStandingUp += InputsOnStandingUp;
         _gamepadInputs.OnThrowAttack += InputsOnThrowAttack;
         _gamepadInputs.OnThrowAttackChangeButtonPressed += InputsOnThrowAttackChangeButtonPressed;
-        _gamepadInputs.OnEnterPortal += InputsOnEnterPortal;
         _gamepadInputs.OnPause += InputsOnPause;        
     }
 
@@ -176,11 +171,6 @@ public class InputManager : MonoBehaviour
     private void InputsOnThrowAttackChangeButtonPressed()
     {
         OnThrowAttackChangeButtonPressed();
-    }
-
-    private void InputsOnEnterPortal()
-    {
-        OnEnterPortal();
     }
 
     private void InputsOnPause()

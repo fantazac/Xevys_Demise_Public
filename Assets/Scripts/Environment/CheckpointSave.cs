@@ -26,7 +26,7 @@ public class CheckpointSave : MonoBehaviour
         {
             _showText = true;
             _showCounter = _baseShowCounter;
-            GameObject.FindGameObjectWithTag("Database").GetComponent<Database>().SaveStats();
+            GameObject.FindGameObjectWithTag("Database").GetComponent<Database>().SaveTemporaryStats();
         }
     }
 
