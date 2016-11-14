@@ -16,17 +16,24 @@ public class PlayerOxygen : MonoBehaviour
     private PlayerWaterMovement _playerWaterMovement;
     private Health _playerHealth;
 
-    private void Start ()
+    private void Start()
     {
         _playerFloating = GetComponentInChildren<PlayerFloatingInteraction>();
         _playerHealth = GetComponent<Health>();
         _playerFloating.OnPlayerUnderWater += OnPlayerUnderWater;
+        _playerFloating.OnPlayerOutOfWater += OnPlayerOutOfWater;
         _playerWaterMovement = GetComponent<PlayerWaterMovement>();
     }
 
     private void OnPlayerUnderWater()
     {
+        StopCoroutine("OxygenManagerCoroutine");
         StartCoroutine("OxygenManagerCoroutine");
+    }
+
+    private void OnPlayerOutOfWater()
+    {
+        StopCoroutine("OxygenManagerCoroutine");
     }
 
     private IEnumerator OxygenManagerCoroutine()
@@ -35,14 +42,8 @@ public class PlayerOxygen : MonoBehaviour
         while (_playerWaterMovement.enabled && !_playerWaterMovement.IsFloating)
         {
             _playerHealth.Hit(_damageOnHit, Vector2.zero);
-            Debug.Log(time);
-            time = 0;
+
             yield return new WaitForSeconds(_intervalBetweenHits);
         }
-    }
-    float time = 0;
-    private void Update()
-    {
-        time += Time.deltaTime;
     }
 }

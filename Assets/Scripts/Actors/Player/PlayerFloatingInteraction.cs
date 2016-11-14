@@ -6,8 +6,8 @@ public class PlayerFloatingInteraction : MonoBehaviour
     public delegate void OnPlayerUnderWaterHandler();
     public event OnPlayerUnderWaterHandler OnPlayerUnderWater;
 
-    /*public delegate void OnPlayerOutOfWaterHandler();
-    public event OnPlayerOutOfWaterHandler OnPlayerOutOfWater;*/
+    public delegate void OnPlayerOutOfWaterHandler();
+    public event OnPlayerOutOfWaterHandler OnPlayerOutOfWater;
 
     private GameObject _player;
 
@@ -33,7 +33,7 @@ public class PlayerFloatingInteraction : MonoBehaviour
     {
         if (collider.gameObject.tag == "Water" && collider.transform.position.y < transform.position.y)
         {
-            //OnPlayerOutOfWater();
+            OnPlayerOutOfWater();
 
             _player.GetComponent<PlayerWaterMovement>().IsFloating = true;
         }
