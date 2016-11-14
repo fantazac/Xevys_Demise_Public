@@ -103,7 +103,7 @@ public class PlayerMovement : MonoBehaviour
 
     protected virtual void OnStop()
     {
-        if (PlayerIsMoving() && !_isKnockedBack)
+        if (PlayerIsMovingHorizontally() && !_isKnockedBack)
         {
             if (PlayerIsAlmostStopped())
             {
@@ -122,8 +122,10 @@ public class PlayerMovement : MonoBehaviour
 
     protected virtual void OnIronBootsEquip()
     {
+        Debug.Log(_inventoryManager.IronBootsActive);
         _showItems.IronBootsSelect();
         _inventoryManager.IronBootsActive = !_inventoryManager.IronBootsActive;
+        
     }
 
     protected virtual void OnJump() { }
@@ -154,12 +156,12 @@ public class PlayerMovement : MonoBehaviour
         return _playerTouchesFlyingPlatform.OnFlyingPlatform && _rigidbody.velocity.y == 0;
     }
 
-    private bool PlayerIsImmobile()
+    protected bool PlayerIsImmobile()
     {
         return _rigidbody.velocity == Vector2.zero;
     }
 
-    private bool PlayerIsMoving()
+    protected bool PlayerIsMovingHorizontally()
     {
         return _rigidbody.velocity.x != 0;
     }

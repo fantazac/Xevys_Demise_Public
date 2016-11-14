@@ -4,14 +4,12 @@ using System.Collections;
 
 public class PlayerGroundMovement : PlayerMovement
 {
-    
-
     protected override void OnMove(Vector3 vector, bool goesRight)
     {
         if (enabled)
         {
             base.OnMove(vector, goesRight);
-        }       
+        }
     }
 
     protected override void OnJump()
@@ -24,13 +22,13 @@ public class PlayerGroundMovement : PlayerMovement
                 {
                     ChangePlayerVerticalVelocity(_jumpingSpeed);
                 }
-                else if (IsJumping() && _inventoryManager.FeatherEnabled && _canDoubleJump)
+                else if (PlayerCanDoubleJump())
                 {
                     _canDoubleJump = false;
                     ChangePlayerVerticalVelocity(_jumpingSpeed);
                 }
             }
-        }       
+        }
     }
 
     protected override void OnIronBootsEquip()
@@ -39,8 +37,8 @@ public class PlayerGroundMovement : PlayerMovement
         {
             if (_inventoryManager.IronBootsEnabled)
             {
-                ChangeGravity();
                 base.OnIronBootsEquip();
+                ChangeGravity();
             }
         }
     }
@@ -49,53 +47,49 @@ public class PlayerGroundMovement : PlayerMovement
     {
         if (enabled)
         {
-            if (!_inventoryManager.IronBootsActive)
-            {
-                _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
-            }
-            else
-            {
-                _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE * 2;
-            }
-        }     
+            _rigidbody.gravityScale = _inventoryManager.IronBootsActive ? 
+                INITIAL_GRAVITY_SCALE * 2 : INITIAL_GRAVITY_SCALE;
+        }
     }
 
     protected override void OnCrouch()
     {
         if (enabled)
         {
-            if (_rigidbody.velocity == Vector2.zero && ((!_playerBasicAttack.IsAttacking() && !IsCrouching) || IsCrouching))
+            if (!PlayerIsMovingHorizontally())
             {
                 _anim.SetBool("IsCrouching", true);
 
-                //if (_stoppedEnoughToCrouch)
-                //{
-                    IsCrouching = true;
-                    _basicAttackBox.size = new Vector2(_basicAttackBox.size.x, ATTACK_BOX_COLLIDER_Y_WHEN_STAND * CROUCHING_OFFSET);
-                    _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND * CROUCHING_OFFSET);
-                //}
+                IsCrouching = true;
+                //_basicAttackBox.size = new Vector2(_basicAttackBox.size.x, ATTACK_BOX_COLLIDER_Y_WHEN_STAND * CROUCHING_OFFSET);
+                _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, _playerBoxCollider.size.y * 0.8f);
             }
-        }     
+        }
     }
 
     protected override void OnStandingUp()
     {
         if (enabled)
         {
-            if (!_anim.GetBool("IsAttacking"))
-            {
+            //if (!_anim.GetBool("IsAttacking"))
+            //{
                 IsCrouching = false;
-                _basicAttackBox.size = new Vector2(_basicAttackBox.size.x, ATTACK_BOX_COLLIDER_Y_WHEN_STAND);
+                //_basicAttackBox.size = new Vector2(_basicAttackBox.size.x, ATTACK_BOX_COLLIDER_Y_WHEN_STAND);
                 _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND);
-            }
-        }     
+            //}
+        }
+    }
+
+    private bool PlayerCanDoubleJump()
+    {
+        return _canDoubleJump && IsJumping() && _inventoryManager.FeatherEnabled;
     }
 
     protected override void UpdateMovement()
     {
         if (enabled)
         {
-            _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
+            //_rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
 
             if (_isKnockedBack && _knockbackCount >= KNOCKBACK_DURATION)
             {
@@ -116,6 +110,6 @@ public class PlayerGroundMovement : PlayerMovement
             {
                 _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, TERMINAL_SPEED);
             }
-        }       
+        }
     }
 }
