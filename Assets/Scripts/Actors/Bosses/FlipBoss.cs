@@ -33,13 +33,14 @@ public class FlipBoss : MonoBehaviour {
         }
     }
 
-    public void FlipTowardsPlayer()
+    public bool FlipTowardsPlayer()
     {
         if (player.transform.position.x > transform.position.x)
         {
             if (_isFacingLeft)
             {
                 Flip();
+                return true;
             }
         }
         else if (player.transform.position.x < transform.position.x)
@@ -47,8 +48,10 @@ public class FlipBoss : MonoBehaviour {
             if (!_isFacingLeft)
             {
                 Flip();
+                return true;
             }
         }
+        return false;
     }
 
     private void Flip()

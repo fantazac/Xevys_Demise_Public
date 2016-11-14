@@ -7,19 +7,22 @@ public class XevyAction: MonoBehaviour
     private bool _isPlayerStillOnSameLine;
 
     [SerializeField]
-    GameObject _airSpike;
+    private GameObject _airSpike;
     [SerializeField]
-    GameObject _fireBall;
+    private GameObject _fireBall;
     [SerializeField]
-    GameObject _earthThorns;
-    BoxCollider2D _clawHitbox; //Check with Alex if it has changed (GameObject or BoxCollider2D)
-    PolygonCollider2D _xevyHitbox;
+    private GameObject _earthThorns;
+
+    private FlipBoss _flipBoss;
+    private BoxCollider2D _clawHitbox; //Check with Alex if it has changed (GameObject or BoxCollider2D)
+    private PolygonCollider2D _xevyHitbox;
 
 
 	private void Start()
     {
         _isPlayerStillOnSameLine = true;
-	}
+        _flipBoss = GetComponent<FlipBoss>();
+    }
 
     public void Block()
     {
@@ -39,46 +42,28 @@ public class XevyAction: MonoBehaviour
         GetComponent<Health>().Heal(0);
     }
 
-    public void RangedAttack(bool isPlayerOnSameLine)
+    public void FireAttack(float horizontalForce, float verticalForce)
     {
-        if (_isPlayerStillOnSameLine != isPlayerOnSameLine)//Double check
-        {
-            _sameAttackCount = 0;
-        }
-        if (isPlayerOnSameLine)
-        {
-            AirAttack();
-        }
-        else
-        {
-            FireAttack();
-        }
-        _sameAttackCount++;
+        var fireBall = Instantiate(_fireBall, transform.position, transform.rotation);
+        ((GameObject)fireBall).SetActive(true);
+        ((GameObject)fireBall).GetComponent<Rigidbody2D>().velocity = new Vector2(horizontalForce * 2, (verticalForce + 1) * 1.5f);
     }
 
-    public void MeleeAttack()
+    public void AirAttack()
     {
-        EarthAttack();
-        ClawAttack();
-        //_clawHitbox.enabled = true;
+        var airSpike = Instantiate(_airSpike, transform.position, transform.rotation);
+        ((GameObject)airSpike).SetActive(true);
+        ((GameObject)airSpike).GetComponent<Rigidbody2D>().velocity = new Vector2(15f * _flipBoss.Orientation, 0f);
     }
 
-    private void FireAttack()
+    public void EarthAttack()
     {
-        //(GameObject)Instantiate(_fireBall, initialPosition, transform.rotation);
+        var earthThorns = Instantiate(_earthThorns, new Vector2(transform.position.x + 1 * _flipBoss.Orientation, transform.position.y - _earthThorns.transform.localScale.y), transform.rotation);
+        ((GameObject)earthThorns).transform.localScale = ((GameObject)earthThorns).transform.localScale * _flipBoss.Orientation;
+        ((GameObject)earthThorns).SetActive(true);
     }
 
-    private void AirAttack()
-    {
-        //(GameObject)Instantiate(_airSpike, initialPosition, transform.rotation);
-    }
-
-    private void EarthAttack()
-    {
-        //(GameObject)Instantiate(_earthThorns, initialPosition, transform.rotation);
-    }
-
-    private void ClawAttack()
+    public void NeutralAttack()
     {
         _clawHitbox.enabled = true;
         //Flee

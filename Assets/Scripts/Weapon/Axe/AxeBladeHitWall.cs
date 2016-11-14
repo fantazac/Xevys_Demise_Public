@@ -12,7 +12,7 @@ public class AxeBladeHitWall : MonoBehaviour
             GetComponentInParent<Rigidbody2D>().velocity = Vector2.zero;
             GetComponentInParent<Rigidbody2D>().gravityScale = 0;
             GetComponent<PolygonCollider2D>().isTrigger = false;
-            GetComponentInParent<DestroyProjectile>().TouchesGround = true;
+            GetComponentInParent<DestroyPlayerProjectile>().TouchesGround = true;
         }
     }
 }

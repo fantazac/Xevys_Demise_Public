@@ -10,11 +10,11 @@ public class KnifeHitWall : MonoBehaviour
             GetComponent<BoxCollider2D>().isTrigger = false;
             GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             GetComponent<Rigidbody2D>().gravityScale = 0;
-            GetComponent<DestroyProjectile>().TouchesGround = true;
+            GetComponent<DestroyPlayerProjectile>().TouchesGround = true;
         }
         else if (collider.gameObject.tag == "LevelWall")
         {
-            GetComponent<DestroyProjectile>().DestroyNow = true;
+            GetComponent<DestroyPlayerProjectile>().DestroyNow = true;
         }
     }
 }

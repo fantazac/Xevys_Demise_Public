@@ -43,16 +43,8 @@ public class MoveFlame : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         transform.position += _direction;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (collider.gameObject.tag == "Wall")
-        {
-            Destroy(gameObject);
-        }
     }
 }
