@@ -39,9 +39,6 @@ public class GamepadInputs: MonoBehaviour
     public delegate void GamepadOnThrowAttackChangeButtonPressedHandler();
     public event GamepadOnThrowAttackChangeButtonPressedHandler OnThrowAttackChangeButtonPressed;
 
-    public delegate void GamepadOnEnterPortalHandler();
-    public event GamepadOnEnterPortalHandler OnEnterPortal;
-
     public delegate void GamepadOnPauseHandler();
     public event GamepadOnPauseHandler OnPause;
 
@@ -109,11 +106,6 @@ public class GamepadInputs: MonoBehaviour
             if (state.ThumbSticks.Left.Y > 0)
             {
                 OnUnderwaterControl(false);
-                if (_upButtonReady)
-                {
-                    _upButtonReady = false;
-                    OnEnterPortal();
-                }
             }
         }
 

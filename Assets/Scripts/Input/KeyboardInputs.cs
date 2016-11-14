@@ -36,9 +36,6 @@ public class KeyboardInputs : MonoBehaviour {
     public delegate void KeyboardOnThrowAttackChangeButtonPressedHandler();
     public event KeyboardOnThrowAttackChangeButtonPressedHandler OnThrowAttackChangeButtonPressed;
 
-    public delegate void KeyboardOnEnterPortalHandler();
-    public event KeyboardOnEnterPortalHandler OnEnterPortal;
-
     public delegate void KeyboardOnPauseHandler();
     public event KeyboardOnPauseHandler OnPause;
 
@@ -96,11 +93,6 @@ public class KeyboardInputs : MonoBehaviour {
         if (Input.GetKey(KeyCode.W))
         {
             OnUnderwaterControl(false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            OnEnterPortal();
         }
 
         if (Input.GetKeyDown(KeyCode.E))

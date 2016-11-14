@@ -230,7 +230,6 @@ public class PlayerMovement : MonoBehaviour
     private void OnDeath()
     {
         _anim.SetBool("IsDamaged", true);
-        _anim.SetBool("IsDead", true);
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 
