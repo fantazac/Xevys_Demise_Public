@@ -55,9 +55,9 @@ public class PlayerThrowingWeaponsMunitions : MonoBehaviour
 
     public void ReloadAmmo(int knifeAmmo, int axeAmmo)
     {
-        _knifeAmmo = knifeAmmo;
-        OnKnifeAmmoChanged(_knifeAmmo);
-        _axeAmmo = axeAmmo;
-        OnAxeAmmoChanged(_axeAmmo);
+        KnifeAmmo = knifeAmmo;
+        OnKnifeAmmoChanged(KnifeAmmo);
+        AxeAmmo = axeAmmo;
+        OnAxeAmmoChanged(AxeAmmo);
     }
 }
