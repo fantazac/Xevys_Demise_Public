@@ -3,16 +3,24 @@ using System.Collections;
 
 public class PlayerTouchesFlyingPlatform : MonoBehaviour
 {
-    private const float ENABLE_HITBOX_CD = 0.22f;
+    private const float ENABLE_HITBOX_CD = 0.3f;
 
     private GameObject _flyingPlatform;
 
+    private WaitForSeconds _enablePlatformDelay;
+
     public bool OnFlyingPlatform { get; set; }
+
+    private void Start()
+    {
+        _enablePlatformDelay = new WaitForSeconds(ENABLE_HITBOX_CD);
+    }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "FlyingPlatform")
         {
+            EnablePlatform();
             _flyingPlatform = collider.gameObject;
             OnFlyingPlatform = true;
         }
@@ -26,20 +34,32 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
         }
     }
 
-    public void DropFromPlatform()
+    private void EnablePlatform()
     {
-        StartCoroutine("LetPlayerThroughPlatform");
+        if(_flyingPlatform != null)
+        {
+            _flyingPlatform.GetComponent<BoxCollider2D>().enabled = true;
+        }
     }
 
-    private IEnumerator LetPlayerThroughPlatform()
+    private void DisablePlatform()
     {
         _flyingPlatform.GetComponent<BoxCollider2D>().enabled = false;
         OnFlyingPlatform = false;
         GetComponent<PlayerTouchesGround>().OnGround = false;
+    }
 
-        yield return new WaitForSeconds(ENABLE_HITBOX_CD);
+    public void DropFromPlatform()
+    {
+        DisablePlatform();
 
-        _flyingPlatform.GetComponent<BoxCollider2D>().enabled = true;
-        _flyingPlatform = null;
+        StartCoroutine("EnablePlatformWhenPlayerPassedThrough");
+    }
+
+    private IEnumerator EnablePlatformWhenPlayerPassedThrough()
+    {
+        yield return _enablePlatformDelay;
+
+        EnablePlatform();
     }
 }

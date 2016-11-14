@@ -19,6 +19,7 @@ public class PlayerThrowingWeaponsMunitions : MonoBehaviour
 
     private void Start()
     {
+        Database.OnAmmoReloaded += ReloadAmmo;
         _inventoryManager = GetComponent<InventoryManager>();
 
         _throwAttack = GetComponent<ActorThrowAttack>();
@@ -30,7 +31,7 @@ public class PlayerThrowingWeaponsMunitions : MonoBehaviour
     {
         KnifeAmmo = _inventoryManager.HasInfiniteKnives && KnifeAmmo <= ammoUsedOnThrow ?
             KnifeAmmo = 1 : KnifeAmmo -= ammoUsedOnThrow;
-        OnAxeAmmoChanged(KnifeAmmo);
+        OnKnifeAmmoChanged(KnifeAmmo);
     }
 
     private void AxeAmmoUsed(int ammoUsedOnThrow)
@@ -49,6 +50,14 @@ public class PlayerThrowingWeaponsMunitions : MonoBehaviour
     public void AddAxeAmmo(int ammoToAdd)
     {
         AxeAmmo += ammoToAdd;
+        OnAxeAmmoChanged(AxeAmmo);
+    }
+
+    public void ReloadAmmo(int knifeAmmo, int axeAmmo)
+    {
+        KnifeAmmo = knifeAmmo;
+        OnKnifeAmmoChanged(KnifeAmmo);
+        AxeAmmo = axeAmmo;
         OnAxeAmmoChanged(AxeAmmo);
     }
 }
