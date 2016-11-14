@@ -4,6 +4,9 @@ using System.Collections;
 
 public class PlayerGroundMovement : PlayerMovement
 {
+
+    private float CROUTCH_Y_OFFSET = 0.36f;
+
     protected override void OnMove(Vector3 vector, bool goesRight)
     {
         if (enabled)
@@ -47,22 +50,24 @@ public class PlayerGroundMovement : PlayerMovement
     {
         if (enabled)
         {
-            _rigidbody.gravityScale = _inventoryManager.IronBootsActive ? 
+            _rigidbody.gravityScale = _inventoryManager.IronBootsActive ?
                 INITIAL_GRAVITY_SCALE * 2 : INITIAL_GRAVITY_SCALE;
         }
     }
 
     protected override void OnCrouch()
     {
-        if (enabled)
+        if (!IsCrouching && enabled)
         {
-            if (!PlayerIsMovingHorizontally())
+            if (!PlayerIsMovingVertically())
             {
                 _anim.SetBool("IsCrouching", true);
-
-                IsCrouching = true;
-                //_basicAttackBox.size = new Vector2(_basicAttackBox.size.x, ATTACK_BOX_COLLIDER_Y_WHEN_STAND * CROUCHING_OFFSET);
-                _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, _playerBoxCollider.size.y * 0.8f);
+                if (PlayerIsMovingHorizontally())
+                {
+                    _rigidbody.velocity = Vector2.zero;
+                }
+                SetCroutch(true);
+                transform.position += Vector3.down * CROUTCH_Y_OFFSET;
             }
         }
     }
@@ -71,13 +76,20 @@ public class PlayerGroundMovement : PlayerMovement
     {
         if (enabled)
         {
-            //if (!_anim.GetBool("IsAttacking"))
-            //{
-                IsCrouching = false;
-                //_basicAttackBox.size = new Vector2(_basicAttackBox.size.x, ATTACK_BOX_COLLIDER_Y_WHEN_STAND);
-                _playerBoxCollider.size = new Vector2(_playerBoxCollider.size.x, PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND);
-            //}
+            _anim.SetBool("IsCrouching", false);
+            if (!PlayerIsMovingVertically())
+            {
+                transform.position += Vector3.up * CROUTCH_Y_OFFSET;
+            }
+            SetCroutch(false);
         }
+    }
+
+    private void SetCroutch(bool enable)
+    {
+        IsCrouching = enable;
+        _playerCroutchHitbox.enabled = enable;
+        _playerBoxCollider.isTrigger = enable;
     }
 
     private bool PlayerCanDoubleJump()

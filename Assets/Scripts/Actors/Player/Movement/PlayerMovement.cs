@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     protected Rigidbody2D _rigidbody;
     protected BoxCollider2D _basicAttackBox;
     protected BoxCollider2D _playerBoxCollider;
+    protected BoxCollider2D _playerCroutchHitbox;
     protected SpriteRenderer _playerSpriteRenderer;
     protected InventoryManager _inventoryManager;
     protected PlayerTouchesGround _playerTouchesGround;
@@ -24,10 +25,9 @@ public class PlayerMovement : MonoBehaviour
 
     protected const float INITIAL_GRAVITY_SCALE = 5;
     protected const float TERMINAL_SPEED = -18;
-    protected const float SPEED_REDUCTION_WHEN_STOPPING = 0.94f;
     protected const float LINEAR_DRAG = 18f;
     protected const float KNOCKBACK_DURATION = 0.25f;
-    protected const float PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND = 0.8622845f;
+    /*protected const float PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND = 0.8622845f;
     protected const float PLAYER_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.008171797f;
     protected const float FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.45f;
     protected const float TORSO_CIRCLE_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = 0.21f;
@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
     protected const float ATTACK_BOX_COLLIDER_Y_WHEN_STAND = 3.415288f;
     protected const float CROUCHING_OFFSET = 0.6f;
     protected const float CROUCHING_SPRITE_POSITION_OFFSET = 0.35f;
-    protected const float TIME_TO_WAIT_BEFORE_CROUCH_ALLOWED = 0.3f;
+    protected const float TIME_TO_WAIT_BEFORE_CROUCH_ALLOWED = 0.3f;*/
 
     protected float _horizontalSpeed = 7;
     protected float _jumpingSpeed = 17;
@@ -66,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
         _playerTouchesGround = GetComponentInChildren<PlayerTouchesGround>();
         _playerBasicAttack = GetComponent<ActorBasicAttack>();
         _flipPlayer = GetComponent<FlipPlayer>();
+        _playerCroutchHitbox = GameObject.Find("CharacterCroutchedHitbox").GetComponent<BoxCollider2D>();
 
         _inputManager.OnMove += OnMove;
         _inputManager.OnJump += OnJump;
@@ -166,6 +167,11 @@ public class PlayerMovement : MonoBehaviour
         return _rigidbody.velocity.x != 0;
     }
 
+    protected bool PlayerIsMovingVertically()
+    {
+        return _rigidbody.velocity.y != 0;
+    }
+
     private bool PlayerIsOnGround()
     {
         return PlayerTouchesGround() && !PlayerTouchesFlyingPlatform();
@@ -264,15 +270,5 @@ public class PlayerMovement : MonoBehaviour
     {
         _anim.SetBool("IsDamaged", true);
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-    }
-
-    protected IEnumerator CountTimeSincePlayerStoppedCoroutine()
-    {
-        float counter = 0;
-        while (counter < TIME_TO_WAIT_BEFORE_CROUCH_ALLOWED)
-        {
-            counter += Time.deltaTime;
-            yield return null;
-        }
     }
 }
