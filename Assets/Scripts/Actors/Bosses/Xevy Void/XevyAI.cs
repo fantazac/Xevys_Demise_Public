@@ -12,8 +12,17 @@ public class XevyAI : MonoBehaviour
         DEAD,
     }
 
+    public enum XevyAttackType
+    {
+        NONE,
+        AIR,
+        FIRE,
+        EARTH,
+        NEUTRAL,
+    }
+
     //Input more cooldowns for each attack
-    private const float VULNERABLE_STATUS_COOLDOWN = 1.0f;
+    private const float VULNERABLE_STATUS_COOLDOWN = 2.0f;
     private const float IDLE_STATUS_COOLDOWN = 1.0f;
 
     private Health _health;
@@ -23,12 +32,16 @@ public class XevyAI : MonoBehaviour
     private XevyProjectileInteraction _projectileInteraction;
 
     private XevyStatus _status;
-    //public XevyLastAttack LastAttack { get; set; }
+    private XevyAttackType _lastAttack;
+    private XevyAttackType _currentAttack;
     private float _statusTimer = IDLE_STATUS_COOLDOWN;
     private float _sameAttackCount;
 
     private void Start()
     {
+        _currentAttack = XevyAttackType.NONE;
+        _lastAttack = XevyAttackType.NONE;
+        _sameAttackCount = 0;
         _status = XevyStatus.IDLE;
         _health = GetComponent<Health>();
         _action = GetComponent<XevyAction>();
@@ -40,21 +53,20 @@ public class XevyAI : MonoBehaviour
     private void FixedUpdate()
     {
         _movement.MovementUpdate();
-        if (_status == XevyStatus.IDLE)
+        switch (_status)
         {
-            UpdateWhenIdle();
-        }     
-        else if (_status == XevyStatus.BLOCKING)
-        {
-            UpdateWhenBlocking();
-        }
-        else if (_status == XevyStatus.HEALING)
-        {
-            UpdateWhenHealing();
-        }    
-        else if (_status == XevyStatus.VULNERABLE)
-        {
-            UpdateWhenVulnerable();
+            case XevyStatus.IDLE:
+                UpdateWhenIdle();
+                break;
+            case XevyStatus.VULNERABLE:
+                UpdateWhenVulnerable();
+                break;
+            case XevyStatus.BLOCKING:
+                UpdateWhenBlocking();
+                break;
+            case XevyStatus.HEALING:
+                UpdateWhenHealing();
+                break;
         }
     }
 
@@ -62,35 +74,64 @@ public class XevyAI : MonoBehaviour
     {
         if (_projectileInteraction.CheckKnivesDistance() || _projectileInteraction.CheckAxesDistance())
         {
-            _action.Block();
-            _status = XevyStatus.BLOCKING;
+            SetBlockingStatus();
         }
         else
         {
             bool playerProximity = _playerInteraction.CheckPlayerDistance();
             bool healthStatus = (_health.HealthPoint > _health.MaxHealth / 3);
+            _playerInteraction.IsFocusedOnPlayer = false;
             _status = XevyStatus.VULNERABLE;
-            if (playerProximity && healthStatus)
-            {
-                _action.EarthAttack();
-                //_movement.StepBack();
-                //_movement.Bounce();
-            }
-            else if (!playerProximity && healthStatus)
-            {
-                //_action.FireAttack(_playerInteraction.GetPlayerHorizontalDistance(), _playerInteraction.GetPlayerVerticalDistance());
-                _playerInteraction.IsFocusedOnPlayer = false;
-                //_movement.Bounce();
-                //_action.RangedAttack(_playerInteraction.CheckAlignmentWithPlayer());
-            }
-            else if (playerProximity && !healthStatus)
+            if (playerProximity && !healthStatus)
             {
                 _playerInteraction.IsFocusedOnPlayer = false;
                 _movement.Flee();
             }
-            else
+            else if (!playerProximity && !healthStatus)
             {
                 _status = XevyStatus.HEALING;
+            }
+            else if (playerProximity && healthStatus && _playerInteraction.CheckAlignmentWithPlayer())
+            {
+
+                switch (_lastAttack)
+                {
+                    case XevyAttackType.EARTH:
+                        _action.NeutralAttack();
+                        _currentAttack = XevyAttackType.NEUTRAL;
+                        break;
+                    case XevyAttackType.NEUTRAL:
+                        _action.Block();
+                        _movement.StepBack();
+                        _currentAttack = XevyAttackType.NONE;
+                        break;
+                    default:
+                        _action.EarthAttack();
+                        _currentAttack = XevyAttackType.EARTH;
+                        break;
+                }
+                _lastAttack = _currentAttack;
+            }
+            else
+            {
+                if (_playerInteraction.CheckAlignmentWithPlayer())
+                {
+                    _action.AirAttack();
+                    _currentAttack = XevyAttackType.AIR;
+                }
+                else
+                {
+                    _action.FireAttack(_playerInteraction.GetPlayerHorizontalDistance(), _playerInteraction.GetPlayerVerticalDistance());
+                    _currentAttack = XevyAttackType.FIRE;
+                }
+                _sameAttackCount = (_currentAttack == _lastAttack ? _sameAttackCount + 1 : 0);
+                _lastAttack = _currentAttack;
+
+                if (_sameAttackCount == 5)
+                {
+                    _movement.Bounce();
+                    _sameAttackCount = 0;
+                }
             }
         }
     }
@@ -137,5 +178,12 @@ public class XevyAI : MonoBehaviour
         _playerInteraction.IsFocusedOnPlayer = true;
         _statusTimer = IDLE_STATUS_COOLDOWN;
         _status = XevyStatus.IDLE;
+    }
+
+    private void SetBlockingStatus()
+    {
+        _action.Block();
+        _playerInteraction.IsFocusedOnPlayer = true;
+        _status = XevyStatus.BLOCKING;
     }
 }

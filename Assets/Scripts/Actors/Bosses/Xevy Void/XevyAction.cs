@@ -14,36 +14,39 @@ public class XevyAction: MonoBehaviour
     private GameObject _earthThorns;
 
     private FlipBoss _flipBoss;
-    private BoxCollider2D _clawHitbox; //Check with Alex if it has changed (GameObject or BoxCollider2D)
+    private BoxCollider2D _clawHitbox;
     private PolygonCollider2D _xevyHitbox;
 
 
 	private void Start()
     {
         _isPlayerStillOnSameLine = true;
+        _xevyHitbox = GetComponent<PolygonCollider2D>();
         _flipBoss = GetComponent<FlipBoss>();
     }
 
     public void Block()
     {
-        GetComponent<SpriteRenderer>().color = Color.red;
+        GetComponent<SpriteRenderer>().color = Color.black;
         //_clawHitbox.enabled = false;
-        //_xevyHitbox.enabled = false;
+        _xevyHitbox.enabled = false;
     }
 
     public void LowerGuard()
     {
-        //_xevyHitbox.enabled = true;
-        GetComponent<SpriteRenderer>().color = Color.green;
+        GetComponent<SpriteRenderer>().color = Color.white;
+        _xevyHitbox.enabled = true;
     }
 
     public void Heal()
     {
+        GetComponent<SpriteRenderer>().color = Color.blue;
         GetComponent<Health>().Heal(0);
     }
 
     public void FireAttack(float horizontalForce, float verticalForce)
     {
+        GetComponent<SpriteRenderer>().color = Color.red;
         var fireBall = Instantiate(_fireBall, transform.position, transform.rotation);
         ((GameObject)fireBall).SetActive(true);
         ((GameObject)fireBall).GetComponent<Rigidbody2D>().velocity = new Vector2(horizontalForce * 2, (verticalForce + 1) * 1.5f);
@@ -51,6 +54,7 @@ public class XevyAction: MonoBehaviour
 
     public void AirAttack()
     {
+        GetComponent<SpriteRenderer>().color = Color.grey;
         var airSpike = Instantiate(_airSpike, transform.position, transform.rotation);
         ((GameObject)airSpike).SetActive(true);
         ((GameObject)airSpike).GetComponent<Rigidbody2D>().velocity = new Vector2(15f * _flipBoss.Orientation, 0f);
@@ -58,14 +62,15 @@ public class XevyAction: MonoBehaviour
 
     public void EarthAttack()
     {
-        var earthThorns = Instantiate(_earthThorns, new Vector2(transform.position.x + 1 * _flipBoss.Orientation, transform.position.y - _earthThorns.transform.localScale.y), transform.rotation);
-        ((GameObject)earthThorns).transform.localScale = ((GameObject)earthThorns).transform.localScale * _flipBoss.Orientation;
+        GetComponent<SpriteRenderer>().color = Color.green;
+        var earthThorns = Instantiate(_earthThorns, new Vector2(transform.position.x + _flipBoss.Orientation, transform.position.y - _earthThorns.transform.localScale.y), transform.rotation);
+        ((GameObject)earthThorns).transform.localScale = new Vector2(_flipBoss.Orientation * ((GameObject)earthThorns).transform.localScale.x, ((GameObject)earthThorns).transform.localScale.y);
         ((GameObject)earthThorns).SetActive(true);
     }
 
     public void NeutralAttack()
     {
-        _clawHitbox.enabled = true;
-        //Flee
+        GetComponent<SpriteRenderer>().color = Color.yellow;
+        //_clawHitbox.enabled = true;
     }
 }

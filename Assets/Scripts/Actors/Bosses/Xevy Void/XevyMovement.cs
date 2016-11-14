@@ -68,17 +68,17 @@ public class XevyMovement : MonoBehaviour
 
     public void MovementUpdate()
     {
-        if (MovementStatus == XevyMovementStatus.BOUNCING)
+        switch (MovementStatus)
         {
-            UpdateWhenBouncing();
-        }
-        else if (MovementStatus == XevyMovementStatus.RETREATING)
-        {
-            UpdateWhenRoaming(STEP_BACK_SPEED, -_flipBoss.Orientation);
-        }
-        else if (MovementStatus == XevyMovementStatus.FLEEING)
-        {
-            UpdateWhenRoaming(FLEE_SPEED, _flipBoss.Orientation);
+            case XevyMovementStatus.BOUNCING:
+                UpdateWhenBouncing();
+                break;
+            case XevyMovementStatus.RETREATING:
+                UpdateWhenRoaming(STEP_BACK_SPEED, -_flipBoss.Orientation);
+                break;
+            case XevyMovementStatus.FLEEING:
+                UpdateWhenRoaming(FLEE_SPEED, _flipBoss.Orientation);
+                break;
         }
     }
 
