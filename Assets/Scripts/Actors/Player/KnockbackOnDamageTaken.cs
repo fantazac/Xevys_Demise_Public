@@ -8,13 +8,17 @@ public class KnockbackOnDamageTaken : MonoBehaviour
 
     private WaitForSeconds _damageAnimDelay;
 
-    private Animator _anim;
     private PlayerGroundMovement _playerGroundMovement;
+
+    public delegate void OnKnockbackStartedHandler();
+    public event OnKnockbackStartedHandler OnKnockbackStarted;
+
+    public delegate void OnKnockbackFinishedHandler();
+    public event OnKnockbackFinishedHandler OnKnockbackFinished;
 
     //Sortir l'anim de ce component
     private void Start()
     {
-        _anim = GetComponentInChildren<Animator>();
         _playerGroundMovement = GetComponent<PlayerGroundMovement>();
 
         _damageAnimDelay = new WaitForSeconds(TIME_DAMAGE_ANIMATION_PLAYS);
@@ -22,7 +26,7 @@ public class KnockbackOnDamageTaken : MonoBehaviour
 
     public void KnockbackPlayer(Vector2 positionEnemy)
     {
-        _anim.SetBool("IsDamaged", true);
+        OnKnockbackStarted();
         StartCoroutine("StopDamageAnimation");
         _playerGroundMovement.IsKnockedBack = true;
 
@@ -41,7 +45,7 @@ public class KnockbackOnDamageTaken : MonoBehaviour
     private IEnumerator StopDamageAnimation()
     {
         yield return _damageAnimDelay;
-        
-        _anim.SetBool("IsDamaged", false);
+
+        OnKnockbackFinished();
     }
 }
