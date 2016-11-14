@@ -55,6 +55,7 @@ public class Database : MonoBehaviour
 
         CreateAccount("Test");
         CreateStatsRecord();
+        CreateSettings();
     }
 
     private void OnApplicationQuit()
@@ -69,6 +70,46 @@ public class Database : MonoBehaviour
         _dbconn.Open();
         string sqlQuery = String.Format("INSERT INTO ACCOUNT (ACCOUNT_ID, USERNAME)" +
             "VALUES (0, \"{0}\")", username);
+        _dbcmd.CommandText = sqlQuery;
+        _dbcmd.ExecuteNonQuery();
+        _dbconn.Close();
+    }
+
+    private void CreateSettings()
+    {
+        _dbconn.Open();
+        string sqlQuery = String.Format("INSERT INTO SETTINGS (SETTINGS_ID, MUSIC_PLAYING, MUSIC_VOLUME, SFX_VOLUME, CONTROL_SCHEME, ACCOUNT_ID)" +
+            "VALUES (0, 0, 0, 0, 0, {0})", _accountID);
+        _dbcmd.CommandText = sqlQuery;
+        _dbcmd.ExecuteNonQuery();
+        _dbconn.Close();
+    }
+
+    private void CreateAchievement(string name, string description)
+    {
+        _dbconn.Open();
+        string sqlQuery = String.Format("INSERT INTO ACHIEVEMENT (ACHIEVEMENT_ID, NAME, DESCRIPTION)" +
+            "VALUES (0, {0}, {1}", name, description);
+        _dbcmd.CommandText = sqlQuery;
+        _dbcmd.ExecuteNonQuery();
+        _dbconn.Close();
+    }
+
+    private void CreateAccountAchievement(int accountID, int achievementID)
+    {
+        _dbconn.Open();
+        string sqlQuery = String.Format("INSERT INTO ACCOUNT_ACHIEVEMENT (ACCOUNT_ID, ACHIEVEMENT_ID)" +
+            "VALUES ({0}, {1}", accountID, achievementID);
+        _dbcmd.CommandText = sqlQuery;
+        _dbcmd.ExecuteNonQuery();
+        _dbconn.Close();
+    }
+
+    private void CreateFunFact(string description)
+    {
+        _dbconn.Open();
+        string sqlQuery = String.Format("INSERT INTO FUN_FACT (FUN_FACT_ID, DESCRIPTION)" +
+            "VALUES (0, {0})", description);
         _dbcmd.CommandText = sqlQuery;
         _dbcmd.ExecuteNonQuery();
         _dbconn.Close();
