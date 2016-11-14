@@ -17,6 +17,9 @@ public class Database : MonoBehaviour
     //TEMP
     private int _accountID = 0;
 
+    private int _tempNbScarabsKilled;
+    private int _tempNbBatsKilled;
+    private int _tempNbSkeltalsKilled;
     private int _nbScarabsKilled;
     private int _nbBatsKilled;
     private int _nbSkeltalsKilled;
@@ -39,18 +42,7 @@ public class Database : MonoBehaviour
         _dbconn = (IDbConnection)new SqliteConnection(conn);
         _dbcmd = _dbconn.CreateCommand();
 
-        _inventoryManager = GameObject.FindGameObjectWithTag("Player").GetComponent<InventoryManager>();
-        _inventoryManager.OnEnableKnife += EnableKnife;
-        _inventoryManager.OnEnableAxe += EnableAxe;
-        _inventoryManager.OnEnableFeather += EnableFeather;
-        _inventoryManager.OnEnableIronBoots += EnableBoots;
-        _inventoryManager.OnEnableBubble += EnableBubble;
-        _inventoryManager.OnEnableFireProofArmor += EnableArmor;
-        _inventoryManager.OnEnableEarthArtefact += EnableEarthArtefact;
-        _inventoryManager.OnEnableAirArtefact += EnableAirArtefact;
-        _inventoryManager.OnEnableWaterArtefact += EnableWaterArtefact;
-        _inventoryManager.OnEnableFireArtefact += EnableFireArtefact;
-
+        _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
         DestroyEnemyOnDeath.OnEnemyDeath += EnemyKilled;
 
         CreateAccount("Test");
@@ -60,6 +52,8 @@ public class Database : MonoBehaviour
 
     private void OnApplicationQuit()
     {
+        SaveStats();
+
         _dbcmd.Dispose();
         _dbcmd = null;
         _dbconn = null;
@@ -125,7 +119,24 @@ public class Database : MonoBehaviour
         _dbconn.Close();
     }
 
-    public void SaveStats()
+    public void SaveTemporaryStats()
+    {
+        _nbScarabsKilled = _tempNbScarabsKilled;
+        _nbBatsKilled = _tempNbBatsKilled;
+        _nbSkeltalsKilled = _tempNbSkeltalsKilled;
+        _knifeEnabled = Convert.ToInt32(_inventoryManager.KnifeEnabled);
+        _axeEnabled = Convert.ToInt32(_inventoryManager.AxeEnabled);
+        _featherEnabled = Convert.ToInt32(_inventoryManager.FeatherEnabled);
+        _bootsEnabled = Convert.ToInt32(_inventoryManager.IronBootsEnabled);
+        _bubbleEnabled = Convert.ToInt32(_inventoryManager.BubbleEnabled);
+        _armorEnabled = Convert.ToInt32(_inventoryManager.FireProofArmorEnabled);
+        _earthArtefactEnabled = Convert.ToInt32(_inventoryManager.EarthArtefactEnabled);
+        _airArtefactEnabled = Convert.ToInt32(_inventoryManager.AirArtefactEnabled);
+        _waterArtefactEnabled = Convert.ToInt32(_inventoryManager.WaterArtefactEnabled);
+        _fireArtefactEnabled = Convert.ToInt32(_inventoryManager.FireArtefactEnabled);
+    }
+
+    private void SaveStats()
     {
         _dbconn.Open();
         string sqlQuery = String.Format("UPDATE STATS SET NB_KILLED_SCARABS = {0}, NB_KILLED_BATS = {1}, NB_KILLED_SKELTALS = {2}, KNIFE_PICKED = {3}, AXE_PICKED = {4}, FEATHER_PICKED = {5}, BOOTS_PICKED = {6}, BUBBLE_PICKED = {7}, ARMOR_PICKED = {8}, ARTEFACT1_PICKED = {9}, ARTEFACT2_PICKED = {10}, ARTEFACT3_PICKED = {11}, ARTEFACT4_PICKED = {12} " +
@@ -144,9 +155,9 @@ public class Database : MonoBehaviour
         IDataReader reader = _dbcmd.ExecuteReader();
         while (reader.Read())
         {
-            _nbScarabsKilled = reader.GetInt32(0);
-            _nbBatsKilled = reader.GetInt32(1);
-            _nbSkeltalsKilled = reader.GetInt32(2);
+            _tempNbScarabsKilled = reader.GetInt32(0);
+            _tempNbBatsKilled = reader.GetInt32(1);
+            _tempNbSkeltalsKilled = reader.GetInt32(2);
             _knifeEnabled = reader.GetInt32(3);
             _axeEnabled = reader.GetInt32(4);
             _featherEnabled = reader.GetInt32(5);
@@ -169,93 +180,15 @@ public class Database : MonoBehaviour
     {
         if(tag == "Scarab")
         {
-            _nbScarabsKilled++;
+            _tempNbScarabsKilled++;
         }
         else if(tag == "Bat")
         {
-            _nbBatsKilled++;
+            _tempNbBatsKilled++;
         }
         else if(tag == "Skeltal")
         {
-            _nbSkeltalsKilled++;
+            _tempNbSkeltalsKilled++;
         }
-    }
-
-    private void EnableKnife()
-    {
-        _knifeEnabled = 1;
-    }
-
-    private void EnableAxe()
-    {
-        _knifeEnabled = 1;
-    }
-
-    private void EnableFeather()
-    {
-        _featherEnabled = 1;
-    }
-
-    private void EnableBoots()
-    {
-        _bootsEnabled = 1;
-    }
-
-    private void EnableBubble()
-    {
-        _bubbleEnabled = 1;
-    }
-
-    private void EnableArmor()
-    {
-        _armorEnabled = 1;
-    }
-
-    private void EnableEarthArtefact()
-    {
-        _earthArtefactEnabled = 1;
-    }
-
-    private void EnableAirArtefact()
-    {
-        _airArtefactEnabled = 1;
-    }
-
-    private void EnableWaterArtefact()
-    {
-        _waterArtefactEnabled = 1;
-    }
-
-    private void EnableFireArtefact()
-    {
-        _fireArtefactEnabled = 1;
-    }
-
-
-    //SELECT example
-    private void GetStaff()
-    {
-        string sqlQuery = "SELECT name, role, number " + "FROM Staff";
-        _dbcmd.CommandText = sqlQuery;
-        IDataReader reader = _dbcmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            string name = reader.GetString(0);
-            string role = reader.GetString(1);
-            int number = reader.GetInt32(2);
-
-            Debug.Log("name = " + name + "; role = " + role + "; number = " + number + ";");
-        }
-        reader.Close();
-        reader = null;
-    }
-
-    //INSERT INTO example
-    private void AddStaff()
-    {
-        string sqlQuery = "INSERT INTO Staff (name, role, number)" + "VALUES (\"Vince\", \"character\", 21)";
-        _dbcmd.CommandText = sqlQuery;
-        _dbcmd.ExecuteNonQuery();
     }
 }
