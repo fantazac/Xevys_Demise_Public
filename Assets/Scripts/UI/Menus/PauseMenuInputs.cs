@@ -6,6 +6,7 @@ public class PauseMenuInputs : MonoBehaviour
 {
 
     public delegate void PauseMenuOntriggerHandler();
+
     public event PauseMenuOntriggerHandler TriggerAnimations;
 
     private InputManager _inputManager;
@@ -16,7 +17,11 @@ public class PauseMenuInputs : MonoBehaviour
 
     private bool _canSlide;
 
-    public bool CanSlide { private get { return _canSlide; } set { _canSlide = value; } }
+    public bool CanSlide
+    {
+        private get { return _canSlide; }
+        set { _canSlide = value; }
+    }
 
     private void Start()
     {
@@ -37,13 +42,18 @@ public class PauseMenuInputs : MonoBehaviour
         }
     }
 
-    private void SyncFirstControlOnPauseMenuStateChanged(bool isActive)
+    public void OptionBtnOnClick()
     {
-        _pauseMenuEventSystem.SetSelectedGameObject( isActive ? transform.GetChild(1).transform.GetChild(0).gameObject : null );
+
     }
 
-    public void QuitGame()
+    public void QuitBtnOnClick()
     {
         Application.Quit();
+    }
+
+    private void SyncFirstControlOnPauseMenuStateChanged(bool isActive)
+    {
+        _pauseMenuEventSystem.SetSelectedGameObject(isActive ? transform.GetChild(1).transform.GetChild(0).gameObject : null);
     }
 }
