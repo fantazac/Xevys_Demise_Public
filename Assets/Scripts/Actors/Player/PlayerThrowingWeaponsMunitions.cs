@@ -19,6 +19,7 @@ public class PlayerThrowingWeaponsMunitions : MonoBehaviour
 
     private void Start()
     {
+        Database.OnAmmoReloaded += ReloadAmmo;
         _inventoryManager = GetComponent<InventoryManager>();
 
         _throwAttack = GetComponent<ActorThrowAttack>();
@@ -50,5 +51,13 @@ public class PlayerThrowingWeaponsMunitions : MonoBehaviour
     {
         AxeAmmo += ammoToAdd;
         OnAxeAmmoChanged(AxeAmmo);
+    }
+
+    public void ReloadAmmo(int knifeAmmo, int axeAmmo)
+    {
+        _knifeAmmo = knifeAmmo;
+        OnKnifeAmmoChanged(_knifeAmmo);
+        _axeAmmo = axeAmmo;
+        OnAxeAmmoChanged(_axeAmmo);
     }
 }
