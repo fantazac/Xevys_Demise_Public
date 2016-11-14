@@ -35,9 +35,9 @@ public class PlayerOxygen : MonoBehaviour
 
         while (_playerWaterMovement.enabled && !_playerWaterMovement.IsFloating)
         {
-            yield return new WaitForSeconds(_intervalBetweenHits); ;
-
             _playerHealth.Hit(_damageOnHit, Vector2.zero);
+
+            yield return new WaitForSeconds(_intervalBetweenHits);
         }
     }
 }
