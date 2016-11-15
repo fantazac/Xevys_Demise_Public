@@ -77,7 +77,7 @@ public class InputManager : MonoBehaviour
         _gamepadInputs.OnThrowAttack += InputsOnThrowAttack;
         _gamepadInputs.OnThrowAttackChangeButtonPressed += InputsOnThrowAttackChangeButtonPressed;
         _gamepadInputs.OnEnterPortal += InputsOnEnterPortal;
-        _gamepadInputs.OnPause += InputsOnPause;        
+        _gamepadInputs.OnPause += InputsOnPause;
     }
 
     private void FixedUpdate()

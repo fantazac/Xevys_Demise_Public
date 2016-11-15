@@ -68,13 +68,7 @@ public class GamepadInputs: MonoBehaviour
     {
         GamePadState state = GamePad.GetState(PlayerIndex.One);
 
-        if (state.Buttons.X == ButtonState.Pressed && _xButtonReady)
-        {
-            _xButtonReady = false;
-            OnBasicAttack();
-        }
-
-        else if (Math.Abs(state.ThumbSticks.Left.X) > _joysticksXAxisDeadZone)
+        if (Math.Abs(state.ThumbSticks.Left.X) > _joysticksXAxisDeadZone)
         {
             if (state.ThumbSticks.Left.X < 0)
             {
@@ -89,6 +83,13 @@ public class GamepadInputs: MonoBehaviour
         {
             OnStop();
         }
+
+        if (state.Buttons.X == ButtonState.Pressed && _xButtonReady)
+        {
+            _xButtonReady = false;
+            OnBasicAttack();
+        }
+        
 
         if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
         {
