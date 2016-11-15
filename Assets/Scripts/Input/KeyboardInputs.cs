@@ -81,11 +81,12 @@ public class KeyboardInputs : MonoBehaviour {
             OnJump();
         }
 
-        if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.S))
         {
             OnCrouch();
         }
-        else
+
+        if (Input.GetKeyUp(KeyCode.S))
         {
             OnStandingUp();
         }

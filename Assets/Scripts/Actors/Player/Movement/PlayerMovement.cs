@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     protected Rigidbody2D _rigidbody;
     protected BoxCollider2D _basicAttackBox;
     protected BoxCollider2D _playerBoxCollider;
+    protected BoxCollider2D _playerCroutchHitbox;
     protected SpriteRenderer _playerSpriteRenderer;
     protected InventoryManager _inventoryManager;
     protected PlayerTouchesGround _playerTouchesGround;
@@ -24,10 +25,9 @@ public class PlayerMovement : MonoBehaviour
 
     protected const float INITIAL_GRAVITY_SCALE = 5;
     protected const float TERMINAL_SPEED = -18;
-    protected const float SPEED_REDUCTION_WHEN_STOPPING = 0.94f;
     protected const float LINEAR_DRAG = 18f;
     protected const float KNOCKBACK_DURATION = 0.25f;
-    protected const float PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND = 0.8622845f;
+    /*protected const float PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND = 0.8622845f;
     protected const float PLAYER_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.008171797f;
     protected const float FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.45f;
     protected const float TORSO_CIRCLE_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = 0.21f;
@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
     protected const float ATTACK_BOX_COLLIDER_Y_WHEN_STAND = 3.415288f;
     protected const float CROUCHING_OFFSET = 0.6f;
     protected const float CROUCHING_SPRITE_POSITION_OFFSET = 0.35f;
-    protected const float TIME_TO_WAIT_BEFORE_CROUCH_ALLOWED = 0.3f;
+    protected const float TIME_TO_WAIT_BEFORE_CROUCH_ALLOWED = 0.3f;*/
 
     protected float _horizontalSpeed = 7;
     protected float _jumpingSpeed = 17;
@@ -66,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
         _playerTouchesGround = GetComponentInChildren<PlayerTouchesGround>();
         _playerBasicAttack = GetComponent<ActorBasicAttack>();
         _flipPlayer = GetComponent<FlipPlayer>();
+        _playerCroutchHitbox = GameObject.Find("CharacterCroutchedHitbox").GetComponent<BoxCollider2D>();
 
         _inputManager.OnMove += OnMove;
         _inputManager.OnJump += OnJump;
@@ -103,7 +104,7 @@ public class PlayerMovement : MonoBehaviour
 
     protected virtual void OnStop()
     {
-        if (!_isKnockedBack)
+        if (PlayerIsMovingHorizontally() && !_isKnockedBack)
         {
             if (PlayerIsAlmostStopped())
             {
@@ -140,7 +141,8 @@ public class PlayerMovement : MonoBehaviour
 
     public virtual bool IsJumping()
     {
-        return !((PlayerIsOnGround() || VerticalVelocityIsZeroOnFlyingPlatform() || PlayerIsNotMoving()) && !(VerticalVelocityIsPositive()));
+        return !((PlayerIsOnGround() || VerticalVelocityIsZeroOnFlyingPlatform() || PlayerIsImmobile())
+            && !VerticalVelocityIsPositive());
     }
 
     private bool VerticalVelocityIsPositive()
@@ -153,9 +155,19 @@ public class PlayerMovement : MonoBehaviour
         return _playerTouchesFlyingPlatform.OnFlyingPlatform && _rigidbody.velocity.y == 0;
     }
 
-    private bool PlayerIsNotMoving()
+    protected bool PlayerIsImmobile()
     {
         return _rigidbody.velocity == Vector2.zero;
+    }
+
+    protected bool PlayerIsMovingHorizontally()
+    {
+        return _rigidbody.velocity.x != 0;
+    }
+
+    protected bool PlayerIsMovingVertically()
+    {
+        return _rigidbody.velocity.y != 0;
     }
 
     private bool PlayerIsOnGround()
@@ -198,6 +210,26 @@ public class PlayerMovement : MonoBehaviour
         return _rigidbody.velocity.x > -1 && !_flipPlayer.IsFacingRight;
     }
 
+    protected bool PlayerIsFalling()
+    {
+        return IsJumping() && _rigidbody.velocity.y < 0;
+    }
+
+    protected bool PlayerIsJumping()
+    {
+        return IsJumping() && _rigidbody.velocity.y > 0;
+    }
+
+    protected void OnPlayerFalling()
+    {
+        OnFalling();
+    }
+
+    protected void OnPlayerLanding()
+    {
+        OnLanding();
+    }
+
     private void MovePlayer(Vector3 vector, bool goesRight)
     {
         _rigidbody.velocity = new Vector2(vector.x * _horizontalSpeed, _rigidbody.velocity.y);
@@ -208,25 +240,18 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         _anim.SetFloat("Speed", Mathf.Abs(_rigidbody.velocity.x));
-        _anim.SetBool("IsJumping", IsJumping() && _rigidbody.velocity.y > 0);
-        _anim.SetBool("IsFalling", IsJumping() && _rigidbody.velocity.y < 0);
+        _anim.SetBool("IsJumping", PlayerIsJumping());
+        _anim.SetBool("IsFalling", PlayerIsFalling());
         _anim.SetBool("IsCrouching", IsCrouching);
 
-        if (IsJumping() && _rigidbody.velocity.y < 0)
+        if (_isKnockedBack && _knockbackCount >= KNOCKBACK_DURATION)
         {
-            _wasFalling = true;
-            if (OnFalling != null)
-            {
-                OnFalling();
-            }
+            _isKnockedBack = false;
+            _knockbackCount = 0;
         }
-        else if (_wasFalling)
+        else if (_isKnockedBack)
         {
-            _wasFalling = false;
-            if (OnLanding != null)
-            {
-                OnLanding();
-            }
+            _knockbackCount += Time.deltaTime;
         }
 
         UpdateMovement();
@@ -234,11 +259,11 @@ public class PlayerMovement : MonoBehaviour
 
     protected void Flip(bool goesRight)
     {
-        Transform animTransform = _anim.GetComponent<Transform>();
         if (GetComponent<FlipPlayer>().Flip(goesRight))
         {
             _basicAttackBox.offset = new Vector2(_basicAttackBox.offset.x * -1, _basicAttackBox.offset.y);
-            animTransform.localScale = new Vector3(-1 * animTransform.localScale.x, animTransform.localScale.y, animTransform.localScale.z);
+            _anim.transform.localScale = new Vector3(-1 * _anim.transform.localScale.x,
+                _anim.transform.localScale.y, _anim.transform.localScale.z);
         }
     }
 
@@ -252,15 +277,5 @@ public class PlayerMovement : MonoBehaviour
     {
         _anim.SetBool("IsDamaged", true);
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-    }
-
-    protected IEnumerator CountTimeSincePlayerStoppedCoroutine()
-    {
-        float counter = 0;
-        while (counter < TIME_TO_WAIT_BEFORE_CROUCH_ALLOWED)
-        {
-            counter += Time.deltaTime;
-            yield return null;
-        }
     }
 }

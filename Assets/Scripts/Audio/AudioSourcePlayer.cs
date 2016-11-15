@@ -12,7 +12,7 @@ public class AudioSourcePlayer : MonoBehaviour
 
     public void Play()
     {
-        _audioSources[0].Play();
+        Play(0);
     }
 
     public void Play(int audioSourceIndex)
@@ -22,7 +22,17 @@ public class AudioSourcePlayer : MonoBehaviour
 
     public bool IsPlaying()
     {
-        return _audioSources[0].isPlaying;
+        return IsPlaying(0);
+    }
+
+    public bool IsPlaying(int audioSourceIndex)
+    {
+        return _audioSources[audioSourceIndex].isPlaying;
+    }
+
+    public void Stop()
+    {
+        Stop(0);
     }
 
     public void Stop(int audioSourceIndex)
@@ -40,7 +50,7 @@ public class AudioSourcePlayer : MonoBehaviour
 
     public AudioSource GetAudioSource()
     {
-        return _audioSources[0];
+        return GetAudioSource(0);
     }
 
     public AudioSource GetAudioSource(int index)
