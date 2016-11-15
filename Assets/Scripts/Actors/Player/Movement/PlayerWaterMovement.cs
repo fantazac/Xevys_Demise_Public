@@ -9,7 +9,8 @@ public class PlayerWaterMovement : PlayerMovement
     private const float PRECISION_MARGIN = 0.2f;
     private const float GRAVITY_DIVISION_FACTOR_ON_GROUND_UNDERWATER = 0.27f;
     private const float WATER_ACCELERATION_FACTOR = 1.4f;
-    private const float SPEED_REDUCTION_FACTOR_IN_WATER = 0.4f;
+    private const float SPEED_REDUCTION_FACTOR_IN_WATER = 0.3f;
+    private const float WATER_DECELARATION = 65f;
 
     private bool _isFloating = false;
     private float _waterYSpeed;
@@ -79,16 +80,6 @@ public class PlayerWaterMovement : PlayerMovement
     {
         if (enabled)
         {
-            if (_isKnockedBack && _knockbackCount == KNOCKBACK_DURATION)
-            {
-                _isKnockedBack = false;
-                _knockbackCount = 0;
-            }
-            else if (_isKnockedBack)
-            {
-                _knockbackCount++;
-            }
-
             if (_inventoryManager.IronBootsActive)
             {
                 if (_rigidbody.velocity.y <= 0)
@@ -104,15 +95,15 @@ public class PlayerWaterMovement : PlayerMovement
                 {
                     if (_rigidbody.velocity.y > (-_waterYSpeed + PRECISION_MARGIN))
                     {
-                        ChangePlayerVerticalVelocity(_rigidbody.velocity.y - PRECISION_MARGIN);
+                        ChangePlayerVerticalVelocity(_rigidbody.velocity.y - (WATER_DECELARATION * Time.deltaTime));
                     }
                     else if (_rigidbody.velocity.y < (-_waterYSpeed - PRECISION_MARGIN))
                     {
-                        ChangePlayerVerticalVelocity(_rigidbody.velocity.y + PRECISION_MARGIN);
+                        ChangePlayerVerticalVelocity(_rigidbody.velocity.y + (WATER_DECELARATION * Time.deltaTime));
                     }
                     else
                     {
-                        ChangePlayerVerticalVelocity(_rigidbody.velocity.y);
+                        ChangePlayerVerticalVelocity(-_waterYSpeed);
                     }
                 }
             }
@@ -133,18 +124,16 @@ public class PlayerWaterMovement : PlayerMovement
                 }
                 else if (_rigidbody.velocity.y > (_waterYSpeed + (PRECISION_MARGIN * 2)))
                 {
-                    ChangePlayerVerticalVelocity(_rigidbody.velocity.y - (PRECISION_MARGIN * 5 * Time.deltaTime * 60));
+                    ChangePlayerVerticalVelocity(_rigidbody.velocity.y - (WATER_DECELARATION * Time.deltaTime));
                 }
                 else if (_rigidbody.velocity.y < (_waterYSpeed - (PRECISION_MARGIN * 2)))
                 {
-                    ChangePlayerVerticalVelocity(_rigidbody.velocity.y + (PRECISION_MARGIN * 5 * Time.deltaTime * 60));
+                    ChangePlayerVerticalVelocity(_rigidbody.velocity.y + (WATER_DECELARATION * Time.deltaTime));
                 }
                 else
                 {
                     ChangePlayerVerticalVelocity(_waterYSpeed);
                 }
-
-                
             }
 
             if(_canDoubleJump && _inventoryManager.IronBootsActive)
