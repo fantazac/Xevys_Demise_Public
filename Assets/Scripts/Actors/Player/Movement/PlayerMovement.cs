@@ -123,10 +123,8 @@ public class PlayerMovement : MonoBehaviour
 
     protected virtual void OnIronBootsEquip()
     {
-        Debug.Log(_inventoryManager.IronBootsActive);
         _showItems.IronBootsSelect();
         _inventoryManager.IronBootsActive = !_inventoryManager.IronBootsActive;
-        
     }
 
     protected virtual void OnJump() { }
@@ -212,14 +210,24 @@ public class PlayerMovement : MonoBehaviour
         return _rigidbody.velocity.x > -1 && !_flipPlayer.IsFacingRight;
     }
 
-    private bool PlayerIsFalling()
+    protected bool PlayerIsFalling()
     {
         return IsJumping() && _rigidbody.velocity.y < 0;
     }
 
-    private bool PlayerIsJumping()
+    protected bool PlayerIsJumping()
     {
         return IsJumping() && _rigidbody.velocity.y > 0;
+    }
+
+    protected void OnPlayerFalling()
+    {
+        OnFalling();
+    }
+
+    protected void OnPlayerLanding()
+    {
+        OnLanding();
     }
 
     private void MovePlayer(Vector3 vector, bool goesRight)
@@ -236,15 +244,14 @@ public class PlayerMovement : MonoBehaviour
         _anim.SetBool("IsFalling", PlayerIsFalling());
         _anim.SetBool("IsCrouching", IsCrouching);
 
-        if (PlayerIsFalling())
+        if (_isKnockedBack && _knockbackCount >= KNOCKBACK_DURATION)
         {
-            _wasFalling = true;
-            OnFalling();
+            _isKnockedBack = false;
+            _knockbackCount = 0;
         }
-        else if (_wasFalling)
+        else if (_isKnockedBack)
         {
-            _wasFalling = false;
-            OnLanding();
+            _knockbackCount += Time.deltaTime;
         }
 
         UpdateMovement();
