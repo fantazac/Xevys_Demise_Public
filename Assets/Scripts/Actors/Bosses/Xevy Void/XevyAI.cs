@@ -22,7 +22,7 @@ public class XevyAI : MonoBehaviour
     }
 
     //Input more cooldowns for each attack
-    private const float VULNERABLE_STATUS_COOLDOWN = 2.0f;
+    private const float VULNERABLE_STATUS_COOLDOWN = 1.0f;
     private const float IDLE_STATUS_COOLDOWN = 1.0f;
 
     private Health _health;
@@ -34,14 +34,14 @@ public class XevyAI : MonoBehaviour
     private XevyStatus _status;
     private XevyAttackType _lastAttack;
     private XevyAttackType _currentAttack;
-    private float _statusTimer = IDLE_STATUS_COOLDOWN;
+    private float _statusTimer;
     private float _sameAttackCount;
 
     private void Start()
     {
+        _sameAttackCount = 0;
         _currentAttack = XevyAttackType.NONE;
         _lastAttack = XevyAttackType.NONE;
-        _sameAttackCount = 0;
         _status = XevyStatus.IDLE;
         _health = GetComponent<Health>();
         _action = GetComponent<XevyAction>();
@@ -72,20 +72,26 @@ public class XevyAI : MonoBehaviour
 
     private void UpdateWhenIdle()
     {
-        if (_projectileInteraction.CheckKnivesDistance() || _projectileInteraction.CheckAxesDistance())
+        if (_statusTimer > 0)
         {
-            SetBlockingStatus();
+            if (_projectileInteraction.CheckKnivesDistance() || _projectileInteraction.CheckAxesDistance())
+            {
+                SetBlockingStatus();
+            }
+            else
+            {
+                _statusTimer -= Time.fixedDeltaTime;
+            }
         }
         else
         {
+            _action.RetreatClaws();
             bool playerProximity = _playerInteraction.CheckPlayerDistance();
             bool healthStatus = (_health.HealthPoint > _health.MaxHealth / 3);
-            _playerInteraction.IsFocusedOnPlayer = false;
-            _status = XevyStatus.VULNERABLE;
+            SetVulnerableStatus();
             if (playerProximity && !healthStatus)
             {
-                _playerInteraction.IsFocusedOnPlayer = false;
-                _movement.Flee();
+                _movement.FleeTowardsRandomPoint();
             }
             else if (!playerProximity && !healthStatus)
             {
@@ -93,14 +99,15 @@ public class XevyAI : MonoBehaviour
             }
             else if (playerProximity && healthStatus && _playerInteraction.CheckAlignmentWithPlayer())
             {
-
                 switch (_lastAttack)
                 {
                     case XevyAttackType.EARTH:
                         _action.NeutralAttack();
+                        _movement.ChargeForward();
                         _currentAttack = XevyAttackType.NEUTRAL;
                         break;
                     case XevyAttackType.NEUTRAL:
+                        _playerInteraction.IsFocusedOnPlayer = true;
                         _action.Block();
                         _movement.StepBack();
                         _currentAttack = XevyAttackType.NONE;
@@ -113,7 +120,7 @@ public class XevyAI : MonoBehaviour
                 _lastAttack = _currentAttack;
             }
             else
-            {
+            {             
                 if (_playerInteraction.CheckAlignmentWithPlayer())
                 {
                     _action.AirAttack();
@@ -129,7 +136,7 @@ public class XevyAI : MonoBehaviour
 
                 if (_sameAttackCount == 5)
                 {
-                    _movement.Bounce();
+                    _movement.BounceTowardsRandomPoint();
                     _sameAttackCount = 0;
                 }
             }
@@ -140,7 +147,6 @@ public class XevyAI : MonoBehaviour
     {
         if (!_projectileInteraction.CheckKnivesDistance() && !_projectileInteraction.CheckAxesDistance())
         {
-            _action.LowerGuard();
             SetIdleStatus();
         }
     }
@@ -148,12 +154,9 @@ public class XevyAI : MonoBehaviour
     private void UpdateWhenHealing()
     {
         _action.Heal();
-        if (!_projectileInteraction.CheckKnivesDistance() || !_projectileInteraction.CheckAxesDistance())
+        if ((!_projectileInteraction.CheckKnivesDistance() && !_projectileInteraction.CheckAxesDistance()) || _playerInteraction.CheckPlayerDistance())
         {
-            if (_playerInteraction.CheckPlayerDistance())
-            {
-                _status = XevyStatus.VULNERABLE;
-            }
+            SetVulnerableStatus();
         }
     }
 
@@ -163,7 +166,6 @@ public class XevyAI : MonoBehaviour
         {
             if (_statusTimer <= 0)
             {
-                _statusTimer = VULNERABLE_STATUS_COOLDOWN;
                 SetIdleStatus();
             }
             else
@@ -175,9 +177,19 @@ public class XevyAI : MonoBehaviour
 
     private void SetIdleStatus()
     {
-        _playerInteraction.IsFocusedOnPlayer = true;
+        GetComponent<SpriteRenderer>().color = Color.yellow;
         _statusTimer = IDLE_STATUS_COOLDOWN;
+        _action.LowerGuard();
+        _playerInteraction.IsFocusedOnPlayer = true;
         _status = XevyStatus.IDLE;
+    }
+
+    private void SetVulnerableStatus()
+    {
+        GetComponent<SpriteRenderer>().color = Color.cyan;
+        _statusTimer = VULNERABLE_STATUS_COOLDOWN;
+        _playerInteraction.IsFocusedOnPlayer = false;
+        _status = XevyStatus.VULNERABLE;
     }
 
     private void SetBlockingStatus()
@@ -185,5 +197,10 @@ public class XevyAI : MonoBehaviour
         _action.Block();
         _playerInteraction.IsFocusedOnPlayer = true;
         _status = XevyStatus.BLOCKING;
+    }
+
+    public void OnHit()
+    {
+        SetIdleStatus();
     }
 }

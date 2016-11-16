@@ -9,6 +9,7 @@ public class XevyMovement : MonoBehaviour
         NONE,
         BOUNCING,
         RETREATING,
+        CHARGING,
         FLEEING,
     }
     private const float HORIZONTAL_DISTANCE_TO_REACH_PLATFORM = 6.5f;
@@ -16,11 +17,13 @@ public class XevyMovement : MonoBehaviour
     private const float BOUNCE_SPEED = 8;
     private const float FLEE_SPEED = 5;
     private const float STEP_BACK_SPEED = 1;
+    private const float CHARGE_FORWARD_SPEED = 3;
 
     private FlipBoss _flipBoss;
     private Vector2 _arrivalPosition;
     private Vector2 _startPosition;
     private Vector2[] _referencePoints;
+    private Stack<XevyMovementCommand> _commandStack;
     private List<int>[] _referencePointsConnections;
     System.Random _rng = new System.Random();
 
@@ -35,6 +38,7 @@ public class XevyMovement : MonoBehaviour
     private void Start()
     {
         MovementStatus = XevyMovementStatus.NONE;
+        _commandStack = new Stack<XevyMovementCommand>();
         _flipBoss = GetComponent<FlipBoss>();
         _referencePoints = new Vector2[]
         {
@@ -79,28 +83,56 @@ public class XevyMovement : MonoBehaviour
             case XevyMovementStatus.FLEEING:
                 UpdateWhenRoaming(FLEE_SPEED, _flipBoss.Orientation);
                 break;
+            case XevyMovementStatus.CHARGING:
+                UpdateWhenRoaming(CHARGE_FORWARD_SPEED, _flipBoss.Orientation);
+                break;
         }
-    }
-
-    public void Bounce()
-    {
-        SelectBouncePointRandomly();
-        _flipBoss.FlipTowardsSpecificPoint(_arrivalPosition);
-        MovementStatus = XevyMovementStatus.BOUNCING;
     }
 
     public void StepBack()
     {
-        _startPosition = transform.position;
         _arrivalPosition = new Vector2(transform.position.x + (_flipBoss.Orientation * -2), transform.position.y);
         MovementStatus = XevyMovementStatus.RETREATING;
     }
 
-    public void Flee()
+    public void ChargeForward()
     {
-        SelectFleePointRandomly();
+        _arrivalPosition = new Vector2(transform.position.x + (_flipBoss.Orientation * 3), transform.position.y);
+        MovementStatus = XevyMovementStatus.CHARGING;
+    }
+
+    public void BounceTowardsRandomPoint()
+    {
+        SelectBouncePointRandomly();
+        if (Vector2.Distance(transform.position,_startPosition) > 0.5f)
+        {
+            _commandStack.Push(new XevyMovementCommand(_startPosition, _arrivalPosition, XevyMovementStatus.BOUNCING));
+            _arrivalPosition = _startPosition;
+            Flee();
+        }
+        else
+        {
+            Bounce();
+        }
+    }
+
+    private void Bounce()
+    {
+        _flipBoss.FlipTowardsSpecificPoint(_arrivalPosition);
+        MovementStatus = XevyMovementStatus.BOUNCING;
+    }
+
+    private void Flee()
+    {
+
         _flipBoss.FlipTowardsSpecificPoint(_arrivalPosition);
         MovementStatus = XevyMovementStatus.FLEEING;
+    }
+
+    public void FleeTowardsRandomPoint()
+    {
+        SelectFleePointRandomly();
+        Flee();
     }
 
     private void SelectFleePointRandomly()
@@ -133,7 +165,6 @@ public class XevyMovement : MonoBehaviour
         _arrivalPositionIndex = _referencePointsConnections[_currentPositionIndex][(listNodesCount == 1 ? 0 : _rng.Next() % listNodesCount)];
         _arrivalPosition = _referencePoints[_arrivalPositionIndex];
         _isGoingUp = (_startPosition.y < _arrivalPosition.y);
-        _flipBoss.FlipTowardsSpecificPoint(_arrivalPosition);
         deltaX = _arrivalPosition.x - _startPosition.x;
         deltaY = _arrivalPosition.y - _startPosition.y;
     }
@@ -147,9 +178,14 @@ public class XevyMovement : MonoBehaviour
     private void UpdateWhenRoaming(float speed, int orientation)
     {
         transform.position = new Vector2(transform.position.x + speed * Time.fixedDeltaTime * orientation, transform.position.y);
+        bool isFleeing = (speed == FLEE_SPEED);
         if (CheckIfMovementCompleted(orientation == _flipBoss.Orientation))
         {
-            MovementStatus = XevyMovementStatus.NONE;
+            if (isFleeing)
+            {
+                SetCurrentIndexToArrivalPosition();
+            }
+            UpdateMovementStatus();
         }
     }
 
@@ -160,10 +196,15 @@ public class XevyMovement : MonoBehaviour
         transform.position = new Vector2(x + _startPosition.x - +(_isGoingUp ? 0 : deltaX), _newHeight);
         if (CheckIfMovementCompleted(true))
         {
-            _currentPositionIndex = _arrivalPositionIndex;
-            _startPosition = _arrivalPosition;
-            MovementStatus = XevyMovementStatus.NONE;
+            SetCurrentIndexToArrivalPosition();
+            UpdateMovementStatus();
         }
+    }
+
+    private void SetCurrentIndexToArrivalPosition()
+    {
+        _currentPositionIndex = _arrivalPositionIndex;
+        _startPosition = _arrivalPosition;
     }
 
     private bool CheckIfMovementCompleted(bool isGoingForward)
@@ -176,6 +217,22 @@ public class XevyMovement : MonoBehaviour
         if (MovementStatus == XevyMovementStatus.RETREATING)
         {
             _arrivalPosition.x -= 2 * (_arrivalPosition.x - _startPosition.x);
+        }
+    }
+
+    private void UpdateMovementStatus()
+    {
+        if (_commandStack.Count == 0)
+        {
+            MovementStatus = XevyMovementStatus.NONE;
+        }
+        else
+        {
+            XevyMovementCommand commandInStack = _commandStack.Pop();
+            _startPosition = commandInStack._startPosition;
+            _arrivalPosition = commandInStack._arrivalPosition;
+            MovementStatus = commandInStack._status;
+            _flipBoss.FlipTowardsSpecificPoint(_arrivalPosition);
         }
     }
 }

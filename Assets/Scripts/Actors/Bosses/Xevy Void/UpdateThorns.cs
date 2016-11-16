@@ -6,7 +6,6 @@ public class UpdateThorns : MonoBehaviour
     private float DELAY_BETWEEN_THORN_ACTIVATION = 0.25f;
     private float thornActivatorTimer = 0;
 
-    // Update is called once per frame
     private void Update()
     {
         if (transform.childCount == 0)

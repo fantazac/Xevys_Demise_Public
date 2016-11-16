@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 public class XevyProjectileInteraction : MonoBehaviour
 {
+    private const float REACTION_TIME = 0.25f;
+    private const float KNIFE_VERTICAL_BLOCK_MARGIN = 2.5f;
+    private const float KNIFE_HORIZONTAL_BLOCK_MARGIN = 5;
+    private const float AXE_HORIZONTAL_BLOCK_MARGIN = 3;
+
     Dictionary<GameObject, float> _knivesDictionary;
     Dictionary<GameObject, float> _axesDictionary;
     ActorThrowAttack _throwAttack;
@@ -24,19 +29,20 @@ public class XevyProjectileInteraction : MonoBehaviour
 
     public bool CheckKnivesDistance()
     {
-        foreach (KeyValuePair<GameObject, float> knife in _knivesDictionary)
+        List<GameObject> knifeDictionaryKeys = new List<GameObject>(_knivesDictionary.Keys);
+
+        foreach (GameObject knife in knifeDictionaryKeys)
         {
-            if (knife.Value >= 1.0f)
+            if (_knivesDictionary[knife] >= REACTION_TIME)
             {
-                //Mod this
-                if (Vector2.Distance(knife.Key.transform.position, transform.position) < 2 && Mathf.Abs(knife.Key.transform.position.y - transform.position.y) < 3)
+                if (Vector2.Distance(knife.transform.position, transform.position) < KNIFE_HORIZONTAL_BLOCK_MARGIN && Mathf.Abs(knife.transform.position.y - transform.position.y) < KNIFE_VERTICAL_BLOCK_MARGIN)
                 {
                     return true;
                 }
             }
             else
             {
-                _knivesDictionary[knife.Key] += Time.fixedDeltaTime;
+                _knivesDictionary[knife] += Time.fixedDeltaTime;
             }
         }
         return false;
@@ -44,18 +50,20 @@ public class XevyProjectileInteraction : MonoBehaviour
 
     public bool CheckAxesDistance()
     {
-        foreach (KeyValuePair<GameObject, float> axe in _axesDictionary)
+        List<GameObject> axeDictionaryKeys = new List<GameObject>(_axesDictionary.Keys);
+
+        foreach (GameObject axe in axeDictionaryKeys)
         {
-            if (axe.Value >= 1.0f)
+            if (_axesDictionary[axe] >= REACTION_TIME)
             {
-                if (Vector2.Distance(axe.Key.transform.position, transform.position) < 3 && axe.Key.transform.position.y - transform.position.y > 0)
+                if (Vector2.Distance(axe.transform.position, transform.position) < AXE_HORIZONTAL_BLOCK_MARGIN)
                 {
                     return true;
                 }
             }
             else
             {
-                _axesDictionary[axe.Key] += Time.fixedDeltaTime;
+                _axesDictionary[axe] += Time.fixedDeltaTime;
             }
         }
         return false;
@@ -75,6 +83,7 @@ public class XevyProjectileInteraction : MonoBehaviour
 
     public void OnKnifeDestroyed(GameObject knife)
     {
+        _knivesDictionary.Remove(knife);
         knife.GetComponent<DestroyPlayerProjectile>().OnProjectileDestroyed -= OnKnifeDestroyed;
     }
 

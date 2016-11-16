@@ -4,7 +4,6 @@ using System.Collections;
 public class XevyAction: MonoBehaviour
 {
     private int _sameAttackCount;
-    private bool _isPlayerStillOnSameLine;
 
     [SerializeField]
     private GameObject _airSpike;
@@ -14,21 +13,20 @@ public class XevyAction: MonoBehaviour
     private GameObject _earthThorns;
 
     private FlipBoss _flipBoss;
-    private BoxCollider2D _clawHitbox;
+    private GameObject _clawHitbox;
     private PolygonCollider2D _xevyHitbox;
 
 
 	private void Start()
     {
-        _isPlayerStillOnSameLine = true;
         _xevyHitbox = GetComponent<PolygonCollider2D>();
         _flipBoss = GetComponent<FlipBoss>();
+        _clawHitbox = transform.FindChild("Claw").gameObject;//.GetComponent<BoxCollider2D>();
     }
 
     public void Block()
     {
         GetComponent<SpriteRenderer>().color = Color.black;
-        //_clawHitbox.enabled = false;
         _xevyHitbox.enabled = false;
     }
 
@@ -41,7 +39,7 @@ public class XevyAction: MonoBehaviour
     public void Heal()
     {
         GetComponent<SpriteRenderer>().color = Color.blue;
-        GetComponent<Health>().Heal(0);
+        //GetComponent<Health>().Heal(0);
     }
 
     public void FireAttack(float horizontalForce, float verticalForce)
@@ -71,6 +69,11 @@ public class XevyAction: MonoBehaviour
     public void NeutralAttack()
     {
         GetComponent<SpriteRenderer>().color = Color.yellow;
-        //_clawHitbox.enabled = true;
+        _clawHitbox.SetActive(true);
+    }
+
+    public void RetreatClaws()
+    {
+        _clawHitbox.SetActive(false);
     }
 }
