@@ -110,6 +110,7 @@ public class KeyboardInputs : MonoBehaviour {
         {
             OnThrowAttackChangeButtonPressed();
         }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             OnPause();
