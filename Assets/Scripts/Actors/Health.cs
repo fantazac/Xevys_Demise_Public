@@ -69,7 +69,10 @@ public class Health : MonoBehaviour
 
     private void ReloadHealth(float health)
     {
-        ChangeHealth(Convert.ToInt32(_health - health));
+        if(tag == "Player")
+        {
+            OnHealthChanged(Convert.ToInt32(-(_health - health)));
+        }
     }
 
     private bool IsDead()

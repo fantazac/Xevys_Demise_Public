@@ -75,8 +75,6 @@ public class Database : MonoBehaviour
 
     public void OnApplicationQuit()
     {
-        SaveStats();
-
         _dbcmd.Dispose();
         _dbcmd = null;
         _dbconn = null;
