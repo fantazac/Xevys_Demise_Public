@@ -61,7 +61,7 @@ public class InputManager : MonoBehaviour
         _keyboardInputs.OnStandingUp += InputsOnStandingUp;
         _keyboardInputs.OnThrowAttack += InputsOnThrowAttack;
         _keyboardInputs.OnThrowAttackChangeButtonPressed += InputsOnThrowAttackChangeButtonPressed;
-        _keyboardInputs.OnEnterPortal += InputsOnEnterPortal;
+        //_keyboardInputs.OnEnterPortal += InputsOnEnterPortal;
         _keyboardInputs.OnPause += InputsOnPause;
 
         _gamepadInputs = GetComponentInChildren<GamepadInputs>();
@@ -76,7 +76,7 @@ public class InputManager : MonoBehaviour
         _gamepadInputs.OnStandingUp += InputsOnStandingUp;
         _gamepadInputs.OnThrowAttack += InputsOnThrowAttack;
         _gamepadInputs.OnThrowAttackChangeButtonPressed += InputsOnThrowAttackChangeButtonPressed;
-        _gamepadInputs.OnEnterPortal += InputsOnEnterPortal;
+        //_gamepadInputs.OnEnterPortal += InputsOnEnterPortal;
         _gamepadInputs.OnPause += InputsOnPause;
     }
 

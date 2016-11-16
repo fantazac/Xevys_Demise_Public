@@ -111,7 +111,6 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void UpdateMovement()
     {
-        Debug.Log(_canDoubleJump);
         if (enabled)
         {
 
