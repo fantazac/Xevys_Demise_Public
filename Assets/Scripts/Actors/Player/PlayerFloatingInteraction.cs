@@ -10,10 +10,15 @@ public class PlayerFloatingInteraction : MonoBehaviour
     public event OnPlayerOutOfWaterHandler OnPlayerOutOfWater;
 
     private GameObject _player;
+    private PlayerGroundMovement _playerGroundMovement;
+    private PlayerWaterMovement _playerWaterMovement;
 
     private void Start()
     {
         _player = StaticObjects.GetPlayer();
+
+        _playerGroundMovement = _player.GetComponent<PlayerGroundMovement>();
+        _playerWaterMovement = _player.GetComponent<PlayerWaterMovement>();
     }
 
     public void OnTriggerEnter2D(Collider2D collider)
