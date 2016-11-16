@@ -12,15 +12,6 @@ public class XevyAI : MonoBehaviour
         DEAD,
     }
 
-    public enum XevyAttackType
-    {
-        NONE,
-        AIR,
-        FIRE,
-        EARTH,
-        NEUTRAL,
-    }
-
     //Input more cooldowns for each attack
     private const float VULNERABLE_STATUS_COOLDOWN = 1.0f;
     private const float IDLE_STATUS_COOLDOWN = 1.0f;
@@ -32,16 +23,16 @@ public class XevyAI : MonoBehaviour
     private XevyProjectileInteraction _projectileInteraction;
 
     private XevyStatus _status;
-    private XevyAttackType _lastAttack;
-    private XevyAttackType _currentAttack;
+    private XevyAction.XevyAttackType _lastAttack;
+    private XevyAction.XevyAttackType _currentAttack;
     private float _statusTimer;
     private float _sameAttackCount;
 
     private void Start()
     {
         _sameAttackCount = 0;
-        _currentAttack = XevyAttackType.NONE;
-        _lastAttack = XevyAttackType.NONE;
+        _currentAttack = XevyAction.XevyAttackType.NONE;
+        _lastAttack = XevyAction.XevyAttackType.NONE;
         _status = XevyStatus.IDLE;
         _health = GetComponent<Health>();
         _action = GetComponent<XevyAction>();
@@ -101,20 +92,17 @@ public class XevyAI : MonoBehaviour
             {
                 switch (_lastAttack)
                 {
-                    case XevyAttackType.EARTH:
-                        _action.NeutralAttack();
+                    case XevyAction.XevyAttackType.EARTH:
+                        _currentAttack = _action.NeutralAttack();
                         _movement.ChargeForward();
-                        _currentAttack = XevyAttackType.NEUTRAL;
                         break;
-                    case XevyAttackType.NEUTRAL:
+                    case XevyAction.XevyAttackType.NEUTRAL:
                         _playerInteraction.IsFocusedOnPlayer = true;
-                        _action.Block();
+                        _currentAttack = _action.Block();
                         _movement.StepBack();
-                        _currentAttack = XevyAttackType.NONE;
                         break;
                     default:
-                        _action.EarthAttack();
-                        _currentAttack = XevyAttackType.EARTH;
+                        _currentAttack = _action.EarthAttack();
                         break;
                 }
                 _lastAttack = _currentAttack;
@@ -123,18 +111,16 @@ public class XevyAI : MonoBehaviour
             {             
                 if (_playerInteraction.CheckAlignmentWithPlayer())
                 {
-                    _action.AirAttack();
-                    _currentAttack = XevyAttackType.AIR;
+                    _currentAttack = _action.AirAttack();
                 }
                 else
                 {
-                    _action.FireAttack(_playerInteraction.GetPlayerHorizontalDistance(), _playerInteraction.GetPlayerVerticalDistance());
-                    _currentAttack = XevyAttackType.FIRE;
+                    _currentAttack = _action.FireAttack(_playerInteraction.GetPlayerHorizontalDistance(), _playerInteraction.GetPlayerVerticalDistance());
                 }
                 _sameAttackCount = (_currentAttack == _lastAttack ? _sameAttackCount + 1 : 0);
                 _lastAttack = _currentAttack;
 
-                if (_sameAttackCount == 5)
+                if (_sameAttackCount == 2)
                 {
                     _movement.BounceTowardsRandomPoint();
                     _sameAttackCount = 0;

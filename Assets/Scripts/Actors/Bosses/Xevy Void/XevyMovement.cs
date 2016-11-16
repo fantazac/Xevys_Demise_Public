@@ -12,14 +12,17 @@ public class XevyMovement : MonoBehaviour
         CHARGING,
         FLEEING,
     }
-    private const float HORIZONTAL_DISTANCE_TO_REACH_PLATFORM = 6.5f;
-    private const float VERTICAL_DISTANCE_TO_REACH_PLATFORM = 4f;
-    private const float BOUNCE_SPEED = 8;
+
     private const float FLEE_SPEED = 5;
+    private const float BOUNCE_SPEED = 8;
     private const float STEP_BACK_SPEED = 1;
     private const float CHARGE_FORWARD_SPEED = 3;
+    private const float BOUNCE_MODIFIER = -0.09467455f;
+    private const float VERTICAL_DISTANCE_TO_REACH_PLATFORM = 4f;
+    private const float HORIZONTAL_DISTANCE_TO_REACH_PLATFORM = 6.5f;
 
     private FlipBoss _flipBoss;
+    private Rigidbody2D _rigidbody;
     private Vector2 _arrivalPosition;
     private Vector2 _startPosition;
     private Vector2[] _referencePoints;
@@ -39,6 +42,7 @@ public class XevyMovement : MonoBehaviour
     {
         MovementStatus = XevyMovementStatus.NONE;
         _commandStack = new Stack<XevyMovementCommand>();
+        _rigidbody = GetComponent<Rigidbody2D>();
         _flipBoss = GetComponent<FlipBoss>();
         _referencePoints = new Vector2[]
         {
@@ -104,7 +108,7 @@ public class XevyMovement : MonoBehaviour
     public void BounceTowardsRandomPoint()
     {
         SelectBouncePointRandomly();
-        if (Vector2.Distance(transform.position,_startPosition) > 0.5f)
+        if (Vector2.Distance(transform.position, _startPosition) > 0.5f)
         {
             _commandStack.Push(new XevyMovementCommand(_startPosition, _arrivalPosition, XevyMovementStatus.BOUNCING));
             _arrivalPosition = _startPosition;
@@ -118,6 +122,7 @@ public class XevyMovement : MonoBehaviour
 
     private void Bounce()
     {
+        _rigidbody.isKinematic = true;
         _flipBoss.FlipTowardsSpecificPoint(_arrivalPosition);
         MovementStatus = XevyMovementStatus.BOUNCING;
     }
@@ -137,6 +142,17 @@ public class XevyMovement : MonoBehaviour
 
     private void SelectFleePointRandomly()
     {
+        int indexClosestPosition = FindClosestPoint();
+        _arrivalPositionIndex = indexClosestPosition;
+        while (_arrivalPositionIndex == indexClosestPosition)
+        {
+            _arrivalPositionIndex = _rng.Next() % 3 * 2 + 1;
+        }
+        _arrivalPosition = _referencePoints[_arrivalPositionIndex];
+    }
+
+    private int FindClosestPoint()
+    {
         float distanceToClosestPoint = float.MaxValue;
         int indexClosestPosition = -1;
         for (int n = 1; n < _referencePoints.Length; n++)
@@ -149,14 +165,8 @@ public class XevyMovement : MonoBehaviour
             }
             //Because we must only consider ground positions, air positions (even numbers) are ignored.
             n++;
-
         }
-        _arrivalPositionIndex = indexClosestPosition;
-        while (_arrivalPositionIndex == indexClosestPosition)
-        {
-            _arrivalPositionIndex = _rng.Next() % 3 * 2 + 1;
-        }
-        _arrivalPosition = _referencePoints[_arrivalPositionIndex];
+        return indexClosestPosition;
     }
 
     private void SelectBouncePointRandomly()
@@ -181,6 +191,7 @@ public class XevyMovement : MonoBehaviour
         bool isFleeing = (speed == FLEE_SPEED);
         if (CheckIfMovementCompleted(orientation == _flipBoss.Orientation))
         {
+            _startPosition = _referencePoints[FindClosestPoint()];
             if (isFleeing)
             {
                 SetCurrentIndexToArrivalPosition();
@@ -192,7 +203,7 @@ public class XevyMovement : MonoBehaviour
     private void UpdateWhenBouncing()
     {
         float x = transform.position.x + (_flipBoss.Orientation * BOUNCE_SPEED * Time.fixedDeltaTime) - _startPosition.x + (_isGoingUp ? 0 : deltaX);
-        float _newHeight = -0.09467455f * x * (x - 2 * deltaX) + (_isGoingUp ? 0 : deltaY) + _startPosition.y;
+        float _newHeight = BOUNCE_MODIFIER * x * (x - 2 * deltaX) + (_isGoingUp ? 0 : deltaY) + _startPosition.y;
         transform.position = new Vector2(x + _startPosition.x - +(_isGoingUp ? 0 : deltaX), _newHeight);
         if (CheckIfMovementCompleted(true))
         {
@@ -224,6 +235,7 @@ public class XevyMovement : MonoBehaviour
     {
         if (_commandStack.Count == 0)
         {
+            _rigidbody.isKinematic = false;
             MovementStatus = XevyMovementStatus.NONE;
         }
         else
@@ -233,6 +245,10 @@ public class XevyMovement : MonoBehaviour
             _arrivalPosition = commandInStack._arrivalPosition;
             MovementStatus = commandInStack._status;
             _flipBoss.FlipTowardsSpecificPoint(_arrivalPosition);
+            if (MovementStatus == XevyMovementStatus.BOUNCING)
+            {
+                _rigidbody.isKinematic = true;
+            }
         }
     }
 }

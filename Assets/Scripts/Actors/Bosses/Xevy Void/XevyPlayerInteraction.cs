@@ -3,7 +3,8 @@ using System.Collections;
 
 public class XevyPlayerInteraction : MonoBehaviour
 {
-
+    private const float PLAYER_DETECTION_DISTANCE = 5;
+    private const float PLAYER_ALIGNMENT_MARGIN = 2.5f;
     public delegate void OnBossFlippedHandler();
     public event OnBossFlippedHandler OnBossFlipped;
     FlipBoss _flipBoss;
@@ -29,7 +30,7 @@ public class XevyPlayerInteraction : MonoBehaviour
 
     public bool CheckPlayerDistance()
     {
-        return (Vector2.Distance(StaticObjects.GetPlayer().transform.position, transform.position) <= 5);
+        return (Vector2.Distance(StaticObjects.GetPlayer().transform.position, transform.position) <= PLAYER_DETECTION_DISTANCE);
     }
 
     public float GetPlayerHorizontalDistance()
@@ -44,6 +45,6 @@ public class XevyPlayerInteraction : MonoBehaviour
     }
     public bool CheckAlignmentWithPlayer()
     {
-        return (Mathf.Abs(transform.position.y - StaticObjects.GetPlayer().transform.position.y) < 2.5f);
+        return (Mathf.Abs(transform.position.y - StaticObjects.GetPlayer().transform.position.y) < PLAYER_ALIGNMENT_MARGIN);
     }
 }
