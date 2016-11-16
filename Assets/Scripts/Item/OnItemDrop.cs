@@ -26,11 +26,16 @@ public class OnItemDrop : MonoBehaviour
     public void Initialise(float amountToDrop, int id, Collider2D collider)
     {
         GetComponent<Rigidbody2D>().velocity = new Vector2(((amountToDrop - 1) * (-DISTANCE_BETWEEN_ITEMS / 2) + (id * DISTANCE_BETWEEN_ITEMS)), 0);
-        if (!((collider.gameObject.tag == "Bat" && collider.GetComponent<BatMovement>().CloseToTop()) 
-            || (collider.gameObject.tag == "Scarab" && collider.GetComponent<ScarabMovement>().IsNotOnTopOfPlatform())))
+        if (!EnemyMustDropItemsStraightDown(collider))
         {
             GetComponent<Rigidbody2D>().velocity += Vector2.up * INITIAL_SPEED;
         }
+    }
+
+    private bool EnemyMustDropItemsStraightDown(Collider2D collider)
+    {
+        return (collider.gameObject.tag == "Bat" && collider.GetComponent<BatMovement>().CloseToTop())
+            || (collider.gameObject.tag == "Scarab" && collider.GetComponent<ScarabMovement>().IsNotOnTopOfPlatform());
     }
 
     private void Update()
