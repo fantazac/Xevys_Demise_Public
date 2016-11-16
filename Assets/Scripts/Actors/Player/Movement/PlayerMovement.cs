@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     protected ActorBasicAttack _playerBasicAttack;
     protected PlayerTouchesFlyingPlatform _playerTouchesFlyingPlatform;
     protected FlipPlayer _flipPlayer;
+    protected PlayerFloatingInteraction _playerFloating;
 
     public delegate void OnFallingHandler();
     public event OnFallingHandler OnFalling;
@@ -27,15 +28,6 @@ public class PlayerMovement : MonoBehaviour
     protected const float TERMINAL_SPEED = -18;
     protected const float LINEAR_DRAG = 18f;
     protected const float KNOCKBACK_DURATION = 0.25f;
-    /*protected const float PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND = 0.8622845f;
-    protected const float PLAYER_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.008171797f;
-    protected const float FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.45f;
-    protected const float TORSO_CIRCLE_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = 0.21f;
-    protected const float TORSO_BOX_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.4f;
-    protected const float ATTACK_BOX_COLLIDER_Y_WHEN_STAND = 3.415288f;
-    protected const float CROUCHING_OFFSET = 0.6f;
-    protected const float CROUCHING_SPRITE_POSITION_OFFSET = 0.35f;
-    protected const float TIME_TO_WAIT_BEFORE_CROUCH_ALLOWED = 0.3f;*/
 
     protected float _horizontalSpeed = 7;
     protected float _jumpingSpeed = 17;
@@ -51,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
     public bool IsCrouching { get { return _isCrouching; } set { _isCrouching = value; } }
     public float TerminalSpeed { get { return TERMINAL_SPEED; } }
 
-    private void Start()
+    protected virtual void Start()
     {
         _anim = StaticObjects.GetPlayer().GetComponentInChildren<Animator>();
         _playerTouchesFlyingPlatform = GetComponentInChildren<PlayerTouchesFlyingPlatform>();
@@ -67,6 +59,7 @@ public class PlayerMovement : MonoBehaviour
         _playerBasicAttack = GetComponent<ActorBasicAttack>();
         _flipPlayer = GetComponent<FlipPlayer>();
         _playerCroutchHitbox = GameObject.Find("CharacterCroutchedHitbox").GetComponent<BoxCollider2D>();
+        _playerFloating = GameObject.Find("CharacterFloatingHitbox").GetComponent<PlayerFloatingInteraction>();
 
         _inputManager.OnMove += OnMove;
         _inputManager.OnJump += OnJump;
