@@ -17,9 +17,9 @@ public class ItemHover : MonoBehaviour
         _initialYPosition = transform.position.y;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        transform.position = new Vector2(transform.position.x, _initialYPosition + WAVE_LENGTH * Mathf.Sin(_sinCount) * Time.deltaTime * 60);
+        transform.position = new Vector3(transform.position.x, _initialYPosition + WAVE_LENGTH * Mathf.Sin(_sinCount) * Time.deltaTime * 60, 0);
         _sinCount += _speed;
     }
 }

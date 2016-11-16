@@ -232,10 +232,10 @@ public class PlayerMovement : MonoBehaviour
     // À modifier absolument
     private void Update()
     {
+        //demander à ben si cest mieux un Abs ou un if negatif -> mettre positif
         _anim.SetFloat("Speed", Mathf.Abs(_rigidbody.velocity.x));
         _anim.SetBool("IsJumping", PlayerIsJumping());
         _anim.SetBool("IsFalling", PlayerIsFalling());
-        _anim.SetBool("IsCrouching", IsCrouching);
 
         if (_isKnockedBack && _knockbackCount >= KNOCKBACK_DURATION)
         {

@@ -68,7 +68,6 @@ public class PlayerGroundMovement : PlayerMovement
         {
             if (!PlayerIsMovingVertically())
             {
-                _anim.SetBool("IsCrouching", true);
                 if (PlayerIsMovingHorizontally())
                 {
                     _rigidbody.velocity = Vector2.zero;
@@ -83,7 +82,6 @@ public class PlayerGroundMovement : PlayerMovement
     {
         if (IsCrouching && enabled)
         {
-            _anim.SetBool("IsCrouching", false);
             if (!PlayerIsMovingVertically())
             {
                 transform.position += Vector3.up * CROUTCH_Y_OFFSET;
@@ -102,6 +100,7 @@ public class PlayerGroundMovement : PlayerMovement
         IsCrouching = enable;
         _playerCroutchHitbox.enabled = enable;
         _playerBoxCollider.isTrigger = enable;
+        _anim.SetBool("IsCrouching", enable);
     }
 
     private bool PlayerCanDoubleJump()
@@ -111,10 +110,8 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void UpdateMovement()
     {
-        Debug.Log(_canDoubleJump);
         if (enabled)
         {
-
             if (PlayerIsFalling())
             {
                 _wasFalling = true;
