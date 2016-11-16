@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class Health : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
+        Database.OnHealthReloaded += ReloadHealth;
         MaxHealth = _health;
         OnHealthChanged += ChangeHealth;
 
@@ -63,6 +65,14 @@ public class Health : MonoBehaviour
     private void ChangeHealth(int healthPointsToAdd)
     {
         HealthPoint += healthPointsToAdd;
+    }
+
+    private void ReloadHealth(float health)
+    {
+        if(tag == "Player")
+        {
+            OnHealthChanged(Convert.ToInt32(-(_health - health)));
+        }
     }
 
     private bool IsDead()

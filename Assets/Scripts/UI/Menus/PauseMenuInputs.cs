@@ -9,13 +9,10 @@ public class PauseMenuInputs : MonoBehaviour
     public event PauseMenuOntriggerHandler TriggerAnimations;
 
     private InputManager _inputManager;
-
     private PauseMenuAnimationManager _pauseMenuAnimationManager;
-
     private EventSystem _pauseMenuEventSystem;
 
     private bool _canSlide;
-
     public bool CanSlide { private get { return _canSlide; } set { _canSlide = value; } }
 
     private void Start()
@@ -37,13 +34,45 @@ public class PauseMenuInputs : MonoBehaviour
         }
     }
 
-    private void SyncFirstControlOnPauseMenuStateChanged(bool isActive)
+    public void OptionBtnOnClick()
     {
-        _pauseMenuEventSystem.SetSelectedGameObject( isActive ? transform.GetChild(1).transform.GetChild(0).gameObject : null );
+        _pauseMenuEventSystem.SetSelectedGameObject(transform.GetChild(0).transform.GetChild(1).transform.GetChild(0).gameObject);
     }
 
-    public void QuitGame()
+    public void QuitBtnOnClick()
     {
         Application.Quit();
+    }
+
+    public void ControlsBtnOnClick()
+    {
+        _pauseMenuEventSystem.SetSelectedGameObject(transform.GetChild(0).transform.GetChild(2).transform.GetChild(0).gameObject);
+    }
+
+    public void AudioBtnOnClick()
+    {
+        _pauseMenuEventSystem.SetSelectedGameObject(transform.GetChild(0).transform.GetChild(3).transform.GetChild(0).gameObject);
+    }
+
+
+
+    public void OptionsBackBtnOnClick()
+    {
+        _pauseMenuEventSystem.SetSelectedGameObject(transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).gameObject);
+    }
+
+    public void ControlsBackBtnOnClick()
+    {
+        _pauseMenuEventSystem.SetSelectedGameObject(transform.GetChild(0).transform.GetChild(1).transform.GetChild(0).gameObject);
+    }
+
+    public void AudioBackBtnOnClick()
+    {
+        _pauseMenuEventSystem.SetSelectedGameObject(transform.GetChild(0).transform.GetChild(1).transform.GetChild(0).gameObject);
+    }
+
+    private void SyncFirstControlOnPauseMenuStateChanged(bool isActive)
+    {
+        _pauseMenuEventSystem.SetSelectedGameObject(isActive ? transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).gameObject : null);
     }
 }

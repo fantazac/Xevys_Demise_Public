@@ -13,6 +13,8 @@ public class Database : MonoBehaviour
     public static event OnInventoryReloadedHandler OnInventoryReloaded;
     public delegate void OnAmmoReloadedHandler(int knifeAmmo, int axeAmmo);
     public static event OnAmmoReloadedHandler OnAmmoReloaded;
+    public delegate void OnHealthReloadedHandler(float health);
+    public static event OnHealthReloadedHandler OnHealthReloaded;
 
     private IDbConnection _dbconn;
     private IDbCommand _dbcmd;
@@ -21,6 +23,8 @@ public class Database : MonoBehaviour
 
     //TEMP
     private int _accountID = 0;
+
+    private float _lifeRemaining = 1000f;
 
     private int _tempNbScarabsKilled;
     private int _tempNbBatsKilled;
@@ -69,10 +73,8 @@ public class Database : MonoBehaviour
         }
     }
 
-    private void OnApplicationQuit()
+    public void OnApplicationQuit()
     {
-        SaveStats();
-
         _dbcmd.Dispose();
         _dbcmd = null;
         _dbconn = null;
@@ -131,8 +133,8 @@ public class Database : MonoBehaviour
     private void CreateStatsRecord()
     {
         _dbconn.Open();
-        string sqlQuery = String.Format("INSERT INTO STATS (STATS_ID, SECONDS_PLAYED, NB_KILLED_SCARABS, NB_KILLED_BATS, NB_KILLED_SKELTALS, NB_DEATHS, KNIFE_PICKED, KNIFE_AMMO, AXE_PICKED, AXE_AMMO, FEATHER_PICKED, BOOTS_PICKED, BUBBLE_PICKED, ARMOR_PICKED, ARTEFACT1_PICKED, ARTEFACT2_PICKED, ARTEFACT3_PICKED, ARTEFACT4_PICKED, GAME_COMPLETED, ACCOUNT_ID)" + 
-            "VALUES (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, {0})", _accountID);
+        string sqlQuery = String.Format("INSERT INTO STATS (STATS_ID, SECONDS_PLAYED, NB_KILLED_SCARABS, NB_KILLED_BATS, NB_KILLED_SKELTALS, LIFE_REMAINING, NB_DEATHS, KNIFE_PICKED, KNIFE_AMMO, AXE_PICKED, AXE_AMMO, FEATHER_PICKED, BOOTS_PICKED, BUBBLE_PICKED, ARMOR_PICKED, ARTEFACT1_PICKED, ARTEFACT2_PICKED, ARTEFACT3_PICKED, ARTEFACT4_PICKED, GAME_COMPLETED, ACCOUNT_ID)" + 
+            "VALUES (0, 0, 0, 0, 0, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, {0})", _accountID);
         _dbcmd.CommandText = sqlQuery;
         _dbcmd.ExecuteNonQuery();
         _dbconn.Close();
@@ -143,6 +145,7 @@ public class Database : MonoBehaviour
         _nbScarabsKilled = _tempNbScarabsKilled;
         _nbBatsKilled = _tempNbBatsKilled;
         _nbSkeltalsKilled = _tempNbSkeltalsKilled;
+        _lifeRemaining = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>().HealthPoint;
         _knifeEnabled = Convert.ToInt32(_inventoryManager.KnifeEnabled);
         _knifeAmmo = _munitions.KnifeAmmo;
         _axeAmmo = _munitions.AxeAmmo;
@@ -157,11 +160,11 @@ public class Database : MonoBehaviour
         _fireArtefactEnabled = Convert.ToInt32(_inventoryManager.FireArtefactEnabled);
     }
 
-    private void SaveStats()
+    public void SaveStats()
     {
         _dbconn.Open();
-        string sqlQuery = String.Format("UPDATE STATS SET NB_KILLED_SCARABS = {0}, NB_KILLED_BATS = {1}, NB_KILLED_SKELTALS = {2}, KNIFE_PICKED = {3}, KNIFE_AMMO = {4}, AXE_PICKED = {5}, AXE_AMMO = {6}, FEATHER_PICKED = {7}, BOOTS_PICKED = {8}, BUBBLE_PICKED = {9}, ARMOR_PICKED = {10}, ARTEFACT1_PICKED = {11}, ARTEFACT2_PICKED = {12}, ARTEFACT3_PICKED = {13}, ARTEFACT4_PICKED = {14} " +
-            "WHERE ACCOUNT_ID = {13}", _nbScarabsKilled, _nbBatsKilled, _nbSkeltalsKilled, _knifeEnabled, _knifeAmmo, _axeEnabled, _axeAmmo, _featherEnabled, _bootsEnabled, _bubbleEnabled, _armorEnabled, _earthArtefactEnabled, _airArtefactEnabled, _waterArtefactEnabled, _fireArtefactEnabled, _accountID);
+        string sqlQuery = String.Format("UPDATE STATS SET NB_KILLED_SCARABS = {0}, NB_KILLED_BATS = {1}, NB_KILLED_SKELTALS = {2}, LIFE_REMAINING = {3}, KNIFE_PICKED = {4}, KNIFE_AMMO = {5}, AXE_PICKED = {6}, AXE_AMMO = {7}, FEATHER_PICKED = {8}, BOOTS_PICKED = {9}, BUBBLE_PICKED = {10}, ARMOR_PICKED = {11}, ARTEFACT1_PICKED = {12}, ARTEFACT2_PICKED = {13}, ARTEFACT3_PICKED = {14}, ARTEFACT4_PICKED = {15} " +
+            "WHERE ACCOUNT_ID = {13}", _nbScarabsKilled, _nbBatsKilled, _nbSkeltalsKilled, _lifeRemaining, _knifeEnabled, _knifeAmmo, _axeEnabled, _axeAmmo, _featherEnabled, _bootsEnabled, _bubbleEnabled, _armorEnabled, _earthArtefactEnabled, _airArtefactEnabled, _waterArtefactEnabled, _fireArtefactEnabled, _accountID);
         _dbcmd.CommandText = sqlQuery;
         _dbcmd.ExecuteNonQuery();
         _dbconn.Close();
@@ -170,7 +173,7 @@ public class Database : MonoBehaviour
     private void LoadStats()
     {
         _dbconn.Open();
-        string sqlQuery = String.Format("SELECT NB_KILLED_SCARABS, NB_KILLED_BATS, NB_KILLED_SKELTALS, KNIFE_PICKED, KNIFE_AMMO, AXE_PICKED, AXE_AMMO, FEATHER_PICKED, BOOTS_PICKED, BUBBLE_PICKED, ARMOR_PICKED, ARTEFACT1_PICKED, ARTEFACT2_PICKED, ARTEFACT3_PICKED, ARTEFACT4_PICKED"  +
+        string sqlQuery = String.Format("SELECT NB_KILLED_SCARABS, NB_KILLED_BATS, NB_KILLED_SKELTALS, LIFE_REMAINING, KNIFE_PICKED, KNIFE_AMMO, AXE_PICKED, AXE_AMMO, FEATHER_PICKED, BOOTS_PICKED, BUBBLE_PICKED, ARMOR_PICKED, ARTEFACT1_PICKED, ARTEFACT2_PICKED, ARTEFACT3_PICKED, ARTEFACT4_PICKED"  +
             " FROM STATS WHERE ACCOUNT_ID = {0}", _accountID);
         _dbcmd.CommandText = sqlQuery;
         IDataReader reader = _dbcmd.ExecuteReader();
@@ -179,18 +182,19 @@ public class Database : MonoBehaviour
             _tempNbScarabsKilled = reader.GetInt32(0);
             _tempNbBatsKilled = reader.GetInt32(1);
             _tempNbSkeltalsKilled = reader.GetInt32(2);
-            _knifeEnabled = reader.GetInt32(3);
-            _knifeAmmo = reader.GetInt32(4);
-            _axeEnabled = reader.GetInt32(5);
-            _axeAmmo = reader.GetInt32(6);
-            _featherEnabled = reader.GetInt32(7);
-            _bootsEnabled = reader.GetInt32(8);
-            _bubbleEnabled = reader.GetInt32(9);
-            _armorEnabled = reader.GetInt32(10);
-            _earthArtefactEnabled = reader.GetInt32(11);
-            _airArtefactEnabled = reader.GetInt32(12);
-            _waterArtefactEnabled = reader.GetInt32(13);
-            _fireArtefactEnabled = reader.GetInt32(14);
+            _lifeRemaining = reader.GetFloat(3);
+            _knifeEnabled = reader.GetInt32(4);
+            _knifeAmmo = reader.GetInt32(5);
+            _axeEnabled = reader.GetInt32(6);
+            _axeAmmo = reader.GetInt32(7);
+            _featherEnabled = reader.GetInt32(8);
+            _bootsEnabled = reader.GetInt32(9);
+            _bubbleEnabled = reader.GetInt32(10);
+            _armorEnabled = reader.GetInt32(11);
+            _earthArtefactEnabled = reader.GetInt32(12);
+            _airArtefactEnabled = reader.GetInt32(13);
+            _waterArtefactEnabled = reader.GetInt32(14);
+            _fireArtefactEnabled = reader.GetInt32(15);
         }
         reader.Close();
         reader = null;
@@ -198,6 +202,7 @@ public class Database : MonoBehaviour
 
         OnInventoryReloaded(Convert.ToBoolean(_knifeEnabled), Convert.ToBoolean(_axeEnabled), Convert.ToBoolean(_featherEnabled), Convert.ToBoolean(_bootsEnabled), Convert.ToBoolean(_bubbleEnabled), Convert.ToBoolean(_armorEnabled), Convert.ToBoolean(_earthArtefactEnabled), Convert.ToBoolean(_airArtefactEnabled), Convert.ToBoolean(_waterArtefactEnabled), Convert.ToBoolean(_fireArtefactEnabled));
         OnAmmoReloaded(_knifeAmmo, _axeAmmo);
+        OnHealthReloaded(_lifeRemaining);
     }
 
     private void EnemyKilled(string tag)
