@@ -79,4 +79,9 @@ public class Health : MonoBehaviour
     {
         return _health <= 0;
     }
+
+    public bool CanHeal()
+    {
+        return _health < MaxHealth;
+    }
 }

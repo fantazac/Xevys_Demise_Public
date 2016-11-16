@@ -6,12 +6,11 @@ public class HealthItemHeal : MonoBehaviour
     [SerializeField]
     private int _healPoints = 200;
 
-    private void OnTriggerEnter2D(Collider2D coll)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (coll.gameObject.tag == "Player" && 
-            GameObject.FindGameObjectWithTag("Player").GetComponent<Health>().HealthPoint < GameObject.FindGameObjectWithTag("Player").GetComponent<Health>().MaxHealth)
+        if (collider.gameObject.tag == "Player" && collider.GetComponent<Health>().CanHeal())
         {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<Health>().Heal(_healPoints);
+            collider.GetComponent<Health>().Heal(_healPoints);
             Destroy(gameObject);
         }
     } 
