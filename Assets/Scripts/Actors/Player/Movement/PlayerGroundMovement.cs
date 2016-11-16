@@ -7,6 +7,13 @@ public class PlayerGroundMovement : PlayerMovement
 
     private float CROUTCH_Y_OFFSET = 0.36f;
 
+    protected override void Start()
+    {
+        base.Start();
+        _playerFloating.OnPlayerUnderWater += OnStandingUp;
+        _playerFloating.OnPlayerOutOfWater += ActivateDoubleJump;
+    }
+
     protected override void OnMove(Vector3 vector, bool goesRight)
     {
         if (enabled)
@@ -74,7 +81,7 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void OnStandingUp()
     {
-        if (enabled)
+        if (IsCrouching && enabled)
         {
             _anim.SetBool("IsCrouching", false);
             if (!PlayerIsMovingVertically())
@@ -83,6 +90,11 @@ public class PlayerGroundMovement : PlayerMovement
             }
             SetCroutch(false);
         }
+    }
+
+    private void ActivateDoubleJump()
+    {
+        _canDoubleJump = true;
     }
 
     private void SetCroutch(bool enable)
@@ -99,9 +111,9 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void UpdateMovement()
     {
+        Debug.Log(_canDoubleJump);
         if (enabled)
         {
-            //_rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
 
             if (PlayerIsFalling())
             {
@@ -116,7 +128,7 @@ public class PlayerGroundMovement : PlayerMovement
 
             if (!IsJumping() && PlayerTouchesGround() && _inventoryManager.FeatherEnabled && !_canDoubleJump)
             {
-                _canDoubleJump = true;
+                ActivateDoubleJump();
             }
 
             if (_rigidbody.velocity.y < TERMINAL_SPEED)
