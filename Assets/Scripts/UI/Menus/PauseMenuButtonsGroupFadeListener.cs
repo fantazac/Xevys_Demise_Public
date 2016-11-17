@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PauseMenuGroupButtonsFadeListener : MonoBehaviour
+public class PauseMenuButtonsGroupFadeListener : MonoBehaviour
 {
 
     private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
@@ -16,15 +16,15 @@ public class PauseMenuGroupButtonsFadeListener : MonoBehaviour
             case "PauseMenuMainButtons":
                 _pauseMenuCurrentInterfaceAnimator.OnMainInterfaceFade += InterfaceFade;
                 break;
-            //case "PauseMenuOptionsButtons":
-            //    _pauseMenuCurrentInterfaceAnimator.OnOptionsInterfaceFade += InterfaceFade;
-            //    break;
-            //case "PauseMenuControlsOptionsButtons":
-            //    _pauseMenuCurrentInterfaceAnimator.OnControlsInterfaceFade += InterfaceFade;
-            //    break;
-            //case "PauseMenuAudioOptionsButtons":
-            //    _pauseMenuCurrentInterfaceAnimator.OnAudioInterfaceFade += InterfaceFade;
-            //    break;
+            case "PauseMenuOptionsButtons":
+                _pauseMenuCurrentInterfaceAnimator.OnOptionsInterfaceFade += InterfaceFade;
+                break;
+            case "PauseMenuControlsOptionsButtons":
+                _pauseMenuCurrentInterfaceAnimator.OnControlsInterfaceFade += InterfaceFade;
+                break;
+            case "PauseMenuAudioOptionsButtons":
+                _pauseMenuCurrentInterfaceAnimator.OnAudioInterfaceFade += InterfaceFade;
+                break;
         }
 
         _animator = GetComponent<Animator>();
