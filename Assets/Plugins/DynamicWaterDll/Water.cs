@@ -64,7 +64,7 @@ public class Water : MonoBehaviour
         gameObject.GetComponent<BoxCollider2D>().size = new Vector2(Width, Top - Bottom);
         gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
 
-        //Calculer le nombre de coins et de segment.
+        //Calculer le nombre de coins et de segment[s].
         int edgecount = Mathf.RoundToInt(Width) * 5;
         int nodecount = edgecount + 1;
 

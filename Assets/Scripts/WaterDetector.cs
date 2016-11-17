@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Assets.Scripts
 {
     /// <summary>
-    /// Cette classe gère la détection des objets qui entre dans l'eau.
+    /// Cette classe gère la détection des objets qui entre[nt] dans l'eau.
     /// </summary>
     public class WaterDetector : MonoBehaviour
     {
