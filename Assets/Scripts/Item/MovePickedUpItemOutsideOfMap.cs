@@ -10,7 +10,7 @@ public class MovePickedUpItemOutsideOfMap : MonoBehaviour {
     {
         _trigger = GetComponent<ActivateTrigger>();
         _trigger.OnTrigger += MoveObjectOutside;
-
+        
         _animator = GetComponent<Animator>();
     }
 
