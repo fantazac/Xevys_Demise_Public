@@ -3,7 +3,6 @@ using System.Collections;
 
 public class PickUpWeapon : MonoBehaviour
 {
-
     [SerializeField]
     private int _ammoOnUnlockingWeapon = 10;
 
@@ -32,5 +31,4 @@ public class PickUpWeapon : MonoBehaviour
             _inventoryManager.EnableAxe();
         }
     }
-
 }

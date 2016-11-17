@@ -3,7 +3,6 @@ using System.Collections;
 
 public class PickUpWeaponAmmo : MonoBehaviour
 {
-
     [SerializeField]
     private int _ammoOnDrop = 2;
 
