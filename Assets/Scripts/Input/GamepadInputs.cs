@@ -44,7 +44,7 @@ public class GamepadInputs: MonoBehaviour
 
     private Health _playerHealth;
 
-    private float _joysticksXAxisDeadZone = 0.1f;
+    private float _joysticksXAxisDeadZone = 0.7f;
     private float _joysticksYAxisDeadZone = 1f;
 
     private bool _leftShoulderReady = true;
