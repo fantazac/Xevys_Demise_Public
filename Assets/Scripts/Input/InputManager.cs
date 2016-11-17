@@ -47,6 +47,11 @@ public class InputManager : MonoBehaviour
     private KeyboardInputs _keyboardInputs;
     private GamepadInputs _gamepadInputs;
 
+    private enum Directions
+    { None, Right, Left };
+
+    private Directions _currentDirections = Directions.None;
+
     private void Start()
     {
         _keyboardInputs = GetComponentInChildren<KeyboardInputs>();

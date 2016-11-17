@@ -44,6 +44,11 @@ public class GamepadInputs: MonoBehaviour
 
     private Health _playerHealth;
 
+    private enum Directions
+    { None, Right, Left };
+
+    private Directions _currentDirections = Directions.None;
+
     private float _joysticksXAxisDeadZone = 0.7f;
     private float _joysticksYAxisDeadZone = 1f;
 
@@ -66,18 +71,21 @@ public class GamepadInputs: MonoBehaviour
         GamePadState state = GamePad.GetState(PlayerIndex.One);
 
         if (Math.Abs(state.ThumbSticks.Left.X) > _joysticksXAxisDeadZone)
-        {
-            if (state.ThumbSticks.Left.X < 0)
+        {        
+            if (_currentDirections != Directions.Left && state.ThumbSticks.Left.X < 0)
             {
+                _currentDirections = Directions.Left;
                 OnMove(Vector3.left, false);
             }
-            else
+            else if (_currentDirections != Directions.Right && state.ThumbSticks.Left.X > 0)
             {
+                _currentDirections = Directions.Right;
                 OnMove(Vector3.right, true);
             }
         }
         else
         {
+            _currentDirections = Directions.None;
             OnStop();
         }
 
