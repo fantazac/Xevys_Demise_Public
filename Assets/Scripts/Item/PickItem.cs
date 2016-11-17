@@ -3,12 +3,6 @@ using System.Collections;
 
 public class PickItem : MonoBehaviour
 {
-    [SerializeField]
-    private const int AXE_AMOUNT_ON_PICKUP = 2;
-
-    [SerializeField]
-    private const int KNIFE_AMOUNT_ON_PICKUP = 2;
-
     private const int BASE_AXE_AMOUNT_ON_PICKUP = 10;
     private const int BASE_KNIFE_AMOUNT_ON_PICKUP = 10;
 
@@ -25,25 +19,7 @@ public class PickItem : MonoBehaviour
     {
         if (collider.gameObject.tag == "Player")
         {
-            if (gameObject.tag == "BaseKnifeItem")
-            {
-                collider.GetComponent<PlayerThrowingWeaponsMunitions>().AddKnifeAmmo(BASE_KNIFE_AMOUNT_ON_PICKUP);
-                _inventoryManager.EnableKnife();
-            }
-            else if (gameObject.tag == "BaseAxeItem")
-            {
-                collider.GetComponent<PlayerThrowingWeaponsMunitions>().AddAxeAmmo(BASE_AXE_AMOUNT_ON_PICKUP);
-                _inventoryManager.EnableAxe();
-            }
-            else if (gameObject.tag == "KnifePickableItem")
-            {
-                collider.GetComponent<PlayerThrowingWeaponsMunitions>().AddKnifeAmmo(KNIFE_AMOUNT_ON_PICKUP);
-            }
-            else if (gameObject.tag == "AxePickableItem")
-            {
-                collider.GetComponent<PlayerThrowingWeaponsMunitions>().AddAxeAmmo(AXE_AMOUNT_ON_PICKUP);
-            }
-            else if (gameObject.tag == "FeatherItem")
+            if (gameObject.tag == "FeatherItem")
             {
                 collider.GetComponentInChildren<InventoryManager>().EnableFeather();
                 _inventoryManager.EnableFeather();
@@ -83,7 +59,6 @@ public class PickItem : MonoBehaviour
                 collider.GetComponentInChildren<InventoryManager>().EnableFireArtefact();
                 _inventoryManager.EnableFireArtefact();
             }
-
 
             GetComponent<AudioSource>().Play();
             gameObject.transform.position = new Vector3(-1000, -1000, 0);
