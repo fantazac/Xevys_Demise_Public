@@ -82,9 +82,9 @@ public class SkeltalBehaviour : MonoBehaviour
         yield return null;
     }
 
-    protected virtual void StopMovementOnDeath()
+    protected void StopMovementOnDeath()
     {
-        StopCoroutine("SkeltalMovement");
+        StopAllCoroutines();
         enabled = false;
     }
 
