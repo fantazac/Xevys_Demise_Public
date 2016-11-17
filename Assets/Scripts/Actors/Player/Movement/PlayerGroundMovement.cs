@@ -80,7 +80,7 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void OnStandingUp()
     {
-        if (IsCrouching && enabled)
+        if (IsCrouching && !_playerBasicAttack.IsAttacking() && enabled)
         {
             if (!PlayerIsMovingVertically())
             {
