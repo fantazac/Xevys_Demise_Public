@@ -81,7 +81,7 @@ public class PlayerWaterMovement : PlayerMovement
             {
                 _rigidbody.gravityScale = _rigidbody.velocity.y <= 0 ?
                     0 : INITIAL_GRAVITY_SCALE / GRAVITY_DIVISION_FACTOR_ON_GROUND_UNDERWATER;
-
+            
                 if (_rigidbody.gravityScale == 0)
                 {
                     if (_rigidbody.velocity.y > (-_waterYSpeed + PRECISION_MARGIN))
@@ -132,5 +132,10 @@ public class PlayerWaterMovement : PlayerMovement
                 _waterYSpeed = INITIAL_WATER_FALLING_SPEED;
             }
         }
+    }
+
+    private void SetReverbZoneState(bool isActive)
+    {
+        GetComponent<AudioReverbZone>().enabled = isActive;
     }
 }
