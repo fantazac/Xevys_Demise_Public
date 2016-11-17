@@ -3,7 +3,6 @@ using System.Collections;
 
 public class MoveObjectOutsideOfMap : MonoBehaviour
 {
-
     private ActivateTrigger _trigger;
 
     private void Start()
