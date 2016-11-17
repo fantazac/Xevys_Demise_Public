@@ -68,6 +68,7 @@ public class KeyboardInputs : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.S))
         {
+            OnCrouch();
             OnUnderwaterControl(true);
 
             if (Input.GetKey(KeyCode.Space))
@@ -81,12 +82,7 @@ public class KeyboardInputs : MonoBehaviour {
             OnJump();
         }
 
-        if (Input.GetKey(KeyCode.S))
-        {
-            OnCrouch();
-        }
-
-        if (Input.GetKeyUp(KeyCode.S))
+        if (!Input.GetKey(KeyCode.S))
         {
             OnStandingUp();
         }
