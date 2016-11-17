@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class FlipBoss : MonoBehaviour {
+public class BossOrientation : MonoBehaviour {
 
     [SerializeField]
     private bool _isFacingLeft;

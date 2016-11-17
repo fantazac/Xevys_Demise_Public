@@ -28,7 +28,7 @@ public class BehemothAI : MonoBehaviour
     private GameObject _aimedWall;
     private Rigidbody2D _rigidbody;
     private Animator _animator;
-    private FlipBoss _flipBoss;
+    private BossOrientation _bossOrientation;
     private OnBossDefeated _onBossDefeated;
 
     private System.Random _rng = new System.Random();
@@ -39,7 +39,7 @@ public class BehemothAI : MonoBehaviour
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _flipBoss = GetComponent<FlipBoss>();
+        _bossOrientation = GetComponent<BossOrientation>();
         _animator = GetComponent<Animator>();
         _onBossDefeated = GetComponent<OnBossDefeated>();
         _onBossDefeated.OnDefeated += OnBehemothDefeated;
@@ -77,7 +77,7 @@ public class BehemothAI : MonoBehaviour
 
     private void UpdateWhenWaiting()
     {
-        _flipBoss.FlipTowardsPlayer();
+        _bossOrientation.FlipTowardsPlayer();
         if (_timeLeft > 0)
         {
             _timeLeft -= Time.fixedDeltaTime;
@@ -94,7 +94,7 @@ public class BehemothAI : MonoBehaviour
             _isCharging = (_rng.Next() % 2 == 0 ? true : false);
             _timeLeft = FEIGN_TIME + (_isCharging ? CHARGE_TIME : 0);
             _status = BehemothStatus.CHARGE;
-            _aimedWall = (_flipBoss.IsFacingLeft ? _leftWall : _rightWall);
+            _aimedWall = (_bossOrientation.IsFacingLeft ? _leftWall : _rightWall);
         }
     }
 
@@ -103,8 +103,8 @@ public class BehemothAI : MonoBehaviour
         _timeLeft -= Time.fixedDeltaTime;
         if (_timeLeft > 0)
         {
-            _rigidbody.velocity = new Vector2(_speed * _flipBoss.Orientation, _rigidbody.velocity.y);
-            if (_flipBoss.IsFacingLeft ?
+            _rigidbody.velocity = new Vector2(_speed * _bossOrientation.Orientation, _rigidbody.velocity.y);
+            if (_bossOrientation.IsFacingLeft ?
                 _aimedWall.transform.position.x + _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 >= transform.position.x - GetComponent<SpriteRenderer>().bounds.size.x / 2 :
                 _aimedWall.transform.position.x - _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 <= transform.position.x + GetComponent<SpriteRenderer>().bounds.size.x / 2)
             {
@@ -124,7 +124,7 @@ public class BehemothAI : MonoBehaviour
         if (_timeLeft > 0)
         {
             _timeLeft -= Time.fixedDeltaTime;
-            _rigidbody.velocity = new Vector2(-_speed / 10 * _flipBoss.Orientation, _rigidbody.velocity.y);
+            _rigidbody.velocity = new Vector2(-_speed / 10 * _bossOrientation.Orientation, _rigidbody.velocity.y);
         }
         else
         {

@@ -17,7 +17,7 @@ public class MoveWalkerSkeltal : SkeltalBehaviour
         while (!IsOnAnEdge())
         {
             transform.position = new Vector3(transform.position.x +
-                (_flipSkeltal.IsFacingRight ? _unitsPerSecond * Time.deltaTime : -_unitsPerSecond * Time.deltaTime),
+                (_flipSkeltal.IsFacingRight ? _unitsPerSecond : -_unitsPerSecond) * Time.deltaTime,
                 transform.position.y, transform.position.z);
 
             yield return null;

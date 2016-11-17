@@ -5,23 +5,25 @@ public class XevyPlayerInteraction : MonoBehaviour
 {
     private const float PLAYER_DETECTION_DISTANCE = 5;
     private const float PLAYER_ALIGNMENT_MARGIN = 2.5f;
+
     public delegate void OnBossFlippedHandler();
     public event OnBossFlippedHandler OnBossFlipped;
-    FlipBoss _flipBoss;
+
+    BossOrientation _bossOrientation;
 
     public bool IsFocusedOnPlayer { get; set; }
 
     private void Start()
     {
         IsFocusedOnPlayer = true;
-        _flipBoss = GetComponent<FlipBoss>();
+        _bossOrientation = GetComponent<BossOrientation>();
     }
 
-    private void Update()
+    public void UpdatePlayerInteraction()
     {
         if (IsFocusedOnPlayer)
         {
-            if (_flipBoss.FlipTowardsPlayer())
+            if (_bossOrientation.FlipTowardsPlayer())
             {
                 OnBossFlipped();
             }

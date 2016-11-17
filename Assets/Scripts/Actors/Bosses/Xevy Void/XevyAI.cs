@@ -3,7 +3,7 @@ using System.Collections;
 
 public class XevyAI : MonoBehaviour
 {
-    public enum XevyStatus
+    private enum XevyStatus
     {
         IDLE,
         VULNERABLE,
@@ -12,9 +12,10 @@ public class XevyAI : MonoBehaviour
         DEAD,
     }
 
-    //Input more cooldowns for each attack
-    private const float VULNERABLE_STATUS_COOLDOWN = 1.0f;
-    private const float IDLE_STATUS_COOLDOWN = 1.0f;
+    private const int NUMBER_SAME_ATTACKS_BEFORE_MOVEMENT = 5;
+    private const float IDLE_STATUS_COOLDOWN = 0.5f;
+    private const float VULNERABLE_STATUS_COOLDOWN = 0.5f;
+    private const float CRITICAL_HEALTH_PERCENTAGE = 0.33f;
 
     private Health _health;
     private XevyAction _action;
@@ -44,6 +45,7 @@ public class XevyAI : MonoBehaviour
     private void FixedUpdate()
     {
         _movement.MovementUpdate();
+        _playerInteraction.UpdatePlayerInteraction();
         switch (_status)
         {
             case XevyStatus.IDLE:
@@ -78,7 +80,7 @@ public class XevyAI : MonoBehaviour
         {
             _action.RetreatClaws();
             bool playerProximity = _playerInteraction.CheckPlayerDistance();
-            bool healthStatus = (_health.HealthPoint > _health.MaxHealth / 3);
+            bool healthStatus = (_health.HealthPoint > _health.MaxHealth * CRITICAL_HEALTH_PERCENTAGE);
             SetVulnerableStatus();
             if (playerProximity && !healthStatus)
             {
@@ -117,10 +119,10 @@ public class XevyAI : MonoBehaviour
                 {
                     _currentAttack = _action.FireAttack(_playerInteraction.GetPlayerHorizontalDistance(), _playerInteraction.GetPlayerVerticalDistance());
                 }
-                _sameAttackCount = (_currentAttack == _lastAttack ? _sameAttackCount + 1 : 0);
+                _sameAttackCount = (_currentAttack == _lastAttack ? _sameAttackCount++ : 0);
                 _lastAttack = _currentAttack;
 
-                if (_sameAttackCount == 2)
+                if (_sameAttackCount == NUMBER_SAME_ATTACKS_BEFORE_MOVEMENT)
                 {
                     _movement.BounceTowardsRandomPoint();
                     _sameAttackCount = 0;
@@ -163,7 +165,6 @@ public class XevyAI : MonoBehaviour
 
     private void SetIdleStatus()
     {
-        GetComponent<SpriteRenderer>().color = Color.yellow;
         _statusTimer = IDLE_STATUS_COOLDOWN;
         _action.LowerGuard();
         _playerInteraction.IsFocusedOnPlayer = true;
@@ -172,7 +173,6 @@ public class XevyAI : MonoBehaviour
 
     private void SetVulnerableStatus()
     {
-        GetComponent<SpriteRenderer>().color = Color.cyan;
         _statusTimer = VULNERABLE_STATUS_COOLDOWN;
         _playerInteraction.IsFocusedOnPlayer = false;
         _status = XevyStatus.VULNERABLE;
@@ -183,10 +183,5 @@ public class XevyAI : MonoBehaviour
         _action.Block();
         _playerInteraction.IsFocusedOnPlayer = true;
         _status = XevyStatus.BLOCKING;
-    }
-
-    public void OnHit()
-    {
-        SetIdleStatus();
     }
 }

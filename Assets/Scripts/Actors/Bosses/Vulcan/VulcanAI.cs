@@ -23,7 +23,7 @@ public class VulcanAI : MonoBehaviour
     private Health _health;
     private Rigidbody2D _rigidbody;
     private Animator _animator;
-    private FlipBoss _flipBoss;
+    private BossOrientation _bossOrientation;
     private OnBossDefeated _onBossDefeated;
 
     private System.Random _rng = new System.Random();
@@ -52,7 +52,7 @@ public class VulcanAI : MonoBehaviour
         }
         _health = GetComponent<Health>();
         _rigidbody = GetComponent<Rigidbody2D>();
-        _flipBoss = GetComponent<FlipBoss>();
+        _bossOrientation = GetComponent<BossOrientation>();
         _animator = GetComponent<Animator>();
         _onBossDefeated = GetComponent<OnBossDefeated>();
         _onBossDefeated.OnDefeated += OnVulcanDefeated;
@@ -112,7 +112,7 @@ public class VulcanAI : MonoBehaviour
                 CurrentIndex = _rng.Next() % 2 * 2 + 1;
                 transform.position = new Vector3(_spawnPositions[CurrentIndex], transform.position.y, transform.position.z);
             }
-            _flipBoss.FlipTowardsPlayer();
+            _bossOrientation.FlipTowardsPlayer();
             //_animator.SetInteger("State", 2);
             _rigidbody.isKinematic = false;
             _rigidbody.AddForce(transform.up * VERTICAL_SPEED);
@@ -138,7 +138,7 @@ public class VulcanAI : MonoBehaviour
             _timeLeft -= Time.fixedDeltaTime;
             if (_timeLeft < 2 && !_hasShotFireball)
             {
-                var fireball = Instantiate(_fireball, new Vector3(transform.position.x + _flipBoss.Orientation * 4.5f, transform.position.y + 1.7f + (_criticalStatus ? 0 : 1.8f)), Quaternion.identity);
+                var fireball = Instantiate(_fireball, new Vector3(transform.position.x + _bossOrientation.Orientation * 4.5f, transform.position.y + 1.7f + (_criticalStatus ? 0 : 1.8f)), Quaternion.identity);
                 if (!_criticalStatus)
                 {
                     ((GameObject)fireball).transform.Rotate(0, 0, 60);
@@ -162,8 +162,8 @@ public class VulcanAI : MonoBehaviour
         {
             if (_health.HealthPoint <= _halfHealth)
             {
-                _flipBoss.FlipTowardsPlayer();
-                _rigidbody.AddForce(transform.right * _flipBoss.Orientation * HORIZONTAL_SPEED);
+                _bossOrientation.FlipTowardsPlayer();
+                _rigidbody.AddForce(transform.right * _bossOrientation.Orientation * HORIZONTAL_SPEED);
             }
         }
         else

@@ -13,27 +13,33 @@ public class XevyMovement : MonoBehaviour
         FLEEING,
     }
 
+    private const int NUMBER_NODES = 6;
+    private const int CENTRAL_NODE = 3;
+    private const int NUMBER_GROUND_POSITIONS = 3;
     private const float FLEE_SPEED = 5;
     private const float BOUNCE_SPEED = 8;
     private const float STEP_BACK_SPEED = 1;
+    private const float CHARGE_DISTANCE = 3;
+    private const float STEP_BACK_DISTANCE = 2;
     private const float CHARGE_FORWARD_SPEED = 3;
     private const float BOUNCE_MODIFIER = -0.09467455f;
     private const float VERTICAL_DISTANCE_TO_REACH_PLATFORM = 4f;
     private const float HORIZONTAL_DISTANCE_TO_REACH_PLATFORM = 6.5f;
+    private const float MISALIGNMENT_MARGIN = 0.5f;
 
-    private FlipBoss _flipBoss;
+    private BossOrientation _bossOrientation;
     private Rigidbody2D _rigidbody;
     private Vector2 _arrivalPosition;
     private Vector2 _startPosition;
     private Vector2[] _referencePoints;
     private Stack<XevyMovementCommand> _commandStack;
     private List<int>[] _referencePointsConnections;
-    System.Random _rng = new System.Random();
+    private System.Random _rng = new System.Random();
 
     public XevyMovementStatus MovementStatus { get; private set; }
     private bool _isGoingUp = true;
     private float _bounceApex;
-    private int _currentPositionIndex = 3;
+    private int _currentPositionIndex = CENTRAL_NODE;
     private int _arrivalPositionIndex;
     private float deltaX;
     private float deltaY;
@@ -43,7 +49,7 @@ public class XevyMovement : MonoBehaviour
         MovementStatus = XevyMovementStatus.NONE;
         _commandStack = new Stack<XevyMovementCommand>();
         _rigidbody = GetComponent<Rigidbody2D>();
-        _flipBoss = GetComponent<FlipBoss>();
+        _bossOrientation = GetComponent<BossOrientation>();
         _referencePoints = new Vector2[]
         {
             new Vector2(transform.position.x, transform.position.y + 2 * VERTICAL_DISTANCE_TO_REACH_PLATFORM),
@@ -53,7 +59,7 @@ public class XevyMovement : MonoBehaviour
             new Vector2(transform.position.x + HORIZONTAL_DISTANCE_TO_REACH_PLATFORM, transform.position.y + VERTICAL_DISTANCE_TO_REACH_PLATFORM),
             new Vector2(transform.position.x + 2 * HORIZONTAL_DISTANCE_TO_REACH_PLATFORM, transform.position.y),
         };
-        _referencePointsConnections = new List<int>[6];
+        _referencePointsConnections = new List<int>[NUMBER_NODES];
         for (int n = 0; n < _referencePointsConnections.Length; n++)
         {
             _referencePointsConnections[n] = new List<int>();
@@ -82,33 +88,33 @@ public class XevyMovement : MonoBehaviour
                 UpdateWhenBouncing();
                 break;
             case XevyMovementStatus.RETREATING:
-                UpdateWhenRoaming(STEP_BACK_SPEED, -_flipBoss.Orientation);
+                UpdateWhenRoaming(STEP_BACK_SPEED, -_bossOrientation.Orientation);
                 break;
             case XevyMovementStatus.FLEEING:
-                UpdateWhenRoaming(FLEE_SPEED, _flipBoss.Orientation);
+                UpdateWhenRoaming(FLEE_SPEED, _bossOrientation.Orientation);
                 break;
             case XevyMovementStatus.CHARGING:
-                UpdateWhenRoaming(CHARGE_FORWARD_SPEED, _flipBoss.Orientation);
+                UpdateWhenRoaming(CHARGE_FORWARD_SPEED, _bossOrientation.Orientation);
                 break;
         }
     }
 
     public void StepBack()
     {
-        _arrivalPosition = new Vector2(transform.position.x + (_flipBoss.Orientation * -2), transform.position.y);
+        _arrivalPosition = new Vector2(transform.position.x + (-_bossOrientation.Orientation * STEP_BACK_DISTANCE), transform.position.y);
         MovementStatus = XevyMovementStatus.RETREATING;
     }
 
     public void ChargeForward()
     {
-        _arrivalPosition = new Vector2(transform.position.x + (_flipBoss.Orientation * 3), transform.position.y);
+        _arrivalPosition = new Vector2(transform.position.x + (_bossOrientation.Orientation * CHARGE_DISTANCE), transform.position.y);
         MovementStatus = XevyMovementStatus.CHARGING;
     }
 
     public void BounceTowardsRandomPoint()
     {
         SelectBouncePointRandomly();
-        if (Vector2.Distance(transform.position, _startPosition) > 0.5f)
+        if (Vector2.Distance(transform.position, _startPosition) > MISALIGNMENT_MARGIN)
         {
             _commandStack.Push(new XevyMovementCommand(_startPosition, _arrivalPosition, XevyMovementStatus.BOUNCING));
             _arrivalPosition = _startPosition;
@@ -120,24 +126,23 @@ public class XevyMovement : MonoBehaviour
         }
     }
 
+    public void FleeTowardsRandomPoint()
+    {
+        SelectFleePointRandomly();
+        Flee();
+    }
+
     private void Bounce()
     {
         _rigidbody.isKinematic = true;
-        _flipBoss.FlipTowardsSpecificPoint(_arrivalPosition);
+        _bossOrientation.FlipTowardsSpecificPoint(_arrivalPosition);
         MovementStatus = XevyMovementStatus.BOUNCING;
     }
 
     private void Flee()
     {
-
-        _flipBoss.FlipTowardsSpecificPoint(_arrivalPosition);
+        _bossOrientation.FlipTowardsSpecificPoint(_arrivalPosition);
         MovementStatus = XevyMovementStatus.FLEEING;
-    }
-
-    public void FleeTowardsRandomPoint()
-    {
-        SelectFleePointRandomly();
-        Flee();
     }
 
     private void SelectFleePointRandomly()
@@ -146,9 +151,19 @@ public class XevyMovement : MonoBehaviour
         _arrivalPositionIndex = indexClosestPosition;
         while (_arrivalPositionIndex == indexClosestPosition)
         {
-            _arrivalPositionIndex = _rng.Next() % 3 * 2 + 1;
+            _arrivalPositionIndex = _rng.Next() % NUMBER_GROUND_POSITIONS * 2 + 1;
         }
         _arrivalPosition = _referencePoints[_arrivalPositionIndex];
+    }
+
+    private void SelectBouncePointRandomly()
+    {
+        int listNodesCount = _referencePointsConnections[_currentPositionIndex].Count;
+        _arrivalPositionIndex = _referencePointsConnections[_currentPositionIndex][(listNodesCount == 1 ? 0 : _rng.Next() % listNodesCount)];
+        _arrivalPosition = _referencePoints[_arrivalPositionIndex];
+        _isGoingUp = (_startPosition.y < _arrivalPosition.y);
+        deltaX = _arrivalPosition.x - _startPosition.x;
+        deltaY = _arrivalPosition.y - _startPosition.y;
     }
 
     private int FindClosestPoint()
@@ -168,28 +183,18 @@ public class XevyMovement : MonoBehaviour
         }
         return indexClosestPosition;
     }
-
-    private void SelectBouncePointRandomly()
-    {
-        int listNodesCount = _referencePointsConnections[_currentPositionIndex].Count;
-        _arrivalPositionIndex = _referencePointsConnections[_currentPositionIndex][(listNodesCount == 1 ? 0 : _rng.Next() % listNodesCount)];
-        _arrivalPosition = _referencePoints[_arrivalPositionIndex];
-        _isGoingUp = (_startPosition.y < _arrivalPosition.y);
-        deltaX = _arrivalPosition.x - _startPosition.x;
-        deltaY = _arrivalPosition.y - _startPosition.y;
-    }
     /* BEN COUNTER-CORRECTION
      * 
-     * The optimal continuous action verb should be 走 (zǒu). However, it is in Chinese.
+     * The optimal continuous action verb is 走 (zǒu). However, it is in Chinese.
      * Unfortunately, in English, there is no specific word for "Move on the ground" that is indifferent of speed. 
      * "Walk" and "run" are too specific concepts (hypernyms) and "Move" is indifferent of locomotion method (hyponym);
-     * it includes jumping, falling, running, flying, and more. Thus, "Roaming" has been taken.
+     * it includes jumping, falling, running, flying, bouncing and more. Thus, "Roaming" has been taken.
      */
     private void UpdateWhenRoaming(float speed, int orientation)
     {
         transform.position = new Vector2(transform.position.x + speed * Time.fixedDeltaTime * orientation, transform.position.y);
         bool isFleeing = (speed == FLEE_SPEED);
-        if (CheckIfMovementCompleted(orientation == _flipBoss.Orientation))
+        if (CheckIfMovementCompleted(orientation == _bossOrientation.Orientation))
         {
             _startPosition = _referencePoints[FindClosestPoint()];
             if (isFleeing)
@@ -202,7 +207,7 @@ public class XevyMovement : MonoBehaviour
 
     private void UpdateWhenBouncing()
     {
-        float x = transform.position.x + (_flipBoss.Orientation * BOUNCE_SPEED * Time.fixedDeltaTime) - _startPosition.x + (_isGoingUp ? 0 : deltaX);
+        float x = transform.position.x + (_bossOrientation.Orientation * BOUNCE_SPEED * Time.fixedDeltaTime) - _startPosition.x + (_isGoingUp ? 0 : deltaX);
         float _newHeight = BOUNCE_MODIFIER * x * (x - 2 * deltaX) + (_isGoingUp ? 0 : deltaY) + _startPosition.y;
         transform.position = new Vector2(x + _startPosition.x - +(_isGoingUp ? 0 : deltaX), _newHeight);
         if (CheckIfMovementCompleted(true))
@@ -220,14 +225,14 @@ public class XevyMovement : MonoBehaviour
 
     private bool CheckIfMovementCompleted(bool isGoingForward)
     {
-        return ((transform.position.x < _arrivalPosition.x) ^ isGoingForward) ^ _flipBoss.IsFacingLeft;
+        return ((transform.position.x < _arrivalPosition.x) ^ isGoingForward) ^ _bossOrientation.IsFacingLeft;
     }
 
-    public void OnBossFlipped()
+    private void OnBossFlipped()
     {
         if (MovementStatus == XevyMovementStatus.RETREATING)
         {
-            _arrivalPosition.x -= 2 * (_arrivalPosition.x - _startPosition.x);
+            _arrivalPosition.x -= STEP_BACK_DISTANCE * (_arrivalPosition.x - _startPosition.x);
         }
     }
 
@@ -244,7 +249,7 @@ public class XevyMovement : MonoBehaviour
             _startPosition = commandInStack._startPosition;
             _arrivalPosition = commandInStack._arrivalPosition;
             MovementStatus = commandInStack._status;
-            _flipBoss.FlipTowardsSpecificPoint(_arrivalPosition);
+            _bossOrientation.FlipTowardsSpecificPoint(_arrivalPosition);
             if (MovementStatus == XevyMovementStatus.BOUNCING)
             {
                 _rigidbody.isKinematic = true;

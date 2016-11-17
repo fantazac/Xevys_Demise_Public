@@ -69,25 +69,25 @@ public class XevyProjectileInteraction : MonoBehaviour
         return false;
     }
 
-    public void OnKnifeThrown(GameObject knife)
+    private void OnKnifeThrown(GameObject knife)
     {
         _knivesDictionary.Add(knife, 0.0f);
         knife.GetComponent<DestroyPlayerProjectile>().OnProjectileDestroyed += OnKnifeDestroyed;
     }
 
-    public void OnAxeThrown(GameObject axe)
+    private void OnAxeThrown(GameObject axe)
     {
         _axesDictionary.Add(axe, 0.0f);
         axe.GetComponent<DestroyPlayerProjectile>().OnProjectileDestroyed += OnAxeDestroyed;
     }
 
-    public void OnKnifeDestroyed(GameObject knife)
+    private void OnKnifeDestroyed(GameObject knife)
     {
         _knivesDictionary.Remove(knife);
         knife.GetComponent<DestroyPlayerProjectile>().OnProjectileDestroyed -= OnKnifeDestroyed;
     }
 
-    public void OnAxeDestroyed(GameObject axe)
+    private void OnAxeDestroyed(GameObject axe)
     {
         _axesDictionary.Remove(axe);
         axe.GetComponent<DestroyPlayerProjectile>().OnProjectileDestroyed -= OnAxeDestroyed;
