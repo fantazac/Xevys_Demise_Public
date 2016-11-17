@@ -12,14 +12,12 @@ public class ColorHealthBar : MonoBehaviour
     [SerializeField]
     private Color _color;
 
-    private Transform _healthBar;
     private Image _healthBarImage;
     private Health _health;
 
 	private void Start()
 	{
 	    _health = StaticObjects.GetPlayer().GetComponent<Health>();
-        _healthBar = StaticObjects.GetHealthBar().GetComponent<Transform>();
 	    _healthBarImage = StaticObjects.GetHealthBar().GetComponent<Image>();
 	    _color = new Color(0, 1, 0, 1);
 	    _healthBarImage.color = _color;

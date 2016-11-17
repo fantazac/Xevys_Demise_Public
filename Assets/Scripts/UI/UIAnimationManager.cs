@@ -5,14 +5,12 @@ public class UIAnimationManager : MonoBehaviour
 {
     private PauseMenuInputs _pauseMenuInputs;
 
-    private GameObject _uIPanel;
     private Animator _animator;
     private bool _active;
 
     private void Start()
     {
         _pauseMenuInputs = StaticObjects.GetPauseMenuPanel().GetComponentInChildren<PauseMenuInputs>();
-        _uIPanel = StaticObjects.GetPanelUI(); 
         _animator = GetComponent<Animator>();
         _pauseMenuInputs.TriggerAnimations += FadeUI;
         _active = true;

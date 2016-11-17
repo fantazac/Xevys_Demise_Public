@@ -11,6 +11,18 @@ public class PauseMenuAnimationManager : MonoBehaviour
     public delegate void OnPauseMenuStateChangedHandler(bool isActive);
     public event OnPauseMenuStateChangedHandler OnPauseMenuStateChanged;
 
+    public delegate void OnMainInterfaceIsCurrentHandler(string current);
+    public event OnMainInterfaceIsCurrentHandler OnMainInterfaceIsCurrent;
+
+    public delegate void OnOptionsInterfaceIsCurrentHandler(string current);
+    public event OnOptionsInterfaceIsCurrentHandler OnOptionsInterfaceIsCurrent;
+
+    public delegate void OnControlsInterfaceIsCurrentHandler(string current);
+    public event OnControlsInterfaceIsCurrentHandler OnControlsInterfaceIsCurrent;
+
+    public delegate void OnAudioInterfaceIsCurrentHandler(string current);
+    public event OnAudioInterfaceIsCurrentHandler OnAudioInterfaceIsCurrent;
+
     private PauseMenuInputs _pauseMenuInputs;
     private Animator _slideAnimator;
     private EventSystem _pauseMenuEventSystem;
@@ -86,7 +98,25 @@ public class PauseMenuAnimationManager : MonoBehaviour
                 switch (_pauseMenuEventSystem.currentSelectedGameObject.name)
                 {
                     case "ResumeBtn":
-
+                    case "OptionBtn":
+                    case "QuitBtn":
+                        OnMainInterfaceIsCurrent("Main");
+                        break;
+                    case "OptionsBackBtn":
+                    case "ControlsOptionsBtn":
+                    case "AudioOptionsBtn":
+                        OnOptionsInterfaceIsCurrent("Options");
+                        break;
+                    case "ControlsBackBtn":
+                    case "KeyboardSchemeSwitch":
+                    case "GamepadSchemeSwitch":
+                        //OnControlsInterfaceIsCurrent();
+                        break;
+                    case "AudioBackBtn":
+                    case "MusicVolumeSldr":
+                    case "FXVolumeSldr":
+                    case "MusicSwitch":
+                        //OnAudioInterfaceIsCurrent();
                         break;
                 }
             }
