@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 public class RemoveObjectAfterPlayingSound : MonoBehaviour
 {
-
     private PlaySoundOnTrigger _sound;
 
     private void Start()
@@ -16,5 +16,4 @@ public class RemoveObjectAfterPlayingSound : MonoBehaviour
     {
         Destroy(gameObject);
     }
-
 }
