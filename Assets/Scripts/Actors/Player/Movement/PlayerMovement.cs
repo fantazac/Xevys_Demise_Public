@@ -99,18 +99,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (PlayerIsMovingHorizontally() && !_isKnockedBack)
         {
-            if (PlayerIsAlmostStopped())
-            {
-                _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-            }
-            else if (_flipPlayer.IsFacingRight)
-            {
-                _rigidbody.AddForce(new Vector2(-LINEAR_DRAG, 0));
-            }
-            else
-            {
-                _rigidbody.AddForce(new Vector2(LINEAR_DRAG, 0));
-            }
+            _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
         }
     }
 
