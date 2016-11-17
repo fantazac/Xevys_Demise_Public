@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Cette classe fait apparaître des balles qui tombent dans l'eau.
+/// </summary>
 public class ObjectSpawner : MonoBehaviour {
 
     [SerializeField]
@@ -10,12 +13,12 @@ public class ObjectSpawner : MonoBehaviour {
     private int SPAWNER_CD = 50;
     private int _spawnerCoolDown;
 
-    void Start()
+    private void Start()
     {
         _spawnerCoolDown = SPAWNER_CD/2;
     }
 
-    void Update ()
+    private void Update ()
     {
         _spawnerCoolDown++;
 

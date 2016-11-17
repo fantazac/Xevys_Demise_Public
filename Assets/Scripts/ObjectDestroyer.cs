@@ -1,10 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ObjectDestroyer : MonoBehaviour {
+/// <summary>
+/// Cette classe sert à détruire un objet après un certain temps.
+/// </summary>
+public class ObjectDestroyer : MonoBehaviour
+{
+    private const float BASE_DESTROY_TIME = 2f;
 
-	// Use this for initialization
-	void Start () {
-	    Destroy(gameObject, 2f);
-	}
+    private void Start()
+    {
+        Destroy(gameObject, BASE_DESTROY_TIME);
+    }
 }
