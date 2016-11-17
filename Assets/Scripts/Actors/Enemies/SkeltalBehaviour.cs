@@ -47,6 +47,7 @@ public class SkeltalBehaviour : MonoBehaviour
 
         OnSkeltalMovementStart += StartSkeltalMovement;
         OnSkeltalMovementFinished += StartSkeltalAttack;
+        GetComponent<Health>().OnDeath += StopMovementOnDeath;
 
         OnSkeltalMovementStart();
     }
@@ -79,6 +80,12 @@ public class SkeltalBehaviour : MonoBehaviour
     protected virtual IEnumerator SkeltalMovement()
     {
         yield return null;
+    }
+
+    protected void StopMovementOnDeath()
+    {
+        StopAllCoroutines();
+        enabled = false;
     }
 
     protected virtual void SkeltalMovementFinished()

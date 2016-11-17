@@ -6,7 +6,7 @@ public class PlayerWaterInteraction : MonoBehaviour
 
     public void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == "Water" && collider.transform.position.y < GetComponentInParent<Transform>().position.y)
+        if (collider.gameObject.tag == "Water" && collider.transform.position.y < transform.position.y)
         {
             GetComponentInParent<PlayerWaterMovement>().enabled = false;
             GetComponentInParent<PlayerGroundMovement>().enabled = true;

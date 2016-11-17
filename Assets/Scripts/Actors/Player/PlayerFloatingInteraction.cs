@@ -10,20 +10,22 @@ public class PlayerFloatingInteraction : MonoBehaviour
     public event OnPlayerOutOfWaterHandler OnPlayerOutOfWater;
 
     private GameObject _player;
+    private PlayerGroundMovement _playerGroundMovement;
+    private PlayerWaterMovement _playerWaterMovement;
 
     private void Start()
     {
         _player = StaticObjects.GetPlayer();
+
+        _playerGroundMovement = _player.GetComponent<PlayerGroundMovement>();
+        _playerWaterMovement = _player.GetComponent<PlayerWaterMovement>();
     }
 
     public void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == "Water")
+        if (collider.gameObject.tag == "Water" && collider.transform.position.y > transform.position.y)
         {
-            if (OnPlayerUnderWater != null)
-            {
-                OnPlayerUnderWater();
-            }
+            OnPlayerUnderWater();
 
             _player.GetComponent<PlayerWaterMovement>().enabled = true;
             _player.GetComponent<PlayerGroundMovement>().enabled = false;
@@ -34,12 +36,9 @@ public class PlayerFloatingInteraction : MonoBehaviour
 
     public void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == "Water" && collider.transform.position.y < GetComponentInParent<Transform>().position.y)
+        if (collider.gameObject.tag == "Water" && collider.transform.position.y < transform.position.y)
         {
-            if (OnPlayerOutOfWater != null)
-            {
-                OnPlayerOutOfWater();
-            }
+            OnPlayerOutOfWater();
 
             _player.GetComponent<PlayerWaterMovement>().IsFloating = true;
         }

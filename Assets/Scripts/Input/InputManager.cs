@@ -47,6 +47,11 @@ public class InputManager : MonoBehaviour
     private KeyboardInputs _keyboardInputs;
     private GamepadInputs _gamepadInputs;
 
+    private enum Directions
+    { None, Right, Left };
+
+    private Directions _currentDirections = Directions.None;
+
     private void Start()
     {
         _keyboardInputs = GetComponentInChildren<KeyboardInputs>();
@@ -61,7 +66,7 @@ public class InputManager : MonoBehaviour
         _keyboardInputs.OnStandingUp += InputsOnStandingUp;
         _keyboardInputs.OnThrowAttack += InputsOnThrowAttack;
         _keyboardInputs.OnThrowAttackChangeButtonPressed += InputsOnThrowAttackChangeButtonPressed;
-        _keyboardInputs.OnEnterPortal += InputsOnEnterPortal;
+        //_keyboardInputs.OnEnterPortal += InputsOnEnterPortal;
         _keyboardInputs.OnPause += InputsOnPause;
 
         _gamepadInputs = GetComponentInChildren<GamepadInputs>();
@@ -76,7 +81,7 @@ public class InputManager : MonoBehaviour
         _gamepadInputs.OnStandingUp += InputsOnStandingUp;
         _gamepadInputs.OnThrowAttack += InputsOnThrowAttack;
         _gamepadInputs.OnThrowAttackChangeButtonPressed += InputsOnThrowAttackChangeButtonPressed;
-        _gamepadInputs.OnEnterPortal += InputsOnEnterPortal;
+        //_gamepadInputs.OnEnterPortal += InputsOnEnterPortal;
         _gamepadInputs.OnPause += InputsOnPause;
     }
 

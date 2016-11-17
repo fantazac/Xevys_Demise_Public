@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     protected Rigidbody2D _rigidbody;
     protected BoxCollider2D _basicAttackBox;
     protected BoxCollider2D _playerBoxCollider;
+    protected BoxCollider2D _playerCroutchHitbox;
     protected SpriteRenderer _playerSpriteRenderer;
     protected InventoryManager _inventoryManager;
     protected PlayerTouchesGround _playerTouchesGround;
@@ -15,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     protected Health _playerHealth;
     protected ActorBasicAttack _playerBasicAttack;
     protected PlayerTouchesFlyingPlatform _playerTouchesFlyingPlatform;
+    protected FlipPlayer _flipPlayer;
+    protected PlayerFloatingInteraction _playerFloating;
 
     public delegate void OnFallingHandler();
     public event OnFallingHandler OnFalling;
@@ -23,20 +26,10 @@ public class PlayerMovement : MonoBehaviour
 
     protected const float INITIAL_GRAVITY_SCALE = 5;
     protected const float TERMINAL_SPEED = -18;
-    protected const float SPEED_REDUCTION_WHEN_STOPPING = 0.94f;
-    protected const float LINEAR_DRAG = 30f;
-    protected const float KNOCKBACK_DURATION = 15;
-    protected const float PLAYER_COLLIDER_BOX_Y_SIZE_WHEN_STAND = 0.8622845f;
-    protected const float PLAYER_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.008171797f;
-    protected const float FEET_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.45f;
-    protected const float TORSO_CIRCLE_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = 0.21f;
-    protected const float TORSO_BOX_COLLIDER_BOX_Y_OFFSET_WHEN_STAND = -0.4f;
-    protected const float ATTACK_BOX_COLLIDER_Y_WHEN_STAND = 3.415288f;
-    protected const float CROUCHING_OFFSET = 0.6f;
-    protected const float CROUCHING_SPRITE_POSITION_OFFSET = 0.35f;
-    protected const float TIME_TO_WAIT_BEFORE_CROUCH_ALLOWED = 0.3f;
+    protected const float LINEAR_DRAG = 18f;
+    protected const float KNOCKBACK_DURATION = 0.25f;
 
-    protected float _speed = 7;
+    protected float _horizontalSpeed = 7;
     protected float _jumpingSpeed = 17;
     protected bool _isKnockedBack = false;
     protected float _knockbackCount = 0;
@@ -44,27 +37,30 @@ public class PlayerMovement : MonoBehaviour
     protected bool _wasFalling = false;
     protected bool _isCrouching = false;
 
-    public float Speed { get { return _speed; } set { _speed = value; } }
+    public float Speed { get { return _horizontalSpeed; } set { _horizontalSpeed = value; } }
     public float JumpingSpeed { get { return _jumpingSpeed; } set { _jumpingSpeed = value; } }
     public bool IsKnockedBack { get { return _isKnockedBack; } set { _isKnockedBack = value; } }
     public bool IsCrouching { get { return _isCrouching; } set { _isCrouching = value; } }
     public float TerminalSpeed { get { return TERMINAL_SPEED; } }
 
-    private void Start()
+    protected virtual void Start()
     {
         _anim = StaticObjects.GetPlayer().GetComponentInChildren<Animator>();
-        _playerTouchesFlyingPlatform = StaticObjects.GetPlayer().GetComponentInChildren<PlayerTouchesFlyingPlatform>();
-        _playerSpriteRenderer = StaticObjects.GetPlayer().GetComponentInChildren<SpriteRenderer>();
-        _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
-        _playerBoxCollider = StaticObjects.GetPlayer().GetComponent<BoxCollider2D>();
+        _playerTouchesFlyingPlatform = GetComponentInChildren<PlayerTouchesFlyingPlatform>();
+        _playerSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        _inventoryManager = GetComponent<InventoryManager>();
+        _playerBoxCollider = GetComponent<BoxCollider2D>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _inputManager = GetComponentInChildren<InputManager>();
         _basicAttackBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
         _showItems = StaticObjects.GetItemCanvas().GetComponent<ShowItems>();
-        _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
+        _playerHealth = GetComponent<Health>();
         _playerTouchesGround = GetComponentInChildren<PlayerTouchesGround>();
-        _playerBasicAttack = StaticObjects.GetPlayer().GetComponent<ActorBasicAttack>();
-        
+        _playerBasicAttack = GetComponent<ActorBasicAttack>();
+        _flipPlayer = GetComponent<FlipPlayer>();
+        _playerCroutchHitbox = GameObject.Find("CharacterCroutchedHitbox").GetComponent<BoxCollider2D>();
+        _playerFloating = GameObject.Find("CharacterFloatingHitbox").GetComponent<PlayerFloatingInteraction>();
+
         _inputManager.OnMove += OnMove;
         _inputManager.OnJump += OnJump;
         _inputManager.OnJumpDown += OnJumpDown;
@@ -73,60 +69,37 @@ public class PlayerMovement : MonoBehaviour
         _inputManager.OnStop += OnStop;
         _inputManager.OnCrouch += OnCrouch;
         _inputManager.OnStandingUp += OnStandingUp;
+
         _playerHealth.OnDeath += OnDeath;
 
         _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
     }
 
-    protected bool _stoppedEnoughToCrouch = false;
-
     protected virtual void OnMove(Vector3 vector, bool goesRight)
     {
-        if (_playerBasicAttack.IsAttacking())
+        if (PlayerCanMove())
+        {
+            MovePlayer(vector, goesRight);
+        }
+        else
         {
             OnStop();
-        }
-        else if (!IsKnockedBack && !IsCrouching)
-        {
-            _stoppedEnoughToCrouch = false;
-            _rigidbody.velocity = new Vector2(vector.x * _speed, _rigidbody.velocity.y);
-            Flip(goesRight);
         }
     }
 
     protected virtual void OnJumpDown()
     {
-        if (!IsJumping() && !_isKnockedBack && _playerTouchesFlyingPlatform.OnFlyingPlatform)
+        if (PlayerCanDropFromFlyingPlatform())
         {
-            _playerTouchesFlyingPlatform.DisablePlatformHitbox();
+            _playerTouchesFlyingPlatform.DropFromPlatform();
         }
     }
 
     protected virtual void OnStop()
     {
-        if (!_stoppedEnoughToCrouch)
+        if (PlayerIsMovingHorizontally() && !_isKnockedBack)
         {
-            StartCoroutine("CountTimeSincePlayerStoppedCoroutine");
-        }
-
-        if (!_isKnockedBack)
-        {
-            if (_rigidbody.velocity.x < 1 && GetComponent<FlipPlayer>().IsFacingRight || _rigidbody.velocity.x > -1 && !GetComponent<FlipPlayer>().IsFacingRight)
-            {
-                _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-            }
-            else
-            {
-                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x * SPEED_REDUCTION_WHEN_STOPPING, _rigidbody.velocity.y);
-                if (GetComponent<FlipPlayer>().IsFacingRight)
-                {
-                    _rigidbody.AddForce(new Vector2(-LINEAR_DRAG, 0));
-                }
-                else
-                {
-                    _rigidbody.AddForce(new Vector2(LINEAR_DRAG, 0));
-                }
-            }
+            _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
         }
     }
 
@@ -150,7 +123,8 @@ public class PlayerMovement : MonoBehaviour
 
     public virtual bool IsJumping()
     {
-        return !((PlayerIsOnGround() || VerticalVelocityIsZeroOnFlyingPlatform() || PlayerIsNotMoving()) && !(VerticalVelocityIsPositive()));
+        return !((PlayerIsOnGround() || VerticalVelocityIsZeroOnFlyingPlatform() || PlayerIsImmobile())
+            && !VerticalVelocityIsPositive());
     }
 
     private bool VerticalVelocityIsPositive()
@@ -163,9 +137,19 @@ public class PlayerMovement : MonoBehaviour
         return _playerTouchesFlyingPlatform.OnFlyingPlatform && _rigidbody.velocity.y == 0;
     }
 
-    private bool PlayerIsNotMoving()
+    protected bool PlayerIsImmobile()
     {
         return _rigidbody.velocity == Vector2.zero;
+    }
+
+    protected bool PlayerIsMovingHorizontally()
+    {
+        return _rigidbody.velocity.x != 0;
+    }
+
+    protected bool PlayerIsMovingVertically()
+    {
+        return _rigidbody.velocity.y != 0;
     }
 
     private bool PlayerIsOnGround()
@@ -183,29 +167,73 @@ public class PlayerMovement : MonoBehaviour
         return _playerTouchesFlyingPlatform.OnFlyingPlatform;
     }
 
+    private bool PlayerCanDropFromFlyingPlatform()
+    {
+        return !IsJumping() && !_isKnockedBack && PlayerTouchesFlyingPlatform();
+    }
+
+    private bool PlayerCanMove()
+    {
+        return !IsKnockedBack && !IsCrouching && !_playerBasicAttack.IsAttacking();
+    }
+
+    private bool PlayerIsAlmostStopped()
+    {
+        return PlayerIsAlmostStoppedAndIsFacingRight() || PlayerIsAlmostStoppedAndIsFacingLeft();
+    }
+
+    private bool PlayerIsAlmostStoppedAndIsFacingRight()
+    {
+        return _rigidbody.velocity.x < 1 && _flipPlayer.IsFacingRight;
+    }
+
+    private bool PlayerIsAlmostStoppedAndIsFacingLeft()
+    {
+        return _rigidbody.velocity.x > -1 && !_flipPlayer.IsFacingRight;
+    }
+
+    protected bool PlayerIsFalling()
+    {
+        return IsJumping() && _rigidbody.velocity.y < 0;
+    }
+
+    protected bool PlayerIsJumping()
+    {
+        return IsJumping() && _rigidbody.velocity.y > 0;
+    }
+
+    protected void OnPlayerFalling()
+    {
+        OnFalling();
+    }
+
+    protected void OnPlayerLanding()
+    {
+        OnLanding();
+    }
+
+    private void MovePlayer(Vector3 vector, bool goesRight)
+    {
+        _rigidbody.velocity = new Vector2(vector.x * _horizontalSpeed, _rigidbody.velocity.y);
+        Flip(goesRight);
+    }
+
     // À modifier absolument
     private void Update()
     {
+        //demander à ben si cest mieux un Abs ou un if negatif -> mettre positif
         _anim.SetFloat("Speed", Mathf.Abs(_rigidbody.velocity.x));
-        _anim.SetBool("IsJumping", IsJumping() && _rigidbody.velocity.y > 0);
-        _anim.SetBool("IsFalling", IsJumping() && _rigidbody.velocity.y < 0);
-        _anim.SetBool("IsCrouching", IsCrouching);
+        _anim.SetBool("IsJumping", PlayerIsJumping());
+        _anim.SetBool("IsFalling", PlayerIsFalling());
 
-        if (IsJumping() && _rigidbody.velocity.y < 0)
+        if (_isKnockedBack && _knockbackCount >= KNOCKBACK_DURATION)
         {
-            _wasFalling = true;
-            if (OnFalling != null)
-            {
-                OnFalling();
-            }
+            _isKnockedBack = false;
+            _knockbackCount = 0;
         }
-        else if (_wasFalling)
+        else if (_isKnockedBack)
         {
-            _wasFalling = false;
-            if (OnLanding != null)
-            {
-                OnLanding();
-            }
+            _knockbackCount += Time.deltaTime;
         }
 
         UpdateMovement();
@@ -213,11 +241,11 @@ public class PlayerMovement : MonoBehaviour
 
     protected void Flip(bool goesRight)
     {
-        Transform animTransform = _anim.GetComponent<Transform>();
         if (GetComponent<FlipPlayer>().Flip(goesRight))
         {
             _basicAttackBox.offset = new Vector2(_basicAttackBox.offset.x * -1, _basicAttackBox.offset.y);
-            animTransform.localScale = new Vector3(-1 * animTransform.localScale.x, animTransform.localScale.y, animTransform.localScale.z);
+            _anim.transform.localScale = new Vector3(-1 * _anim.transform.localScale.x,
+                _anim.transform.localScale.y, _anim.transform.localScale.z);
         }
     }
 
@@ -230,18 +258,6 @@ public class PlayerMovement : MonoBehaviour
     private void OnDeath()
     {
         _anim.SetBool("IsDamaged", true);
-        _anim.SetBool("IsDead", true);
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-    }
-
-    protected IEnumerator CountTimeSincePlayerStoppedCoroutine()
-    {
-        float counter = 0;
-        while (counter < TIME_TO_WAIT_BEFORE_CROUCH_ALLOWED)
-        {
-            counter += Time.deltaTime;
-            yield return null;
-        }
-        _stoppedEnoughToCrouch = true;
     }
 }

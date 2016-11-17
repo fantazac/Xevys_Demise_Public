@@ -36,9 +36,6 @@ public class KeyboardInputs : MonoBehaviour {
     public delegate void KeyboardOnThrowAttackChangeButtonPressedHandler();
     public event KeyboardOnThrowAttackChangeButtonPressedHandler OnThrowAttackChangeButtonPressed;
 
-    public delegate void KeyboardOnEnterPortalHandler();
-    public event KeyboardOnEnterPortalHandler OnEnterPortal;
-
     public delegate void KeyboardOnPauseHandler();
     public event KeyboardOnPauseHandler OnPause;
 
@@ -71,6 +68,7 @@ public class KeyboardInputs : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.S))
         {
+            OnCrouch();
             OnUnderwaterControl(true);
 
             if (Input.GetKey(KeyCode.Space))
@@ -84,11 +82,7 @@ public class KeyboardInputs : MonoBehaviour {
             OnJump();
         }
 
-        if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
-        {
-            OnCrouch();
-        }
-        else
+        if (!Input.GetKey(KeyCode.S))
         {
             OnStandingUp();
         }
@@ -96,11 +90,6 @@ public class KeyboardInputs : MonoBehaviour {
         if (Input.GetKey(KeyCode.W))
         {
             OnUnderwaterControl(false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            OnEnterPortal();
         }
 
         if (Input.GetKeyDown(KeyCode.E))
