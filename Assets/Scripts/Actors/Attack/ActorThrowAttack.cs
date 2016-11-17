@@ -33,19 +33,6 @@ public class ActorThrowAttack : MonoBehaviour
     [SerializeField]
     private float _attackCooldown = 0.8f;
 
-    private int _ammoUsedPerThrow = 1;
-
-    private WeaponType _selectedWeapon;
-    private bool _canUseThrowAttack = true;
-
-    private InputManager _inputManager;
-    private InventoryManager _inventoryManager;
-    private PlayerThrowingWeaponsMunitions _munitions;
-    private ShowItems _showItems;
-    private FlipPlayer _flipPlayer;
-
-    private WaitForSeconds _enableAttackDelay;
-
     private delegate void OnSelectedThrowAttackHandler();
     private event OnSelectedThrowAttackHandler OnSelectedThrowAttack;
 
@@ -61,6 +48,19 @@ public class ActorThrowAttack : MonoBehaviour
     public delegate void OnAxeThrownHandler(GameObject axe);
     public event OnAxeThrownHandler OnAxeThrown;
 
+    private int _ammoUsedPerThrow = 1;
+
+    private WeaponType _selectedWeapon;
+    private bool _canUseThrowAttack = true;
+
+    private InputManager _inputManager;
+    private InventoryManager _inventoryManager;
+    private PlayerThrowingWeaponsMunitions _munitions;
+    private ShowItems _showItems;
+    private FlipPlayer _flipPlayer;
+
+    private WaitForSeconds _enableAttackDelay;
+
     private void Start()
     {
         _inputManager = GetComponentInChildren<InputManager>();
@@ -70,7 +70,7 @@ public class ActorThrowAttack : MonoBehaviour
         _inventoryManager.OnEnableAxe += SelectAxe;
         _inventoryManager.OnEnableKnife += SelectKnife;
 
-        _showItems = GameObject.Find("ItemCanvas").GetComponent<ShowItems>();
+        _showItems = StaticObjects.GetItemCanvas().GetComponent<ShowItems>();
 
         _flipPlayer = GetComponent<FlipPlayer>();
 
@@ -139,7 +139,7 @@ public class ActorThrowAttack : MonoBehaviour
         {
             InstantiateThrowWeapon(_knife,
                 new Vector2(transform.position.x + _weaponSpawnDistanceFromPlayer, transform.position.y),
-                new Vector3(),
+                Vector3.zero,
                 new Vector2(_flipPlayer.IsFacingRight ? _knifeSpeed : -_knifeSpeed, 0),
                 new Vector2(_flipPlayer.IsFacingRight ? _knife.transform.localScale.x : -_knife.transform.localScale.x, _knife.transform.localScale.y));
             OnKnifeAmmoUsed(_ammoUsedPerThrow);
