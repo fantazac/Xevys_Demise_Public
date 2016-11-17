@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class PauseMenuAnimationManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class PauseMenuAnimationManager : MonoBehaviour
 
     private PauseMenuInputs _pauseMenuInputs;
     private Animator _slideAnimator;
+    private EventSystem _pauseMenuEventSystem;
     private bool _active;
 
     private void Start()
@@ -19,6 +21,7 @@ public class PauseMenuAnimationManager : MonoBehaviour
         _pauseMenuInputs = GetComponentInChildren<PauseMenuInputs>();
         _pauseMenuInputs.TriggerAnimations += AnimatePauseMenu;
         _slideAnimator = GetComponent<Animator>();
+        _pauseMenuEventSystem = EventSystem.current;
         _active = false;
     }
 
@@ -53,6 +56,7 @@ public class PauseMenuAnimationManager : MonoBehaviour
         _slideAnimator.SetTrigger("SlideIn");
         _active = true;
         _pauseMenuInputs.CanSlide = false;
+        StartCoroutine("ShowAppropriateMenuInterface");
     }
 
     private void SlideOut()
@@ -60,6 +64,7 @@ public class PauseMenuAnimationManager : MonoBehaviour
         _slideAnimator.SetTrigger("SlideOut");
         _active = false;
         _pauseMenuInputs.CanSlide = false;
+        StopCoroutine("ShowAppropriateMenuInterface");
     }
 
     private void FadeIn()
@@ -70,5 +75,22 @@ public class PauseMenuAnimationManager : MonoBehaviour
     private void FadeOut()
     {
         OnFade("FadeOut");
+    }
+
+    private IEnumerator ShowAppropriateMenuInterface()
+    {
+        while (true)
+        {
+            if (_pauseMenuEventSystem.currentSelectedGameObject != null)
+            {
+                switch (_pauseMenuEventSystem.currentSelectedGameObject.name)
+                {
+                    case "ResumeBtn":
+
+                        break;
+                }
+            }
+            yield return null;
+        }
     }
 }
