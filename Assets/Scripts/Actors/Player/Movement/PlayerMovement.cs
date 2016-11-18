@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     protected Animator _anim;
     protected ShowItems _showItems;
     protected Health _playerHealth;
-    protected ActorBasicAttack _playerBasicAttack;
+    protected PlayerBasicAttack _playerBasicAttack;
     protected PlayerTouchesFlyingPlatform _playerTouchesFlyingPlatform;
     protected FlipPlayer _flipPlayer;
     protected PlayerFloatingInteraction _playerFloating;
@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
         _showItems = StaticObjects.GetItemCanvas().GetComponent<ShowItems>();
         _playerHealth = GetComponent<Health>();
         _playerTouchesGround = GetComponentInChildren<PlayerTouchesGround>();
-        _playerBasicAttack = GetComponent<ActorBasicAttack>();
+        _playerBasicAttack = GetComponent<PlayerBasicAttack>();
         _flipPlayer = GetComponent<FlipPlayer>();
         _playerCroutchHitbox = GameObject.Find("CharacterCroutchedHitbox").GetComponent<BoxCollider2D>();
         _playerFloating = GameObject.Find("CharacterFloatingHitbox").GetComponent<PlayerFloatingInteraction>();
