@@ -22,6 +22,8 @@ public class KnockbackOnDamageTaken : MonoBehaviour
         _playerGroundMovement = GetComponent<PlayerGroundMovement>();
 
         _damageAnimDelay = new WaitForSeconds(TIME_DAMAGE_ANIMATION_PLAYS);
+
+        OnKnockbackFinished += PlayerState.SetImmobile;
     }
 
     public void KnockbackPlayer(Vector2 positionEnemy)

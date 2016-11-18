@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     protected PlayerTouchesFlyingPlatform _playerTouchesFlyingPlatform;
     protected FlipPlayer _flipPlayer;
     protected PlayerFloatingInteraction _playerFloating;
+    protected PlayerState _state;
 
     public delegate void OnFallingHandler();
     public event OnFallingHandler OnFalling;
@@ -60,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
         _flipPlayer = GetComponent<FlipPlayer>();
         _playerCroutchHitbox = GameObject.Find("CharacterCroutchedHitbox").GetComponent<BoxCollider2D>();
         _playerFloating = GameObject.Find("CharacterFloatingHitbox").GetComponent<PlayerFloatingInteraction>();
+        _state = GetComponent<PlayerState>();
 
         _inputManager.OnMove += OnMove;
         _inputManager.OnJump += OnJump;
@@ -80,6 +82,7 @@ public class PlayerMovement : MonoBehaviour
         if (PlayerCanMove())
         {
             MovePlayer(vector, goesRight);
+            PlayerState.SetMoving(_rigidbody.velocity.x);
         }
         else
         {
@@ -100,6 +103,7 @@ public class PlayerMovement : MonoBehaviour
         if (PlayerIsMovingHorizontally() && !_isKnockedBack)
         {
             _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+            PlayerState.SetImmobile();
         }
     }
 
@@ -221,10 +225,14 @@ public class PlayerMovement : MonoBehaviour
     // À modifier absolument
     private void Update()
     {
-        //demander à ben si cest mieux un Abs ou un if negatif -> mettre positif
-        _anim.SetFloat("Speed", Mathf.Abs(_rigidbody.velocity.x));
-        _anim.SetBool("IsJumping", PlayerIsJumping());
-        _anim.SetBool("IsFalling", PlayerIsFalling());
+        if(PlayerIsJumping() != PlayerState.IsJumping)
+        {
+            PlayerState.SetJumping(PlayerIsJumping());
+        }
+        else if(PlayerIsFalling() != PlayerState.IsFalling)
+        {
+            PlayerState.SetFalling(PlayerIsFalling());
+        }
 
         if (_isKnockedBack && _knockbackCount >= KNOCKBACK_DURATION)
         {

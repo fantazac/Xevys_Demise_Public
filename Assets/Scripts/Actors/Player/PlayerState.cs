@@ -6,6 +6,20 @@ public class PlayerState : MonoBehaviour
     private InvincibilityAfterBeingHit _invincibility;
 
     public static bool IsInvincible { get; private set; }
+    public static bool IsJumping { get; private set; }
+    public static bool IsFalling { get; private set; }
+    public static bool IsMoving { get; private set; }
+
+    private static float _xSpeed = 0;
+
+    public delegate void OnChangedJumpingHandler();
+    public static event OnChangedJumpingHandler OnChangedJumping;
+
+    public delegate void OnChangedFallingHandler();
+    public static event OnChangedFallingHandler OnChangedFalling;
+
+    public delegate void OnChangedMovingHandler();
+    public static event OnChangedMovingHandler OnChangedMoving;
 
     private void Start()
     {
@@ -22,5 +36,32 @@ public class PlayerState : MonoBehaviour
     private void DisableInvincibility()
     {
         IsInvincible = false;
+    }
+
+    public static void SetJumping(bool isJumping)
+    {
+        IsJumping = isJumping;
+        OnChangedJumping();
+    }
+
+    public static void SetFalling(bool isFalling)
+    {
+        IsFalling = isFalling;
+        OnChangedFalling();
+    }
+
+    public static void SetMoving(float xSpeed)
+    {
+        if (xSpeed != _xSpeed)
+        {
+            _xSpeed = xSpeed;
+            IsMoving = xSpeed != 0;
+            OnChangedMoving();
+        }
+    }
+
+    public static void SetImmobile()
+    {
+        SetMoving(0);
     }
 }
