@@ -110,13 +110,13 @@ public class PauseMenuAnimationManager : MonoBehaviour
                     case "ControlsBackBtn":
                     case "KeyboardSchemeSwitch":
                     case "GamepadSchemeSwitch":
-                        //OnControlsInterfaceIsCurrent();
+                        OnControlsInterfaceIsCurrent("Controls");
                         break;
                     case "AudioBackBtn":
                     case "MusicVolumeSldr":
                     case "FXVolumeSldr":
                     case "MusicSwitch":
-                        //OnAudioInterfaceIsCurrent();
+                        OnAudioInterfaceIsCurrent("Audio");
                         break;
                 }
             }
