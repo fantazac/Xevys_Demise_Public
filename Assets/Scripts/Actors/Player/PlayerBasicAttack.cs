@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ActorBasicAttack : MonoBehaviour
+public class PlayerBasicAttack : MonoBehaviour
 {
     [SerializeField]
     private float _attackSpeed = 3f;
@@ -35,7 +35,7 @@ public class ActorBasicAttack : MonoBehaviour
         _attackDuration = _attackFrequency * ATTACK_DURATION_MULTIPLIER;
         _inputManager = GetComponentInChildren<InputManager>();
         _attackHitBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
-        _anim = GameObject.Find("CharacterSprite").GetComponent<Animator>();
+        _anim = GetComponentInChildren<Animator>();
         _soundPlayer = GetComponent<AudioSourcePlayer>();
         _playerGroundMovement = GetComponent<PlayerGroundMovement>();
 

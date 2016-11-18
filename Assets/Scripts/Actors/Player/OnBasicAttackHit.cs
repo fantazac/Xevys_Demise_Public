@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Linq;
 
-public class PlayerBasicAttackManager : MonoBehaviour
+public class OnBasicAttackHit : MonoBehaviour
 {
     [SerializeField]
     private int _baseDamage = 100;
