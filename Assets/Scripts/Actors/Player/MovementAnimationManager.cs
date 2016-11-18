@@ -13,6 +13,7 @@ public class MovementAnimationManager : MonoBehaviour
         PlayerState.OnChangedJumping += AnimateJumping;
         PlayerState.OnChangedFalling += AnimateFalling;
         PlayerState.OnChangedMoving += AnimateMoving;
+        PlayerState.OnChangedFloating += AnimateFloating;
     }
 
     private void AnimateJumping()
@@ -28,6 +29,11 @@ public class MovementAnimationManager : MonoBehaviour
     private void AnimateMoving()
     {
         _anim.SetBool("IsMoving", PlayerState.IsMoving);
+    }
+
+    private void AnimateFloating()
+    {
+        _anim.SetBool("IsFloating", PlayerState.IsFloating);
     }
 
 }

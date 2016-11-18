@@ -9,6 +9,7 @@ public class PlayerState : MonoBehaviour
     public static bool IsJumping { get; private set; }
     public static bool IsFalling { get; private set; }
     public static bool IsMoving { get; private set; }
+    public static bool IsFloating { get; private set; }
 
     private static float _xSpeed = 0;
 
@@ -21,11 +22,16 @@ public class PlayerState : MonoBehaviour
     public delegate void OnChangedMovingHandler();
     public static event OnChangedMovingHandler OnChangedMoving;
 
+    public delegate void OnChangedFloatingHandler();
+    public static event OnChangedFloatingHandler OnChangedFloating;
+
     private void Start()
     {
         _invincibility = GetComponent<InvincibilityAfterBeingHit>();
         _invincibility.OnInvincibilityStarted += EnableInvincibility;
         _invincibility.OnInvincibilityFinished += DisableInvincibility;
+
+        IsFloating = false;
     }
 
     private void EnableInvincibility()
@@ -63,5 +69,17 @@ public class PlayerState : MonoBehaviour
     public static void SetImmobile()
     {
         SetMoving(0);
+    }
+
+    public static void EnableFloating()
+    {
+        IsFloating = true;
+        OnChangedFloating();
+    }
+
+    public static void DisableFloating()
+    {
+        IsFloating = false;
+        OnChangedFloating();
     }
 }

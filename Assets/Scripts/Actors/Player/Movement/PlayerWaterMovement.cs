@@ -34,6 +34,7 @@ public class PlayerWaterMovement : PlayerMovement
                 if (!IsJumping())
                 {
                     _isFloating = false;
+                    PlayerState.DisableFloating();
                     if (_inventoryManager.IronBootsActive)
                     {
                         ChangePlayerVerticalVelocity(_jumpingSpeed * WATER_ACCELERATION_FACTOR);
