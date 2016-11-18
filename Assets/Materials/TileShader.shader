@@ -10,7 +10,7 @@ Shader "Sprites/Default Tiled" {
         "IgnoreProjector" = "False"
         "PreviewType" = "Plane"
         "CanUseSpriteAtlas" = "True"
-        "Queue" = "Transparent+1"
+        "Queue" = "Transparent"
     }
 
         Pass
