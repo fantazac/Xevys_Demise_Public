@@ -5,6 +5,7 @@ public class MovementAnimationManager : MonoBehaviour
 {
 
     private Animator _anim;
+    private PlayerMovement[] _playerMovements;
 
     private void Start()
     {
@@ -16,6 +17,12 @@ public class MovementAnimationManager : MonoBehaviour
         PlayerState.OnChangedFloating += AnimateFloating;
         PlayerState.OnChangedCroutching += AnimateCroutching;
         PlayerState.OnChangedAttacking += AnimateAttacking;
+
+        _playerMovements = StaticObjects.GetPlayer().GetComponents<PlayerMovement>();
+        foreach(PlayerMovement playerMovement in _playerMovements)
+        {
+            playerMovement.OnPlayerFlipped += FlipAnimation;
+        }
     }
 
     private void AnimateJumping()
@@ -55,6 +62,12 @@ public class MovementAnimationManager : MonoBehaviour
     {
         _anim.speed = animSpeed;
         _anim.SetBool("IsAttacking", PlayerState.IsAttacking);
+    }
+
+    private void FlipAnimation()
+    {
+        _anim.transform.localScale = new Vector3(-1 * _anim.transform.localScale.x,
+                _anim.transform.localScale.y, _anim.transform.localScale.z);
     }
 
 }

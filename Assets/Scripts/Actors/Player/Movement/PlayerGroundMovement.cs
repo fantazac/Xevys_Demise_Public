@@ -26,7 +26,7 @@ public class PlayerGroundMovement : PlayerMovement
     {
         if (enabled)
         {
-            if (!IsKnockedBack && !IsCrouching)
+            if (!IsKnockedBack && !PlayerState.IsCroutching)
             {
                 if (!IsJumping())
                 {
@@ -64,7 +64,7 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void OnCrouch()
     {
-        if (!IsCrouching && enabled)
+        if (!PlayerState.IsCroutching && enabled)
         {
             if (!PlayerIsMovingVertically())
             {
@@ -80,7 +80,7 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void OnStandingUp()
     {
-        if (IsCrouching && enabled)
+        if (PlayerState.IsCroutching && enabled)
         {
             if (!PlayerIsMovingVertically())
             {
@@ -97,7 +97,6 @@ public class PlayerGroundMovement : PlayerMovement
 
     private void SetCroutch(bool enable)
     {
-        IsCrouching = enable;
         _playerCroutchHitbox.enabled = enable;
         _playerBoxCollider.isTrigger = enable;
         PlayerState.SetCroutching(enable);

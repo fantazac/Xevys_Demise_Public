@@ -19,10 +19,14 @@ public class PlayerMovement : MonoBehaviour
     protected PlayerFloatingInteraction _playerFloating;
     protected PlayerState _state;
 
+    protected PlayerGroundMovement _playerGroundMovement;
+
     public delegate void OnFallingHandler();
     public event OnFallingHandler OnFalling;
     public delegate void OnLandingHandler();
     public event OnLandingHandler OnLanding;
+    public delegate void OnPlayerFlippedHandler();
+    public event OnPlayerFlippedHandler OnPlayerFlipped;
 
     protected const float INITIAL_GRAVITY_SCALE = 5;
     protected const float TERMINAL_SPEED = -18;
@@ -37,11 +41,7 @@ public class PlayerMovement : MonoBehaviour
     protected bool _wasFalling = false;
     protected bool _isCrouching = false;
 
-    public float Speed { get { return _horizontalSpeed; } set { _horizontalSpeed = value; } }
-    public float JumpingSpeed { get { return _jumpingSpeed; } set { _jumpingSpeed = value; } }
     public bool IsKnockedBack { get { return _isKnockedBack; } set { _isKnockedBack = value; } }
-    public bool IsCrouching { get { return _isCrouching; } set { _isCrouching = value; } }
-    public float TerminalSpeed { get { return TERMINAL_SPEED; } }
 
     protected virtual void Start()
     {
@@ -60,6 +60,8 @@ public class PlayerMovement : MonoBehaviour
         _playerCroutchHitbox = GameObject.Find("CharacterCroutchedHitbox").GetComponent<BoxCollider2D>();
         _playerFloating = GameObject.Find("CharacterFloatingHitbox").GetComponent<PlayerFloatingInteraction>();
         _state = GetComponent<PlayerState>();
+
+        _playerGroundMovement = GetComponent<PlayerGroundMovement>();
 
         _inputManager.OnMove += OnMove;
         _inputManager.OnJump += OnJump;
@@ -176,7 +178,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool PlayerCanMove()
     {
-        return !IsKnockedBack && !IsCrouching && !PlayerState.IsAttacking;
+        return !IsKnockedBack && !PlayerState.IsCroutching && !PlayerState.IsAttacking;
     }
 
     private bool PlayerIsAlmostStopped()
@@ -249,8 +251,7 @@ public class PlayerMovement : MonoBehaviour
         if (GetComponent<FlipPlayer>().Flip(goesRight))
         {
             _basicAttackBox.offset = new Vector2(_basicAttackBox.offset.x * -1, _basicAttackBox.offset.y);
-            /*_anim.transform.localScale = new Vector3(-1 * _anim.transform.localScale.x,
-                _anim.transform.localScale.y, _anim.transform.localScale.z);*/
+            OnPlayerFlipped();
         }
     }
 

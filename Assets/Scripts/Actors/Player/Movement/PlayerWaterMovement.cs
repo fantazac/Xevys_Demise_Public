@@ -10,7 +10,7 @@ public class PlayerWaterMovement : PlayerMovement
     private const float GRAVITY_DIVISION_FACTOR_ON_GROUND_UNDERWATER = 0.27f;
     private const float WATER_ACCELERATION_FACTOR = 1.4f;
     private const float SPEED_REDUCTION_FACTOR_IN_WATER = 0.3f;
-    private const float WATER_DECELARATION = 65f;
+    private const float WATER_DECELARATION = 95f;
 
     private bool _isFloating = false;
     private float _waterYSpeed;
@@ -33,8 +33,6 @@ public class PlayerWaterMovement : PlayerMovement
             {
                 if (!IsJumping())
                 {
-                    _isFloating = false;
-                    PlayerState.DisableFloating();
                     if (_inventoryManager.IronBootsActive)
                     {
                         ChangePlayerVerticalVelocity(_jumpingSpeed * WATER_ACCELERATION_FACTOR);
@@ -42,11 +40,22 @@ public class PlayerWaterMovement : PlayerMovement
                     else
                     {
                         ChangePlayerVerticalVelocity(_jumpingSpeed / (WATER_ACCELERATION_FACTOR - (PRECISION_MARGIN * WATER_ACCELERATION_FACTOR)));
+                        ExitWater();
                     }
-                    ChangeGravity();
                 }
             }
         }
+    }
+
+    private void ExitWater()
+    {
+        _isFloating = false;
+        PlayerState.DisableFloating();
+
+        _playerGroundMovement.enabled = true;
+        _playerGroundMovement.ChangeGravity();
+
+        enabled = false;
     }
 
     protected override void OnUnderwaterControl(bool goesDown)
