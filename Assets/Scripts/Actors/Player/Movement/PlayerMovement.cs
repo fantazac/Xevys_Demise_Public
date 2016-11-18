@@ -234,6 +234,8 @@ public class PlayerMovement : MonoBehaviour
             PlayerState.SetFalling(PlayerIsFalling());
         }
 
+        //Debug.Log(_anim.normalizedTime);//Play("Character_Attack", 0, 0.5f);
+
         if (_isKnockedBack && _knockbackCount >= KNOCKBACK_DURATION)
         {
             _isKnockedBack = false;
