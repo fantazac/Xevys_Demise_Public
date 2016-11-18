@@ -28,12 +28,21 @@ public class XevyMovement : MonoBehaviour
     private const float MISALIGNMENT_MARGIN = 0.5f;
 
     private BossOrientation _bossOrientation;
+    private ActorDirection _actorDirection;
     private Rigidbody2D _rigidbody;
     private Vector2 _arrivalPosition;
     private Vector2 _startPosition;
     private Vector2[] _referencePoints;
     private Stack<XevyMovementCommand> _commandStack;
     private List<int>[] _referencePointsConnections;
+    /* BEN COUNTER-CORRECTION
+    * 
+    * RNG is an acronym meaning Random Number Generator. Whether the class name or this acronym is the most used in the
+    * programming and the gaming communities is up to debate, but considering the acronym has its share of nicknames,
+    * such as RNGod, RNJesus and its quite pejorative variant RNJew, it is used for variable names.
+    *
+    * It applies to all bosses, by the way.
+    */
     private System.Random _rng = new System.Random();
 
     public XevyMovementStatus MovementStatus { get; private set; }
@@ -49,6 +58,7 @@ public class XevyMovement : MonoBehaviour
         MovementStatus = XevyMovementStatus.NONE;
         _commandStack = new Stack<XevyMovementCommand>();
         _rigidbody = GetComponent<Rigidbody2D>();
+        _actorDirection = GetComponent<ActorDirection>();
         _bossOrientation = GetComponent<BossOrientation>();
         _referencePoints = new Vector2[]
         {
@@ -225,7 +235,7 @@ public class XevyMovement : MonoBehaviour
 
     private bool CheckIfMovementCompleted(bool isGoingForward)
     {
-        return ((transform.position.x < _arrivalPosition.x) ^ isGoingForward) ^ _bossOrientation.IsFacingLeft;
+        return ((transform.position.x > _arrivalPosition.x) ^ isGoingForward) ^ _bossOrientation.IsFacingRight;
     }
 
     private void OnBossFlipped()

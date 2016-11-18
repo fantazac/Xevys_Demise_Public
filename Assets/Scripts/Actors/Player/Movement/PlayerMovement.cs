@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     protected Health _playerHealth;
     protected ActorBasicAttack _playerBasicAttack;
     protected PlayerTouchesFlyingPlatform _playerTouchesFlyingPlatform;
-    protected FlipPlayer _flipPlayer;
+    protected PlayerOrientation _playerOrientation;
 
     public delegate void OnFallingHandler();
     public event OnFallingHandler OnFalling;
@@ -65,7 +65,7 @@ public class PlayerMovement : MonoBehaviour
         _playerHealth = GetComponent<Health>();
         _playerTouchesGround = GetComponentInChildren<PlayerTouchesGround>();
         _playerBasicAttack = GetComponent<ActorBasicAttack>();
-        _flipPlayer = GetComponent<FlipPlayer>();
+        _playerOrientation = GetComponent<PlayerOrientation>();
 
         _inputManager.OnMove += OnMove;
         _inputManager.OnJump += OnJump;
@@ -109,7 +109,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
             }
-            else if (_flipPlayer.IsFacingRight)
+            else if (_playerOrientation.IsFacingRight)
             {
                 _rigidbody.AddForce(new Vector2(-LINEAR_DRAG, 0));
             }
@@ -196,12 +196,12 @@ public class PlayerMovement : MonoBehaviour
 
     private bool PlayerIsAlmostStoppedAndIsFacingRight()
     {
-        return _rigidbody.velocity.x < 1 && _flipPlayer.IsFacingRight;
+        return _rigidbody.velocity.x < 1 && _playerOrientation.IsFacingRight;
     }
 
     private bool PlayerIsAlmostStoppedAndIsFacingLeft()
     {
-        return _rigidbody.velocity.x > -1 && !_flipPlayer.IsFacingRight;
+        return _rigidbody.velocity.x > -1 && !_playerOrientation.IsFacingRight;
     }
 
     private bool PlayerIsFalling()
@@ -244,7 +244,7 @@ public class PlayerMovement : MonoBehaviour
 
     protected void Flip(bool goesRight)
     {
-        if (GetComponent<FlipPlayer>().Flip(goesRight))
+        if (GetComponent<PlayerOrientation>().Flip(goesRight))
         {
             _basicAttackBox.offset = new Vector2(_basicAttackBox.offset.x * -1, _basicAttackBox.offset.y);
             _anim.transform.localScale = new Vector3(-1 * _anim.transform.localScale.x,

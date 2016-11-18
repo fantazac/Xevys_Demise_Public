@@ -1,50 +1,27 @@
 ﻿using UnityEngine;
 
-public class BossOrientation : MonoBehaviour {
+public class BossOrientation : ActorOrientation
+{
+    GameObject _player;
 
-    [SerializeField]
-    private bool _isFacingLeft;
-    GameObject player;
-
-    public bool IsFacingLeft { get { return _isFacingLeft; } }
-    public int Orientation { get { return (_isFacingLeft ? -1 : 1); } }
-
-    private void Start()
+    protected override void Start()
     {
-        player = StaticObjects.GetPlayer();
+        _player = StaticObjects.GetPlayer();
     }
 
-    public void FlipTowardsSpecificPoint(Vector2 point)
+    public bool FlipTowardsSpecificPoint(Vector2 point)
     {
         if (point.x > transform.position.x)
         {
-            if (_isFacingLeft)
-            {
-                Flip();
-            }
-        }
-        else if (point.x < transform.position.x)
-        {
-            if (!_isFacingLeft)
-            {
-                Flip();
-            }
-        }
-    }
-
-    public bool FlipTowardsPlayer()
-    {
-        if (player.transform.position.x > transform.position.x)
-        {
-            if (_isFacingLeft)
+            if (!_isFacingRight)
             {
                 Flip();
                 return true;
             }
         }
-        else if (player.transform.position.x < transform.position.x)
+        else if (point.x < transform.position.x)
         {
-            if (!_isFacingLeft)
+            if (_isFacingRight)
             {
                 Flip();
                 return true;
@@ -53,9 +30,8 @@ public class BossOrientation : MonoBehaviour {
         return false;
     }
 
-    private void Flip()
+    public bool FlipTowardsPlayer()
     {
-        _isFacingLeft = !_isFacingLeft;
-        transform.localScale = new Vector2(-1 * transform.localScale.x, transform.localScale.y);
+        return FlipTowardsSpecificPoint(_player.transform.position);
     }
 }

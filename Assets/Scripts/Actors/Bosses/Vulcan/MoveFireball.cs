@@ -32,7 +32,7 @@ public class MoveFireball : MonoBehaviour
         {
             _rigidbody.velocity = new Vector2(_vulcanBossOrientation.Orientation * HORIZONTAL_SPEED,
                 (GameObject.Find("Vulcan").GetComponent<VulcanAI>().CurrentIndex == VULCAN_RIGHT_PIT_INDEX ^
-                _vulcanBossOrientation.IsFacingLeft ? -VERTICAL_SPEED : VERTICAL_SPEED));
+                _vulcanBossOrientation.IsFacingRight ? VERTICAL_SPEED : -VERTICAL_SPEED));
         }
     }
 

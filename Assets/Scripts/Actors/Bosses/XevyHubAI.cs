@@ -20,12 +20,12 @@ public class XevyHubAI : MonoBehaviour
     private const float VULNERABLE_TIMER_COOLDOWN = 1;
     private const float SPEED = 2.5f;
 
+    private ActorDirection _actorDirection;
     private BossOrientation _bossOrientation;
     private GameObject _xevySword;
     private PolygonCollider2D _collisionBox;
 
     private XevyHubStatus _status = XevyHubStatus.DEFENSIVE;
-    private bool _isGoingForward = true;
     private bool _isNotMoving = false;
     private float _timer;
     private float _leftLimit;
@@ -38,6 +38,7 @@ public class XevyHubAI : MonoBehaviour
         _leftLimit = transform.position.x - _leftDistance;
         _rightLimit = transform.position.x + _rightDistance;
         _timer = DEFENSIVE_TIMER_COOLDOWN;
+        _actorDirection = GetComponent<ActorDirection>();
         _bossOrientation = GetComponent<BossOrientation>();
         _xevySword = transform.FindChild("Xevy Sword").gameObject;
         _collisionBox = GetComponent<PolygonCollider2D>();
@@ -47,19 +48,19 @@ public class XevyHubAI : MonoBehaviour
     {
         if (_bossOrientation.FlipTowardsPlayer())
         {
-            FlipDirection();
+            _actorDirection.FlipDirection();
         }
         if (!_isNotMoving)
         {
             if (CheckIfMovementCompleted())
             {
                 _isNotMoving = true;
-                FlipDirection();
+                _actorDirection.FlipDirection();
             }
             else
             {
                 transform.position = new Vector3(transform.position.x + 
-                    _bossOrientation.Orientation * (_isGoingForward ? 1 : -1) * SPEED * Time.deltaTime, transform.position.y);
+                    _bossOrientation.Orientation * _actorDirection.Direction * SPEED * Time.deltaTime, transform.position.y);
             }
         }
         else
@@ -70,13 +71,8 @@ public class XevyHubAI : MonoBehaviour
 
     private bool CheckIfMovementCompleted()
     {
-        return ((transform.position.x < (_bossOrientation.IsFacingLeft ^ _isGoingForward ? _rightLimit : _leftLimit)
-            ^ _isGoingForward) ^ _bossOrientation.IsFacingLeft);
-    }
-
-    private void FlipDirection()
-    {
-        _isGoingForward = !_isGoingForward;
+        return (transform.position.x > (_bossOrientation.IsFacingRight ^ _actorDirection.IsGoingForward ? _leftLimit : _rightLimit) ^
+             (_actorDirection.IsGoingForward ^ _bossOrientation.IsFacingRight));
     }
 
     private void UpdateWhenNotMoving()

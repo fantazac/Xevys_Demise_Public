@@ -94,7 +94,7 @@ public class BehemothAI : MonoBehaviour
             _isCharging = (_rng.Next() % 2 == 0 ? true : false);
             _timeLeft = FEIGN_TIME + (_isCharging ? CHARGE_TIME : 0);
             _status = BehemothStatus.CHARGE;
-            _aimedWall = (_bossOrientation.IsFacingLeft ? _leftWall : _rightWall);
+            _aimedWall = (_bossOrientation.IsFacingRight ? _rightWall : _leftWall);
         }
     }
 
@@ -104,9 +104,10 @@ public class BehemothAI : MonoBehaviour
         if (_timeLeft > 0)
         {
             _rigidbody.velocity = new Vector2(_speed * _bossOrientation.Orientation, _rigidbody.velocity.y);
-            if (_bossOrientation.IsFacingLeft ?
-                _aimedWall.transform.position.x + _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 >= transform.position.x - GetComponent<SpriteRenderer>().bounds.size.x / 2 :
-                _aimedWall.transform.position.x - _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 <= transform.position.x + GetComponent<SpriteRenderer>().bounds.size.x / 2)
+            if (_bossOrientation.IsFacingRight ?
+                _aimedWall.transform.position.x - _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 <= transform.position.x + GetComponent<SpriteRenderer>().bounds.size.x / 2:
+                _aimedWall.transform.position.x + _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 >= transform.position.x - GetComponent<SpriteRenderer>().bounds.size.x / 2)
+
             {
                 _timeLeft = 1;
                 _animator.SetInteger("State", 3);

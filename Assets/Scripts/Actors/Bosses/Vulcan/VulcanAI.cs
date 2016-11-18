@@ -21,6 +21,7 @@ public class VulcanAI : MonoBehaviour
     GameObject _fireball;
 
     private Health _health;
+    private GameObject _vulcanHead;
     private Rigidbody2D _rigidbody;
     private Animator _animator;
     private BossOrientation _bossOrientation;
@@ -41,7 +42,6 @@ public class VulcanAI : MonoBehaviour
 
     private void Start()
     {
-        _halfHealth = GetComponent<Health>().HealthPoint / 2;
         _status = VulcanStatus.LOWERED;
         _initialHeight = transform.position.y;
         _bodyHeight = transform.localScale.y;
@@ -50,7 +50,9 @@ public class VulcanAI : MonoBehaviour
         {
             _spawnPositions[x + 2] = transform.position.x + x * transform.localScale.x;
         }
+        _vulcanHead = transform.FindChild("Vulcan Head").gameObject;
         _health = GetComponent<Health>();
+        _halfHealth = _health.HealthPoint / 2;
         _rigidbody = GetComponent<Rigidbody2D>();
         _bossOrientation = GetComponent<BossOrientation>();
         _animator = GetComponent<Animator>();
@@ -151,6 +153,7 @@ public class VulcanAI : MonoBehaviour
         {
             _hasShotFireball = false;
             _rigidbody.isKinematic = false;
+            _vulcanHead.SetActive(true);
             _status = VulcanStatus.RETREATING;
         }
     }
@@ -171,6 +174,7 @@ public class VulcanAI : MonoBehaviour
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
             _timeLeft = LOWERED_TIME;
             _rigidbody.isKinematic = true;
+            _vulcanHead.SetActive(false);
             _status = VulcanStatus.LOWERED;
         }
     }

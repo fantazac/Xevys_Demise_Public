@@ -87,7 +87,7 @@ public class NeptuneHeadAI : MonoBehaviour
             new Vector2(_origin.x - _horizontalLimit, _origin.y - _verticalLimit),
             new Vector2(_origin.x - _horizontalLimit, _origin.y + _verticalLimit),
         };
-        _targetedPointIndex = (_bossOrientation.IsFacingLeft ? SOUTH_WEST_LIMIT : SOUTH_EAST_LIMIT);
+        _targetedPointIndex = (_bossOrientation.IsFacingRight ? SOUTH_EAST_LIMIT : SOUTH_WEST_LIMIT);
         _bossOrientation.FlipTowardsSpecificPoint(_pointsToReach[_targetedPointIndex]);
     }
 
@@ -179,7 +179,7 @@ public class NeptuneHeadAI : MonoBehaviour
         transform.localScale = new Vector2(transform.localScale.x, -1 * transform.localScale.y);
         transform.rotation = Quaternion.identity;
         transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_pointsToReach[_targetedPointIndex].y - transform.position.y) /
-            (_pointsToReach[_targetedPointIndex].x - transform.position.x)) + (_bossOrientation.IsFacingLeft ? 270 : 90));
+            (_pointsToReach[_targetedPointIndex].x - transform.position.x)) + (_bossOrientation.IsFacingRight ? 90 : 270));
     }
 
     private void OnNeptuneDefeated()
