@@ -45,6 +45,13 @@ public class Health : MonoBehaviour
         OnHealthChanged(healPoints);
     }
 
+    public void FullHeal()
+    {
+        OnHeal(Convert.ToInt32(MaxHealth));
+        OnHealthChanged(Convert.ToInt32(MaxHealth));
+
+    }
+
     public void Hit(int hitPoints, Vector2 positionAttacker)
     {
         if (!IsDead())

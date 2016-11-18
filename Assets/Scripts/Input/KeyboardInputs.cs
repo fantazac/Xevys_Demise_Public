@@ -44,7 +44,6 @@ public class KeyboardInputs : MonoBehaviour {
     private void Start()
     {
         _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
-        _playerHealth.OnDeath += OnDeath;
     }
 
     private void Update()
@@ -111,10 +110,5 @@ public class KeyboardInputs : MonoBehaviour {
         {
             OnPause();
         }
-    }
-
-    private void OnDeath()
-    {
-        enabled = false;
     }
 }

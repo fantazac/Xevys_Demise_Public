@@ -58,7 +58,6 @@ public class GamepadInputs: MonoBehaviour
     private void Start()
     {
         _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
-        _playerHealth.OnDeath += OnDeath;
     }
 
     private void Update()
@@ -177,10 +176,5 @@ public class GamepadInputs: MonoBehaviour
         {
             _startButtonReady = true;
         }
-    }
-
-    private void OnDeath()
-    {
-        enabled = false;
     }
 }

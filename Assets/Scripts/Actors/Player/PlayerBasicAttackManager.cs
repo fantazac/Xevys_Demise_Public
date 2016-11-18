@@ -17,7 +17,6 @@ public class PlayerBasicAttackManager : MonoBehaviour
         _enemiesTags = new string[] { "Scarab", "Bat", "Skeltal" };
         _bossesTags = new string[] { "Behemoth", "Phoenix", "Neptune" };
         _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
-        _playerHealth.OnDeath += OnDeath;
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -31,9 +30,5 @@ public class PlayerBasicAttackManager : MonoBehaviour
             collider.GetComponent<Health>().Hit(_baseDamage, Vector2.zero);
         }
     }
-
-    private void OnDeath()
-    {
-        enabled = false;
-    }
+    
 }
