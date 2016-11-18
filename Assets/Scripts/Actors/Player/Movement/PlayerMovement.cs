@@ -203,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
 
     protected bool PlayerIsJumping()
     {
-        return IsJumping() && _rigidbody.velocity.y > 0;
+        return IsJumping() && _rigidbody.velocity.y >= 0;
     }
 
     protected void OnPlayerFalling()
