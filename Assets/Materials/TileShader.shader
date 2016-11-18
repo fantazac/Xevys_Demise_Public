@@ -1,58 +1,65 @@
-﻿Shader "Unlit/TileShader"
-{
-	Properties
-	{
-		_MainTex ("Texture", 2D) = "white" {}
-	}
-	SubShader
-	{
-		Tags { "RenderType"="Opaque" }
-		LOD 100
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
 
-		Pass
-		{
-			CGPROGRAM
-			#pragma vertex vert
-			#pragma fragment frag
-			// make fog work
-			#pragma multi_compile_fog
-			
-			#include "UnityCG.cginc"
+Shader "Sprites/Default Tiled" {
+    Properties{
+        [PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
+    }
+        SubShader{
+        Tags{
+        "RenderType" = "Opaque"
+        "IgnoreProjector" = "False"
+        "PreviewType" = "Plane"
+        "CanUseSpriteAtlas" = "True"
+        "Queue" = "Transparent"
+    }
 
-			struct appdata
-			{
-				float4 vertex : POSITION;
-				float2 uv : TEXCOORD0;
-			};
+        Pass
+    {
+        ZWrite Off
+        Cull off
 
-			struct v2f
-			{
-				float2 uv : TEXCOORD0;
-				UNITY_FOG_COORDS(1)
-				float4 vertex : SV_POSITION;
-			};
+        CGPROGRAM
+#pragma vertex vert
+#pragma fragment frag
 
-			sampler2D _MainTex;
-			float4 _MainTex_ST;
-			
-			v2f vert (appdata v)
-			{
-				v2f o;
-				o.vertex = UnityObjectToClipPos(v.vertex);
-				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-				UNITY_TRANSFER_FOG(o,o.vertex);
-				return o;
-			}
-			
-			fixed4 frag (v2f i) : SV_Target
-			{
-				// sample the texture
-				fixed4 col = tex2D(_MainTex, i.uv);
-				// apply fog
-				UNITY_APPLY_FOG(i.fogCoord, col);
-				return col;
-			}
-			ENDCG
-		}
-	}
+#include "UnityCG.cginc"
+
+        struct appdata {
+        float4 vertex : POSITION;
+        float2 texcoord : TEXCOORD;
+        float4 color: COLOR;
+    };
+
+    struct v2f {
+        float4 pos : SV_POSITION;
+        float2 uv : TEXCOORD;
+        float4 color: COLOR;
+    };
+
+    uniform sampler2D _MainTex;
+
+    v2f vert(appdata v)
+    {
+        v2f o;
+        o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+        o.uv = v.texcoord;
+        o.color = v.color;
+
+        return o;
+    }
+
+    half4 frag(v2f i) : COLOR
+    {
+        float xScale = length(float3(unity_ObjectToWorld[0][0], unity_ObjectToWorld[1][0], unity_ObjectToWorld[2][0]));
+    float yScale = length(float3(unity_ObjectToWorld[0][1], unity_ObjectToWorld[1][1], unity_ObjectToWorld[2][1]));
+
+    half4 c = tex2D(_MainTex, fmod(i.uv * float2(xScale ,yScale),1)) * i.color;
+
+    return c;
+    }
+
+        ENDCG
+    }
+    }
+        FallBack "Sprites/Default"
 }
