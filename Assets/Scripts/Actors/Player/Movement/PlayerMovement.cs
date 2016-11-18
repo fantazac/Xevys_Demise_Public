@@ -11,7 +11,6 @@ public class PlayerMovement : MonoBehaviour
     protected SpriteRenderer _playerSpriteRenderer;
     protected InventoryManager _inventoryManager;
     protected PlayerTouchesGround _playerTouchesGround;
-    protected Animator _anim;
     protected ShowItems _showItems;
     protected Health _playerHealth;
     protected PlayerBasicAttack _playerBasicAttack;
@@ -46,7 +45,6 @@ public class PlayerMovement : MonoBehaviour
 
     protected virtual void Start()
     {
-        _anim = StaticObjects.GetPlayer().GetComponentInChildren<Animator>();
         _playerTouchesFlyingPlatform = GetComponentInChildren<PlayerTouchesFlyingPlatform>();
         _playerSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _inventoryManager = GetComponent<InventoryManager>();
@@ -178,7 +176,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool PlayerCanMove()
     {
-        return !IsKnockedBack && !IsCrouching && !_playerBasicAttack.IsAttacking();
+        return !IsKnockedBack && !IsCrouching && !PlayerState.IsAttacking;
     }
 
     private bool PlayerIsAlmostStopped()
@@ -222,7 +220,6 @@ public class PlayerMovement : MonoBehaviour
         Flip(goesRight);
     }
 
-    // À modifier absolument
     private void Update()
     {
         if(PlayerIsJumping() != PlayerState.IsJumping)
@@ -233,8 +230,6 @@ public class PlayerMovement : MonoBehaviour
         {
             PlayerState.SetFalling(PlayerIsFalling());
         }
-
-        //Debug.Log(_anim.normalizedTime);//Play("Character_Attack", 0, 0.5f);
 
         if (_isKnockedBack && _knockbackCount >= KNOCKBACK_DURATION)
         {
@@ -254,8 +249,8 @@ public class PlayerMovement : MonoBehaviour
         if (GetComponent<FlipPlayer>().Flip(goesRight))
         {
             _basicAttackBox.offset = new Vector2(_basicAttackBox.offset.x * -1, _basicAttackBox.offset.y);
-            _anim.transform.localScale = new Vector3(-1 * _anim.transform.localScale.x,
-                _anim.transform.localScale.y, _anim.transform.localScale.z);
+            /*_anim.transform.localScale = new Vector3(-1 * _anim.transform.localScale.x,
+                _anim.transform.localScale.y, _anim.transform.localScale.z);*/
         }
     }
 
@@ -267,7 +262,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnDeath()
     {
-        _anim.SetBool("IsDamaged", true);
+        //_anim.SetBool("IsDamaged", true);
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 }

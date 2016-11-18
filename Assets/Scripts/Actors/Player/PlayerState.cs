@@ -10,6 +10,8 @@ public class PlayerState : MonoBehaviour
     public static bool IsFalling { get; private set; }
     public static bool IsMoving { get; private set; }
     public static bool IsFloating { get; private set; }
+    public static bool IsCroutching { get; private set; }
+    public static bool IsAttacking { get; private set; }
 
     private static float _xSpeed = 0;
 
@@ -24,6 +26,12 @@ public class PlayerState : MonoBehaviour
 
     public delegate void OnChangedFloatingHandler();
     public static event OnChangedFloatingHandler OnChangedFloating;
+
+    public delegate void OnChangedCroutchingHandler();
+    public static event OnChangedCroutchingHandler OnChangedCroutching;
+
+    public delegate void OnChangedAttackingHandler(float animSpeed);
+    public static event OnChangedAttackingHandler OnChangedAttacking;
 
     private void Start()
     {
@@ -81,5 +89,17 @@ public class PlayerState : MonoBehaviour
     {
         IsFloating = false;
         OnChangedFloating();
+    }
+
+    public static void SetCroutching(bool enable)
+    {
+        IsCroutching = enable;
+        OnChangedCroutching();
+    }
+
+    public static void SetAttacking(bool enable, float animSpeed)
+    {
+        IsAttacking = enable;
+        OnChangedAttacking(animSpeed);
     }
 }

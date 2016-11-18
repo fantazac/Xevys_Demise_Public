@@ -64,7 +64,7 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void OnCrouch()
     {
-        if (!IsCrouching && !_playerBasicAttack.IsAttacking() && enabled)
+        if (!IsCrouching && enabled)
         {
             if (!PlayerIsMovingVertically())
             {
@@ -80,7 +80,7 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void OnStandingUp()
     {
-        if (IsCrouching && !_playerBasicAttack.IsAttacking() && enabled)
+        if (IsCrouching && enabled)
         {
             if (!PlayerIsMovingVertically())
             {
@@ -100,7 +100,7 @@ public class PlayerGroundMovement : PlayerMovement
         IsCrouching = enable;
         _playerCroutchHitbox.enabled = enable;
         _playerBoxCollider.isTrigger = enable;
-        _anim.SetBool("IsCrouching", enable);
+        PlayerState.SetCroutching(enable);
     }
 
     private bool PlayerCanDoubleJump()

@@ -11,7 +11,6 @@ public class PlayerBasicAttack : MonoBehaviour
 
     private const float BASIC_ATTACK_SPEED = 1f;
     private const float ATTACK_DURATION_MULTIPLIER = 0.6f;
-    private const float INITIAL_ANIMATION_SPEED = 1f;
     private const float ATTACK_COOLDOWN_MULTIPLIER = 1.2f;
 
     private float _attackDuration;
@@ -23,10 +22,9 @@ public class PlayerBasicAttack : MonoBehaviour
     private InputManager _inputManager;
     private BoxCollider2D _attackHitBox;
     private AudioSourcePlayer _soundPlayer;
-    private Animator _anim;
     private PlayerGroundMovement _playerGroundMovement;
 
-    private bool _isAttacking = false;
+    private bool _canAttack = true;
     private float _attackFrequency;
 
     private void Start()
@@ -35,7 +33,6 @@ public class PlayerBasicAttack : MonoBehaviour
         _attackDuration = _attackFrequency * ATTACK_DURATION_MULTIPLIER;
         _inputManager = GetComponentInChildren<InputManager>();
         _attackHitBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
-        _anim = GetComponentInChildren<Animator>();
         _soundPlayer = GetComponent<AudioSourcePlayer>();
         _playerGroundMovement = GetComponent<PlayerGroundMovement>();
 
@@ -48,7 +45,7 @@ public class PlayerBasicAttack : MonoBehaviour
 
     private void OnBasicAttack()
     {
-        if (!_isAttacking && !_playerGroundMovement.IsKnockedBack)
+        if (_canAttack && !_playerGroundMovement.IsKnockedBack)
         {
             ActivateBasicAttack();
         }
@@ -56,9 +53,8 @@ public class PlayerBasicAttack : MonoBehaviour
 
     private void ActivateBasicAttack()
     {
-        _isAttacking = true;
-        _anim.speed = _attackSpeed;
-        _anim.SetBool("IsAttacking", _isAttacking);
+        PlayerState.SetAttacking(true, _attackSpeed);
+        _canAttack = false;
         _soundPlayer.Play(_soundId);
         _attackHitBox.enabled = true;
         StartCoroutine("OnBasicAttackFinished");
@@ -70,15 +66,14 @@ public class PlayerBasicAttack : MonoBehaviour
     {
         yield return _finishAttackAnimDelay;
 
-        _anim.speed = INITIAL_ANIMATION_SPEED;
-        _anim.SetBool("IsAttacking", false);
+        PlayerState.SetAttacking(false, 1);
     }
 
     private IEnumerator AllowNewAttack()
     {
         yield return _allowNewAttackDelay;
 
-        _isAttacking = false;
+        _canAttack = true;
     }
 
     private IEnumerator OnBasicAttackFinished()
@@ -86,10 +81,5 @@ public class PlayerBasicAttack : MonoBehaviour
         yield return _finishedAttackDelay;
 
         _attackHitBox.enabled = false;
-    }
-
-    public bool IsAttacking()
-    {
-        return _isAttacking;
     }
 }
