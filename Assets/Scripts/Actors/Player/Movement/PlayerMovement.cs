@@ -72,8 +72,6 @@ public class PlayerMovement : MonoBehaviour
         _inputManager.OnCrouch += OnCrouch;
         _inputManager.OnStandingUp += OnStandingUp;
 
-        _playerHealth.OnDeath += OnDeath;
-
         _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
     }
 
@@ -259,11 +257,5 @@ public class PlayerMovement : MonoBehaviour
     {
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, verticalVelocity);
-    }
-
-    private void OnDeath()
-    {
-        //_anim.SetBool("IsDamaged", true);
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 }

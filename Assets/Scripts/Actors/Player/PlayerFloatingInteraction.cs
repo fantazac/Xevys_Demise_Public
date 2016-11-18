@@ -30,10 +30,10 @@ public class PlayerFloatingInteraction : MonoBehaviour
         {
             OnPlayerUnderWater();
 
-            _player.GetComponent<PlayerWaterMovement>().enabled = true;
-            _player.GetComponent<PlayerGroundMovement>().enabled = false;
+            _playerWaterMovement.enabled = true;
+            _playerGroundMovement.enabled = false;
 
-            _player.GetComponent<PlayerWaterMovement>().IsFloating = false;
+            _playerWaterMovement.IsFloating = false;
         }
     }
 
@@ -43,7 +43,7 @@ public class PlayerFloatingInteraction : MonoBehaviour
         {
             OnPlayerOutOfWater();
 
-            _player.GetComponent<PlayerWaterMovement>().IsFloating = true;
+            _playerWaterMovement.IsFloating = true;
         }
     }
 }

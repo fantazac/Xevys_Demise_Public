@@ -7,8 +7,6 @@ public class OnBasicAttackHit : MonoBehaviour
     [SerializeField]
     private int _baseDamage = 100;
 
-    private Health _playerHealth;
-
     private string[] _enemiesTags;
     private string[] _bossesTags;
 
@@ -16,7 +14,6 @@ public class OnBasicAttackHit : MonoBehaviour
     {
         _enemiesTags = new string[] { "Scarab", "Bat", "Skeltal" };
         _bossesTags = new string[] { "Behemoth", "Phoenix", "Neptune" };
-        _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
