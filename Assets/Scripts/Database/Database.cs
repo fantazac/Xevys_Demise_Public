@@ -26,25 +26,25 @@ public class Database : MonoBehaviour
 
     private float _lifeRemaining = 1000f;
 
-    private int _tempNbScarabsKilled;
-    private int _tempNbBatsKilled;
-    private int _tempNbSkeltalsKilled;
-    private int _nbScarabsKilled;
-    private int _nbBatsKilled;
-    private int _nbSkeltalsKilled;
+    private int _tempNbScarabsKilled = 0;
+    private int _tempNbBatsKilled = 0;
+    private int _tempNbSkeltalsKilled = 0;
+    private int _nbScarabsKilled = 0;
+    private int _nbBatsKilled = 0;
+    private int _nbSkeltalsKilled = 0;
 
-    private int _knifeEnabled;
-    private int _knifeAmmo;
-    private int _axeEnabled;
-    private int _axeAmmo;
-    private int _featherEnabled;
-    private int _bootsEnabled;
-    private int _bubbleEnabled;
-    private int _armorEnabled;
-    private int _earthArtefactEnabled;
-    private int _airArtefactEnabled;
-    private int _waterArtefactEnabled;
-    private int _fireArtefactEnabled;
+    private int _knifeEnabled = 0;
+    private int _knifeAmmo = 0;
+    private int _axeEnabled = 0;
+    private int _axeAmmo = 0;
+    private int _featherEnabled = 0;
+    private int _bootsEnabled = 0;
+    private int _bubbleEnabled = 0;
+    private int _armorEnabled = 0;
+    private int _earthArtefactEnabled = 0;
+    private int _airArtefactEnabled = 0;
+    private int _waterArtefactEnabled = 0;
+    private int _fireArtefactEnabled = 0;
 
     private void Start()
     {
