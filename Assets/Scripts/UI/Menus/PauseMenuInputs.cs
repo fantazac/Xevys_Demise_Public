@@ -12,6 +12,18 @@ public class PauseMenuInputs : MonoBehaviour
     private PauseMenuAnimationManager _pauseMenuAnimationManager;
     private EventSystem _pauseMenuEventSystem;
 
+    public delegate void OnMainInterfaceIsCurrentHandler(string current);
+    public event OnMainInterfaceIsCurrentHandler OnMainInterfaceIsCurrent;
+
+    public delegate void OnOptionsInterfaceIsCurrentHandler(string current);
+    public event OnOptionsInterfaceIsCurrentHandler OnOptionsInterfaceIsCurrent;
+
+    public delegate void OnControlsInterfaceIsCurrentHandler(string current);
+    public event OnControlsInterfaceIsCurrentHandler OnControlsInterfaceIsCurrent;
+
+    public delegate void OnAudioInterfaceIsCurrentHandler(string current);
+    public event OnAudioInterfaceIsCurrentHandler OnAudioInterfaceIsCurrent;
+
     private bool _canSlide;
     public bool CanSlide { private get { return _canSlide; } set { _canSlide = value; } }
 
@@ -36,7 +48,7 @@ public class PauseMenuInputs : MonoBehaviour
 
     public void OptionBtnOnClick()
     {
-        _pauseMenuEventSystem.SetSelectedGameObject(transform.GetChild(0).transform.GetChild(1).transform.GetChild(0).gameObject);
+        OnOptionsInterfaceIsCurrent("Options");
     }
 
     public void QuitBtnOnClick()
@@ -46,33 +58,32 @@ public class PauseMenuInputs : MonoBehaviour
 
     public void ControlsBtnOnClick()
     {
-        _pauseMenuEventSystem.SetSelectedGameObject(transform.GetChild(0).transform.GetChild(2).transform.GetChild(0).gameObject);
+        OnControlsInterfaceIsCurrent("Controls");
     }
 
     public void AudioBtnOnClick()
     {
-        _pauseMenuEventSystem.SetSelectedGameObject(transform.GetChild(0).transform.GetChild(3).transform.GetChild(0).gameObject);
+        OnAudioInterfaceIsCurrent("Audio");
     }
-
-
 
     public void OptionsBackBtnOnClick()
     {
-        _pauseMenuEventSystem.SetSelectedGameObject(transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).gameObject);
+        OnMainInterfaceIsCurrent("Main");
     }
 
     public void ControlsBackBtnOnClick()
     {
-        _pauseMenuEventSystem.SetSelectedGameObject(transform.GetChild(0).transform.GetChild(1).transform.GetChild(0).gameObject);
+        OnOptionsInterfaceIsCurrent("Options");
     }
 
     public void AudioBackBtnOnClick()
     {
-        _pauseMenuEventSystem.SetSelectedGameObject(transform.GetChild(0).transform.GetChild(1).transform.GetChild(0).gameObject);
+        OnOptionsInterfaceIsCurrent("Options");
     }
 
     private void SyncFirstControlOnPauseMenuStateChanged(bool isActive)
     {
+        OnMainInterfaceIsCurrent("Main");
         _pauseMenuEventSystem.SetSelectedGameObject(isActive ? transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).gameObject : null);
     }
 }
