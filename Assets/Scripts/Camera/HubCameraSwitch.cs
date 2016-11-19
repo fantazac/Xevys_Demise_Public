@@ -8,7 +8,7 @@ public class HubCameraSwitch : MonoBehaviour {
     protected int _nbNode1;
     protected int _nbNode2;
 
-    protected void Start()
+    protected virtual void Start()
     {
         _cameraManager = GameObject.Find("Main Camera").GetComponent<CameraManager>();
         _resetingCameraNodeDelay = new WaitForSeconds(0.2f);

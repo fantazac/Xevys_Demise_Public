@@ -3,7 +3,7 @@ using System.Collections;
 
 public class HubCameraSwitchDown : HubCameraSwitch
 {
-    private void Start ()
+    protected override void Start ()
 	{
 	    base.Start();
 	    _nbNode1 = 0;

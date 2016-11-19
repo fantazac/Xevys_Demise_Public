@@ -3,7 +3,7 @@ using System.Collections;
 
 public class HubCameraSwitchUp : HubCameraSwitch
 {
-    private void Start ()
+    protected override void Start ()
 	{
         base.Start();
         _nbNode1 = 38;
