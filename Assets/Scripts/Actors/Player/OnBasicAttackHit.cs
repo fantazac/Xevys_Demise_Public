@@ -13,7 +13,7 @@ public class OnBasicAttackHit : MonoBehaviour
     private void Start()
     {
         _enemiesTags = new string[] { "Scarab", "Bat", "Skeltal" };
-        _bossesTags = new string[] { "Behemoth", "Phoenix", "Neptune" };
+        _bossesTags = new string[] { "Behemoth", "Phoenix", "Neptune", "Vulcan", "Xevy" };
     }
 
     private void OnTriggerEnter2D(Collider2D collider)

@@ -33,6 +33,19 @@ public class ActorThrowAttack : MonoBehaviour
     [SerializeField]
     private float _attackCooldown = 0.8f;
 
+    private int _ammoUsedPerThrow = 1;
+
+    private WeaponType _selectedWeapon;
+    private bool _canUseThrowAttack = true;
+
+    private InputManager _inputManager;
+    private InventoryManager _inventoryManager;
+    private PlayerWeaponAmmo _munitions;
+    private ShowItems _showItems;
+    private PlayerOrientation _playerOrientation;
+
+    private WaitForSeconds _enableAttackDelay;
+
     private delegate void OnSelectedThrowAttackHandler();
     private event OnSelectedThrowAttackHandler OnSelectedThrowAttack;
 
@@ -48,19 +61,6 @@ public class ActorThrowAttack : MonoBehaviour
     public delegate void OnAxeThrownHandler(GameObject axe);
     public event OnAxeThrownHandler OnAxeThrown;
 
-    private int _ammoUsedPerThrow = 1;
-
-    private WeaponType _selectedWeapon;
-    private bool _canUseThrowAttack = true;
-
-    private InputManager _inputManager;
-    private InventoryManager _inventoryManager;
-    private PlayerWeaponAmmo _munitions;
-    private ShowItems _showItems;
-    private FlipPlayer _flipPlayer;
-
-    private WaitForSeconds _enableAttackDelay;
-
     private void Start()
     {
         _inputManager = GetComponentInChildren<InputManager>();
@@ -72,7 +72,7 @@ public class ActorThrowAttack : MonoBehaviour
 
         _showItems = StaticObjects.GetItemCanvas().GetComponent<ShowItems>();
 
-        _flipPlayer = GetComponent<FlipPlayer>();
+        _playerOrientation = GetComponent<PlayerOrientation>();
 
         _inputManager.OnThrowAttack += OnThrowAttack;
 
@@ -140,8 +140,8 @@ public class ActorThrowAttack : MonoBehaviour
             InstantiateThrowWeapon(_knife,
                 new Vector2(transform.position.x + _weaponSpawnDistanceFromPlayer, transform.position.y),
                 Vector3.zero,
-                new Vector2(_flipPlayer.IsFacingRight ? _knifeSpeed : -_knifeSpeed, 0),
-                new Vector2(_flipPlayer.IsFacingRight ? _knife.transform.localScale.x : -_knife.transform.localScale.x, _knife.transform.localScale.y));
+                new Vector2(_playerOrientation.IsFacingRight ? _knifeSpeed : -_knifeSpeed, 0),
+                new Vector2(_playerOrientation.IsFacingRight ? _knife.transform.localScale.x : -_knife.transform.localScale.x, _knife.transform.localScale.y));
             OnKnifeAmmoUsed(_ammoUsedPerThrow);
 
         }
@@ -154,8 +154,8 @@ public class ActorThrowAttack : MonoBehaviour
             InstantiateThrowWeapon(_axe,
                 new Vector2(transform.position.x, transform.position.y + _axeThrowingHeight),
                 new Vector3(0, 0, _axeInitialRotation),
-                new Vector2(_flipPlayer.IsFacingRight ? _axeHorinzontalSpeed : -_axeHorinzontalSpeed, _axeVerticalSpeed),
-                new Vector2(_axe.transform.localScale.x, _flipPlayer.IsFacingRight ? _axe.transform.localScale.y : -_axe.transform.localScale.y));
+                new Vector2(_playerOrientation.IsFacingRight ? _axeHorinzontalSpeed : -_axeHorinzontalSpeed, _axeVerticalSpeed),
+                new Vector2(_axe.transform.localScale.x, _playerOrientation.IsFacingRight ? _axe.transform.localScale.y : -_axe.transform.localScale.y));
             OnAxeAmmoUsed(_ammoUsedPerThrow);
         }
     }

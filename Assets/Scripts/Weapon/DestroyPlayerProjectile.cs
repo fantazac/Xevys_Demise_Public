@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DestroyProjectile : MonoBehaviour
+public class DestroyPlayerProjectile : MonoBehaviour
 {
     [SerializeField]
     private  float _delayAfterWallCollision = 0.833f;
@@ -14,7 +14,7 @@ public class DestroyProjectile : MonoBehaviour
 
     void Start()
     {
-        if (gameObject.tag != "Knife")
+        if (gameObject.tag == "Axe")
         {
             TouchesGround = GetComponentInChildren<AxeHandleHitWall>().TouchesGround;
         }

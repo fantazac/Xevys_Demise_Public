@@ -4,83 +4,86 @@ using System.Collections;
 public class XevyAction: MonoBehaviour
 {
     private int _sameAttackCount;
-    private bool _isPlayerStillOnSameLine;
+
+    private const float AIR_SPIKE_SPEED = 15;
+    private const float HORIZONTAL_AXIS_MODIFIER = 3.5f;
+    private const float FIRE_BALL_SPEED = 2;
 
     [SerializeField]
-    GameObject _airSpike;
+    private GameObject _airSpike;
     [SerializeField]
-    GameObject _fireBall;
+    private GameObject _fireBall;
     [SerializeField]
-    GameObject _earthThorns;
-    BoxCollider2D _clawHitbox; //Check with Alex if it has changed (GameObject or BoxCollider2D)
-    PolygonCollider2D _xevyHitbox;
+    private GameObject _earthThorns;
 
+    private BossOrientation _bossOrientation;
+    private GameObject _clawHitbox;
+    private PolygonCollider2D _xevyHitbox;
 
-	private void Start()
+    public enum XevyAttackType
     {
-        _isPlayerStillOnSameLine = true;
-	}
+        NONE,
+        AIR,
+        FIRE,
+        EARTH,
+        NEUTRAL,
+    }
 
-    public void Block()
+    private void Start()
     {
-        GetComponent<SpriteRenderer>().color = Color.red;
-        //_clawHitbox.enabled = false;
-        //_xevyHitbox.enabled = false;
+        _xevyHitbox = GetComponent<PolygonCollider2D>();
+        _bossOrientation = GetComponent<BossOrientation>();
+        _clawHitbox = transform.FindChild("Claw").gameObject;
     }
 
     public void LowerGuard()
     {
-        //_xevyHitbox.enabled = true;
-        GetComponent<SpriteRenderer>().color = Color.green;
+        _xevyHitbox.enabled = true;
+    }
+
+    public void RetreatClaws()
+    {
+        _clawHitbox.SetActive(false);
     }
 
     public void Heal()
     {
-        GetComponent<Health>().Heal(0);
+        //GetComponent<Health>().Heal(0);
     }
 
-    public void RangedAttack(bool isPlayerOnSameLine)
+    public XevyAttackType Block()
     {
-        if (_isPlayerStillOnSameLine != isPlayerOnSameLine)//Double check
-        {
-            _sameAttackCount = 0;
-        }
-        if (isPlayerOnSameLine)
-        {
-            AirAttack();
-        }
-        else
-        {
-            FireAttack();
-        }
-        _sameAttackCount++;
+        _xevyHitbox.enabled = false;
+        return XevyAttackType.NONE;
     }
 
-    public void MeleeAttack()
+    public XevyAttackType FireAttack(float horizontalForce, float verticalForce)
     {
-        EarthAttack();
-        ClawAttack();
-        //_clawHitbox.enabled = true;
+        var fireBall = Instantiate(_fireBall, transform.position, transform.rotation);
+        ((GameObject)fireBall).SetActive(true);
+        ((GameObject)fireBall).GetComponent<Rigidbody2D>().velocity = new Vector2(horizontalForce * FIRE_BALL_SPEED, (verticalForce * FIRE_BALL_SPEED) + (horizontalForce / HORIZONTAL_AXIS_MODIFIER ));
+        return XevyAttackType.FIRE;
     }
 
-    private void FireAttack()
+    public XevyAttackType AirAttack()
     {
-        //(GameObject)Instantiate(_fireBall, initialPosition, transform.rotation);
+        var airSpike = Instantiate(_airSpike, transform.position, transform.rotation);
+        ((GameObject)airSpike).SetActive(true);
+        ((GameObject)airSpike).GetComponent<Rigidbody2D>().velocity = new Vector2(AIR_SPIKE_SPEED * _bossOrientation.Orientation, 0);
+        return XevyAttackType.AIR;
     }
 
-    private void AirAttack()
+    public XevyAttackType EarthAttack()
     {
-        //(GameObject)Instantiate(_airSpike, initialPosition, transform.rotation);
+        var earthThorns = Instantiate(_earthThorns, new Vector2(transform.position.x + _bossOrientation.Orientation, transform.position.y - _earthThorns.transform.localScale.y), transform.rotation);
+        ((GameObject)earthThorns).transform.localScale = new Vector2(_bossOrientation.Orientation * ((GameObject)earthThorns).transform.localScale.x, ((GameObject)earthThorns).transform.localScale.y);
+        ((GameObject)earthThorns).SetActive(true);
+        return XevyAttackType.EARTH;
     }
 
-    private void EarthAttack()
+    public XevyAttackType NeutralAttack()
     {
-        //(GameObject)Instantiate(_earthThorns, initialPosition, transform.rotation);
-    }
-
-    private void ClawAttack()
-    {
-        _clawHitbox.enabled = true;
-        //Flee
+        _clawHitbox.SetActive(true);
+        return XevyAttackType.NEUTRAL;
     }
 }

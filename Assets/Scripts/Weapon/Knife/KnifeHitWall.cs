@@ -5,13 +5,13 @@ public class KnifeHitWall : MonoBehaviour
 {
     private BoxCollider2D _hitbox;
     private Rigidbody2D _rigidbody;
-    private DestroyProjectile _destroyProjectile;
+    private DestroyPlayerProjectile _destroyProjectile;
 
     private void Start()
     {
         _hitbox = GetComponent<BoxCollider2D>();
         _rigidbody = GetComponent<Rigidbody2D>();
-        _destroyProjectile = GetComponent<DestroyProjectile>();
+        _destroyProjectile = GetComponent<DestroyPlayerProjectile>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)

@@ -12,3 +12,4 @@ faire coroutine pour DestroyProjectile
 contains(tag) pour ThrowingWeaponHitEnemy (comme pour BasicAttack)
 coroutine pour RotateAxe
 regarder les scripts de Weapon
+possibilité de skip la collision WaterHitbox en sortant de l'eau

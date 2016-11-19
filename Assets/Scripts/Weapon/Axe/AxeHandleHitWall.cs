@@ -10,7 +10,7 @@ public class AxeHandleHitWall : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private PolygonCollider2D _hitbox;
     private PolygonCollider2D _bladeHitbox;
-    private DestroyProjectile _destroyProjectile;
+    private DestroyPlayerProjectile _destroyProjectile;
 
     public bool TouchesGround { get; set; }
 
@@ -22,7 +22,7 @@ public class AxeHandleHitWall : MonoBehaviour
         _rigidbody = GetComponentInParent<Rigidbody2D>();
         _hitbox = GetComponent<PolygonCollider2D>();
         _bladeHitbox = transform.parent.GetComponentsInChildren<PolygonCollider2D>()[0];
-        _destroyProjectile = GetComponentInParent<DestroyProjectile>();
+        _destroyProjectile = GetComponentInParent<DestroyPlayerProjectile>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
