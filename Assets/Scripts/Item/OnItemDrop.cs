@@ -27,7 +27,7 @@ public class OnItemDrop : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
 
         _rigidbody.velocity = new Vector2(((_amountofItemsDropped - 1) * (-DISTANCE_BETWEEN_ITEMS / 2) + (_itemId * DISTANCE_BETWEEN_ITEMS)), 0);
-        if (!EnemyMustDropItemsStraightDown(_enemyKilled))
+        if (_enemyKilled != null && !EnemyMustDropItemsStraightDown(_enemyKilled))
         {
             _rigidbody.velocity += Vector2.up * INITIAL_SPEED;
         }
@@ -95,9 +95,9 @@ public class OnItemDrop : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
+        Debug.Log(collision.gameObject.tag == "FlyingPlatform");
         if (_target == Vector3.zero && (collision.gameObject.tag == "Wall" ||
-            (collision.gameObject.tag == "FlyingPlatform" && collision.transform.position.y + 0.25f < transform.position.y)))
+            (collision.gameObject.tag == "FlyingPlatform" && collision.transform.position.y + 0.15f < transform.position.y)))
         {
             Destroy(_rigidbody);
             _target = new Vector3(transform.position.x, transform.position.y + 0.6f, transform.position.z);
