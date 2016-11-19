@@ -11,18 +11,22 @@ public class PlayerMovement : MonoBehaviour
     protected SpriteRenderer _playerSpriteRenderer;
     protected InventoryManager _inventoryManager;
     protected PlayerTouchesGround _playerTouchesGround;
-    protected Animator _anim;
     protected ShowItems _showItems;
     protected Health _playerHealth;
-    protected ActorBasicAttack _playerBasicAttack;
+    protected PlayerBasicAttack _playerBasicAttack;
     protected PlayerTouchesFlyingPlatform _playerTouchesFlyingPlatform;
     protected FlipPlayer _flipPlayer;
     protected PlayerFloatingInteraction _playerFloating;
+    protected PlayerState _state;
+
+    protected PlayerGroundMovement _playerGroundMovement;
 
     public delegate void OnFallingHandler();
     public event OnFallingHandler OnFalling;
     public delegate void OnLandingHandler();
     public event OnLandingHandler OnLanding;
+    public delegate void OnPlayerFlippedHandler();
+    public event OnPlayerFlippedHandler OnPlayerFlipped;
 
     protected const float INITIAL_GRAVITY_SCALE = 5;
     protected const float TERMINAL_SPEED = -18;
@@ -37,15 +41,10 @@ public class PlayerMovement : MonoBehaviour
     protected bool _wasFalling = false;
     protected bool _isCrouching = false;
 
-    public float Speed { get { return _horizontalSpeed; } set { _horizontalSpeed = value; } }
-    public float JumpingSpeed { get { return _jumpingSpeed; } set { _jumpingSpeed = value; } }
     public bool IsKnockedBack { get { return _isKnockedBack; } set { _isKnockedBack = value; } }
-    public bool IsCrouching { get { return _isCrouching; } set { _isCrouching = value; } }
-    public float TerminalSpeed { get { return TERMINAL_SPEED; } }
 
     protected virtual void Start()
     {
-        _anim = StaticObjects.GetPlayer().GetComponentInChildren<Animator>();
         _playerTouchesFlyingPlatform = GetComponentInChildren<PlayerTouchesFlyingPlatform>();
         _playerSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _inventoryManager = GetComponent<InventoryManager>();
@@ -56,10 +55,13 @@ public class PlayerMovement : MonoBehaviour
         _showItems = StaticObjects.GetItemCanvas().GetComponent<ShowItems>();
         _playerHealth = GetComponent<Health>();
         _playerTouchesGround = GetComponentInChildren<PlayerTouchesGround>();
-        _playerBasicAttack = GetComponent<ActorBasicAttack>();
+        _playerBasicAttack = GetComponent<PlayerBasicAttack>();
         _flipPlayer = GetComponent<FlipPlayer>();
         _playerCroutchHitbox = GameObject.Find("CharacterCroutchedHitbox").GetComponent<BoxCollider2D>();
         _playerFloating = GameObject.Find("CharacterFloatingHitbox").GetComponent<PlayerFloatingInteraction>();
+        _state = GetComponent<PlayerState>();
+
+        _playerGroundMovement = GetComponent<PlayerGroundMovement>();
 
         _inputManager.OnMove += OnMove;
         _inputManager.OnJump += OnJump;
@@ -70,8 +72,6 @@ public class PlayerMovement : MonoBehaviour
         _inputManager.OnCrouch += OnCrouch;
         _inputManager.OnStandingUp += OnStandingUp;
 
-        _playerHealth.OnDeath += OnDeath;
-
         _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
     }
 
@@ -80,6 +80,7 @@ public class PlayerMovement : MonoBehaviour
         if (PlayerCanMove())
         {
             MovePlayer(vector, goesRight);
+            PlayerState.SetMoving(_rigidbody.velocity.x);
         }
         else
         {
@@ -100,6 +101,7 @@ public class PlayerMovement : MonoBehaviour
         if (PlayerIsMovingHorizontally() && !_isKnockedBack)
         {
             _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+            PlayerState.SetImmobile();
         }
     }
 
@@ -174,7 +176,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool PlayerCanMove()
     {
-        return !IsKnockedBack && !IsCrouching && !_playerBasicAttack.IsAttacking();
+        return !IsKnockedBack && !PlayerState.IsCroutching && !PlayerState.IsAttacking;
     }
 
     private bool PlayerIsAlmostStopped()
@@ -194,7 +196,7 @@ public class PlayerMovement : MonoBehaviour
 
     protected bool PlayerIsFalling()
     {
-        return IsJumping() && _rigidbody.velocity.y < 0;
+        return IsJumping() && _rigidbody.velocity.y <= 0;
     }
 
     protected bool PlayerIsJumping()
@@ -218,13 +220,16 @@ public class PlayerMovement : MonoBehaviour
         Flip(goesRight);
     }
 
-    // À modifier absolument
     private void Update()
     {
-        //demander à ben si cest mieux un Abs ou un if negatif -> mettre positif
-        _anim.SetFloat("Speed", Mathf.Abs(_rigidbody.velocity.x));
-        _anim.SetBool("IsJumping", PlayerIsJumping());
-        _anim.SetBool("IsFalling", PlayerIsFalling());
+        if(PlayerIsJumping() != PlayerState.IsJumping)
+        {
+            PlayerState.SetJumping(PlayerIsJumping());
+        }
+        else if(PlayerIsFalling() != PlayerState.IsFalling)
+        {
+            PlayerState.SetFalling(PlayerIsFalling());
+        }
 
         if (_isKnockedBack && _knockbackCount >= KNOCKBACK_DURATION)
         {
@@ -244,8 +249,7 @@ public class PlayerMovement : MonoBehaviour
         if (GetComponent<FlipPlayer>().Flip(goesRight))
         {
             _basicAttackBox.offset = new Vector2(_basicAttackBox.offset.x * -1, _basicAttackBox.offset.y);
-            _anim.transform.localScale = new Vector3(-1 * _anim.transform.localScale.x,
-                _anim.transform.localScale.y, _anim.transform.localScale.z);
+            OnPlayerFlipped();
         }
     }
 
@@ -253,11 +257,5 @@ public class PlayerMovement : MonoBehaviour
     {
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, verticalVelocity);
-    }
-
-    private void OnDeath()
-    {
-        _anim.SetBool("IsDamaged", true);
-        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 }

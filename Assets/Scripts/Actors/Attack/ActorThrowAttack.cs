@@ -55,7 +55,7 @@ public class ActorThrowAttack : MonoBehaviour
 
     private InputManager _inputManager;
     private InventoryManager _inventoryManager;
-    private PlayerThrowingWeaponsMunitions _munitions;
+    private PlayerWeaponAmmo _munitions;
     private ShowItems _showItems;
     private FlipPlayer _flipPlayer;
 
@@ -76,7 +76,7 @@ public class ActorThrowAttack : MonoBehaviour
 
         _inputManager.OnThrowAttack += OnThrowAttack;
 
-        _munitions = GetComponent<PlayerThrowingWeaponsMunitions>();
+        _munitions = GetComponent<PlayerWeaponAmmo>();
         _selectedWeapon = WeaponType.None;
 
         _enableAttackDelay = new WaitForSeconds(_attackCooldown);

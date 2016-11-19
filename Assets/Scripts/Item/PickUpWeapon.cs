@@ -7,18 +7,16 @@ public class PickUpWeapon : MonoBehaviour
     private int _ammoOnUnlockingWeapon = 10;
 
     private InventoryManager _inventoryManager;
-    private PlayerThrowingWeaponsMunitions _munitions;
-    private ActivateTrigger _trigger;
+    private PlayerWeaponAmmo _munitions;
 
     private void Start()
     {
         _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
-        _munitions = StaticObjects.GetPlayer().GetComponent<PlayerThrowingWeaponsMunitions>();
-        _trigger = GetComponent<ActivateTrigger>();
-        _trigger.OnTrigger += AddAmmoToInventory;
+        _munitions = StaticObjects.GetPlayer().GetComponent<PlayerWeaponAmmo>();
+        GetComponent<ActivateTrigger>().OnTrigger += EnableWeaponInInventory;
     }
 
-    private void AddAmmoToInventory()
+    private void EnableWeaponInInventory()
     {
         if (gameObject.tag == "BaseKnifeItem")
         {

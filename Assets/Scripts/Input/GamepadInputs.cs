@@ -42,8 +42,6 @@ public class GamepadInputs: MonoBehaviour
     public delegate void GamepadOnPauseHandler();
     public event GamepadOnPauseHandler OnPause;
 
-    private Health _playerHealth;
-
     private float _joysticksXAxisDeadZone = 0.7f;
     private float _joysticksYAxisDeadZone = 1f;
 
@@ -54,12 +52,6 @@ public class GamepadInputs: MonoBehaviour
     private bool _aButtonReady = true;
     private bool _upButtonReady = true;
     private bool _startButtonReady = true;
-
-    private void Start()
-    {
-        _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
-        _playerHealth.OnDeath += OnDeath;
-    }
 
     private void Update()
     {
@@ -177,10 +169,5 @@ public class GamepadInputs: MonoBehaviour
         {
             _startButtonReady = true;
         }
-    }
-
-    private void OnDeath()
-    {
-        enabled = false;
     }
 }

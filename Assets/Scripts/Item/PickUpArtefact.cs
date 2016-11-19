@@ -4,16 +4,14 @@ using System.Collections;
 public class PickUpArtefact : MonoBehaviour
 {
     private InventoryManager _inventoryManager;
-    private ActivateTrigger _trigger;
 
     private void Start()
     {
         _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
-        _trigger = GetComponent<ActivateTrigger>();
-        _trigger.OnTrigger += AddAmmoToInventory;
+        GetComponent<ActivateTrigger>().OnTrigger += EnableArtefactsInInventory;
     }
 
-    private void AddAmmoToInventory()
+    private void EnableArtefactsInInventory()
     {
         if (gameObject.tag == "EarthArtefactItem")
         {
