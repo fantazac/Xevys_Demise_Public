@@ -235,7 +235,7 @@ public class XevyMovement : MonoBehaviour
 
     private bool CheckIfMovementCompleted(bool isGoingForward)
     {
-        return ((transform.position.x > _arrivalPosition.x) ^ isGoingForward) ^ _bossOrientation.IsFacingRight;
+        return ((transform.position.x > _arrivalPosition.x) ^ _actorDirection.IsGoingForward) ^ _bossOrientation.IsFacingRight;
     }
 
     private void OnBossFlipped()
