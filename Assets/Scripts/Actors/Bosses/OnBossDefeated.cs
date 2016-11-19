@@ -13,20 +13,16 @@ public class OnBossDefeated : MonoBehaviour
 
     private void Start()
     {
-        _isDead = false;
         _health = GetComponent<Health>();
         _boxCollider = GetComponent<BoxCollider2D>();
         _polygonCollider = GetComponent<PolygonCollider2D>();
+        _health.OnDeath += OnDeath;
     }
 
-	private void Update()
+    private void OnDeath()
     {
-        if (!_isDead && _health.HealthPoint <= 0)
-        {
-            _isDead = true;
-            _boxCollider.enabled = false;
-            _polygonCollider.enabled = false;
-            OnDefeated();
-        }
+        _boxCollider.enabled = false;
+        _polygonCollider.enabled = false;
+        OnDefeated();
     }
 }

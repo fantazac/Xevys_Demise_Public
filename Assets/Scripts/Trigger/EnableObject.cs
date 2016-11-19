@@ -6,12 +6,9 @@ public class EnableObject : MonoBehaviour
     [SerializeField]
     private GameObject _objectToEnable;
 
-    private MoveObjectOnTrigger _moveObjectOnTrigger;
-
     private void Start()
     {
-        _moveObjectOnTrigger = GetComponent<MoveObjectOnTrigger>();
-        _moveObjectOnTrigger.OnFinishedMoving += Enable;
+        GetComponent<MoveObjectOnTrigger>().OnFinishedMoving += Enable;
     }
 
     public void Enable()

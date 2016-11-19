@@ -3,7 +3,7 @@ using System.Collections;
 
 public class XevyAI : MonoBehaviour
 {
-    public enum XevyStatus
+    private enum XevyStatus
     {
         IDLE,
         VULNERABLE,
@@ -12,13 +12,10 @@ public class XevyAI : MonoBehaviour
         DEAD,
     }
 
-    public enum XevyLastAttack
-    {
-
-    }
-
-    //Input more cooldowns for each attack
-    private const float VULNERABLE_STATUS_COOLDOWN = 1.0f;
+    private const int NUMBER_SAME_ATTACKS_BEFORE_MOVEMENT = 5;
+    private const float IDLE_STATUS_COOLDOWN = 0.5f;
+    private const float VULNERABLE_STATUS_COOLDOWN = 0.5f;
+    private const float CRITICAL_HEALTH_PERCENTAGE = 0.33f;
 
     private Health _health;
     private XevyAction _action;
@@ -27,12 +24,16 @@ public class XevyAI : MonoBehaviour
     private XevyProjectileInteraction _projectileInteraction;
 
     private XevyStatus _status;
-    public XevyLastAttack LastAttack { get; set; }
-    private float _vulnerableStatusTimer = VULNERABLE_STATUS_COOLDOWN;
+    private XevyAction.XevyAttackType _lastAttack;
+    private XevyAction.XevyAttackType _currentAttack;
+    private float _statusTimer;
     private float _sameAttackCount;
 
     private void Start()
     {
+        _sameAttackCount = 0;
+        _currentAttack = XevyAction.XevyAttackType.NONE;
+        _lastAttack = XevyAction.XevyAttackType.NONE;
         _status = XevyStatus.IDLE;
         _health = GetComponent<Health>();
         _action = GetComponent<XevyAction>();
@@ -44,59 +45,88 @@ public class XevyAI : MonoBehaviour
     private void FixedUpdate()
     {
         _movement.MovementUpdate();
-        _playerInteraction.IsFocusedOnPlayer = false;
-        if (_status == XevyStatus.IDLE)
+        _playerInteraction.UpdatePlayerInteraction();
+        switch (_status)
         {
-            //_playerInteraction.IsFocusedOnPlayer = true;
-            UpdateWhenIdle();
-            _status = XevyStatus.VULNERABLE;
-        }
-        
-        else if (_status == XevyStatus.BLOCKING)
-        {
-            _playerInteraction.IsFocusedOnPlayer = true;
-            UpdateWhenBlocking();
-        }
-        else if (_status == XevyStatus.HEALING)
-        {
-            _playerInteraction.IsFocusedOnPlayer = false;
-            UpdateWhenHealing();
-        }
-        
-        else if (_status == XevyStatus.VULNERABLE)
-        {
-            _playerInteraction.IsFocusedOnPlayer = false;
-            UpdateWhenVulnerable();
+            case XevyStatus.IDLE:
+                UpdateWhenIdle();
+                break;
+            case XevyStatus.VULNERABLE:
+                UpdateWhenVulnerable();
+                break;
+            case XevyStatus.BLOCKING:
+                UpdateWhenBlocking();
+                break;
+            case XevyStatus.HEALING:
+                UpdateWhenHealing();
+                break;
         }
     }
 
     private void UpdateWhenIdle()
     {
-        if (_projectileInteraction.CheckKnivesDistance() || _projectileInteraction.CheckAxesDistance())
+        if (_statusTimer > 0)
         {
-            _action.Block();
-            _status = XevyStatus.BLOCKING;
-        }
-        else
-        {
-            bool playerProximity = _playerInteraction.CheckPlayerProximity();
-            bool healthStatus = (_health.HealthPoint > _health.MaxHealth / 3);
-            _status = XevyStatus.VULNERABLE;
-            if (playerProximity && healthStatus)
+            if (_projectileInteraction.CheckKnivesDistance() || _projectileInteraction.CheckAxesDistance())
             {
-                _movement.Bounce();//_action.MeleeAttack();
-            }
-            else if (!playerProximity && healthStatus)
-            {
-                _action.RangedAttack(_playerInteraction.CheckAlignmentWithPlayer());
-            }
-            else if (playerProximity && !healthStatus)
-            {
-                _movement.Flee();
+                SetBlockingStatus();
             }
             else
             {
+                _statusTimer -= Time.fixedDeltaTime;
+            }
+        }
+        else
+        {
+            _action.RetreatClaws();
+            bool playerProximity = _playerInteraction.CheckPlayerDistance();
+            bool healthStatus = (_health.HealthPoint > _health.MaxHealth * CRITICAL_HEALTH_PERCENTAGE);
+            SetVulnerableStatus();
+            if (playerProximity && !healthStatus)
+            {
+                _movement.FleeTowardsRandomPoint();
+            }
+            else if (!playerProximity && !healthStatus)
+            {
                 _status = XevyStatus.HEALING;
+            }
+            else if (playerProximity && healthStatus && _playerInteraction.CheckAlignmentWithPlayer())
+            {
+                switch (_lastAttack)
+                {
+                    case XevyAction.XevyAttackType.EARTH:
+                        _currentAttack = _action.NeutralAttack();
+                        _movement.ChargeForward();
+                        break;
+                    case XevyAction.XevyAttackType.NEUTRAL:
+                        _playerInteraction.IsFocusedOnPlayer = true;
+                        _currentAttack = _action.Block();
+                        _movement.StepBack();
+                        break;
+                    default:
+                        _currentAttack = _action.EarthAttack();
+                        break;
+                }
+                _lastAttack = _currentAttack;
+            }
+            else
+            {             
+                if (_playerInteraction.CheckAlignmentWithPlayer())
+                {
+                    _currentAttack = _action.AirAttack();
+                }
+                else
+                {
+                    _currentAttack = _action.FireAttack(_playerInteraction.GetPlayerHorizontalDistance(), _playerInteraction.GetPlayerVerticalDistance());
+                }
+                _sameAttackCount = (_currentAttack == _lastAttack ? _sameAttackCount++ : 0);
+                _lastAttack = _currentAttack;
+
+                if (_sameAttackCount == NUMBER_SAME_ATTACKS_BEFORE_MOVEMENT)
+                {
+                    _movement.BounceTowardsRandomPoint();
+                    _sameAttackCount = 0;
+                }
             }
         }
     }
@@ -105,20 +135,16 @@ public class XevyAI : MonoBehaviour
     {
         if (!_projectileInteraction.CheckKnivesDistance() && !_projectileInteraction.CheckAxesDistance())
         {
-            _action.LowerGuard();
-            _status = XevyStatus.IDLE;
+            SetIdleStatus();
         }
     }
 
     private void UpdateWhenHealing()
     {
         _action.Heal();
-        if (!_projectileInteraction.CheckKnivesDistance() || !_projectileInteraction.CheckAxesDistance())
+        if ((!_projectileInteraction.CheckKnivesDistance() && !_projectileInteraction.CheckAxesDistance()) || _playerInteraction.CheckPlayerDistance())
         {
-            if (_playerInteraction.CheckPlayerProximity())
-            {
-                _status = XevyStatus.VULNERABLE;
-            }
+            SetVulnerableStatus();
         }
     }
 
@@ -126,15 +152,36 @@ public class XevyAI : MonoBehaviour
     {
         if (_movement.MovementStatus == XevyMovement.XevyMovementStatus.NONE)
         {
-            if (_vulnerableStatusTimer <= 0)
+            if (_statusTimer <= 0)
             {
-                _vulnerableStatusTimer = VULNERABLE_STATUS_COOLDOWN;
-                _status = XevyStatus.IDLE;
+                SetIdleStatus();
             }
             else
             {
-                _vulnerableStatusTimer -= Time.fixedDeltaTime;
+                _statusTimer -= Time.fixedDeltaTime;
             }
         }
+    }
+
+    private void SetIdleStatus()
+    {
+        _statusTimer = IDLE_STATUS_COOLDOWN;
+        _action.LowerGuard();
+        _playerInteraction.IsFocusedOnPlayer = true;
+        _status = XevyStatus.IDLE;
+    }
+
+    private void SetVulnerableStatus()
+    {
+        _statusTimer = VULNERABLE_STATUS_COOLDOWN;
+        _playerInteraction.IsFocusedOnPlayer = false;
+        _status = XevyStatus.VULNERABLE;
+    }
+
+    private void SetBlockingStatus()
+    {
+        _action.Block();
+        _playerInteraction.IsFocusedOnPlayer = true;
+        _status = XevyStatus.BLOCKING;
     }
 }

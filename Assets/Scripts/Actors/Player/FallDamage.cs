@@ -8,6 +8,8 @@ public class FallDamage: MonoBehaviour
 
     private float _fallingCount = 0;
 
+    private const float DAMAGE_MULTIPLIER = 50f;
+
     private void Start()
     {
         _playerHealth = GetComponent<Health>();
@@ -26,8 +28,8 @@ public class FallDamage: MonoBehaviour
     {
         if (_fallingCount > 1 && !PlayerState.IsInvincible && _playerHealth.HealthPoint > 0)
         {
-            //qu'est-ce qui se passe ici? alex
-            _playerHealth.Hit((int)Mathf.Clamp(_fallingCount * 50, _fallingCount * 50, _playerHealth.HealthPoint), 
+            _playerHealth.Hit((int)Mathf.Clamp(_fallingCount * DAMAGE_MULTIPLIER, 
+                _fallingCount * DAMAGE_MULTIPLIER, _playerHealth.HealthPoint), 
                 new Vector2(transform.position.x, transform.position.y - 1));
         }
 

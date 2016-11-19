@@ -2,12 +2,10 @@
 using System.Collections;
 using System.Linq;
 
-public class PlayerBasicAttackManager : MonoBehaviour
+public class OnBasicAttackHit : MonoBehaviour
 {
     [SerializeField]
     private int _baseDamage = 100;
-
-    private Health _playerHealth;
 
     private string[] _enemiesTags;
     private string[] _bossesTags;
@@ -15,9 +13,7 @@ public class PlayerBasicAttackManager : MonoBehaviour
     private void Start()
     {
         _enemiesTags = new string[] { "Scarab", "Bat", "Skeltal" };
-        _bossesTags = new string[] { "Behemoth", "Phoenix", "Neptune" };
-        _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
-        _playerHealth.OnDeath += OnDeath;
+        _bossesTags = new string[] { "Behemoth", "Phoenix", "Neptune", "Vulcan", "Xevy" };
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -31,9 +27,5 @@ public class PlayerBasicAttackManager : MonoBehaviour
             collider.GetComponent<Health>().Hit(_baseDamage, Vector2.zero);
         }
     }
-
-    private void OnDeath()
-    {
-        enabled = false;
-    }
+    
 }

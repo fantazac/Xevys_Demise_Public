@@ -11,6 +11,7 @@ public class OnItemDrop : MonoBehaviour
     private const float INITIAL_SPEED = 5.5f;
     private const float ROTATE_SPEED = 420;
     private const float DISTANCE_BETWEEN_ITEMS = 0.6f;
+    private const float FLYING_PLATFORM_MARGIN = 0.15f;
 
     private Quaternion _currentAngles;
 
@@ -26,7 +27,8 @@ public class OnItemDrop : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
 
-        _rigidbody.velocity = new Vector2(((_amountofItemsDropped - 1) * (-DISTANCE_BETWEEN_ITEMS / 2) + (_itemId * DISTANCE_BETWEEN_ITEMS)), 0);
+        _rigidbody.velocity = new Vector2(((_amountofItemsDropped - 1) * (-DISTANCE_BETWEEN_ITEMS / 2) +
+            (_itemId * DISTANCE_BETWEEN_ITEMS)), 0);
         if (!EnemyMustDropItemsStraightDown(_enemyKilled))
         {
             _rigidbody.velocity += Vector2.up * INITIAL_SPEED;
@@ -95,12 +97,11 @@ public class OnItemDrop : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
         if (_target == Vector3.zero && (collision.gameObject.tag == "Wall" ||
-            (collision.gameObject.tag == "FlyingPlatform" && collision.transform.position.y + 0.25f < transform.position.y)))
+            (collision.gameObject.tag == "FlyingPlatform" && collision.transform.position.y + FLYING_PLATFORM_MARGIN < transform.position.y)))
         {
             Destroy(_rigidbody);
-            _target = new Vector3(transform.position.x, transform.position.y + 0.6f, transform.position.z);
+            _target = new Vector3(transform.position.x, transform.position.y + DISTANCE_BETWEEN_ITEMS, transform.position.z);
             transform.rotation = _currentAngles;
         }
     }

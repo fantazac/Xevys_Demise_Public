@@ -8,17 +8,19 @@ public class PlayerTouchesGround : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (ColliderIsGround(collider))
-        {
-            OnGround = true;
-        }
+        SetOnGround(collider, true);
     }
 
     private void OnTriggerExit2D(Collider2D collider)
     {
+        SetOnGround(collider, false);
+    }
+
+    private void SetOnGround(Collider2D collider, bool isOnGround)
+    {
         if (ColliderIsGround(collider))
         {
-            OnGround = false;
+            OnGround = isOnGround;
         }
     }
 

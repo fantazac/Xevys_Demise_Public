@@ -16,26 +16,22 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
     public delegate void OnAudioInterfaceFadeHandler();
     public event OnAudioInterfaceFadeHandler OnAudioInterfaceFade;
 
-    private PauseMenuAnimationManager _pauseMenuAnimationManager;
+    private PauseMenuInputs _pauseMenuInputs;
     private Animator _animator;
 
     private string _currentInterface;
 
-    private WaitForSeconds _waitForZeroPointOneSeconds;
-
     private void Start()
     {
-        _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
-        _pauseMenuAnimationManager.OnOptionsInterfaceIsCurrent += OptionsInterfaceIsCurrent;
-        _pauseMenuAnimationManager.OnMainInterfaceIsCurrent += MainInterfaceIsCurrent;
-        _pauseMenuAnimationManager.OnControlsInterfaceIsCurrent += ControlsInterfaceIsCurrent;
-        _pauseMenuAnimationManager.OnAudioInterfaceIsCurrent += AudioInterfaceIsCurrent;
+        _pauseMenuInputs = StaticObjects.GetPauseMenuPanel().GetComponentInChildren<PauseMenuInputs>();
+        _pauseMenuInputs.OnOptionsInterfaceIsCurrent += OptionsInterfaceIsCurrent;
+        _pauseMenuInputs.OnMainInterfaceIsCurrent += MainInterfaceIsCurrent;
+        _pauseMenuInputs.OnControlsInterfaceIsCurrent += ControlsInterfaceIsCurrent;
+        _pauseMenuInputs.OnAudioInterfaceIsCurrent += AudioInterfaceIsCurrent;
 
         _animator = GetComponent<Animator>();
 
         _currentInterface = "Main";
-
-        _waitForZeroPointOneSeconds = new WaitForSeconds(0.01f);
     }
 
     private void OptionsInterfaceIsCurrent(string current)
@@ -57,7 +53,6 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
             _animator.SetTrigger("OptionsSlideIn");
             _currentInterface = "Options";
             OnAudioInterfaceFade();
-            StartCoroutine("FadeControlsButtonsWithDelay");
         }
     }
 
@@ -88,14 +83,6 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
             _animator.SetTrigger("AudioSlideIn");
             _currentInterface = "Audio";
             OnOptionsInterfaceFade();
-            StartCoroutine("FadeControlsButtonsWithDelay");
         }
-    }
-
-    private IEnumerator FadeControlsButtonsWithDelay()
-    {
-        yield return _waitForZeroPointOneSeconds;
-
-        OnControlsInterfaceFade();
     }
 }

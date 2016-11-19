@@ -18,8 +18,8 @@ public class Database : MonoBehaviour
 
     private IDbConnection _dbconn;
     private IDbCommand _dbcmd;
-    InventoryManager _inventoryManager;
-    PlayerThrowingWeaponsMunitions _munitions;
+    private InventoryManager _inventoryManager;
+    private PlayerWeaponAmmo _munitions;
 
     //TEMP
     private int _accountID = 0;
@@ -58,7 +58,7 @@ public class Database : MonoBehaviour
         _dbcmd = _dbconn.CreateCommand();
 
         _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
-        _munitions = StaticObjects.GetPlayer().GetComponent<PlayerThrowingWeaponsMunitions>();
+        _munitions = StaticObjects.GetPlayer().GetComponent<PlayerWeaponAmmo>();
         DestroyEnemyOnDeath.OnEnemyDeath += EnemyKilled;
 
         if (_loadStats)
@@ -200,9 +200,14 @@ public class Database : MonoBehaviour
         reader = null;
         _dbconn.Close();
 
-        OnInventoryReloaded(Convert.ToBoolean(_knifeEnabled), Convert.ToBoolean(_axeEnabled), Convert.ToBoolean(_featherEnabled), Convert.ToBoolean(_bootsEnabled), Convert.ToBoolean(_bubbleEnabled), Convert.ToBoolean(_armorEnabled), Convert.ToBoolean(_earthArtefactEnabled), Convert.ToBoolean(_airArtefactEnabled), Convert.ToBoolean(_waterArtefactEnabled), Convert.ToBoolean(_fireArtefactEnabled));
+        ReloadInventory();
         OnAmmoReloaded(_knifeAmmo, _axeAmmo);
         OnHealthReloaded(_lifeRemaining);
+    }
+
+    public void ReloadInventory()
+    {
+        OnInventoryReloaded(Convert.ToBoolean(_knifeEnabled), Convert.ToBoolean(_axeEnabled), Convert.ToBoolean(_featherEnabled), Convert.ToBoolean(_bootsEnabled), Convert.ToBoolean(_bubbleEnabled), Convert.ToBoolean(_armorEnabled), Convert.ToBoolean(_earthArtefactEnabled), Convert.ToBoolean(_airArtefactEnabled), Convert.ToBoolean(_waterArtefactEnabled), Convert.ToBoolean(_fireArtefactEnabled));
     }
 
     private void EnemyKilled(string tag)

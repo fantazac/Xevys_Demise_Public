@@ -36,12 +36,12 @@ public class WaterDetector : MonoBehaviour
         {
             //Creating the swimming wave ahead and behind the player
             transform.parent.GetComponent<Water>().Splash(transform.position.x + WAVE_OFFSET,
-                                                         (collider.GetComponent<FlipPlayer>().IsFacingRight ?
+                                                         (collider.GetComponent<PlayerOrientation>().IsFacingRight ?
                                                          Mathf.Abs(collider.GetComponent<Rigidbody2D>().velocity.x) :
                                                          -Mathf.Abs(collider.GetComponent<Rigidbody2D>().velocity.x))
                                                          / SWIMMING_DAMPING_REDUCTION);
             transform.parent.GetComponent<Water>().Splash(transform.position.x - WAVE_OFFSET,
-                                                         (collider.GetComponent<FlipPlayer>().IsFacingRight ?
+                                                         (collider.GetComponent<PlayerOrientation>().IsFacingRight ?
                                                          -Mathf.Abs(collider.GetComponent<Rigidbody2D>().velocity.x) :
                                                          Mathf.Abs(collider.GetComponent<Rigidbody2D>().velocity.x))
                                                          / SWIMMING_DAMPING_REDUCTION);

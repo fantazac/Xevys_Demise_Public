@@ -45,8 +45,6 @@ public class MoveObjectOnTrigger : MonoBehaviour
 
         _directionalVectors = new Vector3[] { Vector3.up, Vector3.down, Vector3.left, Vector3.right };
         _directionalVector = _directionalVectors[(int)_moveDirection];
-
-        OnFinishedMoving += LastAction;
     }
 
     public void StartObjectMovement()
@@ -54,9 +52,6 @@ public class MoveObjectOnTrigger : MonoBehaviour
         _finalPosition = transform.position + (_directionalVector * _distanceToMoveObject);
         StartCoroutine("MoveObject");
     }
-
-    //méthode utilisée pour s'assurer qu'il y a un event dans le delegate
-    private void LastAction() { }
 
     private IEnumerator MoveObject()
     {
@@ -73,6 +68,10 @@ public class MoveObjectOnTrigger : MonoBehaviour
 
             yield return null;
         }
-        OnFinishedMoving();
+
+        if (OnFinishedMoving != null)
+        {
+            OnFinishedMoving();
+        }
     }
 }

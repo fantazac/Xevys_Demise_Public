@@ -6,10 +6,14 @@ public class ActivateMultipleTriggers : MonoBehaviour
     [SerializeField]
     private GameObject[] _triggersToActivate;
 
+    private ActivateTrigger _trigger;
+
     private int _amountOfTriggersToActivate;
 
     private void Start()
     {
+        _trigger = GetComponent<ActivateTrigger>();
+
         _amountOfTriggersToActivate = _triggersToActivate.Length;
 
         foreach (GameObject triggerToActivate in _triggersToActivate)
@@ -23,7 +27,7 @@ public class ActivateMultipleTriggers : MonoBehaviour
         _amountOfTriggersToActivate--;
         if (_amountOfTriggersToActivate == 0)
         {
-            GetComponent<ActivateTrigger>().MultipleTriggersActivated();
+            _trigger.MultipleTriggersActivated();
         }
     }
 }

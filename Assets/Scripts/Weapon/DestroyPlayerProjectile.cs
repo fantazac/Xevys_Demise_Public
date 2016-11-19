@@ -1,48 +1,44 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DestroyProjectile : MonoBehaviour
+public class DestroyPlayerProjectile : MonoBehaviour
 {
     [SerializeField]
     private  float _delayAfterWallCollision = 0.833f;
 
-    private bool _touchesGround;
-    private bool _destroyNow;
-
-    public bool TouchesGround { get { return _touchesGround; } set { _touchesGround = value; } }
-    public bool DestroyNow { set { _destroyNow = value; } }
+    public bool TouchesGround { get; set; }
+    public bool DestroyNow { get; set; }
 
     public delegate void OnProjectileDestroyedHandler(GameObject projectile);
     public event OnProjectileDestroyedHandler OnProjectileDestroyed;
 
     void Start()
     {
-        if (gameObject.tag != "Knife")
+        if (gameObject.tag == "Axe")
         {
-            _touchesGround = GetComponentInChildren<AxeHandleHitWall>().TouchesGround;
+            TouchesGround = GetComponentInChildren<AxeHandleHitWall>().TouchesGround;
         }
 
-        _destroyNow = false;
+        DestroyNow = false;
     }
 
     void Update()
     {
-        if (_touchesGround)
+        if (TouchesGround)
         {
             Destroy(gameObject, _delayAfterWallCollision);
             if (OnProjectileDestroyed != null)
             {
                 OnProjectileDestroyed(gameObject);
-            }           
-            _touchesGround = false;
+            }
+            TouchesGround = false;
         }
-        else if (_destroyNow)
+        else if (DestroyNow)
         {
             if (OnProjectileDestroyed != null)
             {
                 OnProjectileDestroyed(gameObject);
             }
-            
             Destroy(gameObject);
         }
     }

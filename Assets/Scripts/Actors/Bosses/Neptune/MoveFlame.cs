@@ -1,58 +1,38 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class MoveFlame : MonoBehaviour
 {
     private const float SPEED = 0.15f;
 
+    private const int FIRST_ANGLE = 45;
+    private const int SECOND_ANGLE = 135;
+    private const int THIRD_ANGLE = 225;
+    private const int FOURTH_ANGLE = 315;
+
     private Vector3 _direction;
 
     private void Start()
     {
-        if (transform.eulerAngles.z == 0)
+        if (transform.eulerAngles.z <= FIRST_ANGLE + 1 || transform.eulerAngles.z >= FOURTH_ANGLE)
         {
-            _direction = new Vector3(0, SPEED, transform.position.z);
+            _direction = new Vector3(_direction.x, SPEED);
         }
-        else if (transform.eulerAngles.z <= 89)
+        else if (transform.eulerAngles.z >= SECOND_ANGLE && transform.eulerAngles.z <= THIRD_ANGLE)
         {
-            _direction = new Vector3(SPEED, SPEED, transform.position.z);
+            _direction = new Vector3(_direction.x, -SPEED);
         }
-        else if (transform.eulerAngles.z <= 90)
+        if (transform.eulerAngles.z >= FIRST_ANGLE && transform.eulerAngles.z <= SECOND_ANGLE)
         {
-            _direction = new Vector3(SPEED, 0, transform.position.z);
+            _direction = new Vector3(SPEED, _direction.y);
         }
-        else if (transform.eulerAngles.z <= 135)
+        else if (transform.eulerAngles.z >= THIRD_ANGLE - 1 && transform.eulerAngles.z <= FOURTH_ANGLE)
         {
-            _direction = new Vector3(SPEED, -SPEED, transform.position.z);
-        }
-        else if (transform.eulerAngles.z <= 180)
-        {
-            _direction = new Vector3(0, -SPEED, transform.position.z);
-        }
-        else if (transform.eulerAngles.z <= 225)
-        {
-            _direction = new Vector3(-SPEED, -SPEED, transform.position.z);
-        }
-        else if (transform.eulerAngles.z <= 270)
-        {
-            _direction = new Vector3(-SPEED, 0, transform.position.z);
-        }
-        else
-        {
-            _direction = new Vector3(-SPEED, SPEED, transform.position.z);
+            _direction = new Vector3(-SPEED, _direction.y);
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         transform.position += _direction;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (collider.gameObject.tag == "Wall")
-        {
-            Destroy(gameObject);
-        }
     }
 }

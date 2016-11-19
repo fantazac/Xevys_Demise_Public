@@ -32,7 +32,7 @@ public class PhoenixAI : MonoBehaviour
     private Vector2 _playerPosition;
     private Rigidbody2D _rigidbody;
     private Animator _animator;
-    private FlipBoss _flipBoss;
+    private BossOrientation _bossOrientation;
     private OnBossDefeated _onBossDefeated;
 
     private System.Random _rng = new System.Random();
@@ -50,7 +50,7 @@ public class PhoenixAI : MonoBehaviour
         _attackCooldownTimeLeft = 0;
         _currentPoint = _southWestLimit;
         _rigidbody = GetComponent<Rigidbody2D>();
-        _flipBoss = GetComponent<FlipBoss>();
+        _bossOrientation = GetComponent<BossOrientation>();
         _animator = GetComponent<Animator>();
         _onBossDefeated = GetComponent<OnBossDefeated>();
         _onBossDefeated.OnDefeated += OnPhoenixDefeated;
@@ -82,7 +82,7 @@ public class PhoenixAI : MonoBehaviour
 
     private void UpdateWhenFlying()
     {
-        _flipBoss.FlipTowardsPlayer();
+        _bossOrientation.FlipTowardsPlayer();
         _attackCooldownTimeLeft += Time.fixedDeltaTime;
         if (_attackCooldownTimeLeft > ATTACK_DELAY)
         {
@@ -178,7 +178,7 @@ public class PhoenixAI : MonoBehaviour
         transform.rotation = Quaternion.identity;
         _rigidbody.isKinematic = true;
         _attackCooldownTimeLeft = 0;
-        _flipBoss.FlipTowardsSpecificPoint(_closestPoint);
+        _bossOrientation.FlipTowardsSpecificPoint(_closestPoint);
         transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_closestPoint.y - transform.position.y) / (_closestPoint.x - transform.position.x)));
         _status = PhoenixStatus.FLEE;
     }
