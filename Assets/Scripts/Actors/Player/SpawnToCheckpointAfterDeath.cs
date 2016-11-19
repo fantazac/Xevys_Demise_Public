@@ -7,7 +7,7 @@ public class SpawnToCheckpointAfterDeath : MonoBehaviour
 
     private void Start()
     {
-        GetComponent<Health>().OnDeath += SpawnToCheckpoint;
+        GetComponent<PlayDeathAnimation>().OnDyingAnimationFinished += SpawnToCheckpoint;
     }
 
     public void SaveCheckpoint(Checkpoints _checkpointIdentifier)
@@ -19,6 +19,7 @@ public class SpawnToCheckpointAfterDeath : MonoBehaviour
     {
         transform.position = GetCheckpointSpawnPoint(_lastCheckpoint);
         GetComponent<Health>().FullHeal();
+        GetComponentInChildren<Animator>().SetBool("IsDying", false);
     }
 
     private Vector3 GetCheckpointSpawnPoint(Checkpoints lastCheckpoint)
