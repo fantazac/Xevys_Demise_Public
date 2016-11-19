@@ -178,4 +178,19 @@ public class CameraManager : MonoBehaviour
             Gizmos.DrawLine(new Vector2(cameraDimensionEnd.position.x, cameraDimensionStart.position.y), new Vector2(cameraDimensionEnd.position.x, cameraDimensionEnd.position.y));
         }
     }
+
+    public void setCurrentArea(int currentArea)
+    {
+        _currentArea = currentArea;
+    }
+
+    public void setListNodes(List<GameObject> nodes)
+    {
+        listAreaNodes = nodes;
+    }
+
+    public List<GameObject> getListNodes()
+    {
+        return listAreaNodes;
+    }       
 }
