@@ -95,7 +95,6 @@ public class OnItemDrop : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.gameObject.tag == "FlyingPlatform");
         if (_target == Vector3.zero && (collision.gameObject.tag == "Wall" ||
             (collision.gameObject.tag == "FlyingPlatform" && collision.transform.position.y + 0.15f < transform.position.y)))
         {
