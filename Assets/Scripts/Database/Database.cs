@@ -18,8 +18,8 @@ public class Database : MonoBehaviour
 
     private IDbConnection _dbconn;
     private IDbCommand _dbcmd;
-    InventoryManager _inventoryManager;
-    PlayerThrowingWeaponsMunitions _munitions;
+    private InventoryManager _inventoryManager;
+    private PlayerWeaponAmmo _munitions;
 
     //TEMP
     private int _accountID = 0;
@@ -58,7 +58,7 @@ public class Database : MonoBehaviour
         _dbcmd = _dbconn.CreateCommand();
 
         _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
-        _munitions = StaticObjects.GetPlayer().GetComponent<PlayerThrowingWeaponsMunitions>();
+        _munitions = StaticObjects.GetPlayer().GetComponent<PlayerWeaponAmmo>();
         DestroyEnemyOnDeath.OnEnemyDeath += EnemyKilled;
 
         if (_loadStats)

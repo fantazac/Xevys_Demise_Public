@@ -4,12 +4,9 @@ using System.Collections;
 public class RemoveObjectAfterCompletingMovement : MonoBehaviour
 {
 
-    private MoveObjectOnTrigger _moveObjectOnTrigger;
-
     private void Start()
     {
-        _moveObjectOnTrigger = GetComponent<MoveObjectOnTrigger>();
-        _moveObjectOnTrigger.OnFinishedMoving += RemoveObject;
+        GetComponent<MoveObjectOnTrigger>().OnFinishedMoving += RemoveObject;
     }
 
     private void RemoveObject()

@@ -16,7 +16,6 @@ public class KnockbackOnDamageTaken : MonoBehaviour
     public delegate void OnKnockbackFinishedHandler();
     public event OnKnockbackFinishedHandler OnKnockbackFinished;
 
-    //Sortir l'anim de ce component
     private void Start()
     {
         _playerGroundMovement = GetComponent<PlayerGroundMovement>();
@@ -29,7 +28,6 @@ public class KnockbackOnDamageTaken : MonoBehaviour
     public void KnockbackPlayer(Vector2 positionEnemy)
     {
         OnKnockbackStarted();
-        StartCoroutine("StopDamageAnimation");
         _playerGroundMovement.IsKnockedBack = true;
 
         if (transform.position.x < positionEnemy.x)
@@ -40,8 +38,9 @@ public class KnockbackOnDamageTaken : MonoBehaviour
         {
             GetComponent<Rigidbody2D>().velocity = new Vector2(KNOCKBACK_SPEED, GetComponent<Rigidbody2D>().velocity.y);
         }
-
         GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, KNOCKBACK_SPEED);
+
+        StartCoroutine("StopDamageAnimation");
     }
 
     private IEnumerator StopDamageAnimation()

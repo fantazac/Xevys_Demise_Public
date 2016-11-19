@@ -6,17 +6,15 @@ public class PickUpWeaponAmmo : MonoBehaviour
     [SerializeField]
     private int _ammoOnDrop = 2;
 
-    private PlayerThrowingWeaponsMunitions _munitions;
-    private ActivateTrigger _trigger;
+    private PlayerWeaponAmmo _munitions;
 
     private void Start()
     {
-        _munitions = StaticObjects.GetPlayer().GetComponent<PlayerThrowingWeaponsMunitions>();
-        _trigger = GetComponent<ActivateTrigger>();
-        _trigger.OnTrigger += AddAmmoToInventory;
+        _munitions = StaticObjects.GetPlayer().GetComponent<PlayerWeaponAmmo>();
+        GetComponent<ActivateTrigger>().OnTrigger += AddAmmoToMunitionsInventory;
     }
 
-    private void AddAmmoToInventory()
+    private void AddAmmoToMunitionsInventory()
     {
         if (gameObject.tag == "KnifePickableItem")
         {

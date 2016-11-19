@@ -56,43 +56,43 @@ public class InventoryManager : MonoBehaviour
 
     public void ReloadInventory(bool knifeEnabled, bool axeEnabled, bool featherEnabled, bool bootsEnabled, bool bubbleEnabled, bool armorEnabled, bool earthArtefactEnabled, bool airArtefactEnabled, bool waterArtefactEnabled, bool fireArtefactEnabled)
     {
-        if(knifeEnabled)
+        if (knifeEnabled)
         {
             EnableKnife();
         }
-        if(axeEnabled)
+        if (axeEnabled)
         {
             EnableAxe();
         }
-        if(featherEnabled)
+        if (featherEnabled)
         {
             EnableFeather();
         }
-        if(bootsEnabled)
+        if (bootsEnabled)
         {
             EnableIronBoots();
         }
-        if(bubbleEnabled)
+        if (bubbleEnabled)
         {
             EnableBubble();
         }
-        if(armorEnabled)
+        if (armorEnabled)
         {
             EnableFireProofArmor();
         }
-        if(earthArtefactEnabled)
+        if (earthArtefactEnabled)
         {
             EnableEarthArtefact();
         }
-        if(airArtefactEnabled)
+        if (airArtefactEnabled)
         {
             EnableAirArtefact();
         }
-        if(waterArtefactEnabled)
+        if (waterArtefactEnabled)
         {
             EnableWaterArtefact();
         }
-        if(fireArtefactEnabled)
+        if (fireArtefactEnabled)
         {
             EnableFireArtefact();
         }
@@ -105,7 +105,7 @@ public class InventoryManager : MonoBehaviour
 
     private void SetInfiniteAmmo(GameObject item, bool enable)
     {
-        if(item.tag == "Knife")
+        if (item.tag == "Knife")
         {
             HasInfiniteKnives = enable;
         }
@@ -116,92 +116,62 @@ public class InventoryManager : MonoBehaviour
     }
 
     public void EnableKnife()
-    {        
-        if (OnEnableKnife != null)
-        {
-            KnifeEnabled = true;
-            OnEnableKnife();
-        }      
+    {
+        KnifeEnabled = true;
+        OnEnableKnife();
     }
 
     public void EnableAxe()
     {
-        if (OnEnableAxe != null)
-        {
-            AxeEnabled = true;
-            OnEnableAxe();
-        }       
+        AxeEnabled = true;
+        OnEnableAxe();
     }
 
     public void EnableIronBoots()
     {
-        if (OnEnableIronBoots != null)
-        {
-            IronBootsEnabled = true;
-            OnEnableIronBoots();
-        }
+        IronBootsEnabled = true;
+        OnEnableIronBoots();
     }
 
     public void EnableFeather()
     {
-        if (OnEnableFeather != null)
-        {
-            FeatherEnabled = true;
-            OnEnableFeather();
-        }
+        FeatherEnabled = true;
+        OnEnableFeather();
     }
 
     public void EnableBubble()
     {
-        if (OnEnableBubble != null)
-        {
-            BubbleEnabled = true;
-            OnEnableBubble();
-        }
+        BubbleEnabled = true;
+        OnEnableBubble();
     }
 
     public void EnableFireProofArmor()
     {
-        if (OnEnableFireProofArmor != null)
-        {
-            FireProofArmorEnabled = true;
-            OnEnableFireProofArmor();
-        }
+        FireProofArmorEnabled = true;
+        OnEnableFireProofArmor();
     }
 
     public void EnableEarthArtefact()
     {
-        if (OnEnableEarthArtefact != null)
-        {
-            EarthArtefactEnabled = true;
-            OnEnableEarthArtefact();
-        }
+        EarthArtefactEnabled = true;
+        OnEnableEarthArtefact();
     }
 
     public void EnableAirArtefact()
     {
-        if (OnEnableAirArtefact != null)
-        {
-            AirArtefactEnabled = true;
-            OnEnableAirArtefact();
-        }
+        AirArtefactEnabled = true;
+        OnEnableAirArtefact();
     }
 
     public void EnableWaterArtefact()
     {
-        if (OnEnableWaterArtefact != null)
-        {
-            WaterArtefactEnabled = true;
-            OnEnableWaterArtefact();
-        }
+        WaterArtefactEnabled = true;
+        OnEnableWaterArtefact();
     }
 
     public void EnableFireArtefact()
     {
-        if (OnEnableFireArtefact != null)
-        {
-            FireArtefactEnabled = true;
-            OnEnableFireArtefact();
-        }
+        FireArtefactEnabled = true;
+        OnEnableFireArtefact();
     }
 }

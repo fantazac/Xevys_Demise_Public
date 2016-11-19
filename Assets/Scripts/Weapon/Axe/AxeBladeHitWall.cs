@@ -3,16 +3,29 @@ using System.Collections;
 
 public class AxeBladeHitWall : MonoBehaviour
 {
+    private RotateAxe _rotateAxe;
+    private Rigidbody2D _rigidbody;
+    private PolygonCollider2D _hitbox;
+    private DestroyProjectile _destroyProjectile;
+
+    private void Start()
+    {
+        _rotateAxe = GetComponentInParent<RotateAxe>();
+        _rigidbody = GetComponentInParent<Rigidbody2D>();
+        _hitbox = GetComponent<PolygonCollider2D>();
+        _destroyProjectile = GetComponentInParent<DestroyProjectile>();
+    }
+
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "LevelWall" || collider.gameObject.tag == "Spike"
-           || (collider.gameObject.tag == "FlyingPlatform" && transform.parent.GetComponent<Rigidbody2D>().velocity.y < 0))
+           || (collider.gameObject.tag == "FlyingPlatform" && _rigidbody.velocity.y < 0))
         {
-            GetComponentInParent<RotateAxe>().Rotate = false;
-            GetComponentInParent<Rigidbody2D>().velocity = Vector2.zero;
-            GetComponentInParent<Rigidbody2D>().gravityScale = 0;
-            GetComponent<PolygonCollider2D>().isTrigger = false;
-            GetComponentInParent<DestroyProjectile>().TouchesGround = true;
+            _rotateAxe.Rotate = false;
+            _rigidbody.velocity = Vector2.zero;
+            _rigidbody.gravityScale = 0;
+            _hitbox.isTrigger = false;
+            _destroyProjectile.TouchesGround = true;
         }
     }
 }

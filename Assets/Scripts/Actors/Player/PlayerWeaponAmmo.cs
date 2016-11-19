@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerThrowingWeaponsMunitions : MonoBehaviour
+public class PlayerWeaponAmmo : MonoBehaviour
 {
 
     public int AxeAmmo { get; private set; }

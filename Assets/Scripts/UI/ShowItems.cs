@@ -23,7 +23,7 @@ public class ShowItems : MonoBehaviour
     private Image _fireArtefactImage;
 
     private InventoryManager _inventoryManager;
-    private PlayerThrowingWeaponsMunitions _munitions;
+    private PlayerWeaponAmmo _munitions;
 
     private void Start()
     {
@@ -47,7 +47,7 @@ public class ShowItems : MonoBehaviour
         _fireArtefactImage = itemCanvas.transform.GetChild(12).GetComponent<Image>();
 
         _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
-        _munitions = StaticObjects.GetPlayer().GetComponent<PlayerThrowingWeaponsMunitions>();
+        _munitions = StaticObjects.GetPlayer().GetComponent<PlayerWeaponAmmo>();
 
         _inventoryManager.OnEnableAxe += OnEnableAxe;
         _inventoryManager.OnEnableKnife += OnEnableKnife;

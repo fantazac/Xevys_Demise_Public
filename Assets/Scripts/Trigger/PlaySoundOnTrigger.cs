@@ -4,8 +4,6 @@ using System.Collections;
 public class PlaySoundOnTrigger : MonoBehaviour
 {
 
-    private ActivateTrigger _trigger;
-
     private AudioSourcePlayer _audioSourcePlayer;
     
     public delegate void OnSoundFinishedHandler();
@@ -17,8 +15,7 @@ public class PlaySoundOnTrigger : MonoBehaviour
 
     private void Start()
     {
-        _trigger = GetComponent<ActivateTrigger>();
-        _trigger.OnTrigger += Play;
+        GetComponent<ActivateTrigger>().OnTrigger += Play;
 
         _audioSourcePlayer = GetComponent<AudioSourcePlayer>();
 

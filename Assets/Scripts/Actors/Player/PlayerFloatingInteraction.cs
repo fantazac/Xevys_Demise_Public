@@ -9,17 +9,15 @@ public class PlayerFloatingInteraction : MonoBehaviour
     public delegate void OnPlayerOutOfWaterHandler();
     public event OnPlayerOutOfWaterHandler OnPlayerOutOfWater;
 
-    private GameObject _player;
     private Rigidbody2D _rigidbody;
     private PlayerGroundMovement _playerGroundMovement;
     private PlayerWaterMovement _playerWaterMovement;
 
     private void Start()
     {
-        _player = StaticObjects.GetPlayer();
-        _rigidbody = _player.GetComponent<Rigidbody2D>();
-        _playerGroundMovement = _player.GetComponent<PlayerGroundMovement>();
-        _playerWaterMovement = _player.GetComponent<PlayerWaterMovement>();
+        _rigidbody = StaticObjects.GetPlayer().GetComponent<Rigidbody2D>();
+        _playerGroundMovement = StaticObjects.GetPlayer().GetComponent<PlayerGroundMovement>();
+        _playerWaterMovement = StaticObjects.GetPlayer().GetComponent<PlayerWaterMovement>();
 
         OnPlayerUnderWater += PlayerState.EnableFloating;
     }

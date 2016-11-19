@@ -3,12 +3,10 @@ using System.Collections;
 
 public class MoveObjectOutsideOfMap : MonoBehaviour
 {
-    private ActivateTrigger _trigger;
 
     private void Start()
     {
-        _trigger = GetComponent<ActivateTrigger>();
-        _trigger.OnTrigger += MoveObjectOutside;
+        GetComponent<ActivateTrigger>().OnTrigger += MoveObjectOutside;
     }
 
     private void MoveObjectOutside()

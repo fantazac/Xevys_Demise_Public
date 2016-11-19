@@ -39,13 +39,6 @@ public class KeyboardInputs : MonoBehaviour {
     public delegate void KeyboardOnPauseHandler();
     public event KeyboardOnPauseHandler OnPause;
 
-    private Health _playerHealth;
-
-    private void Start()
-    {
-        _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
-    }
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.K))

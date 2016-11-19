@@ -6,8 +6,6 @@ public class PlaySoundOnEnemyDeath : MonoBehaviour
     [SerializeField]
     private int _deathSoundIndex = -1;
 
-    private Health _health;
-
     private AudioSourcePlayer _audioSourcePlayer;
 
     public delegate void OnDeathSoundFinishedHandler();
@@ -19,8 +17,7 @@ public class PlaySoundOnEnemyDeath : MonoBehaviour
 
     private void Start()
     {
-        _health = GetComponent<Health>();
-        _health.OnDeath += PlayDeathSound;
+        GetComponent<Health>().OnDeath += PlayDeathSound;
 
         _audioSourcePlayer = GetComponent<AudioSourcePlayer>();
 
