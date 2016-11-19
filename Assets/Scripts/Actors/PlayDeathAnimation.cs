@@ -5,6 +5,7 @@ public class PlayDeathAnimation : MonoBehaviour
 {
     public delegate void OnDyingAnimationFinishedHandler();
     public event OnDyingAnimationFinishedHandler OnDyingAnimationFinished;
+
     private Health _health;
     private Animator _animator;
 
@@ -19,7 +20,9 @@ public class PlayDeathAnimation : MonoBehaviour
     private void OnDeath()
     {
         _animator.SetBool("IsDying", true);
-        OnDyingAnimationFinished();
+        if (OnDyingAnimationFinished != null)
+        {
+            OnDyingAnimationFinished();
+        }
     }
-
 }
