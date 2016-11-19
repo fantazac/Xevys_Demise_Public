@@ -34,4 +34,9 @@ public class PauseMenuButtonsGroupFadeListener : MonoBehaviour
     {
         _animator.SetTrigger("FadeOut");
     }
+
+    private void DisableGroupButtonOnFadeOutEnded()
+    {
+        gameObject.SetActive(false);
+    }
 }
