@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * BEN_REVIEW
+ * 
+ * Le nom n'indique nullement ce que cela fait...et cela en fait beaucoup!
+ */
 public class OnItemDrop : MonoBehaviour
 {
 

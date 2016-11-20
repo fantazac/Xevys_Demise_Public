@@ -16,6 +16,11 @@ public class RotateAxe : MonoBehaviour
 
     void Update()
     {
+        /*
+         * BEN_REVIEW
+         * 
+         * OK.
+         */
         if (Rotate)
         {
             if (transform.localScale.y > 0)

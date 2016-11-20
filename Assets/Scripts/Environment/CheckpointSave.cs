@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * BEN_REVIEW
+ * 
+ * Le nom de checkpoints est donc défini directement dans le code...ce qui n'est pas une bonne idée n'est-ce-pas ?
+ */
 public enum Checkpoints
 {
     HubCheckpoint,

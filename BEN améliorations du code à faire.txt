@@ -1,15 +1,71 @@
-sortir animator de BatMovement (deja les events de fait)
-faire un script comme StaticObjects qui contient tous les tags
-mettre PlayKnockbackAnimation dans PlayerState et AnimManager
-InventoryManager, regarder le reload (4000 if)
-KnockbackOnDamageTaken, appeler KnockbackPlayer avec un event
-PlayerBasicAttack, sortir le son du script + regarder si on peut
-	faire une seule coroutine au lieu de 3
-SpawnToCheckpointAfterDeath, optimisation
-le son de hit joue lorsque le joueur prend un coeur (faut un heal)
-remove les using System.Collections qui sont inutiles
-faire coroutine pour DestroyProjectile
-contains(tag) pour ThrowingWeaponHitEnemy (comme pour BasicAttack)
-coroutine pour RotateAxe
-regarder les scripts de Weapon
-possibilité de skip la collision WaterHitbox en sortant de l'eau
+/*
+ * MENTIONNÉ PAR L'ÉQUIPE
+ */
+
+sortir animator de BatMovement (deja les events de fait) --> OK
+
+faire un script comme StaticObjects qui contient tous les tags  --> OK
+
+mettre PlayKnockbackAnimation dans PlayerState et AnimManager --> OK
+
+InventoryManager, regarder le reload (4000 if) --> OK
+
+KnockbackOnDamageTaken, appeler KnockbackPlayer avec un event --> OK
+
+PlayerBasicAttack, sortir le son du script + regarder si on peut faire une seule coroutine au lieu de 3 --> OK
+	
+SpawnToCheckpointAfterDeath, optimisation --> OK
+
+le son de hit joue lorsque le joueur prend un coeur (faut un heal)  --> OK
+
+remove les using System.Collections qui sont inutiles --> OK (Resharper ==> CTRL-ALT-F)
+
+faire coroutine pour DestroyProjectile --> OK
+
+contains(tag) pour ThrowingWeaponHitEnemy (comme pour BasicAttack) --> OK
+
+coroutine pour RotateAxe --> OK
+
+regarder les scripts de Weapon --> OK
+
+possibilité de skip la collision WaterHitbox en sortant de l'eau --> OK
+
+/*
+ * BEN_REVIEW
+ * 
+ * Commentaires généraux.
+ */
+
+Sortir le nom des paramètres des animators dans une classe de constantes centralisée. Me voir si pas clair.
+
+NE PAS UTILISER D'ACRONYMES DANS LES NOMS SAUF S'IL EST PLUS UTILISER QUE LE TERME QU'IL REPRÉSENTE!!!!!!!!!
+
+Dès que un délai est impliqué, utiliser une "Coroutine". Elles existes, servez vous en.
+
+Créer des classes qui gèrent uniquement les animations. Autrement dit, créer des évènements auquel des composants
+gérant les animations pourront s'enregistrer. Cela est particulièrement vrai pour les BOSS.
+
+Beaucoup de chiffres magiques et de valeurs qui pourrait être paramètré directement à partir de l'éditeur Unity. En
+jeu vidéo, il y a généralement une équipe "DATA" et ce n'est pas pour rien.
+
+Il devrait y avoir un composant dont le but est de gérer l'animation de mort, son compris. À la fin de l'animation,
+la destruction de l'objet pourrait être déclanché.
+
+Le système de dégats mérite d'être repensé si vous avez le temps.
+
+Votre dossier "Ennemies" mériterait de contenir des sous-dossiers pour les différents ennemis. Un pour les squelettes,
+un pour les scarabés, etc...
+
+/*
+ * BEN_REVIEW
+ * 
+ * Gros commentaires qui sont importants pour l'équipe.
+ */
+---------------------------------------
+Il y a un principe en programmation qui dit "Tell, don't ask". Cela veut dire que lorsque l'on appelle
+une méthode, on le fait soit :
+  1. Pour demander de faire quelque chose. (Tell)
+  2. Pour demander une information. (Ask)
+
+Par contre, on essaie de ne jamais faire les deux en même temps.
+---------------------------------------

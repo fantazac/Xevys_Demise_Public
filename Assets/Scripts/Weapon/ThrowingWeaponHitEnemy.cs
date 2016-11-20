@@ -8,6 +8,11 @@ public class ThrowingWeaponHitEnemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
+        /*
+         * BEN_REVIEW
+         * 
+         * OK.
+         */
         if (collider.gameObject.tag == "Scarab" ||
             collider.gameObject.tag == "Bat" ||
             collider.gameObject.tag == "Skeltal")

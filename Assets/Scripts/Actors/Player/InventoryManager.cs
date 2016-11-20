@@ -54,6 +54,11 @@ public class InventoryManager : MonoBehaviour
         Database.OnInventoryReloaded += ReloadInventory;
     }
 
+    /*
+     * BEN_REVIEW
+     * 
+     * OK...mais c'est pas si pire que ça.
+     */
     public void ReloadInventory(bool knifeEnabled, bool axeEnabled, bool featherEnabled, bool bootsEnabled, bool bubbleEnabled, bool armorEnabled, bool earthArtefactEnabled, bool airArtefactEnabled, bool waterArtefactEnabled, bool fireArtefactEnabled)
     {
         if (knifeEnabled)

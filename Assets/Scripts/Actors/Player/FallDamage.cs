@@ -21,6 +21,25 @@ public class FallDamage: MonoBehaviour
 
     private void OnFalling()
     {
+        /*
+         * BEN_REVIEW
+         * 
+         * Je pense l'avoir déjà mentionné, mais pourquoi ne pas utiliser la vélocité du joueur pour déterminer le "fall dammage" ?
+         * 
+         * Aussi simple que : 
+         * 
+         *  if (Vector2.Dot(rigidbody2D.velocity, Vector2.down) > 0.5f)
+            {
+                if (rigidbody2D.velocity.sqrMagnitude > 2)
+                {
+                    _playerHealth.Hit();
+                }
+            }
+
+         * Me voir si pas clair. En passant, le produit scalaire (Dot Product) de deux vecteurs perpendiculaires est toujours 0, 
+         * le produit scalaire de deux vecteurs opposés est toujours négatif et le produit scalaire de deux vecteurs dans la même 
+         * direction est toujours positif.
+         */
         _fallingCount += Time.deltaTime;
     }
 

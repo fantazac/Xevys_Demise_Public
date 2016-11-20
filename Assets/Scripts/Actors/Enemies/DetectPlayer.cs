@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * BEN_REVIEW
+ * 
+ * "PlayerDetector" ? Ne serait-ce pas mieux ?
+ */
 public class DetectPlayer : MonoBehaviour
 {
     private BoxCollider2D _hitbox;

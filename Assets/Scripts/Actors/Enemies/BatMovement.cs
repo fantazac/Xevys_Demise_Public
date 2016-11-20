@@ -22,11 +22,21 @@ public class BatMovement : MonoBehaviour
     private WaitForSeconds _onGroundDelay;
 
     private AudioSourcePlayer _soundPlayer;
+    /*
+     * BEN_REVIEW
+     * 
+     * OK. 
+     */
     private Animator _animator;
 
     private DetectPlayer _detectPlayer;
     private float _playerDetectionHitboxInitialYPosition;
 
+    /*
+     * BEN_REVIEW
+     * 
+     * À rendre paramétrable dans l'éditeur Unity.
+     */
     private const float DOWN_SPEED = 5.5f;
     private const float UP_SPEED = 3;
 
@@ -67,6 +77,11 @@ public class BatMovement : MonoBehaviour
     {
         while (transform.position.y > _lowestY)
         {
+            /*
+             * BEN_REVIEW
+             * 
+             * Pourquoi ne pas avoir utilisé "transform.Translate" ? Cela évite de faire un "new".
+             */
             transform.position = new Vector3(transform.position.x, transform.position.y - (DOWN_SPEED * Time.deltaTime), transform.position.z);
 
             yield return null;
@@ -95,11 +110,22 @@ public class BatMovement : MonoBehaviour
         _detectPlayer.EnableHitbox();
     }
 
+    /*
+     * BEN_REVIEW
+     * 
+     * Devrait retourner le target pour la "Coroutine" et non pas juste assigner un attribut, car "_target" n'est utile
+     * que pour la coroutine.
+     */
     private void FindTarget()
     {
         _target = new Vector3(Random.Range(_minX, _maxX), _initialPosition.y, _initialPosition.z);
     }
 
+    /*
+     * BEN_REVIEW
+     * 
+     * IsCloseToTop
+     */
     public bool CloseToTop()
     {
         return _initialPosition.y - transform.position.y < 1;

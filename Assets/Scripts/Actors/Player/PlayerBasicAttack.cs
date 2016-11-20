@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * BEN_REVIEW
+ * 
+ * OK.
+ */
 public class PlayerBasicAttack : MonoBehaviour
 {
     [SerializeField]
@@ -21,6 +26,11 @@ public class PlayerBasicAttack : MonoBehaviour
 
     private InputManager _inputManager;
     private BoxCollider2D _attackHitBox;
+    /*
+     * BEN_REVIEW
+     * 
+     * OK.
+     */
     private AudioSourcePlayer _soundPlayer;
     private PlayerGroundMovement _playerGroundMovement;
 

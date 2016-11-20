@@ -5,6 +5,12 @@ public class PlayerState : MonoBehaviour
 {
     private InvincibilityAfterBeingHit _invincibility;
 
+    /*
+     * BEN_REVIEW
+     * 
+     * Etat "KnockBack" ici, comme dit dans le TXT.
+     */
+
     public static bool IsInvincible { get; private set; }
     public static bool IsJumping { get; private set; }
     public static bool IsFalling { get; private set; }
@@ -15,6 +21,13 @@ public class PlayerState : MonoBehaviour
 
     private static float _xSpeed = 0;
 
+    /*
+     * BEN_REVIEW
+     * 
+     * Event Static == Memory Leak si mal géré. ATTENTION!!!
+     * 
+     * Aussi, PlayerState devrait être obtenu à partir de "StaticObjects" non ?
+     */
     public delegate void OnChangedJumpingHandler();
     public static event OnChangedJumpingHandler OnChangedJumping;
 

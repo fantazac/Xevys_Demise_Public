@@ -8,6 +8,13 @@ public class DropItems : MonoBehaviour
     [SerializeField]
     private GameObject[] _items;
 
+    /*
+     * BEN_REVIEW
+     * 
+     * Fusionner les listes "_dropRates" et "_itemsToDrop". C'est faisable, me voir pour cela.
+     * 
+     * Aussi, n'en avais-je pas déjà parlé ?
+     */
     [SerializeField]
     private List<int> _dropRates;
 
@@ -52,6 +59,13 @@ public class DropItems : MonoBehaviour
 
     private IEnumerator Drop()
     {
+        /*
+         * BEN_REVIEW
+         * 
+         * Dites moi si je me trompe, mais ce délai est pour éviter que le drop se fasse avant que l'ennemi disparaisse n'est-ce-pas ?
+         * 
+         * Pourquoi ne pas s'enregistrer auprès d'un évènement de fin d'animation de moi (voir DestroyEnnemiOnDeath).
+         */
         yield return _dropsDelay;
 
         foreach (GameObject itemToDrop in _itemsToDrop)

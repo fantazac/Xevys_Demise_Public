@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * BEN_REVIEW
+ * 
+ * Il y a tellement de code en commentaires que je me demande si cela sert encore.
+ */
 public class FlipSkeltal : ActorOrientation
 {
     private SkeltalBehaviour _skeltalBehavior;

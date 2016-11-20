@@ -1,6 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * BEN_REVIEW
+ * 
+ * Pour ScarabMovement et ses dérivés, penser utiliser le patern "Template Method".
+ * 
+ * Voir http://www.oodesign.com/template-method-pattern.html
+ */
 public class ScarabMovement : MonoBehaviour
 {
 

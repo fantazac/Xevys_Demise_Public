@@ -223,6 +223,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        /*
+         * BEN_REVIEW
+         * 
+         * Drôle de condition... Pourquoi "PlayerIsJumping" ne retroune pas un "bool" ?
+         */
         if (PlayerIsJumping() != PlayerState.IsJumping)
         {
             PlayerState.SetJumping(PlayerIsJumping());

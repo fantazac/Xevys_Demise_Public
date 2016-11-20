@@ -31,6 +31,11 @@ public class BehemothAI : MonoBehaviour
     private BossOrientation _bossOrientation;
     private OnBossDefeated _onBossDefeated;
 
+    /*
+     * BEN_REVIEW
+     * 
+     * NE PAS UTILISER D'ACRONYME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     */
     private System.Random _rng = new System.Random();
     private BehemothStatus _status = BehemothStatus.WAIT;
     private float _timeLeft = CHARGE_TIME;

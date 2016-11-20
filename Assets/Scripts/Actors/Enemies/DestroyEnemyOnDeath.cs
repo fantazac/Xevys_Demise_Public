@@ -17,7 +17,12 @@ public class DestroyEnemyOnDeath : MonoBehaviour
     {
         _health = GetComponent<Health>();
         _health.OnDeath += OnDeath;
-
+        /*
+         * BEN_REVIEW
+         * 
+         * Au lieu de se fier au son, mieux vaudrait avoir un composant qui gère l'animation et le son de mort 
+         * et déclanche un évènement quand les deux son terminés.
+         */
         _enemyDeathSound = GetComponent<PlaySoundOnEnemyDeath>();
         _enemyDeathSound.OnDeathSoundFinished += Destroy;
 

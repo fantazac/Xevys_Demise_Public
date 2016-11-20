@@ -3,6 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 
+/*
+ * BEN_REVIEW
+ * 
+ * Vous semblez ne pas faire de différence entre "Actor" et "Player". Quand on parle d'un "Actor", on faire généralement
+ * référence à tout les personnages du jeu, joueur et npc compris.
+ * 
+ * Comme vous utilisez "InputManager" dans ce script, j'en déduis que cela réfère au joueur. Donc, à renommer. 
+ * 
+ * Aussi, à séparer en deux : un pour le "knife", un autre pour le "axe". S'il y a du code qui se répète, faire de l'héritage
+ * (bref, une classe abstraite).
+ */
 public class ActorThrowAttack : MonoBehaviour
 {
 
@@ -18,6 +29,14 @@ public class ActorThrowAttack : MonoBehaviour
     [SerializeField]
     private float _axeThrowingHeight = 1f;
 
+    /*
+     * BEN_REVIEW
+     * 
+     * Le couteux devrait être responsable de sa vitesse, pas celui qui le lance. C'est contre
+     * intuitif, mais c'est plus simple ainsi.
+     * 
+     * Idem pour la hâche plus bas.
+     */
     [SerializeField]
     private float _knifeSpeed = 15f;
 
@@ -47,6 +66,16 @@ public class ActorThrowAttack : MonoBehaviour
     private WaitForSeconds _enableAttackDelay;
 
     private delegate void OnSelectedThrowAttackHandler();
+    /*
+     * BEN_REVIEW
+     * 
+     * Ne pas le déclarer comme un event, car cela n'en est pas un. En fait, ce que vous avez là
+     * est plus de l'ordre du pointeur de fonction. Bref, enlever le mot clé "event" et renommer
+     * ce "delegate" en quelque chose comme "ThrowSelectedWeapon".
+     * 
+     * Remarque : si vous effectuez la séparation de cette classe en deux, ce commentaire devient caduque.
+     * Il faudra plutôt regarder dans l'inventaire si c'est la bonne arme qui est sélectionnée.
+     */
     private event OnSelectedThrowAttackHandler OnSelectedThrowAttack;
 
     public delegate void OnKnifeAmmoUsedHandler(int ammoUsedOnThrow);
@@ -88,6 +117,14 @@ public class ActorThrowAttack : MonoBehaviour
         {
             _canUseThrowAttack = false;
             OnSelectedThrowAttack();
+            /*
+             * BEN_REVIEW
+             * 
+             * Évitez d'utiliser la reflection quand vient le temps de démarrer une "coroutine". Il est possible de l'appeler directement.
+             * Cela évite que "Resharper" s'affole en disant que la méthode n'est pas utilisée, même si en réalité ce n'est pas vrai.
+             * 
+             * Voir Manuel Unity.
+             */
             StartCoroutine("EnableThrowAttack");
         }
     }

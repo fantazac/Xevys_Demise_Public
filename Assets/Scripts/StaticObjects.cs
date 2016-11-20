@@ -41,6 +41,12 @@ public class StaticObjects : MonoBehaviour
         return _healthBar;
     }
 
+    /*
+     * BEN_REVIEW
+     * 
+     * À chaque fois que cette méthode est appelée, elle est toujours suivie de "GetComponent<ShowItems>()". Pourquoi ne pas
+     * tout simeplement rendre le component static au lieu du gameobject ? À moins que vous voyez un cas ou cela serait utile ?
+     */
     public static GameObject GetItemCanvas()
     {
         return _itemCanvas;

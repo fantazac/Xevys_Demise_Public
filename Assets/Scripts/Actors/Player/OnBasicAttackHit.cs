@@ -2,6 +2,13 @@
 using System.Collections;
 using System.Linq;
 
+/*
+ * BEN_REVIEW
+ * 
+ * Ressemble beaucoup à "EnnemyAttackManager" en terme de fonctionalitées. Fusionner les deux.
+ * 
+ * Aussi, n'en avais-je pas déjà parlé ?
+ */
 public class OnBasicAttackHit : MonoBehaviour
 {
     [SerializeField]

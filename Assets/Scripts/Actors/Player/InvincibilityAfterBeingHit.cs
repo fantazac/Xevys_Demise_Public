@@ -1,6 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * BEN_REVIEW
+ * 
+ * L'animation de "Flicker" devrait être déclanché et arrête par ce script, mais
+ * effectuée dans un autre script.
+ * 
+ * Single Responsability Principle.
+ */
 public class InvincibilityAfterBeingHit : MonoBehaviour
 {
 
