@@ -29,7 +29,6 @@ public class ThrowAxe : PlayerThrowAttack
     {
         if (HasAmmo())
         {
-            Debug.Log(1);
             GameObject thrownWeapon = InstantiateThrowWeapon(_axe,
                 new Vector2(transform.position.x, transform.position.y + _axeThrowingHeight),
                 new Vector3(0, 0, _axeInitialRotation),

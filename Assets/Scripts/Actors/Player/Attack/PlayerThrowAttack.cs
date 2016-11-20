@@ -15,7 +15,6 @@ public class PlayerThrowAttack : MonoBehaviour
     protected static bool _canUseThrowAttack = true;
 
     private InputManager _inputManager;
-    private InventoryManager _inventoryManager;
     protected PlayerWeaponAmmo _munitions;
     protected PlayerOrientation _playerOrientation;
 
@@ -24,12 +23,9 @@ public class PlayerThrowAttack : MonoBehaviour
     protected void Start()
     {
         _inputManager = GetComponentInChildren<InputManager>();
-
-        _inventoryManager = GetComponent<InventoryManager>();
+        _inputManager.OnThrowAttack += OnThrowAttack;
 
         _playerOrientation = GetComponent<PlayerOrientation>();
-
-        _inputManager.OnThrowAttack += OnThrowAttack;
 
         _munitions = GetComponent<PlayerWeaponAmmo>();
 
@@ -38,17 +34,12 @@ public class PlayerThrowAttack : MonoBehaviour
 
     protected void OnThrowAttack()
     {
-        if (CanUseThrowAttack())
+        if (_canUseThrowAttack && enabled)
         {
             _canUseThrowAttack = false;
             Throw();
             StartCoroutine(EnableThrowAttack());
         }
-    }
-
-    private bool CanUseThrowAttack()
-    {
-        return _canUseThrowAttack && enabled;
     }
 
     private IEnumerator EnableThrowAttack()

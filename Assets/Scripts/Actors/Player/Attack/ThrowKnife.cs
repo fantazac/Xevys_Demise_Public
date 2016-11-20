@@ -20,7 +20,6 @@ public class ThrowKnife : PlayerThrowAttack
     {
         if (HasAmmo())
         {
-            Debug.Log(2);
             GameObject thrownWeapon = InstantiateThrowWeapon(_knife,
                 new Vector2(transform.position.x, transform.position.y),
                 Vector3.zero,
