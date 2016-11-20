@@ -9,7 +9,7 @@ public class PlayerWeaponAmmo : MonoBehaviour
     public int KnifeAmmo { get; private set; }
 
     private InventoryManager _inventoryManager;
-    private ActorThrowAttack _throwAttack;
+    private PlayerThrowAttack _throwAttack;
 
     public delegate void OnKnifeAmmoChangedHandler(int knifeAmmo);
     public event OnKnifeAmmoChangedHandler OnKnifeAmmoChanged;
@@ -22,7 +22,7 @@ public class PlayerWeaponAmmo : MonoBehaviour
         Database.OnAmmoReloaded += ReloadAmmo;
         _inventoryManager = GetComponent<InventoryManager>();
 
-        _throwAttack = GetComponent<ActorThrowAttack>();
+        _throwAttack = GetComponent<PlayerThrowAttack>();
         _throwAttack.OnAxeAmmoUsed += AxeAmmoUsed;
         _throwAttack.OnKnifeAmmoUsed += KnifeAmmoUsed;
     }

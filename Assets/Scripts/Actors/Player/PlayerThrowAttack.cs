@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-public class ActorThrowAttack : MonoBehaviour
+public class PlayerThrowAttack : MonoBehaviour
 {
 
     [SerializeField]

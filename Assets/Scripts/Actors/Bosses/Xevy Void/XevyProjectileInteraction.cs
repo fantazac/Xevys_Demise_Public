@@ -10,13 +10,13 @@ public class XevyProjectileInteraction : MonoBehaviour
 
     Dictionary<GameObject, float> _knivesDictionary;
     Dictionary<GameObject, float> _axesDictionary;
-    ActorThrowAttack _throwAttack;
+    PlayerThrowAttack _throwAttack;
 
 	private void Start()
     {
         _knivesDictionary = new Dictionary<GameObject, float>();
         _axesDictionary = new Dictionary<GameObject, float>();
-        _throwAttack = StaticObjects.GetPlayer().GetComponent<ActorThrowAttack>();
+        _throwAttack = StaticObjects.GetPlayer().GetComponent<PlayerThrowAttack>();
         _throwAttack.OnKnifeThrown += OnKnifeThrown;
         _throwAttack.OnAxeThrown += OnAxeThrown;
 	}
