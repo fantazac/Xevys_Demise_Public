@@ -11,6 +11,8 @@ public class InventoryManager : MonoBehaviour
     public bool BubbleEnabled { get; private set; }
     public bool FireProofArmorEnabled { get; private set; }
 
+    public WeaponType SelectedThrowWeapon { get; private set; }
+
     public bool HasInfiniteKnives { get; private set; }
     public bool HasInfiniteAxes { get; private set; }
 
@@ -18,6 +20,10 @@ public class InventoryManager : MonoBehaviour
     public bool EarthArtefactEnabled { get; private set; }
     public bool WaterArtefactEnabled { get; private set; }
     public bool FireArtefactEnabled { get; private set; }
+
+    private ShowItems _showItems;
+    private ThrowAxe _throwAxeAttack;
+    private ThrowKnife _throwKnifeAttack;
 
     public delegate void OnEnableKnifeHandler();
     public event OnEnableKnifeHandler OnEnableKnife;
@@ -52,6 +58,14 @@ public class InventoryManager : MonoBehaviour
     public void Start()
     {
         Database.OnInventoryReloaded += ReloadInventory;
+
+        _showItems = StaticObjects.GetItemCanvas().GetComponent<ShowItems>();
+        GetComponentInChildren<InputManager>().OnThrowAttackChangeButtonPressed += OnSwitchWeapon;
+
+        _throwKnifeAttack = GetComponent<ThrowKnife>();
+        _throwAxeAttack = GetComponent<ThrowAxe>();
+
+        SelectedThrowWeapon = WeaponType.None;
     }
 
     public void ReloadInventory(bool knifeEnabled, bool axeEnabled, bool featherEnabled, bool bootsEnabled, bool bubbleEnabled, bool armorEnabled, bool earthArtefactEnabled, bool airArtefactEnabled, bool waterArtefactEnabled, bool fireArtefactEnabled)
@@ -103,6 +117,45 @@ public class InventoryManager : MonoBehaviour
         ammoObject.GetComponent<InfiniteAmmoWhileInPickupRoom>().OnSetInfiniteAmmo += SetInfiniteAmmo;
     }
 
+    private void OnSwitchWeapon()
+    {
+        switch (SelectedThrowWeapon)
+        {
+            case WeaponType.Axe:
+                {
+                    if (KnifeEnabled)
+                    {
+                        SelectKnife();
+                    }
+                    break;
+                }
+            case WeaponType.Knife:
+                {
+                    if (AxeEnabled)
+                    {
+                        SelectAxe();
+                    }
+                    break;
+                }
+        }
+    }
+
+    private void SelectAxe()
+    {
+        SelectedThrowWeapon = WeaponType.Axe;
+        _showItems.SelectAxe();
+        _throwKnifeAttack.enabled = false;
+        _throwAxeAttack.enabled = true;
+    }
+
+    private void SelectKnife()
+    {
+        SelectedThrowWeapon = WeaponType.Knife;
+        _showItems.SelectKnife();
+        _throwAxeAttack.enabled = false;
+        _throwKnifeAttack.enabled = true;
+    }
+
     private void SetInfiniteAmmo(GameObject item, bool enable)
     {
         if (item.tag == "Knife")
@@ -118,12 +171,14 @@ public class InventoryManager : MonoBehaviour
     public void EnableKnife()
     {
         KnifeEnabled = true;
+        SelectKnife();
         OnEnableKnife();
     }
 
     public void EnableAxe()
     {
         AxeEnabled = true;
+        SelectAxe();
         OnEnableAxe();
     }
 
