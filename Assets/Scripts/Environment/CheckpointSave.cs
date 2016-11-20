@@ -1,22 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum Checkpoints
-{
-    HubCheckpoint,
-    EarthCheckpoint,
-    AirCheckpoint,
-    WaterCheckpoint,
-    FireCheckpoint
-}
-
 public class CheckpointSave : MonoBehaviour
 {
     private bool _showText;
     [SerializeField]
     private int _baseShowCounter = 200;
     [SerializeField]
-    private Checkpoints _checkpointIdentifier = Checkpoints.HubCheckpoint;
+    private int _checkpoint = 0;
     private int _showCounter;
 
     private void Update()
@@ -38,7 +29,7 @@ public class CheckpointSave : MonoBehaviour
             _showText = true;
             _showCounter = _baseShowCounter;
             StaticObjects.GetDatabase().GetComponent<Database>().SaveTemporaryStats();
-            StaticObjects.GetPlayer().GetComponent<SpawnToCheckpointAfterDeath>().SaveCheckpoint(_checkpointIdentifier);
+            StaticObjects.GetPlayer().GetComponent<SpawnToCheckpointAfterDeath>().SaveCheckpoint(_checkpoint);
         }
     }
 
