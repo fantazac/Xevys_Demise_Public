@@ -27,4 +27,9 @@ public class PauseMenuAudioSettingListener : MonoBehaviour
             _audioSource.volume = volume * _maxVolume;
         }
     }
+
+    private void OnDestroy()
+    {
+        PauseMenuAudioSettingsController.OnVolumeChanged -= SetVolume;
+    }
 }
