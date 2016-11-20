@@ -16,7 +16,7 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
     {
         _musicSwitch = GetComponentInChildren<Switch>();
         Slider[] sliders = GetComponentsInChildren<Slider>();
-        _musicVolumeSlider = sliders[0];
+        _musicVolumeSlider = sliders[1];
     }
 
     public void SetMusicVolume(Single volume)
