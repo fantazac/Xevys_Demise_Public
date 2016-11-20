@@ -3,9 +3,6 @@ using System.Collections;
 
 public class PauseMenuGroupButtonsFadeListener : MonoBehaviour
 {
-    public delegate void OnGroupButtonFadeOutEndedHandler(bool enabled);
-    public event OnGroupButtonFadeOutEndedHandler OnGroupButtonFadeOutEnded;
-
     private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
     private Animator _animator;
 
@@ -35,10 +32,5 @@ public class PauseMenuGroupButtonsFadeListener : MonoBehaviour
     private void InterfaceFade()
     {
         _animator.SetTrigger("FadeOut");
-    }
-
-    private void DisableGroupButtonOnFadeOutEnded()
-    {
-        OnGroupButtonFadeOutEnded(false);
     }
 }
