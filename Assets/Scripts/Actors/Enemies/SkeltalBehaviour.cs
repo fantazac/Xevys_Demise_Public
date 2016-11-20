@@ -16,7 +16,7 @@ public class SkeltalBehaviour : MonoBehaviour
 
     protected Vector3 _initialPosition;
 
-    protected FlipSkeltal _flipSkeltal;
+    protected SkeltalOrientation _skeltalOrientation;
 
     private WaitForSeconds _waitForAttack;
     private WaitForSeconds _waitForCooldown;
@@ -43,7 +43,7 @@ public class SkeltalBehaviour : MonoBehaviour
         _waitForAttack = new WaitForSeconds(_attackTime);
         _waitForCooldown = new WaitForSeconds(_cooldownAfterAttack);
 
-        _flipSkeltal = GetComponent<FlipSkeltal>();
+        _skeltalOrientation = GetComponent<SkeltalOrientation>();
 
         OnSkeltalMovementStart += StartSkeltalMovement;
         OnSkeltalMovementFinished += StartSkeltalAttack;

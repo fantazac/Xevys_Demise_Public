@@ -53,8 +53,8 @@ public class MoveBouncySkeltal : SkeltalBehaviour
 
     protected override void StartSkeltalMovement()
     {
-        _startingPosition = _flipSkeltal.IsFacingRight ? _initialPositionLeft : _initialPosition;
-        _directionFactor = _flipSkeltal.IsFacingRight ? 1 : -1;
+        _startingPosition = _skeltalOrientation.IsFacingRight ? _initialPositionLeft : _initialPosition;
+        _directionFactor = _skeltalOrientation.IsFacingRight ? 1 : -1;
 
         StartCoroutine("SkeltalMovement");
     }
@@ -79,7 +79,7 @@ public class MoveBouncySkeltal : SkeltalBehaviour
 
     protected override void SkeltalMovementFinished()
     {
-        transform.position = _flipSkeltal.IsFacingRight ? _initialPosition : _initialPositionLeft;
+        transform.position = _skeltalOrientation.IsFacingRight ? _initialPosition : _initialPositionLeft;
         _timeInAirCount = 0;
         base.SkeltalMovementFinished();
     }
