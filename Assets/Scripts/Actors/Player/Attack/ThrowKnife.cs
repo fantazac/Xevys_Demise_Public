@@ -7,9 +7,6 @@ public class ThrowKnife : PlayerThrowAttack
     [SerializeField]
     protected GameObject _knife;
 
-    [SerializeField]
-    private float _knifeSpeed = 15f;
-
     public delegate void OnKnifeAmmoUsedHandler(int ammoUsedOnThrow);
     public event OnKnifeAmmoUsedHandler OnKnifeAmmoUsed;
 
@@ -20,11 +17,7 @@ public class ThrowKnife : PlayerThrowAttack
     {
         if (HasAmmo())
         {
-            GameObject thrownWeapon = InstantiateThrowWeapon(_knife,
-                new Vector2(transform.position.x, transform.position.y),
-                Vector3.zero,
-                new Vector2(_playerOrientation.IsFacingRight ? _knifeSpeed : -_knifeSpeed, 0),
-                new Vector2(_playerOrientation.IsFacingRight ? _knife.transform.localScale.x : -_knife.transform.localScale.x, _knife.transform.localScale.y));
+            GameObject thrownWeapon = (GameObject)Instantiate(_knife, transform.position, transform.rotation);
             OnKnifeAmmoUsed(_ammoUsedPerThrow);
             if (OnKnifeThrown != null)
             {

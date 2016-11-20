@@ -16,7 +16,6 @@ public class PlayerThrowAttack : MonoBehaviour
 
     private InputManager _inputManager;
     protected PlayerWeaponAmmo _munitions;
-    protected PlayerOrientation _playerOrientation;
 
     private WaitForSeconds _enableAttackDelay;
 
@@ -24,8 +23,6 @@ public class PlayerThrowAttack : MonoBehaviour
     {
         _inputManager = GetComponentInChildren<InputManager>();
         _inputManager.OnThrowAttack += OnThrowAttack;
-
-        _playerOrientation = GetComponent<PlayerOrientation>();
 
         _munitions = GetComponent<PlayerWeaponAmmo>();
 
@@ -52,18 +49,6 @@ public class PlayerThrowAttack : MonoBehaviour
     protected virtual bool HasAmmo()
     {
         return false;
-    }
-
-    protected GameObject InstantiateThrowWeapon(GameObject weapon, Vector2 initialPosition, Vector3 initialRotation, Vector2 initialVelocity, Vector2 initialDirection)
-    {
-        GameObject newWeapon;
-
-        newWeapon = (GameObject)Instantiate(weapon, initialPosition, transform.rotation);
-        newWeapon.transform.eulerAngles = initialRotation;
-        newWeapon.GetComponent<Rigidbody2D>().velocity = initialVelocity;
-        newWeapon.transform.localScale = initialDirection;
-
-        return newWeapon;
     }
 
     protected virtual void Throw() { }
