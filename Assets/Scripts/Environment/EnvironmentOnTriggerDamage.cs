@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FireDamageManager : MonoBehaviour
+public class EnvironmentOnTriggerDamage : MonoBehaviour
 {
     [SerializeField]
     private int _baseDamage = 100;
