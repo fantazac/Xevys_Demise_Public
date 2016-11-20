@@ -18,7 +18,6 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
 
     private PauseMenuInputs _pauseMenuInputs;
     private Animator _animator;
-    private PauseMenuAnimationManager _pauseMenuAnimationManager;
 
     private string _currentInterface;
 
@@ -30,17 +29,9 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
         _pauseMenuInputs.OnControlsInterfaceIsCurrent += ControlsInterfaceIsCurrent;
         _pauseMenuInputs.OnAudioInterfaceIsCurrent += AudioInterfaceIsCurrent;
 
-        _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
-        _pauseMenuAnimationManager.OnPauseMenuIsOutOfScreen += ResetInterfaceOnMenuIsOutOfScreen;
-
         _animator = GetComponent<Animator>();
 
         _currentInterface = "Main";
-    }
-
-    private void ResetInterfaceOnMenuIsOutOfScreen()
-    {
-        MainInterfaceIsCurrent("ShowMainInterface");
     }
 
     private void OptionsInterfaceIsCurrent(string current)
