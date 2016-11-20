@@ -60,7 +60,7 @@ public class BatMovement : MonoBehaviour
     {
         _animator.SetBool("IsFlying", true);
         OnBatMovement();
-        StartCoroutine("MoveBat");
+        StartCoroutine(MoveBat());
     }
 
     private IEnumerator MoveBat()

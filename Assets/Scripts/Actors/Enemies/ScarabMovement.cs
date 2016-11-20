@@ -25,7 +25,7 @@ public class ScarabMovement : MonoBehaviour
     protected void StartMovementTowardsNewTarget()
     {
         FindTarget();
-        StartCoroutine("MoveTowardsTarget");
+        StartCoroutine(MoveTowardsTarget());
     }
 
     protected void MovementFinished()

@@ -47,7 +47,7 @@ public class DropItems : MonoBehaviour
 
     private void SetupDrop()
     {
-        StartCoroutine("Drop");
+        StartCoroutine(Drop());
     }
 
     private IEnumerator Drop()

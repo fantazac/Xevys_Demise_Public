@@ -50,7 +50,7 @@ public class MoveObjectOnTrigger : MonoBehaviour
     public void StartObjectMovement()
     {
         _finalPosition = transform.position + (_directionalVector * _distanceToMoveObject);
-        StartCoroutine("MoveObject");
+        StartCoroutine(MoveObject());
     }
 
     private IEnumerator MoveObject()

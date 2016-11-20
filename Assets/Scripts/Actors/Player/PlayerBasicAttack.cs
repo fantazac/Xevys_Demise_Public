@@ -57,9 +57,9 @@ public class PlayerBasicAttack : MonoBehaviour
         _canAttack = false;
         _soundPlayer.Play(_soundId);
         _attackHitBox.enabled = true;
-        StartCoroutine("OnBasicAttackFinished");
-        StartCoroutine("FinishAttackAnimation");
-        StartCoroutine("AllowNewAttack");
+        StartCoroutine(OnBasicAttackFinished());
+        StartCoroutine(FinishAttackAnimation());
+        StartCoroutine(AllowNewAttack());
     }
 
     private IEnumerator FinishAttackAnimation()

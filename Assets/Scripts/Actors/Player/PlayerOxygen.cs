@@ -32,13 +32,13 @@ public class PlayerOxygen : MonoBehaviour
     {
         if (!_inventoryManager.BubbleEnabled)
         {
-            StartCoroutine("DamageIfMissingOxygen");
+            StartCoroutine(DamageIfMissingOxygen());
         }        
     }
 
     private void OnPlayerOutOfWater()
     {
-        StopCoroutine("DamageIfMissingOxygen");
+        StopCoroutine(DamageIfMissingOxygen());
     }
 
     private IEnumerator DamageIfMissingOxygen()

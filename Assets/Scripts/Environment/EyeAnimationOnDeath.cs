@@ -23,7 +23,7 @@ public class EyeAnimationOnDeath : MonoBehaviour
 
     private void OnTrigger()
     {       
-        StartCoroutine("PlayAnimationAndCallMoveObjectCoroutine");
+        StartCoroutine(PlayAnimationAndCallMoveObjectCoroutine());
     }
 
     private IEnumerator PlayAnimationAndCallMoveObjectCoroutine()

@@ -30,7 +30,7 @@ public class ScarabMovementWithPlatform : ScarabMovement
     protected override void StartRotation()
     {
         _canRotate = false;
-        StartCoroutine("Rotate");
+        StartCoroutine(Rotate());
     }
 
     protected override IEnumerator MoveTowardsTarget()

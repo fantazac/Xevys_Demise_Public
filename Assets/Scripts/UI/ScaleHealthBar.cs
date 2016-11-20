@@ -27,7 +27,7 @@ public class ScaleHealthBar : MonoBehaviour
     {
         _finalSize = new Vector3(_initialRectangleX - (100 - ((_health.HealthPoint - 10)*100)/1000)*_initialRectangleX/100,
                                 _healthBar.localScale.y, _healthBar.localScale.z);
-        StartCoroutine("ScaleHealthBarCouroutine");
+        StartCoroutine(ScaleHealthBarCouroutine());
     }
 
     private IEnumerator ScaleHealthBarCouroutine()

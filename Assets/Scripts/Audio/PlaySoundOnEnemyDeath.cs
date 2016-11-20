@@ -30,7 +30,7 @@ public class PlaySoundOnEnemyDeath : MonoBehaviour
         _audioSourcePlayer.StopAll();
         _audioSourcePlayer.Play(_deathSoundIndex);
 
-        StartCoroutine("DeathSoundFinished");
+        StartCoroutine(DeathSoundFinished());
     }
 
     private IEnumerator DeathSoundFinished()

@@ -53,7 +53,7 @@ public class ScarabMovementWithPoints : ScarabMovement
     {
         _canRotate = false;
         SetRotationDirection();
-        StartCoroutine("Rotate");
+        StartCoroutine(Rotate());
     }
 
     private void SetRotationDirection()

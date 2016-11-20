@@ -194,8 +194,8 @@ namespace UnityEngine.UI
             if (instant)
                 ToggleState(1);
 
-            StopCoroutine("Tweening");
-            StartCoroutine("Tweening");
+            StopCoroutine(Tweening());
+            StartCoroutine(Tweening());
         }
 
         /// <summary>

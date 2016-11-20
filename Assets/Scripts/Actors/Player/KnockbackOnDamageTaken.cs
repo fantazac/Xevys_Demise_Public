@@ -40,7 +40,7 @@ public class KnockbackOnDamageTaken : MonoBehaviour
         }
         GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, KNOCKBACK_SPEED);
 
-        StartCoroutine("StopDamageAnimation");
+        StartCoroutine(StopDamageAnimation());
     }
 
     private IEnumerator StopDamageAnimation()

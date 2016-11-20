@@ -58,6 +58,6 @@ public class InvincibilityAfterBeingHit : MonoBehaviour
     public void StartFlicker(int hitPoints)
     {
         OnInvincibilityStarted();
-        StartCoroutine("Flicker");
+        StartCoroutine(Flicker());
     }
 }

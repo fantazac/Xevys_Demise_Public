@@ -56,7 +56,7 @@ public class MoveBouncySkeltal : SkeltalBehaviour
         _startingPosition = _flipSkeltal.IsFacingRight ? _initialPositionLeft : _initialPosition;
         _directionFactor = _flipSkeltal.IsFacingRight ? 1 : -1;
 
-        StartCoroutine("SkeltalMovement");
+        StartCoroutine(SkeltalMovement());
     }
 
     protected override IEnumerator SkeltalMovement()

@@ -34,7 +34,7 @@ public class OnItemDrop : MonoBehaviour
             _rigidbody.velocity += Vector2.up * INITIAL_SPEED;
         }
 
-        StartCoroutine("DropToTheGround");
+        StartCoroutine(DropToTheGround());
     }
 
     public void Initialise(int amountToDrop, int id, Collider2D collider)

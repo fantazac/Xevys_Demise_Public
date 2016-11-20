@@ -53,7 +53,7 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
     {
         DisablePlatform();
 
-        StartCoroutine("EnablePlatformWhenPlayerPassedThrough");
+        StartCoroutine(EnablePlatformWhenPlayerPassedThrough());
     }
 
     private IEnumerator EnablePlatformWhenPlayerPassedThrough()

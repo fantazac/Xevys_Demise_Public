@@ -26,7 +26,7 @@ public class PlaySoundOnTrigger : MonoBehaviour
     private void Play()
     {
         _audioSourcePlayer.Play();
-        StartCoroutine("SoundIsFinished");
+        StartCoroutine(SoundIsFinished());
     }
 
     private IEnumerator SoundIsFinished()

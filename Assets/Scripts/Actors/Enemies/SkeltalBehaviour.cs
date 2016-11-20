@@ -54,12 +54,12 @@ public class SkeltalBehaviour : MonoBehaviour
 
     protected void StartSkeltalAttack()
     {
-        StartCoroutine("SkeltalAttack");
+        StartCoroutine(SkeltalAttack());
     }
 
     protected virtual void StartSkeltalMovement()
     {
-        StartCoroutine("SkeltalMovement");
+        StartCoroutine(SkeltalMovement());
     }
 
     protected IEnumerator SkeltalAttack()

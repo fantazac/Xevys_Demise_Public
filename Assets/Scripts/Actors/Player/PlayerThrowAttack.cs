@@ -88,7 +88,7 @@ public class PlayerThrowAttack : MonoBehaviour
         {
             _canUseThrowAttack = false;
             OnSelectedThrowAttack();
-            StartCoroutine("EnableThrowAttack");
+            StartCoroutine(EnableThrowAttack());
         }
     }
 

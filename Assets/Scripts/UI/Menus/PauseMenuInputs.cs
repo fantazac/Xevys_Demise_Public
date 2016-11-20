@@ -97,7 +97,7 @@ public class PauseMenuInputs : MonoBehaviour
         }
         else
         {
-            StartCoroutine("SlideInterfaceWhenOutOffScreen");
+            StartCoroutine(SlideInterfaceWhenOutOffScreen());
         }
 
         _pauseMenuEventSystem.SetSelectedGameObject(isActive ? _resumeBtnGameObject : null);
