@@ -11,6 +11,9 @@ public class PauseMenuAnimationManager : MonoBehaviour
     public delegate void OnPauseMenuStateChangedHandler(bool isActive);
     public event OnPauseMenuStateChangedHandler OnPauseMenuStateChanged;
 
+    public delegate void OnPauseMenuIsOutOfScreenHandler();
+    public event OnPauseMenuIsOutOfScreenHandler OnPauseMenuIsOutOfScreen;
+
     private PauseMenuInputs _pauseMenuInputs;
     private Animator _slideAnimator;
     private bool _active;
@@ -21,6 +24,11 @@ public class PauseMenuAnimationManager : MonoBehaviour
         _pauseMenuInputs.TriggerAnimations += AnimatePauseMenu;
         _slideAnimator = GetComponent<Animator>();
         _active = false;
+    }
+
+    private void PauseMenuIsOutOfScreen()
+    {
+        OnPauseMenuIsOutOfScreen();
     }
 
     private void SlideOutAnimationEnded()

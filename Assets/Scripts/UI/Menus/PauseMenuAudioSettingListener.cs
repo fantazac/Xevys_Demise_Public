@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class SingleAudioSetting : MonoBehaviour
+public class PauseMenuAudioSettingListener : MonoBehaviour
 {
     [SerializeField]
     private int _audioSourceID = 0;
@@ -18,7 +17,7 @@ public class SingleAudioSetting : MonoBehaviour
         AudioSource[] audioSources = GetComponents<AudioSource>();
         _audioSource = audioSources[_audioSourceID];
         _maxVolume = _audioSource.volume;
-        AudioSettings.OnVolumeChanged += SetVolume;
+        PauseMenuAudioSettingsController.OnVolumeChanged += SetVolume;
     }
 
     private void SetVolume(bool isMusic, float volume)

@@ -27,11 +27,14 @@ public class PauseMenuInputs : MonoBehaviour
     private bool _canSlide;
     public bool CanSlide { private get { return _canSlide; } set { _canSlide = value; } }
 
+    private GameObject _resumeBtnGameObject;
+
     private void Start()
     {
         _inputManager = StaticObjects.GetPlayer().GetComponentInChildren<InputManager>();
         _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
         _pauseMenuEventSystem = EventSystem.current;
+        _resumeBtnGameObject = GameObject.Find("ResumeBtn");
 
         _pauseMenuAnimationManager.OnPauseMenuStateChanged += SyncFirstControlOnPauseMenuStateChanged;
         _inputManager.OnPause += PauseMenuTriggered;
@@ -83,7 +86,15 @@ public class PauseMenuInputs : MonoBehaviour
 
     private void SyncFirstControlOnPauseMenuStateChanged(bool isActive)
     {
-        OnMainInterfaceIsCurrent("Main");
-        _pauseMenuEventSystem.SetSelectedGameObject(isActive ? transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).gameObject : null);
+        if (isActive)
+        {
+            OnMainInterfaceIsCurrent("Main");
+        }
+        else
+        {
+            OnMainInterfaceIsCurrent("ShowMainInterface");
+        }
+        
+        _pauseMenuEventSystem.SetSelectedGameObject(isActive ? _resumeBtnGameObject : null);
     }
 }

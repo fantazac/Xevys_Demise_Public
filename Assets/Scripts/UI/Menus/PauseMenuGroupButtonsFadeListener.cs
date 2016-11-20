@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PauseMenuButtonsGroupFadeListener : MonoBehaviour
+public class PauseMenuGroupButtonsFadeListener : MonoBehaviour
 {
+    public delegate void OnGroupButtonFadeOutEndedHandler(bool enabled);
+    public event OnGroupButtonFadeOutEndedHandler OnGroupButtonFadeOutEnded;
 
     private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
     private Animator _animator;
@@ -37,6 +39,6 @@ public class PauseMenuButtonsGroupFadeListener : MonoBehaviour
 
     private void DisableGroupButtonOnFadeOutEnded()
     {
-        gameObject.SetActive(false);
+        OnGroupButtonFadeOutEnded(false);
     }
 }

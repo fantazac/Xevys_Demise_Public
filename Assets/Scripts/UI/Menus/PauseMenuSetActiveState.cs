@@ -10,6 +10,7 @@ public class PauseMenuSetActiveState : MonoBehaviour
     private EventSystem _eventSystem;
 
     private PauseMenuAnimationManager _pauseMenuAnimationManager;
+    private PauseMenuGroupButtonsFadeListener _pauseMenuGroupButtonsFadeListener;
 
     private void Start()
     {
@@ -17,7 +18,11 @@ public class PauseMenuSetActiveState : MonoBehaviour
         _firstButtonGameObject = _thisGameObject.transform.GetChild(0).gameObject;
         _eventSystem = EventSystem.current;
         _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
+        _pauseMenuGroupButtonsFadeListener = GetComponent<PauseMenuGroupButtonsFadeListener>();
+
         _pauseMenuAnimationManager.OnPauseMenuStateChanged += EnableMainButtonsOnPauseMenuOpened;
+        _pauseMenuAnimationManager.OnPauseMenuIsOutOfScreen += DisableAllGroupButtonOnMenuIsOutOfScreen;
+        _pauseMenuGroupButtonsFadeListener.OnGroupButtonFadeOutEnded += DisableGroupButton;
 
         if (gameObject.name != "PauseMenuMainButtons")
         {
@@ -37,6 +42,11 @@ public class PauseMenuSetActiveState : MonoBehaviour
         SetSelectedButton();
     }
 
+    private void DisableGroupButton(bool enable)
+    {
+        _thisGameObject.SetActive(enable);
+    }
+
     private void SetSelectedButton()
     {
         _eventSystem.SetSelectedGameObject(_firstButtonGameObject);
@@ -48,5 +58,10 @@ public class PauseMenuSetActiveState : MonoBehaviour
         {
             _thisGameObject.SetActive(true);
         }
+    }
+
+    private void DisableAllGroupButtonOnMenuIsOutOfScreen()
+    {
+        _thisGameObject.SetActive(false);
     }
 }

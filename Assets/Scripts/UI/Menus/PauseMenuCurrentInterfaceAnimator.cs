@@ -60,9 +60,17 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
     {
         if (current != _currentInterface)
         {
-            _animator.SetTrigger("MainSlideIn");
-            _currentInterface = "Main";
-            OnOptionsInterfaceFade();
+            if (current == "ShowMainInterface")
+            {
+                _animator.SetTrigger(current);
+                _currentInterface = "Main";
+            }
+            else
+            {
+                _animator.SetTrigger("MainSlideIn");
+                _currentInterface = "Main";
+                OnOptionsInterfaceFade();
+            }
         }
     }
 

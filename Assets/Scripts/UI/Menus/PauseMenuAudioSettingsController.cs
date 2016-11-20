@@ -1,16 +1,13 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
 
-public class AudioSettings : MonoBehaviour
+public class PauseMenuAudioSettingsController : MonoBehaviour
 {
     public delegate void OnVolumeChangedHandler(bool isMusic, float volume);
     public static event OnVolumeChangedHandler OnVolumeChanged;
 
     private Slider _musicVolumeSlider;
-    private Slider _fxVolumeSlider;
     private Switch _musicSwitch;
 
     private float _musicVolumeBeforeDesactivate;
@@ -20,7 +17,6 @@ public class AudioSettings : MonoBehaviour
         _musicSwitch = GetComponentInChildren<Switch>();
         Slider[] sliders = GetComponentsInChildren<Slider>();
         _musicVolumeSlider = sliders[0];
-        _fxVolumeSlider = sliders[1];
     }
 
     public void SetMusicVolume(Single volume)
