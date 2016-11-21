@@ -1,7 +1,6 @@
 faire un script comme StaticObjects qui contient tous les tags
 	1 pour les anims, Find(), UnityTags
 InventoryManager, regarder le reload (4000 if)
-SpawnToCheckpointAfterDeath, optimisation
 le son de hit joue lorsque le joueur prend un coeur (faut un heal)
 remove les using System.Collections qui sont inutiles
 faire coroutine pour DestroyPlayerProjectile
@@ -12,5 +11,4 @@ possibilité de skip la collision WaterHitbox en sortant de l'eau
 coroutines pour delai (où ca? voir ben)
 faire les anims de boss comme celles des ennemis (script indiv.)
 regarder pour les chiffres magiques
-séparés le dossier Ennemis par type
 tell, dont ask (voir ben pour être sur)
