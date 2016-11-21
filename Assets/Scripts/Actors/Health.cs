@@ -29,7 +29,7 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
-        Database.OnHealthReloaded += ReloadHealth;
+        AccountStats.OnHealthReloaded += ReloadHealth;
         MaxHealth = _health;
         OnHealthChanged += ChangeHealth;
     }
