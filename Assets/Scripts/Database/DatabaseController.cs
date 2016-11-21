@@ -5,27 +5,36 @@ using System.Data;
 using System.IO;
 using System;
 
-public class Database : DatabaseConnection
+public class DatabaseController : DatabaseConnection
 {
     private AccountStats _accountStats;
+    private AccountSettings _accountSettings;
     public int AccountID { get; private set; }
 
     private void Start()
     {
         base.Start();
         _accountStats = GetComponent<AccountStats>();
+        _accountSettings = GetComponent<AccountSettings>();
         if(!_accountStats._loadStats)
         {
             File.Copy(Path.Combine(Application.streamingAssetsPath, "Database.db"), Path.Combine(Application.persistentDataPath, "Database.db"), true);
             CreateAccount("Test");
             _accountStats.CreateStatsRecord();
-            CreateSettings();
-            CreateAllAchievements();
+            _accountSettings.CreateSettings();
+            //CreateAllAchievements();
         }
         else
         {
             _accountStats.LoadStats();
+            _accountSettings.LoadSettings();
         }
+    }
+
+    public void SaveAll()
+    {
+        _accountStats.SaveStats();
+        _accountSettings.SaveSettings();
     }
 
     private void CreateAccount(string username)
@@ -52,17 +61,7 @@ public class Database : DatabaseConnection
         }
         reader.Close();
         _dbconnection.Close();
-    }
-
-    private void CreateSettings()
-    {
-        _dbconnection.Open();
-        string sqlQuery = String.Format("INSERT INTO SETTINGS (MUSIC_PLAYING, MUSIC_VOLUME, SFX_VOLUME, CONTROL_SCHEME, ACCOUNT_ID)" +
-            "VALUES (0, 0, 0, 0, {0})", AccountID);
-        _dbcommand.CommandText = sqlQuery;
-        _dbcommand.ExecuteNonQuery();
-        _dbconnection.Close();
-    }
+    } 
 
     private void CreateAllAchievements()
     {
