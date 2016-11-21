@@ -28,7 +28,7 @@ public class CheckpointSave : MonoBehaviour
         {
             _showText = true;
             _showCounter = _baseShowCounter;
-            StaticObjects.GetDatabase().GetComponent<Database>().SaveTemporaryStats();
+            StaticObjects.GetDatabase().GetComponent<AccountStats>().SaveTemporaryStats();
             StaticObjects.GetPlayer().GetComponent<SpawnToCheckpointAfterDeath>().SaveCheckpoint(_checkpoint);
         }
     }
