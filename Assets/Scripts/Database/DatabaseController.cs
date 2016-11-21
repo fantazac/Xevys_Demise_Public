@@ -19,22 +19,34 @@ public class DatabaseController : DatabaseConnection
         if(!_accountStats._loadStats)
         {
             File.Copy(Path.Combine(Application.streamingAssetsPath, "Database.db"), Path.Combine(Application.persistentDataPath, "Database.db"), true);
-            CreateAccount("Test");
-            _accountStats.CreateStatsRecord();
-            _accountSettings.CreateSettings();
-            //CreateAllAchievements();
+            CreateAll();
         }
         else
         {
-            _accountStats.LoadStats();
-            _accountSettings.LoadSettings();
+            LoadAll();
         }
+    }
+
+    private void CreateAll()
+    {
+        CreateAccount("Test");
+        _accountStats.CreateStatsRecord();
+        _accountSettings.CreateSettings();
+        CreateAllAchievements();
+        CreateAllFunFacts();
     }
 
     public void SaveAll()
     {
         _accountStats.SaveStats();
         _accountSettings.SaveSettings();
+    }
+
+    private void LoadAll()
+    {
+        ChangeAccount("Test");
+        _accountStats.LoadStats();
+        _accountSettings.LoadSettings();
     }
 
     private void CreateAccount(string username)
@@ -83,19 +95,28 @@ public class DatabaseController : DatabaseConnection
 
     private void CreateAchievement(string name, string description)
     {
-        string sqlQuery = String.Format("INSERT INTO ACHIEVEMENT (\"NAME\", \"DESCRIPTION\")" +
-            "VALUES ({0}, {1}", name, description);
+        string sqlQuery = String.Format("INSERT INTO ACHIEVEMENT (NAME, DESCRIPTION)" +
+            " VALUES (\"{0}\", \"{1}\")", name, description);
         _dbcommand.CommandText = sqlQuery;
         _dbcommand.ExecuteNonQuery();
     }
 
-    private void CreateFunFact(string description)
+    private void CreateAllFunFacts()
     {
         _dbconnection.Open();
+        CreateFunFact("All achievement names are actually parody of song titles.");
+        CreateFunFact("Xevy is actually a very sensitive guy.");
+        CreateFunFact("The Game. You lost it.");
+        CreateFunFact("No skeltals were hurt in the making of this game.");
+        CreateFunFact("Spam Games original name was Pawn V.");
+        _dbconnection.Close();
+    }
+
+    private void CreateFunFact(string description)
+    {
         string sqlQuery = String.Format("INSERT INTO FUN_FACT (DESCRIPTION)" +
-            "VALUES ({0})", description);
+            "VALUES (\"{0}\")", description);
         _dbcommand.CommandText = sqlQuery;
         _dbcommand.ExecuteNonQuery();
-        _dbconnection.Close();
     }
 }
