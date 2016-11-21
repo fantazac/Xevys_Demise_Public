@@ -19,7 +19,7 @@ public class InitializeAxe : MonoBehaviour
 
     private void Start()
     {
-        _flipAxe = StaticObjects.GetPlayer().GetComponent<PlayerOrientation>().IsFacingRight ? 1 : -1;
+        _flipAxe = StaticObjects.GetPlayer().GetComponent<PlayerOrientation>().Orientation;
 
         transform.position = new Vector2(transform.position.x, transform.position.y + _initialHeight);
         transform.eulerAngles = new Vector3(0, 0, _initialRotation);
