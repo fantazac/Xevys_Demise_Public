@@ -55,8 +55,13 @@ public class Health : MonoBehaviour
     {
         if (!IsDead())
         {
-            OnDamageTaken(-hitPoints);
-            OnHealthChanged(-hitPoints);        
+            if(OnDamageTaken != null)
+            {
+                OnDamageTaken(-hitPoints);
+            }
+            
+            OnHealthChanged(-hitPoints);    
+                
             if (IsDead())
             {
                 OnDeath();
