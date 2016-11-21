@@ -8,37 +8,28 @@ public class KnockbackOnDamageTaken : MonoBehaviour
 
     private WaitForSeconds _damageAnimDelay;
 
-    private PlayerGroundMovement _playerGroundMovement;
-
-    public delegate void OnKnockbackStartedHandler();
-    public event OnKnockbackStartedHandler OnKnockbackStarted;
-
-    public delegate void OnKnockbackFinishedHandler();
-    public event OnKnockbackFinishedHandler OnKnockbackFinished;
+    private Rigidbody2D _rigidbody;
 
     private void Start()
     {
-        _playerGroundMovement = GetComponent<PlayerGroundMovement>();
-
         _damageAnimDelay = new WaitForSeconds(TIME_DAMAGE_ANIMATION_PLAYS);
 
-        OnKnockbackFinished += PlayerState.SetImmobile;
+        _rigidbody = GetComponent<Rigidbody2D>();
     }
 
     public void KnockbackPlayer(Vector2 positionEnemy)
     {
-        OnKnockbackStarted();
-        _playerGroundMovement.IsKnockedBack = true;
+        PlayerState.SetKnockedBack(true);
 
         if (transform.position.x < positionEnemy.x)
         {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(-KNOCKBACK_SPEED, GetComponent<Rigidbody2D>().velocity.y);
+            _rigidbody.velocity = new Vector2(-KNOCKBACK_SPEED, _rigidbody.velocity.y);
         }
         else if (transform.position.x > positionEnemy.x)
         {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(KNOCKBACK_SPEED, GetComponent<Rigidbody2D>().velocity.y);
+            _rigidbody.velocity = new Vector2(KNOCKBACK_SPEED, _rigidbody.velocity.y);
         }
-        GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, KNOCKBACK_SPEED);
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, KNOCKBACK_SPEED);
 
         StartCoroutine(StopDamageAnimation());
     }
@@ -47,6 +38,7 @@ public class KnockbackOnDamageTaken : MonoBehaviour
     {
         yield return _damageAnimDelay;
 
-        OnKnockbackFinished();
+        PlayerState.SetKnockedBack(false);
+        PlayerState.SetImmobile();
     }
 }

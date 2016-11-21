@@ -22,7 +22,6 @@ public class PlayerBasicAttack : MonoBehaviour
     private InputManager _inputManager;
     private BoxCollider2D _attackHitBox;
     private AudioSourcePlayer _soundPlayer;
-    private PlayerGroundMovement _playerGroundMovement;
 
     private bool _canAttack = true;
     private float _attackFrequency;
@@ -34,7 +33,6 @@ public class PlayerBasicAttack : MonoBehaviour
         _inputManager = GetComponentInChildren<InputManager>();
         _attackHitBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
         _soundPlayer = GetComponent<AudioSourcePlayer>();
-        _playerGroundMovement = GetComponent<PlayerGroundMovement>();
 
         _inputManager.OnBasicAttack += OnBasicAttack;
 
@@ -45,7 +43,7 @@ public class PlayerBasicAttack : MonoBehaviour
 
     private void OnBasicAttack()
     {
-        if (_canAttack && !_playerGroundMovement.IsKnockedBack)
+        if (_canAttack && !PlayerState.IsKnockedBack)
         {
             ActivateBasicAttack();
         }

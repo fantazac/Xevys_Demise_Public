@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DetectPlayer : MonoBehaviour
+public class BatPlayerDetector : MonoBehaviour
 {
     private BoxCollider2D _hitbox;
 

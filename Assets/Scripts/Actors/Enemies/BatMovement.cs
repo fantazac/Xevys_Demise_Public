@@ -27,7 +27,7 @@ public class BatMovement : MonoBehaviour
 
     private WaitForSeconds _onGroundDelay;
 
-    private DetectPlayer _detectPlayer;
+    private BatPlayerDetector _detectPlayer;
     private float _playerDetectionHitboxInitialYPosition;
 
     private Vector3 _roofTarget;
@@ -45,7 +45,7 @@ public class BatMovement : MonoBehaviour
 
     private void Start()
     {
-        _detectPlayer = _playerDetectionHitbox.GetComponent<DetectPlayer>();
+        _detectPlayer = _playerDetectionHitbox.GetComponent<BatPlayerDetector>();
         _detectPlayer.OnDetectedPlayer += StartMovementDown;
         _playerDetectionHitboxInitialYPosition = _playerDetectionHitbox.GetComponent<Transform>().position.y;
         GetComponent<Health>().OnDeath += StopMovementOnDeath;

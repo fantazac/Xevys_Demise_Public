@@ -12,6 +12,7 @@ public class PlayerState : MonoBehaviour
     public static bool IsFloating { get; private set; }
     public static bool IsCroutching { get; private set; }
     public static bool IsAttacking { get; private set; }
+    public static bool IsKnockedBack { get; private set; }
 
     private static float _xSpeed = 0;
 
@@ -33,6 +34,9 @@ public class PlayerState : MonoBehaviour
     public delegate void OnChangedAttackingHandler(float animSpeed);
     public static event OnChangedAttackingHandler OnChangedAttacking;
 
+    public delegate void OnChangedKnockbackHandler();
+    public static event OnChangedKnockbackHandler OnChangedKnockback;
+
     private void Start()
     {
         _invincibility = GetComponent<InvincibilityAfterBeingHit>();
@@ -42,7 +46,7 @@ public class PlayerState : MonoBehaviour
         IsFloating = false;
     }
 
-    private void EnableInvincibility()
+    private void EnableInvincibility(float invincibilityTime)
     {
         IsInvincible = true;
     }
@@ -101,5 +105,11 @@ public class PlayerState : MonoBehaviour
     {
         IsAttacking = enable;
         OnChangedAttacking(animSpeed);
+    }
+
+    public static void SetKnockedBack(bool enable)
+    {
+        IsKnockedBack = enable;
+        OnChangedKnockback();
     }
 }

@@ -1,5 +1,4 @@
 faire un script comme StaticObjects qui contient tous les tags
-mettre PlayKnockbackAnimation dans PlayerState et AnimManager
 InventoryManager, regarder le reload (4000 if)
 KnockbackOnDamageTaken, appeler KnockbackPlayer avec un event
 PlayerBasicAttack, sortir le son du script + regarder si on peut
