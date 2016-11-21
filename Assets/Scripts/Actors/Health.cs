@@ -15,6 +15,9 @@ public class Health : MonoBehaviour
     public delegate void OnDamageTakenHandler(int hitPoints);
     public event OnDamageTakenHandler OnDamageTaken;
 
+    public delegate void OnDamageTakenByEnemyHandler(Vector2 attackerPosition);
+    public event OnDamageTakenByEnemyHandler OnDamageTakenByEnemy;
+
     public delegate void OnHealHandler(int healPoints);
     public event OnHealHandler OnHeal;
 
@@ -24,15 +27,11 @@ public class Health : MonoBehaviour
     public delegate void OnDeathHandler();
     public event OnDeathHandler OnDeath;
 
-    private KnockbackOnDamageTaken _knockback;
-
     private void Start()
     {
         Database.OnHealthReloaded += ReloadHealth;
         MaxHealth = _health;
         OnHealthChanged += ChangeHealth;
-
-        _knockback = StaticObjects.GetPlayer().GetComponent<KnockbackOnDamageTaken>();
     }
 
     public void Heal(int healPoints)
@@ -52,7 +51,7 @@ public class Health : MonoBehaviour
 
     }
 
-    public void Hit(int hitPoints, Vector2 positionAttacker)
+    public void Hit(int hitPoints, Vector2 attackerPosition)
     {
         if (!IsDead())
         {
@@ -62,9 +61,9 @@ public class Health : MonoBehaviour
             {
                 OnDeath();
             }
-            else if (gameObject.tag == "Player")
-            {               
-                _knockback.KnockbackPlayer(positionAttacker);              
+            if(OnDamageTakenByEnemy != null)
+            {
+                OnDamageTakenByEnemy(attackerPosition);
             }
         }
     }

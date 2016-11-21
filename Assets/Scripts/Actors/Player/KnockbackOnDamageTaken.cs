@@ -3,40 +3,44 @@ using System.Collections;
 
 public class KnockbackOnDamageTaken : MonoBehaviour
 {
-    private const float KNOCKBACK_SPEED = 5;
-    private const float TIME_DAMAGE_ANIMATION_PLAYS = 0.25f;
+    [SerializeField]
+    private float _knockbackSpeed = 5;
 
-    private WaitForSeconds _damageAnimDelay;
+    [SerializeField]
+    private float _knockbackDuration = 0.25f;
+
+    private WaitForSeconds _knockbackDelay;
 
     private Rigidbody2D _rigidbody;
 
     private void Start()
     {
-        _damageAnimDelay = new WaitForSeconds(TIME_DAMAGE_ANIMATION_PLAYS);
+        _knockbackDelay = new WaitForSeconds(_knockbackDuration);
+        GetComponent<Health>().OnDamageTakenByEnemy += KnockbackPlayer;
 
         _rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    public void KnockbackPlayer(Vector2 positionEnemy)
+    private void KnockbackPlayer(Vector2 attackerPosition)
     {
         PlayerState.SetKnockedBack(true);
 
-        if (transform.position.x < positionEnemy.x)
+        if (transform.position.x < attackerPosition.x)
         {
-            _rigidbody.velocity = new Vector2(-KNOCKBACK_SPEED, _rigidbody.velocity.y);
+            _rigidbody.velocity = new Vector2(-_knockbackSpeed, _rigidbody.velocity.y);
         }
-        else if (transform.position.x > positionEnemy.x)
+        else if (transform.position.x > attackerPosition.x)
         {
-            _rigidbody.velocity = new Vector2(KNOCKBACK_SPEED, _rigidbody.velocity.y);
+            _rigidbody.velocity = new Vector2(_knockbackSpeed, _rigidbody.velocity.y);
         }
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, KNOCKBACK_SPEED);
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _knockbackSpeed);
 
-        StartCoroutine(StopDamageAnimation());
+        StartCoroutine(StopKnockback());
     }
 
-    private IEnumerator StopDamageAnimation()
+    private IEnumerator StopKnockback()
     {
-        yield return _damageAnimDelay;
+        yield return _knockbackDelay;
 
         PlayerState.SetKnockedBack(false);
         PlayerState.SetImmobile();
