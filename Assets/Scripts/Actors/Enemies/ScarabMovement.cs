@@ -22,6 +22,11 @@ public class ScarabMovement : MonoBehaviour
 
     protected Vector3 _target;
 
+    protected virtual void Start()
+    {
+        GetComponent<Health>().OnDeath += StopMovementOnDeath;
+    }
+
     protected void StartMovementTowardsNewTarget()
     {
         FindTarget();
@@ -62,12 +67,17 @@ public class ScarabMovement : MonoBehaviour
         return Vector3.Distance(_target, transform.position) < _halfOfScarabWidth;
     }
 
-    protected virtual void Start() { }
     protected virtual void StartRotation() { }
     protected virtual IEnumerator MoveTowardsTarget() { yield return null; }
     protected virtual void InitializeSpriteDirection() { }
     protected virtual bool CanStartRotation() { return _canRotate; }
     protected virtual void FindTarget() { }
+
+    private void StopMovementOnDeath()
+    {
+        StopAllCoroutines();
+        enabled = false;
+    }
 
     public bool IsNotOnTopOfPlatform()
     {

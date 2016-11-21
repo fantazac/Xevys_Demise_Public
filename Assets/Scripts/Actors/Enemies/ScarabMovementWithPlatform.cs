@@ -25,6 +25,7 @@ public class ScarabMovementWithPlatform : ScarabMovement
 
         StartMovementTowardsNewTarget();
         InitializeSpriteDirection();
+        base.Start();
     }
 
     protected override void StartRotation()

@@ -19,18 +19,19 @@ public class BatMovement : MonoBehaviour
     [SerializeField]
     private float _immobileDurationOnGround = 1;
 
-    private WaitForSeconds _onGroundDelay;
+    [SerializeField]
+    private float _downSpeed = 5.5f;
 
-    private AudioSourcePlayer _soundPlayer;
-    private Animator _animator;
+    [SerializeField]
+    private float _upSpeed = 3;
+
+    private WaitForSeconds _onGroundDelay;
 
     private DetectPlayer _detectPlayer;
     private float _playerDetectionHitboxInitialYPosition;
 
-    private const float DOWN_SPEED = 5.5f;
-    private const float UP_SPEED = 3;
-
-    private Vector3 _target;
+    private Vector3 _roofTarget;
+    private Vector3 _floorTarget;
     private Vector3 _initialPosition;
 
     private float _minX = 0;
@@ -47,42 +48,42 @@ public class BatMovement : MonoBehaviour
         _detectPlayer = _playerDetectionHitbox.GetComponent<DetectPlayer>();
         _detectPlayer.OnDetectedPlayer += StartMovementDown;
         _playerDetectionHitboxInitialYPosition = _playerDetectionHitbox.GetComponent<Transform>().position.y;
+        GetComponent<Health>().OnDeath += StopMovementOnDeath;
 
         _initialPosition = transform.position;
         _minX = _initialPosition.x - _leftDistance;
         _maxX = _initialPosition.x + _rightDistance;
-        _animator = GetComponent<Animator>();
 
         _onGroundDelay = new WaitForSeconds(_immobileDurationOnGround);
     }
 
     private void StartMovementDown()
     {
-        _animator.SetBool("IsFlying", true);
         OnBatMovement();
         StartCoroutine(MoveBat());
     }
 
     private IEnumerator MoveBat()
     {
+        _floorTarget = new Vector3(transform.position.x, _lowestY, transform.position.z);
         while (transform.position.y > _lowestY)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y - (DOWN_SPEED * Time.deltaTime), transform.position.z);
+            transform.position = Vector3.MoveTowards(transform.position, _floorTarget, _downSpeed * Time.deltaTime);
 
             yield return null;
         }
-        transform.position = new Vector3(transform.position.x, _lowestY, transform.position.z);
+        transform.position = _floorTarget;
 
         yield return _onGroundDelay;
 
-        FindTarget();
-        while (transform.position.y < _target.y)
+        _roofTarget = new Vector3(Random.Range(_minX, _maxX), _initialPosition.y, _initialPosition.z);
+        while (transform.position.y < _roofTarget.y)
         {
-            transform.position = Vector3.MoveTowards(new Vector3(transform.position.x, transform.position.y, transform.position.z), _target, UP_SPEED * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, _roofTarget, _upSpeed * Time.deltaTime);
 
             yield return null;
         }
-        transform.position = _target;
+        transform.position = _roofTarget;
         StopMovement();
     }
 
@@ -91,16 +92,16 @@ public class BatMovement : MonoBehaviour
         OnBatReachedTarget();
         _playerDetectionHitbox.transform.position = 
             new Vector3(transform.position.x, _playerDetectionHitboxInitialYPosition, transform.position.z);
-        _animator.SetBool("IsFlying", false);
         _detectPlayer.EnableHitbox();
     }
 
-    private void FindTarget()
+    private void StopMovementOnDeath()
     {
-        _target = new Vector3(Random.Range(_minX, _maxX), _initialPosition.y, _initialPosition.z);
+        StopAllCoroutines();
+        enabled = false;
     }
 
-    public bool CloseToTop()
+    public bool IsCloseToTop()
     {
         return _initialPosition.y - transform.position.y < 1;
     }
