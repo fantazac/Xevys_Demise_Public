@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using XInputDotNetPure;
 
-public class GamepadInputs: MonoBehaviour
+public class GamepadInputs : MonoBehaviour
 {
 
     public delegate void GamepadOnMoveHandler(Vector3 movement, bool goesRight);
@@ -50,16 +50,120 @@ public class GamepadInputs: MonoBehaviour
     private bool _xButtonReady = true;
     private bool _yButtonReady = true;
     private bool _aButtonReady = true;
-    private bool _upButtonReady = true;
     private bool _startButtonReady = true;
+
+    private bool _usingDpadControlsScheme;
+
+    private GamePadState _state;
+
+    private void Start()
+    {
+        _state = GamePad.GetState(PlayerIndex.One);
+        _usingDpadControlsScheme = false;
+    }
 
     private void Update()
     {
-        GamePadState state = GamePad.GetState(PlayerIndex.One);
+        _state = GamePad.GetState(PlayerIndex.One);
 
-        if (Math.Abs(state.ThumbSticks.Left.X) > _joysticksXAxisDeadZone)
+        if (_usingDpadControlsScheme)
         {
-            if (state.ThumbSticks.Left.X < 0)
+            DPadControlsScheme();
+        }
+        else
+        {
+            JoystickControlsScheme();
+        }
+
+        SyncAllButtonsState();
+        CheckAllButtonsPressed();
+    }
+
+    private void CheckAllButtonsPressed()
+    {
+        if (_state.Buttons.A == ButtonState.Pressed && _aButtonReady)
+        {
+            _aButtonReady = false;
+            OnJump();
+        }
+
+        if (_state.Buttons.X == ButtonState.Pressed && _xButtonReady)
+        {
+            _xButtonReady = false;
+            OnBasicAttack();
+        }
+
+        if (_state.Buttons.Y == ButtonState.Pressed && _yButtonReady)
+        {
+            _yButtonReady = false;
+            OnIronBootsEquip();
+        }
+
+        if (_state.Buttons.B == ButtonState.Pressed)
+        {
+            if (OnThrowAttack != null)
+            {
+                OnThrowAttack();
+            }
+        }
+
+        if (_state.Buttons.LeftShoulder == ButtonState.Pressed && _leftShoulderReady)
+        {
+            _leftShoulderReady = false;
+            OnThrowAttackChangeButtonPressed();
+        }
+
+        if (_state.Buttons.RightShoulder == ButtonState.Pressed && _rightShoulderReady)
+        {
+            _rightShoulderReady = false;
+            OnThrowAttackChangeButtonPressed();
+        }
+
+        if (_state.Buttons.Start == ButtonState.Pressed && _startButtonReady)
+        {
+            OnPause();
+            _startButtonReady = false;
+        }
+    }
+
+    private void SyncAllButtonsState()
+    {
+        if (_state.Buttons.Start == ButtonState.Released && !_startButtonReady)
+        {
+            _startButtonReady = true;
+        }
+
+        if (_state.Buttons.RightShoulder == ButtonState.Released && !_rightShoulderReady)
+        {
+            _rightShoulderReady = true;
+        }
+
+        if (_state.Buttons.LeftShoulder == ButtonState.Released && !_leftShoulderReady)
+        {
+            _leftShoulderReady = true;
+        }
+
+        if (_state.Buttons.Y == ButtonState.Released && !_yButtonReady)
+        {
+            _yButtonReady = true;
+        }
+
+        if (_state.Buttons.X == ButtonState.Released && !_xButtonReady)
+        {
+            _xButtonReady = true;
+        }
+
+        if (_state.Buttons.A == ButtonState.Released && !_aButtonReady)
+        {
+            _aButtonReady = true;
+        }
+    }
+
+    private void JoystickControlsScheme()
+    {
+        if (Math.Abs(_state.ThumbSticks.Left.X) > _joysticksXAxisDeadZone)
+        {
+            if (_state.ThumbSticks.Left.X < 0)
             {
                 OnMove(Vector3.left, false);
             }
@@ -73,101 +177,68 @@ public class GamepadInputs: MonoBehaviour
             OnStop();
         }
 
-        if (state.Buttons.X == ButtonState.Pressed && _xButtonReady)
+        if (Math.Abs(_state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
         {
-            _xButtonReady = false;
-            OnBasicAttack();
-        }
-
-
-        if (Math.Abs(state.ThumbSticks.Left.Y) == _joysticksYAxisDeadZone)
-        {
-            if (state.ThumbSticks.Left.Y < 0)
+            if (_state.ThumbSticks.Left.Y < 0)
             {
                 OnUnderwaterControl(true);
                 OnCrouch();
-                if (state.Buttons.A == ButtonState.Pressed)
+                if (_state.Buttons.A == ButtonState.Pressed)
                 {
                     OnJumpDown();
                 }
             }
         }
 
-        if (state.ThumbSticks.Left.Y >= 0)
+        if (_state.ThumbSticks.Left.Y >= 0)
         {
             OnStandingUp();
-            if (state.ThumbSticks.Left.Y > 0)
+            if (_state.ThumbSticks.Left.Y > 0)
             {
                 OnUnderwaterControl(false);
             }
         }
+    }
 
-        if (!_upButtonReady && state.ThumbSticks.Left.Y <= 0)
-        {
-            _upButtonReady = true;
-        }
+    private void DPadControlsScheme()
+    {
 
-        if (state.Buttons.A == ButtonState.Pressed && _aButtonReady && state.ThumbSticks.Left.Y != -_joysticksYAxisDeadZone)
+        if (_state.DPad.Left == ButtonState.Pressed && _state.DPad.Right != ButtonState.Pressed && _state.DPad.Down != ButtonState.Pressed)
         {
-            _aButtonReady = false;
-            OnJump();
+            OnMove(Vector3.left, false);
         }
-        if (state.Buttons.A == ButtonState.Released && !_aButtonReady)
+        else if (_state.DPad.Right == ButtonState.Pressed && _state.DPad.Left != ButtonState.Pressed && _state.DPad.Down != ButtonState.Pressed)
         {
-            _aButtonReady = true;
+            OnMove(Vector3.right, true);
         }
-
-        if (state.Buttons.Y == ButtonState.Pressed && _yButtonReady)
+        else
         {
-            _yButtonReady = false;
-            OnIronBootsEquip();
-        }
-        if (state.Buttons.Y == ButtonState.Released && !_yButtonReady)
-        {
-            _yButtonReady = true;
+            OnStop();
         }
 
-        if (state.Buttons.X == ButtonState.Released && !_xButtonReady)
+        if (_state.DPad.Down == ButtonState.Pressed)
         {
-            _xButtonReady = true;
-        }
-
-        if (state.Buttons.B == ButtonState.Pressed)
-        {
-            if (OnThrowAttack != null)
+            OnUnderwaterControl(true);
+            OnCrouch();
+            if (_state.Buttons.A == ButtonState.Pressed)
             {
-                OnThrowAttack();
+                OnJumpDown();
             }
         }
+        else
+        {
+            OnStandingUp();
+            OnUnderwaterControl(false);
+        }
+    }
 
-        if (state.Buttons.LeftShoulder == ButtonState.Pressed && _leftShoulderReady)
-        {
-            _leftShoulderReady = false;
-            OnThrowAttackChangeButtonPressed();
-        }
+    private void SetUsingDPadControlsScheme()
+    {
+        _usingDpadControlsScheme = true;
+    }
 
-        if (state.Buttons.LeftShoulder == ButtonState.Released && !_leftShoulderReady)
-        {
-            _leftShoulderReady = true;
-        }
-
-        if (state.Buttons.RightShoulder == ButtonState.Pressed && _rightShoulderReady)
-        {
-            _rightShoulderReady = false;
-            OnThrowAttackChangeButtonPressed();
-        }
-        if (state.Buttons.RightShoulder == ButtonState.Released && !_rightShoulderReady)
-        {
-            _rightShoulderReady = true;
-        }
-        if (state.Buttons.Start == ButtonState.Pressed && _startButtonReady)
-        {
-            OnPause();
-            _startButtonReady = false;
-        }
-        if (state.Buttons.Start == ButtonState.Released && !_startButtonReady)
-        {
-            _startButtonReady = true;
-        }
+    private void SetUsingJoystickControlsScheme()
+    {
+        _usingDpadControlsScheme = false;
     }
 }

@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
-public class KeyboardInputs : MonoBehaviour {
+public class KeyboardInputs : MonoBehaviour
+{
 
     public delegate void KeyboardOnMoveHandler(Vector3 movement, bool goesRight);
     public event KeyboardOnMoveHandler OnMove;
@@ -39,8 +41,61 @@ public class KeyboardInputs : MonoBehaviour {
     public delegate void KeyboardOnPauseHandler();
     public event KeyboardOnPauseHandler OnPause;
 
+    private bool _usingArrowControlsScheme;
+
+    private void Start()
+    {
+        _usingArrowControlsScheme = false;
+    }
+
     private void Update()
     {
+        if (_usingArrowControlsScheme)
+        {
+            ArrowControlsScheme();
+        }
+        else
+        {
+            WASDControlsScheme();
+        }
+
+        CheckAllKeysPressed();
+    }
+
+    private void CheckAllKeysPressed()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            OnIronBootsEquip();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            OnThrowAttackChangeButtonPressed();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            OnPause();
+        }
+    }
+
+    private void WASDControlsScheme()
+    {
+        if (Input.GetKey(KeyCode.S))
+        {
+            OnCrouch();
+            OnUnderwaterControl(true);
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                OnJumpDown();
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            OnJump();
+        }
         if (Input.GetKeyDown(KeyCode.K))
         {
             OnBasicAttack();
@@ -58,7 +113,25 @@ public class KeyboardInputs : MonoBehaviour {
             OnStop();
         }
 
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.L))
+        {
+            OnThrowAttack();
+        }
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            OnUnderwaterControl(false);
+        }
+
+        if (!Input.GetKey(KeyCode.S))
+        {
+            OnStandingUp();
+        }
+    }
+
+    private void ArrowControlsScheme()
+    {
+        if (Input.GetKey(KeyCode.DownArrow))
         {
             OnCrouch();
             OnUnderwaterControl(true);
@@ -67,51 +140,56 @@ public class KeyboardInputs : MonoBehaviour {
             {
                 OnJumpDown();
             }
-
         }
         else if (Input.GetKeyDown(KeyCode.Space))
         {
             OnJump();
         }
-
-        if (!Input.GetKey(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            OnStandingUp();
+            OnBasicAttack();
+        }
+        else if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.DownArrow))
+        {
+            OnMove(Vector3.left, false);
+        }
+        else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.DownArrow))
+        {
+            OnMove(Vector3.right, true);
+        }
+        else
+        {
+            OnStop();
         }
 
-        if (Input.GetKey(KeyCode.W))
-        {
-            OnUnderwaterControl(false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            OnIronBootsEquip();
-        }
-
-        if (Input.GetKey(KeyCode.L))
+        if (Input.GetKey(KeyCode.S))
         {
             OnThrowAttack();
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKey(KeyCode.UpArrow))
         {
-            OnThrowAttackChangeButtonPressed();
+            OnUnderwaterControl(false);
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (!Input.GetKey(KeyCode.DownArrow))
         {
-            OnPause();
+            OnStandingUp();
         }
     }
 
-    private void WASDControlsScheme()
+    private bool IsPressingDown()
     {
-        
+        return Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
     }
 
-    private void ArrowControlsScheme()
+    private void SetUsingArrowControlsScheme()
     {
-        
+        _usingArrowControlsScheme = true;
+    }
+
+    private void SetUsingWASDControlsScheme()
+    {
+        _usingArrowControlsScheme = false;
     }
 }
