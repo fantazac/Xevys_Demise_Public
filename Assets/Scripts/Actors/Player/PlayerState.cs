@@ -56,15 +56,15 @@ public class PlayerState : MonoBehaviour
         IsInvincible = false;
     }
 
-    public static void SetJumping(bool isJumping)
+    public static void SetJumping()
     {
-        IsJumping = isJumping;
+        IsJumping = !IsJumping;
         OnChangedJumping();
     }
 
-    public static void SetFalling(bool isFalling)
+    public static void SetFalling()
     {
-        IsFalling = isFalling;
+        IsFalling = !IsFalling;
         OnChangedFalling();
     }
 

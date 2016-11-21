@@ -216,15 +216,25 @@ public class PlayerMovement : MonoBehaviour
         Flip(goesRight);
     }
 
+    private bool IsInJumpingStateAndIsJumping()
+    {
+        return PlayerIsJumping() == PlayerState.IsJumping;
+    }
+
+    private bool IsInFallingStateAndIsFalling()
+    {
+        return PlayerIsFalling() == PlayerState.IsFalling;
+    }
+
     private void Update()
     {
-        if (PlayerIsJumping() != PlayerState.IsJumping)
+        if (!IsInJumpingStateAndIsJumping())
         {
-            PlayerState.SetJumping(PlayerIsJumping());
+            PlayerState.SetJumping();
         }
-        else if (PlayerIsFalling() != PlayerState.IsFalling)
+        else if (!IsInFallingStateAndIsFalling())
         {
-            PlayerState.SetFalling(PlayerIsFalling());
+            PlayerState.SetFalling();
         }
 
         UpdateMovement();
@@ -232,7 +242,7 @@ public class PlayerMovement : MonoBehaviour
 
     protected void Flip(bool goesRight)
     {
-        if (GetComponent<ActorOrientation>().Flip(goesRight))
+        if (_orientation.Flip(goesRight))
         {
             _basicAttackBox.offset = new Vector2(_basicAttackBox.offset.x * -1, _basicAttackBox.offset.y);
             OnPlayerFlipped();
