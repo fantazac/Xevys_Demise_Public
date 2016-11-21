@@ -30,6 +30,7 @@ public class BehemothAI : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private Animator _animator;
     private BossOrientation _bossOrientation;
+    private PolygonCollider2D _polygonHitbox;
 
     private System.Random _rng = new System.Random();
     private BehemothStatus _status = BehemothStatus.WAIT;
@@ -42,6 +43,8 @@ public class BehemothAI : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _bossOrientation = GetComponent<BossOrientation>();
         _animator = GetComponent<Animator>();
+        _polygonHitbox = GetComponent<PolygonCollider2D>();
+
         _health.OnDeath += OnBehemothDefeated;
     }
 
@@ -110,8 +113,10 @@ public class BehemothAI : MonoBehaviour
 
             {
                 _timeLeft = 1;
+                _polygonHitbox.enabled = true;
                 _animator.SetInteger("State", 3);
                 _status = BehemothStatus.STRUCK;
+                
             }
         }
         else
@@ -138,9 +143,10 @@ public class BehemothAI : MonoBehaviour
 
     private void UpdateWhenStunned()
     {
-        _timeLeft -= Time.fixedDeltaTime;
+        _timeLeft -= Time.deltaTime;
         if (_timeLeft <= 0)
         {
+            _polygonHitbox.enabled = false;
             SetWaitStatus();
         }
     }
