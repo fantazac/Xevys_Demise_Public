@@ -11,4 +11,3 @@ possibilité de skip la collision WaterHitbox en sortant de l'eau
 coroutines pour delai (où ca? voir ben)
 faire les anims de boss comme celles des ennemis (script indiv.)
 regarder pour les chiffres magiques
-tell, dont ask (voir ben pour être sur)

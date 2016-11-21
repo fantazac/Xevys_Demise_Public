@@ -5,5 +5,3 @@ FallDamage (expliqué qu'on check la distance) ventilateur
 PlayerMovement (conditions dans update pour les anims) methodes
 PlayerState (memory leak? classe dans StaticObjects?) enlever
 OnItemDrop (expliqué le script au complet)
-delai avec coroutine (où? jpense les avoir toutes faites)
-tell dont ask (explication, où)
