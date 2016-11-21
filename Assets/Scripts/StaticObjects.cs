@@ -10,6 +10,7 @@ public class StaticObjects : MonoBehaviour
     private static GameObject _healthBar;
     private static GameObject _itemCanvas;
     private static GameObject _database;
+    private static PlayerState _playerState;
 
     private void Start()
     {
@@ -19,11 +20,17 @@ public class StaticObjects : MonoBehaviour
         _healthBar = GameObject.Find("HealthBar");
         _itemCanvas = GameObject.Find("ItemCanvas");
         _database = GameObject.Find("Database");
+        _playerState = _player.GetComponent<PlayerState>();
     }
 
     public static GameObject GetPlayer()
     {
         return _player;
+    }
+
+    public static PlayerState GetPlayerState()
+    {
+        return _playerState;
     }
 
     public static GameObject GetPanelUI()

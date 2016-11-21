@@ -15,10 +15,10 @@ public class PlayerMovement : MonoBehaviour
     protected Health _playerHealth;
     protected PlayerBasicAttack _playerBasicAttack;
     protected PlayerTouchesFlyingPlatform _playerTouchesFlyingPlatform;
+    protected PlayerState _playerState;
 
     protected ActorOrientation _orientation;
     protected PlayerFloatingInteraction _playerFloating;
-    protected PlayerState _state;
 
     protected PlayerGroundMovement _playerGroundMovement;
 
@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
         _orientation = GetComponent<ActorOrientation>();
         _playerCroutchHitbox = GameObject.Find("CharacterCroutchedHitbox").GetComponent<BoxCollider2D>();
         _playerFloating = GameObject.Find("CharacterFloatingHitbox").GetComponent<PlayerFloatingInteraction>();
-        _state = GetComponent<PlayerState>();
+        _playerState = GetComponent<PlayerState>();
 
         _playerGroundMovement = GetComponent<PlayerGroundMovement>();
 
@@ -76,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
         if (PlayerCanMove())
         {
             MovePlayer(vector, goesRight);
-            PlayerState.SetMoving(_rigidbody.velocity.x);
+            _playerState.SetMoving(_rigidbody.velocity.x);
         }
         else
         {
@@ -94,10 +94,10 @@ public class PlayerMovement : MonoBehaviour
 
     protected virtual void OnStop()
     {
-        if (PlayerIsMovingHorizontally() && !PlayerState.IsKnockedBack)
+        if (PlayerIsMovingHorizontally() && !_playerState.IsKnockedBack)
         {
             _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-            PlayerState.SetImmobile();
+            _playerState.SetImmobile();
         }
     }
 
@@ -167,12 +167,12 @@ public class PlayerMovement : MonoBehaviour
 
     private bool PlayerCanDropFromFlyingPlatform()
     {
-        return !IsJumping() && !PlayerState.IsKnockedBack && PlayerTouchesFlyingPlatform();
+        return !IsJumping() && !_playerState.IsKnockedBack && PlayerTouchesFlyingPlatform();
     }
 
     private bool PlayerCanMove()
     {
-        return !PlayerState.IsKnockedBack && !PlayerState.IsCroutching && !PlayerState.IsAttacking;
+        return !_playerState.IsKnockedBack && !_playerState.IsCroutching && !_playerState.IsAttacking;
     }
 
     private bool PlayerIsAlmostStopped()
@@ -218,23 +218,23 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsInJumpingStateAndIsJumping()
     {
-        return PlayerIsJumping() == PlayerState.IsJumping;
+        return PlayerIsJumping() == _playerState.IsJumping;
     }
 
     private bool IsInFallingStateAndIsFalling()
     {
-        return PlayerIsFalling() == PlayerState.IsFalling;
+        return PlayerIsFalling() == _playerState.IsFalling;
     }
 
     private void Update()
     {
         if (!IsInJumpingStateAndIsJumping())
         {
-            PlayerState.SetJumping();
+            _playerState.SetJumping();
         }
         else if (!IsInFallingStateAndIsFalling())
         {
-            PlayerState.SetFalling();
+            _playerState.SetFalling();
         }
 
         UpdateMovement();

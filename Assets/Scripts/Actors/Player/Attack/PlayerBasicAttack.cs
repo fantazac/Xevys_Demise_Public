@@ -41,7 +41,7 @@ public class PlayerBasicAttack : MonoBehaviour
 
     private void Attack()
     {
-        if (_canAttack && !PlayerState.IsKnockedBack)
+        if (_canAttack && !StaticObjects.GetPlayerState().IsKnockedBack)
         {
             ActivateBasicAttack();
         }
@@ -49,7 +49,7 @@ public class PlayerBasicAttack : MonoBehaviour
 
     private void ActivateBasicAttack()
     {
-        PlayerState.SetAttacking(true, _attackSpeed);
+        StaticObjects.GetPlayerState().SetAttacking(true, _attackSpeed);
         _canAttack = false;
         _attackHitBox.enabled = true;
         OnBasicAttack();
@@ -64,7 +64,7 @@ public class PlayerBasicAttack : MonoBehaviour
 
         yield return _finishAttackAnimDelay;
 
-        PlayerState.SetAttacking(false, 1);
+        StaticObjects.GetPlayerState().SetAttacking(false, 1);
 
         yield return _allowNewAttackDelay;
 

@@ -26,7 +26,7 @@ public class FallDamage: MonoBehaviour
 
     private void OnLanding()
     {
-        if (_fallingCount > 1 && !PlayerState.IsInvincible && _playerHealth.HealthPoint > 0)
+        if (_fallingCount > 1 && !StaticObjects.GetPlayerState().IsInvincible && _playerHealth.HealthPoint > 0)
         {
             _playerHealth.Hit((int)Mathf.Clamp(_fallingCount * DAMAGE_MULTIPLIER, 
                 _fallingCount * DAMAGE_MULTIPLIER, _playerHealth.HealthPoint), 

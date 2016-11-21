@@ -15,7 +15,16 @@ public class PlayerWaterMovement : PlayerMovement
     private bool _isFloating = false;
     private float _waterYSpeed;
 
+    private AudioReverbZone _audioReverbZone;
+
     public bool IsFloating { get { return _isFloating; } set { _isFloating = value; } }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        _audioReverbZone = GetComponent<AudioReverbZone>();
+    }
 
     protected override void OnMove(Vector3 vector, bool goesRight)
     {
@@ -29,7 +38,7 @@ public class PlayerWaterMovement : PlayerMovement
     {
         if (enabled)
         {
-            if (!PlayerState.IsKnockedBack)
+            if (!_playerState.IsKnockedBack)
             {
                 if (!IsJumping())
                 {
@@ -50,7 +59,7 @@ public class PlayerWaterMovement : PlayerMovement
     private void ExitWater()
     {
         _isFloating = false;
-        PlayerState.DisableFloating();
+        _playerState.DisableFloating();
 
         _playerGroundMovement.enabled = true;
         _playerGroundMovement.ChangeGravity();
@@ -144,8 +153,8 @@ public class PlayerWaterMovement : PlayerMovement
         }
     }
 
-    private void SetReverbZoneState(bool isActive)
+    private void SetReverbZoneState(bool enable)
     {
-        GetComponent<AudioReverbZone>().enabled = isActive;
+        _audioReverbZone.enabled = enable;
     }
 }
