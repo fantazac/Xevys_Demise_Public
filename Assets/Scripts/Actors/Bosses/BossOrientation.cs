@@ -4,28 +4,35 @@ public class BossOrientation : ActorOrientation
 {
     GameObject _player;
 
+    public delegate void OnBossFlippedHandler();
+    public event OnBossFlippedHandler OnBossFlipped;
+
     private void Start()
     {
         _player = StaticObjects.GetPlayer();
     }
 
-    public bool FlipTowardsSpecificPoint(Vector2 point)
+    public void FlipTowardsSpecificPoint(Vector2 point)
     {
-        if (point.x > transform.position.x && !IsFacingRight)
+        if (point.x > transform.position.x ^ IsFacingRight)
+        {
+            Flip();
+            if (OnBossFlipped != null)
+            {
+                OnBossFlipped();
+            }
+            //return true;
+        }
+        /*else if (point.x < transform.position.x && IsFacingRight)
         {
             Flip();
             return true;
-        }
-        else if (point.x < transform.position.x && IsFacingRight)
-        {
-            Flip();
-            return true;
-        }
-        return false;
+        }*/
+        //return false;
     }
 
-    public bool FlipTowardsPlayer()
+    public void FlipTowardsPlayer()
     {
-        return FlipTowardsSpecificPoint(_player.transform.position);
+        FlipTowardsSpecificPoint(_player.transform.position);
     }
 }

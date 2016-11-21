@@ -25,11 +25,11 @@ public class BehemothAI : MonoBehaviour
     private const float FEIGN_TIME = 0.33f;
     private const int CHARGE_TIME = 5;
 
+    private Health _health;
     private GameObject _aimedWall;
     private Rigidbody2D _rigidbody;
     private Animator _animator;
     private BossOrientation _bossOrientation;
-    private OnBossDefeated _onBossDefeated;
 
     private System.Random _rng = new System.Random();
     private BehemothStatus _status = BehemothStatus.WAIT;
@@ -38,16 +38,16 @@ public class BehemothAI : MonoBehaviour
 
     private void Start()
     {
+        _health = GetComponent<Health>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _bossOrientation = GetComponent<BossOrientation>();
         _animator = GetComponent<Animator>();
-        _onBossDefeated = GetComponent<OnBossDefeated>();
-        _onBossDefeated.OnDefeated += OnBehemothDefeated;
+        _health.OnDeath += OnBehemothDefeated;
     }
 
     private void OnDestroy()
     {
-        _onBossDefeated.OnDefeated -= OnBehemothDefeated;
+        _health.OnDeath -= OnBehemothDefeated;
     }
 
     private void FixedUpdate()
@@ -105,8 +105,8 @@ public class BehemothAI : MonoBehaviour
         {
             _rigidbody.velocity = new Vector2(_speed * _bossOrientation.Orientation, _rigidbody.velocity.y);
             if (_bossOrientation.IsFacingRight ?
-                _aimedWall.transform.position.x - _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 <= transform.position.x + GetComponent<SpriteRenderer>().bounds.size.x / 2:
-                _aimedWall.transform.position.x + _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 >= transform.position.x - GetComponent<SpriteRenderer>().bounds.size.x / 2)
+                _aimedWall.transform.position.x - _aimedWall.transform.localScale.x / 2 <= transform.position.x + GetComponent<SpriteRenderer>().bounds.size.x / 2:
+                _aimedWall.transform.position.x + _aimedWall.transform.localScale.x / 2 >= transform.position.x - GetComponent<SpriteRenderer>().bounds.size.x / 2)
 
             {
                 _timeLeft = 1;

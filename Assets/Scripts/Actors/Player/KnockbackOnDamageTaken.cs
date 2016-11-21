@@ -12,6 +12,7 @@ public class KnockbackOnDamageTaken : MonoBehaviour
     private WaitForSeconds _knockbackDelay;
 
     private Rigidbody2D _rigidbody;
+    private PlayerState _playerState;
 
     private void Start()
     {
@@ -19,11 +20,13 @@ public class KnockbackOnDamageTaken : MonoBehaviour
         GetComponent<Health>().OnDamageTakenByEnemy += KnockbackPlayer;
 
         _rigidbody = GetComponent<Rigidbody2D>();
+
+        _playerState = StaticObjects.GetPlayerState();
     }
 
     private void KnockbackPlayer(Vector2 attackerPosition)
     {
-        PlayerState.SetKnockedBack(true);
+        _playerState.SetKnockedBack(true);
 
         if (transform.position.x < attackerPosition.x)
         {
@@ -42,7 +45,7 @@ public class KnockbackOnDamageTaken : MonoBehaviour
     {
         yield return _knockbackDelay;
 
-        PlayerState.SetKnockedBack(false);
-        PlayerState.SetImmobile();
+        _playerState.SetKnockedBack(false);
+        _playerState.SetImmobile();
     }
 }

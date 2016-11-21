@@ -6,18 +6,21 @@ public class MovementAnimationManager : MonoBehaviour
 
     private Animator _anim;
     private PlayerMovement[] _playerMovements;
+    private PlayerState _playerState;
 
     private void Start()
     {
         _anim = GetComponent<Animator>();
 
-        PlayerState.OnChangedJumping += AnimateJumping;
-        PlayerState.OnChangedFalling += AnimateFalling;
-        PlayerState.OnChangedMoving += AnimateMoving;
-        PlayerState.OnChangedFloating += AnimateFloating;
-        PlayerState.OnChangedCroutching += AnimateCroutching;
-        PlayerState.OnChangedAttacking += AnimateAttacking;
-        PlayerState.OnChangedKnockback += AnimateKnockBack;
+        _playerState = StaticObjects.GetPlayerState();
+
+        _playerState.OnChangedJumping += AnimateJumping;
+        _playerState.OnChangedFalling += AnimateFalling;
+        _playerState.OnChangedMoving += AnimateMoving;
+        _playerState.OnChangedFloating += AnimateFloating;
+        _playerState.OnChangedCroutching += AnimateCroutching;
+        _playerState.OnChangedAttacking += AnimateAttacking;
+        _playerState.OnChangedKnockback += AnimateKnockBack;
 
         _playerMovements = StaticObjects.GetPlayer().GetComponents<PlayerMovement>();
         foreach(PlayerMovement playerMovement in _playerMovements)
@@ -28,32 +31,32 @@ public class MovementAnimationManager : MonoBehaviour
 
     private void AnimateJumping()
     {
-        _anim.SetBool("IsJumping", PlayerState.IsJumping);
+        _anim.SetBool("IsJumping", _playerState.IsJumping);
     }
 
     private void AnimateFalling()
     {
-        _anim.SetBool("IsFalling", PlayerState.IsFalling);
+        _anim.SetBool("IsFalling", _playerState.IsFalling);
     }
 
     private void AnimateMoving()
     {
-        _anim.SetBool("IsMoving", PlayerState.IsMoving);
+        _anim.SetBool("IsMoving", _playerState.IsMoving);
     }
 
     private void AnimateFloating()
     {
-        _anim.SetBool("IsFloating", PlayerState.IsFloating);
+        _anim.SetBool("IsFloating", _playerState.IsFloating);
     }
 
     private void AnimateCroutching()
     {
-        _anim.SetBool("IsCrouching", PlayerState.IsCroutching);
-        if (PlayerState.IsAttacking && PlayerState.IsCroutching)
+        _anim.SetBool("IsCrouching", _playerState.IsCroutching);
+        if (_playerState.IsAttacking && _playerState.IsCroutching)
         {
             _anim.Play("Character_Crouch_Attack", 0, _anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
         }
-        else if (PlayerState.IsAttacking)
+        else if (_playerState.IsAttacking)
         {
             _anim.Play("Character_Attack", 0, _anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
         }
@@ -62,7 +65,7 @@ public class MovementAnimationManager : MonoBehaviour
     private void AnimateAttacking(float animSpeed)
     {
         _anim.speed = animSpeed;
-        _anim.SetBool("IsAttacking", PlayerState.IsAttacking);
+        _anim.SetBool("IsAttacking", _playerState.IsAttacking);
     }
 
     private void FlipAnimation()
@@ -73,7 +76,7 @@ public class MovementAnimationManager : MonoBehaviour
 
     private void AnimateKnockBack()
     {
-        _anim.SetBool("IsDamaged", PlayerState.IsKnockedBack);
+        _anim.SetBool("IsDamaged", _playerState.IsKnockedBack);
     }
 
 }
