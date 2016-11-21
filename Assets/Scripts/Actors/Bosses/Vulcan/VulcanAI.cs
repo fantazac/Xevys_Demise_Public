@@ -56,13 +56,12 @@ public class VulcanAI : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _bossOrientation = GetComponent<BossOrientation>();
         _animator = GetComponent<Animator>();
-        _onBossDefeated = GetComponent<OnBossDefeated>();
-        _onBossDefeated.OnDefeated += OnVulcanDefeated;
+        _health.OnDeath += OnVulcanDefeated;
     }
 
     private void OnDestroy()
     {
-        _onBossDefeated.OnDefeated -= OnVulcanDefeated;
+        _health.OnDeath -= OnVulcanDefeated;
     }
 
     private void FixedUpdate()

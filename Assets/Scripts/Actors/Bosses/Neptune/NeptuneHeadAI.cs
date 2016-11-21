@@ -29,6 +29,7 @@ public class NeptuneHeadAI : MonoBehaviour
     protected Vector2 _origin;
     protected Vector2[] _pointsToReach;
 
+    private Health _health;
     private GameObject[] _bodyParts;
     protected Rigidbody2D _rigidbody;
     private Animator _animator;
@@ -66,12 +67,18 @@ public class NeptuneHeadAI : MonoBehaviour
         {
             bodyPart.SetActive(false);
         }
+        _health = GetComponent<Health>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _onBossDefeated = GetComponent<OnBossDefeated>();
-        _onBossDefeated.OnDefeated += OnNeptuneDefeated;
+        _health.OnDeath += OnNeptuneDefeated;
         InitializePoints();
         RotateAndFlip();
+    }
+
+    private void Destroy()
+    {
+        _health.OnDeath -= OnNeptuneDefeated;
     }
 
     protected void InitializePoints()
