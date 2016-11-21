@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-//Cela ressemble à EnemiesAttackManager, à l'exception que celui-ci vérifie le dommage au niveau de la Collision, plutôt que sur le Trigger.
-//Nous avons donc préféré les garder en scripts séparés.
 public class EnvironmentOnCollisionDamage : MonoBehaviour
 {
     [SerializeField]
