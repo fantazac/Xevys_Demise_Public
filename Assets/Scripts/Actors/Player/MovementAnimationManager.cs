@@ -17,6 +17,7 @@ public class MovementAnimationManager : MonoBehaviour
         PlayerState.OnChangedFloating += AnimateFloating;
         PlayerState.OnChangedCroutching += AnimateCroutching;
         PlayerState.OnChangedAttacking += AnimateAttacking;
+        PlayerState.OnChangedKnockback += AnimateKnockBack;
 
         _playerMovements = StaticObjects.GetPlayer().GetComponents<PlayerMovement>();
         foreach(PlayerMovement playerMovement in _playerMovements)
@@ -68,6 +69,11 @@ public class MovementAnimationManager : MonoBehaviour
     {
         _anim.transform.localScale = new Vector3(-1 * _anim.transform.localScale.x,
                 _anim.transform.localScale.y, _anim.transform.localScale.z);
+    }
+
+    private void AnimateKnockBack()
+    {
+        _anim.SetBool("IsDamaged", PlayerState.IsKnockedBack);
     }
 
 }

@@ -29,7 +29,7 @@ public class PlayerWaterMovement : PlayerMovement
     {
         if (enabled)
         {
-            if (!_isKnockedBack)
+            if (!PlayerState.IsKnockedBack)
             {
                 if (!IsJumping())
                 {

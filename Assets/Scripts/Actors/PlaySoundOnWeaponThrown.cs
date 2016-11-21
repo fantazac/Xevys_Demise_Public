@@ -10,15 +10,18 @@ public class PlaySoundOnWeaponThrown : MonoBehaviour
     [SerializeField]
     private int _axeSoundIndex = 2;
 
-    private PlayerThrowAttack _throwAttack;
+    private ThrowKnife _throwKnifeAttack;
+    private ThrowAxe _throwAxeAttack;
 
     private AudioSourcePlayer _audioSourcePlayer;
 
     private void Start()
     {
-        _throwAttack = GetComponent<PlayerThrowAttack>();
-        _throwAttack.OnAxeAmmoUsed += PlayAxeThrownSound;
-        _throwAttack.OnKnifeAmmoUsed += PlayKnifeThrownSound;
+        _throwKnifeAttack = GetComponent<ThrowKnife>();
+        _throwAxeAttack = GetComponent<ThrowAxe>();
+
+        _throwAxeAttack.OnAxeAmmoUsed += PlayAxeThrownSound;
+        _throwKnifeAttack.OnKnifeAmmoUsed += PlayKnifeThrownSound;
 
         _audioSourcePlayer = GetComponent<AudioSourcePlayer>();
     }

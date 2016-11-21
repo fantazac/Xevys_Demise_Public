@@ -46,7 +46,7 @@ public class OnItemDrop : MonoBehaviour
 
     private bool EnemyMustDropItemsStraightDown(Collider2D collider)
     {
-        return (collider.gameObject.tag == "Bat" && collider.GetComponent<BatMovement>().CloseToTop())
+        return (collider.gameObject.tag == "Bat" && collider.GetComponent<BatMovement>().IsCloseToTop())
             || (collider.gameObject.tag == "Scarab" && collider.GetComponent<ScarabMovement>().IsNotOnTopOfPlatform());
     }
 

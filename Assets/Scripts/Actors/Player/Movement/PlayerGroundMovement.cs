@@ -26,7 +26,7 @@ public class PlayerGroundMovement : PlayerMovement
     {
         if (enabled)
         {
-            if (!IsKnockedBack && !PlayerState.IsCroutching)
+            if (!PlayerState.IsKnockedBack && !PlayerState.IsCroutching)
             {
                 if (!IsJumping())
                 {

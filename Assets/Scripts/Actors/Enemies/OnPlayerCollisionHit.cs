@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemiesAttackManager : MonoBehaviour
+public class OnPlayerCollisionHit : MonoBehaviour
 {
     [SerializeField]
     private int _baseDamage = 100;

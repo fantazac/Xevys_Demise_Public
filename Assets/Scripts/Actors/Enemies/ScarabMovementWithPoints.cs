@@ -23,10 +23,10 @@ public class ScarabMovementWithPoints : ScarabMovement
         _selectedTargetPoint = Random.Range(1, _points.Length - 1);
 
         transform.position = _points[_selectedTargetPoint];
-
         SetInitialDirection();
         StartMovementTowardsNewTarget();
         InitializeSpriteDirection();
+        base.Start();
     }
 
     private void SetInitialDirection()

@@ -119,7 +119,7 @@ public class XevyAI : MonoBehaviour
                 {
                     _currentAttack = _action.FireAttack(_playerInteraction.GetPlayerHorizontalDistance(), _playerInteraction.GetPlayerVerticalDistance());
                 }
-                _sameAttackCount = (_currentAttack == _lastAttack ? _sameAttackCount++ : 0);
+                _sameAttackCount = (_currentAttack == _lastAttack ? _sameAttackCount + 1 : 0);
                 _lastAttack = _currentAttack;
 
                 if (_sameAttackCount == NUMBER_SAME_ATTACKS_BEFORE_MOVEMENT)

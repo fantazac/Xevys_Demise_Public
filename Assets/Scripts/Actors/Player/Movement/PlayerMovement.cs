@@ -32,17 +32,12 @@ public class PlayerMovement : MonoBehaviour
     protected const float INITIAL_GRAVITY_SCALE = 5;
     protected const float TERMINAL_SPEED = -18;
     protected const float LINEAR_DRAG = 18f;
-    protected const float KNOCKBACK_DURATION = 0.25f;
 
     protected float _horizontalSpeed = 7;
     protected float _jumpingSpeed = 17;
-    protected bool _isKnockedBack = false;
-    protected float _knockbackCount = 0;
     protected bool _canDoubleJump = false;
     protected bool _wasFalling = false;
     protected bool _isCrouching = false;
-
-    public bool IsKnockedBack { get { return _isKnockedBack; } set { _isKnockedBack = value; } }
 
     protected virtual void Start()
     {
@@ -99,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
 
     protected virtual void OnStop()
     {
-        if (PlayerIsMovingHorizontally() && !_isKnockedBack)
+        if (PlayerIsMovingHorizontally() && !PlayerState.IsKnockedBack)
         {
             _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
             PlayerState.SetImmobile();
@@ -172,12 +167,12 @@ public class PlayerMovement : MonoBehaviour
 
     private bool PlayerCanDropFromFlyingPlatform()
     {
-        return !IsJumping() && !_isKnockedBack && PlayerTouchesFlyingPlatform();
+        return !IsJumping() && !PlayerState.IsKnockedBack && PlayerTouchesFlyingPlatform();
     }
 
     private bool PlayerCanMove()
     {
-        return !IsKnockedBack && !PlayerState.IsCroutching && !PlayerState.IsAttacking;
+        return !PlayerState.IsKnockedBack && !PlayerState.IsCroutching && !PlayerState.IsAttacking;
     }
 
     private bool PlayerIsAlmostStopped()
@@ -230,16 +225,6 @@ public class PlayerMovement : MonoBehaviour
         else if (PlayerIsFalling() != PlayerState.IsFalling)
         {
             PlayerState.SetFalling(PlayerIsFalling());
-        }
-
-        if (_isKnockedBack && _knockbackCount >= KNOCKBACK_DURATION)
-        {
-            _isKnockedBack = false;
-            _knockbackCount = 0;
-        }
-        else if (_isKnockedBack)
-        {
-            _knockbackCount += Time.deltaTime;
         }
 
         UpdateMovement();

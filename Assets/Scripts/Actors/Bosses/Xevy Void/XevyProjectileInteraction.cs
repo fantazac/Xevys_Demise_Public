@@ -10,21 +10,25 @@ public class XevyProjectileInteraction : MonoBehaviour
 
     Dictionary<GameObject, float> _knivesDictionary;
     Dictionary<GameObject, float> _axesDictionary;
-    PlayerThrowAttack _throwAttack;
+    private ThrowKnife _throwKnifeAttack;
+    private ThrowAxe _throwAxeAttack;
 
-	private void Start()
+    private void Start()
     {
         _knivesDictionary = new Dictionary<GameObject, float>();
         _axesDictionary = new Dictionary<GameObject, float>();
-        _throwAttack = StaticObjects.GetPlayer().GetComponent<PlayerThrowAttack>();
-        _throwAttack.OnKnifeThrown += OnKnifeThrown;
-        _throwAttack.OnAxeThrown += OnAxeThrown;
+
+        _throwKnifeAttack = StaticObjects.GetPlayer().GetComponent<ThrowKnife>();
+        _throwAxeAttack = StaticObjects.GetPlayer().GetComponent<ThrowAxe>();
+
+        _throwKnifeAttack.OnKnifeThrown += OnKnifeThrown;
+        _throwAxeAttack.OnAxeThrown += OnAxeThrown;
 	}
 
     private void Destroy()
     {
-        _throwAttack.OnKnifeThrown -= OnKnifeThrown;
-        _throwAttack.OnAxeThrown -= OnAxeThrown;
+        _throwKnifeAttack.OnKnifeThrown -= OnKnifeThrown;
+        _throwAxeAttack.OnAxeThrown -= OnAxeThrown;
     }
 
     public bool CheckKnivesDistance()
