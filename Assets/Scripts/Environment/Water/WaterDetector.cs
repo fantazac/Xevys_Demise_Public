@@ -10,6 +10,13 @@ public class WaterDetector : MonoBehaviour
     private const float AXE_DAMPING_REDUCTION = 400f;
     private const float DEFAULT_DAMPING_REDUCTION = 60f;
 
+    private ActorOrientation _orientation;
+
+    private void Start()
+    {
+        _orientation = StaticObjects.GetPlayer().GetComponent<ActorOrientation>();
+    }
+
     void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.tag == "AxeHandle" || collider.gameObject.tag == "AxeBlade")
@@ -36,12 +43,12 @@ public class WaterDetector : MonoBehaviour
         {
             //Creating the swimming wave ahead and behind the player
             transform.parent.GetComponent<Water>().Splash(transform.position.x + WAVE_OFFSET,
-                                                         (collider.GetComponent<PlayerOrientation>().IsFacingRight ?
+                                                         (_orientation.IsFacingRight ?
                                                          Mathf.Abs(collider.GetComponent<Rigidbody2D>().velocity.x) :
                                                          -Mathf.Abs(collider.GetComponent<Rigidbody2D>().velocity.x))
                                                          / SWIMMING_DAMPING_REDUCTION);
             transform.parent.GetComponent<Water>().Splash(transform.position.x - WAVE_OFFSET,
-                                                         (collider.GetComponent<PlayerOrientation>().IsFacingRight ?
+                                                         (_orientation.IsFacingRight ?
                                                          -Mathf.Abs(collider.GetComponent<Rigidbody2D>().velocity.x) :
                                                          Mathf.Abs(collider.GetComponent<Rigidbody2D>().velocity.x))
                                                          / SWIMMING_DAMPING_REDUCTION);

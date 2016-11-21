@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class ActorOrientation : MonoBehaviour
+public class ActorOrientation : MonoBehaviour
 {
     [SerializeField]
     private bool _isFacingRight;
@@ -12,5 +12,15 @@ public abstract class ActorOrientation : MonoBehaviour
     {
         _isFacingRight = !_isFacingRight;
         transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+    }
+
+    public bool Flip(bool goesRight)
+    {
+        if (goesRight != IsFacingRight)
+        {
+            IsFacingRight = goesRight;
+            return true;
+        }
+        return false;
     }
 }

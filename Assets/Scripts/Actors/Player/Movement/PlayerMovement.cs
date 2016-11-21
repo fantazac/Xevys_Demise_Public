@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     protected PlayerBasicAttack _playerBasicAttack;
     protected PlayerTouchesFlyingPlatform _playerTouchesFlyingPlatform;
 
-    protected PlayerOrientation _playerOrientation;
+    protected ActorOrientation _orientation;
     protected PlayerFloatingInteraction _playerFloating;
     protected PlayerState _state;
 
@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
         _playerHealth = GetComponent<Health>();
         _playerTouchesGround = GetComponentInChildren<PlayerTouchesGround>();
         _playerBasicAttack = GetComponent<PlayerBasicAttack>();
-        _playerOrientation = GetComponent<PlayerOrientation>();
+        _orientation = GetComponent<ActorOrientation>();
         _playerCroutchHitbox = GameObject.Find("CharacterCroutchedHitbox").GetComponent<BoxCollider2D>();
         _playerFloating = GameObject.Find("CharacterFloatingHitbox").GetComponent<PlayerFloatingInteraction>();
         _state = GetComponent<PlayerState>();
@@ -182,12 +182,12 @@ public class PlayerMovement : MonoBehaviour
 
     private bool PlayerIsAlmostStoppedAndIsFacingRight()
     {
-        return _rigidbody.velocity.x < 1 && _playerOrientation.IsFacingRight;
+        return _rigidbody.velocity.x < 1 && _orientation.IsFacingRight;
     }
 
     private bool PlayerIsAlmostStoppedAndIsFacingLeft()
     {
-        return _rigidbody.velocity.x > -1 && !_playerOrientation.IsFacingRight;
+        return _rigidbody.velocity.x > -1 && !_orientation.IsFacingRight;
     }
 
     protected bool PlayerIsFalling()
@@ -232,7 +232,7 @@ public class PlayerMovement : MonoBehaviour
 
     protected void Flip(bool goesRight)
     {
-        if (GetComponent<PlayerOrientation>().Flip(goesRight))
+        if (GetComponent<ActorOrientation>().Flip(goesRight))
         {
             _basicAttackBox.offset = new Vector2(_basicAttackBox.offset.x * -1, _basicAttackBox.offset.y);
             OnPlayerFlipped();
