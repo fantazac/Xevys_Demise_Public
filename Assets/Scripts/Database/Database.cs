@@ -20,6 +20,7 @@ public class Database : DatabaseConnection
             CreateAccount("Test");
             _accountStats.CreateStatsRecord();
             CreateSettings();
+            CreateAllAchievements();
         }
         else
         {
@@ -63,24 +64,30 @@ public class Database : DatabaseConnection
         _dbconnection.Close();
     }
 
-    private void CreateAchievement(string name, string description)
+    private void CreateAllAchievements()
     {
         _dbconnection.Open();
-        string sqlQuery = String.Format("INSERT INTO ACHIEVEMENT (NAME, DESCRIPTION)" +
-            "VALUES ({0}, {1}", name, description);
-        _dbcommand.CommandText = sqlQuery;
-        _dbcommand.ExecuteNonQuery();
+        CreateAchievement("Eye of the Behemoth", "Kill Behemoth in World 1");
+        CreateAchievement("The Phoenix", "Kill Phoenix in World 2");
+        CreateAchievement("Smoke on the water", "Kill Neptune in World 3");
+        CreateAchievement("Highway to Hell", "Kill Vulcan in World 4");
+        CreateAchievement("Bimon and the Beast", "Finally kill Xevy");
+        CreateAchievement("Skeltals in the closet", "Kill 15 skeltals");
+        CreateAchievement("Kill 'Em All", "Kill 15 scarabs");
+        CreateAchievement("Bat country", "Kill 30 bats");
+        CreateAchievement("In too deep", "Get the boots");
+        CreateAchievement("I believe I can fly", "Get the feather");
+        CreateAchievement("Bubble Pop!", "Get the bubble");
+        CreateAchievement("Through the fire and flames", "Get the fire armor");
         _dbconnection.Close();
     }
 
-    private void CreateAccountAchievement(int accountID, int achievementID)
+    private void CreateAchievement(string name, string description)
     {
-        _dbconnection.Open();
-        string sqlQuery = String.Format("INSERT INTO ACCOUNT_ACHIEVEMENT (ACCOUNT_ID, ACHIEVEMENT_ID)" +
-            "VALUES ({0}, {1}", accountID, achievementID);
+        string sqlQuery = String.Format("INSERT INTO ACHIEVEMENT (\"NAME\", \"DESCRIPTION\")" +
+            "VALUES ({0}, {1}", name, description);
         _dbcommand.CommandText = sqlQuery;
         _dbcommand.ExecuteNonQuery();
-        _dbconnection.Close();
     }
 
     private void CreateFunFact(string description)
