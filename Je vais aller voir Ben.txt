@@ -1,9 +1,5 @@
-DropItems (fusion des listes? expliqué le delay smooth) classe avec 2
 OnPlayerCollisionHit (expliqué différence avec OnBasicAttackHit)
 ScarabMovement (truc de template)
 FallDamage (expliqué qu'on check la distance) ventilateur
-PlayerMovement (conditions dans update pour les anims) methodes
 PlayerState (memory leak? classe dans StaticObjects?) enlever
 OnItemDrop (expliqué le script au complet)
-delai avec coroutine (où? jpense les avoir toutes faites)
-tell dont ask (explication, où)

@@ -19,7 +19,7 @@ public class PlayerFloatingInteraction : MonoBehaviour
         _playerGroundMovement = StaticObjects.GetPlayer().GetComponent<PlayerGroundMovement>();
         _playerWaterMovement = StaticObjects.GetPlayer().GetComponent<PlayerWaterMovement>();
 
-        OnPlayerUnderWater += PlayerState.EnableFloating;
+        OnPlayerUnderWater += StaticObjects.GetPlayerState().EnableFloating;
     }
 
     public void OnTriggerEnter2D(Collider2D collider)

@@ -4,15 +4,10 @@ using System.Collections;
 
 public class DropItems : MonoBehaviour
 {
-
-    [SerializeField]
-    private GameObject[] _items;
-
-    [SerializeField]
-    private List<int> _dropRates;
-
     [SerializeField]
     private float _timeBeforeDrop = 0.2f;
+
+    private DropableItem[] _items;
 
     private List<GameObject> _itemsToDrop;
 
@@ -35,15 +30,15 @@ public class DropItems : MonoBehaviour
 
     private void InitializeDrops()
     {
+        _items = GetComponents<DropableItem>();
         _itemsToDrop = new List<GameObject>();
 
-        foreach (GameObject item in _items)
+        foreach (DropableItem item in _items)
         {
-            if (Random.Range(0, 100) < _dropRates[0])
+            if (Random.Range(0, 100) < item.DropRate)
             {
-                _itemsToDrop.Add(item);
+                _itemsToDrop.Add(item.Item);
             }
-            _dropRates.RemoveAt(0);
         }
     }
 

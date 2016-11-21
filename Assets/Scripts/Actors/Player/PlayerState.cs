@@ -5,37 +5,37 @@ public class PlayerState : MonoBehaviour
 {
     private InvincibilityAfterBeingHit _invincibility;
 
-    public static bool IsInvincible { get; private set; }
-    public static bool IsJumping { get; private set; }
-    public static bool IsFalling { get; private set; }
-    public static bool IsMoving { get; private set; }
-    public static bool IsFloating { get; private set; }
-    public static bool IsCroutching { get; private set; }
-    public static bool IsAttacking { get; private set; }
-    public static bool IsKnockedBack { get; private set; }
+    public bool IsInvincible { get; private set; }
+    public bool IsJumping { get; private set; }
+    public bool IsFalling { get; private set; }
+    public bool IsMoving { get; private set; }
+    public bool IsFloating { get; private set; }
+    public bool IsCroutching { get; private set; }
+    public bool IsAttacking { get; private set; }
+    public bool IsKnockedBack { get; private set; }
 
-    private static float _xSpeed = 0;
+    private float _xSpeed = 0;
 
     public delegate void OnChangedJumpingHandler();
-    public static event OnChangedJumpingHandler OnChangedJumping;
+    public event OnChangedJumpingHandler OnChangedJumping;
 
     public delegate void OnChangedFallingHandler();
-    public static event OnChangedFallingHandler OnChangedFalling;
+    public event OnChangedFallingHandler OnChangedFalling;
 
     public delegate void OnChangedMovingHandler();
-    public static event OnChangedMovingHandler OnChangedMoving;
+    public event OnChangedMovingHandler OnChangedMoving;
 
     public delegate void OnChangedFloatingHandler();
-    public static event OnChangedFloatingHandler OnChangedFloating;
+    public event OnChangedFloatingHandler OnChangedFloating;
 
     public delegate void OnChangedCroutchingHandler();
-    public static event OnChangedCroutchingHandler OnChangedCroutching;
+    public event OnChangedCroutchingHandler OnChangedCroutching;
 
     public delegate void OnChangedAttackingHandler(float animSpeed);
-    public static event OnChangedAttackingHandler OnChangedAttacking;
+    public event OnChangedAttackingHandler OnChangedAttacking;
 
     public delegate void OnChangedKnockbackHandler();
-    public static event OnChangedKnockbackHandler OnChangedKnockback;
+    public event OnChangedKnockbackHandler OnChangedKnockback;
 
     private void Start()
     {
@@ -56,19 +56,19 @@ public class PlayerState : MonoBehaviour
         IsInvincible = false;
     }
 
-    public static void SetJumping(bool isJumping)
+    public void SetJumping()
     {
-        IsJumping = isJumping;
+        IsJumping = !IsJumping;
         OnChangedJumping();
     }
 
-    public static void SetFalling(bool isFalling)
+    public void SetFalling()
     {
-        IsFalling = isFalling;
+        IsFalling = !IsFalling;
         OnChangedFalling();
     }
 
-    public static void SetMoving(float xSpeed)
+    public void SetMoving(float xSpeed)
     {
         if (xSpeed != _xSpeed)
         {
@@ -78,36 +78,36 @@ public class PlayerState : MonoBehaviour
         }
     }
 
-    public static void SetImmobile()
+    public void SetImmobile()
     {
         SetMoving(0);
     }
 
-    public static void EnableFloating()
+    public void EnableFloating()
     {
         IsFloating = true;
         OnChangedFloating();
     }
 
-    public static void DisableFloating()
+    public void DisableFloating()
     {
         IsFloating = false;
         OnChangedFloating();
     }
 
-    public static void SetCroutching(bool enable)
+    public void SetCroutching(bool enable)
     {
         IsCroutching = enable;
         OnChangedCroutching();
     }
 
-    public static void SetAttacking(bool enable, float animSpeed)
+    public void SetAttacking(bool enable, float animSpeed)
     {
         IsAttacking = enable;
         OnChangedAttacking(animSpeed);
     }
 
-    public static void SetKnockedBack(bool enable)
+    public void SetKnockedBack(bool enable)
     {
         IsKnockedBack = enable;
         OnChangedKnockback();

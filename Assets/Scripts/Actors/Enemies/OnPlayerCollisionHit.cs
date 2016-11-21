@@ -23,6 +23,6 @@ public class OnPlayerCollisionHit : MonoBehaviour
 
     private bool CanAttackPlayer(Collider2D collider)
     {
-        return !PlayerState.IsInvincible && collider.gameObject.tag == "Player";
+        return !StaticObjects.GetPlayerState().IsInvincible && collider.gameObject.tag == "Player";
     }
 }
