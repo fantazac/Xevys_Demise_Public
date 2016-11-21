@@ -5,25 +5,25 @@ using System.Linq;
 public class OnAttackHit : MonoBehaviour
 {
     [SerializeField]
-    private int _baseDamage = 100;
+    protected int _baseDamage = 100;
 
     [SerializeField]
-    private string[] _canHitTags;
+    protected string[] _canHitTags;
 
-    private Health _playerHealth;
+    protected Health _playerHealth;
 
-    private bool _isPlayer = true;
+    protected bool _isPlayer = false;
 
-    private void Start()
+    protected virtual void Start()
     {
-        if(tag != "BasicAttackHitbox")
+        _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
+        if (tag == "BasicAttackHitbox")
         {
-            _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
-            _isPlayer = false;
+            _isPlayer = true; 
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collider)
+    protected virtual void OnTriggerEnter2D(Collider2D collider)
     {
         if (CanHitEntity(collider) && CanAttackEnemy(collider))
         {
@@ -31,7 +31,7 @@ public class OnAttackHit : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collider)
+    protected virtual void OnTriggerStay2D(Collider2D collider)
     {
         if (CanHitEntity(collider) && CanAttackPlayer(collider))
         {
@@ -39,7 +39,7 @@ public class OnAttackHit : MonoBehaviour
         }
     }
 
-    private bool CanAttackPlayer(Collider2D collider)
+    protected bool CanAttackPlayer(Collider2D collider)
     {
         return !_isPlayer && !StaticObjects.GetPlayerState().IsInvincible;
     }
@@ -59,7 +59,7 @@ public class OnAttackHit : MonoBehaviour
         return collider.GetComponent<EnemyType>().IsABoss && collider is PolygonCollider2D;
     }
 
-    private bool CanHitEntity(Collider2D collider)
+    protected bool CanHitEntity(Collider2D collider)
     {
         return _canHitTags.Contains(collider.gameObject.tag);
     }
