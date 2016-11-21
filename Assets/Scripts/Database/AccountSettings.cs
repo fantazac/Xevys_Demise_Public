@@ -1,25 +1,18 @@
 ﻿using System;
-using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
 using System.Data;
 
 public class AccountSettings : DatabaseConnection
 {
-    //public delegate void OnKeyboardControlChangedHandler(bool control);
-    //public event OnKeyboardControlChangedHandler OnKeyboardControlChanged;
-    //public delegate void OnGamepadControlChangedHandler(bool control);
-    //public event OnGamepadControlChangedHandler OnGamepadControlChanged;
-
     private DatabaseController _controller;
     
     private int _keyboardControlScheme = 1;
     private int _gamepadControlScheme = 1;
-
     private void Start()
     {
         base.Start();
         _controller = GetComponent<DatabaseController>();
+        GetComponent<ControlsSchemeSettings>().OnKeyboardControlChanged += ChangeKeyboardControl;
+        GetComponent<ControlsSchemeSettings>().OnGamepadControlChanged += ChangeGamepadControl;
     }
 
     public void CreateSettings()
@@ -58,15 +51,13 @@ public class AccountSettings : DatabaseConnection
         _dbconnection.Close();
     }
 
-    public void ChangeKeyboardControl(bool control)
+    private void ChangeKeyboardControl(bool control)
     {
         _keyboardControlScheme = Convert.ToInt32(control);
-        //OnKeyboardControlChanged(control);
     }
 
-    public void ChangeGamepadControl(bool control)
+    private void ChangeGamepadControl(bool control)
     {
         _gamepadControlScheme = Convert.ToInt32(control);
-        //OnGamepadControlChanged(control);
     }
 }
