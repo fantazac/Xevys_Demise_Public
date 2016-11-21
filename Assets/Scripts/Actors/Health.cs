@@ -73,6 +73,24 @@ public class Health : MonoBehaviour
         }
     }
 
+    public void Hit(int hitPoints)
+    {
+        if (!IsDead())
+        {
+            if (OnDamageTaken != null)
+            {
+                OnDamageTaken(-hitPoints);
+            }
+
+            OnHealthChanged(-hitPoints);
+
+            if (IsDead())
+            {
+                OnDeath();
+            }
+        }
+    }
+
     private void ChangeHealth(int healthPointsToAdd)
     {
         HealthPoint += healthPointsToAdd;
