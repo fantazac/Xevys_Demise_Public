@@ -1,6 +1,5 @@
 faire un script comme StaticObjects qui contient tous les tags
 InventoryManager, regarder le reload (4000 if)
-PlayerBasicAttack, regarder si on peut faire une seule coroutine
 SpawnToCheckpointAfterDeath, optimisation
 le son de hit joue lorsque le joueur prend un coeur (faut un heal)
 remove les using System.Collections qui sont inutiles

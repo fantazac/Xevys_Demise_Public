@@ -34,9 +34,9 @@ public class PlayerBasicAttack : MonoBehaviour
 
         _inputManager.OnBasicAttack += Attack;
 
-        _allowNewAttackDelay = new WaitForSeconds(_attackFrequency * ATTACK_COOLDOWN_MULTIPLIER);
-        _finishAttackAnimDelay = new WaitForSeconds(_attackFrequency);
         _finishedAttackDelay = new WaitForSeconds(_attackDuration);
+        _finishAttackAnimDelay = new WaitForSeconds(_attackFrequency - _attackDuration);
+        _allowNewAttackDelay = new WaitForSeconds((_attackFrequency * ATTACK_COOLDOWN_MULTIPLIER) - _attackFrequency - _attackDuration);
     }
 
     private void Attack()
@@ -54,22 +54,6 @@ public class PlayerBasicAttack : MonoBehaviour
         _attackHitBox.enabled = true;
         OnBasicAttack();
         StartCoroutine(OnBasicAttackFinished());
-        StartCoroutine(FinishAttackAnimation());
-        StartCoroutine(AllowNewAttack());
-    }
-
-    private IEnumerator FinishAttackAnimation()
-    {
-        yield return _finishAttackAnimDelay;
-
-        PlayerState.SetAttacking(false, 1);
-    }
-
-    private IEnumerator AllowNewAttack()
-    {
-        yield return _allowNewAttackDelay;
-
-        _canAttack = true;
     }
 
     private IEnumerator OnBasicAttackFinished()
@@ -77,5 +61,13 @@ public class PlayerBasicAttack : MonoBehaviour
         yield return _finishedAttackDelay;
 
         _attackHitBox.enabled = false;
+
+        yield return _finishAttackAnimDelay;
+
+        PlayerState.SetAttacking(false, 1);
+
+        yield return _allowNewAttackDelay;
+
+        _canAttack = true;
     }
 }
