@@ -1,5 +1,3 @@
-OnPlayerCollisionHit (expliqué différence avec OnBasicAttackHit)
 ScarabMovement (truc de template)
 FallDamage (expliqué qu'on check la distance) ventilateur
-PlayerState (memory leak? classe dans StaticObjects?) enlever
 OnItemDrop (expliqué le script au complet)
