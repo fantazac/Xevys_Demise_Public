@@ -20,6 +20,7 @@ public class XevyHubAI : MonoBehaviour
     private const float VULNERABLE_TIMER_COOLDOWN = 1;
     private const float SPEED = 2.5f;
 
+    private Health _health;
     private ActorDirection _actorDirection;
     private BossOrientation _bossOrientation;
     private GameObject _xevySword;
@@ -38,18 +39,23 @@ public class XevyHubAI : MonoBehaviour
         _leftLimit = transform.position.x - _leftDistance;
         _rightLimit = transform.position.x + _rightDistance;
         _timer = DEFENSIVE_TIMER_COOLDOWN;
+        _health = GetComponent<Health>();
         _actorDirection = GetComponent<ActorDirection>();
         _bossOrientation = GetComponent<BossOrientation>();
         _xevySword = transform.FindChild("Xevy Sword").gameObject;
         _collisionBox = GetComponent<PolygonCollider2D>();
+        _bossOrientation.OnBossFlipped += OnBossFlipped;
+        _health.OnDeath += OnXevyHubDefeated;
+    }
+
+    private void Destroy()
+    {
+        _health.OnDeath -= OnXevyHubDefeated;
     }
 
     private void FixedUpdate()
     {
-        if (_bossOrientation.FlipTowardsPlayer())
-        {
-            _actorDirection.FlipDirection();
-        }
+        _bossOrientation.FlipTowardsPlayer();
         if (!_isNotMoving)
         {
             if (CheckIfMovementCompleted())
@@ -74,6 +80,12 @@ public class XevyHubAI : MonoBehaviour
         return (transform.position.x > (_bossOrientation.IsFacingRight ^ _actorDirection.IsGoingForward ? _leftLimit : _rightLimit) ^
              (_actorDirection.IsGoingForward ^ _bossOrientation.IsFacingRight));
     }
+
+    private void OnBossFlipped()
+    {
+        _actorDirection.FlipDirection();
+    }
+
 
     private void UpdateWhenNotMoving()
     {
@@ -102,5 +114,10 @@ public class XevyHubAI : MonoBehaviour
                 _isNotMoving = false;
             }
         }
+    }
+
+    private void OnXevyHubDefeated()
+    {
+
     }
 }

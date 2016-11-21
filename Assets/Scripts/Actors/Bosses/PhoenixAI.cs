@@ -30,10 +30,10 @@ public class PhoenixAI : MonoBehaviour
     private Vector2 _currentPoint;
     private Vector2 _closestPoint;
     private Vector2 _playerPosition;
+    private Health _health;
     private Rigidbody2D _rigidbody;
     private Animator _animator;
     private BossOrientation _bossOrientation;
-    private OnBossDefeated _onBossDefeated;
 
     private System.Random _rng = new System.Random();
     private PhoenixStatus _status;
@@ -49,16 +49,16 @@ public class PhoenixAI : MonoBehaviour
         _flightTimeLeft = 0;
         _attackCooldownTimeLeft = 0;
         _currentPoint = _southWestLimit;
+        _health = GetComponent<Health>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _bossOrientation = GetComponent<BossOrientation>();
         _animator = GetComponent<Animator>();
-        _onBossDefeated = GetComponent<OnBossDefeated>();
-        _onBossDefeated.OnDefeated += OnPhoenixDefeated;
+        _health.OnDeath += OnPhoenixDefeated;
     }
 
     private void OnDestroy()
     {
-        _onBossDefeated.OnDefeated -= OnPhoenixDefeated;
+        _health.OnDeath -= OnPhoenixDefeated;
     }
 
     private void FixedUpdate()

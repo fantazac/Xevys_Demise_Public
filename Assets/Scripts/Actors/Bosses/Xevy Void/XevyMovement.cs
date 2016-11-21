@@ -43,7 +43,7 @@ public class XevyMovement : MonoBehaviour
     *
     * It applies to all bosses, by the way.
     */
-    private System.Random _rng = new System.Random();
+    private System.Random _random = new System.Random();
 
     public XevyMovementStatus MovementStatus { get; private set; }
     private bool _isGoingUp = true;
@@ -60,6 +60,7 @@ public class XevyMovement : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _actorDirection = GetComponent<ActorDirection>();
         _bossOrientation = GetComponent<BossOrientation>();
+        _bossOrientation.OnBossFlipped += OnBossFlipped;
         _referencePoints = new Vector2[]
         {
             new Vector2(transform.position.x, transform.position.y + 2 * VERTICAL_DISTANCE_TO_REACH_PLATFORM),
@@ -87,7 +88,6 @@ public class XevyMovement : MonoBehaviour
         _referencePointsConnections[4].Add(5);
         _referencePointsConnections[5].Add(4);
         _startPosition = _referencePoints[_currentPositionIndex];
-        GetComponent<XevyPlayerInteraction>().OnBossFlipped += OnBossFlipped;
     }
 
     public void MovementUpdate()
@@ -162,7 +162,7 @@ public class XevyMovement : MonoBehaviour
         _arrivalPositionIndex = indexClosestPosition;
         while (_arrivalPositionIndex == indexClosestPosition)
         {
-            _arrivalPositionIndex = _rng.Next() % NUMBER_GROUND_POSITIONS * 2 + 1;
+            _arrivalPositionIndex = _random.Next() % NUMBER_GROUND_POSITIONS * 2 + 1;
         }
         _arrivalPosition = _referencePoints[_arrivalPositionIndex];
     }
@@ -170,7 +170,7 @@ public class XevyMovement : MonoBehaviour
     private void SelectBouncePointRandomly()
     {
         int listNodesCount = _referencePointsConnections[_currentPositionIndex].Count;
-        _arrivalPositionIndex = _referencePointsConnections[_currentPositionIndex][(listNodesCount == 1 ? 0 : _rng.Next() % listNodesCount)];
+        _arrivalPositionIndex = _referencePointsConnections[_currentPositionIndex][(listNodesCount == 1 ? 0 : _random.Next() % listNodesCount)];
         _arrivalPosition = _referencePoints[_arrivalPositionIndex];
         _isGoingUp = (_startPosition.y < _arrivalPosition.y);
         deltaX = _arrivalPosition.x - _startPosition.x;
