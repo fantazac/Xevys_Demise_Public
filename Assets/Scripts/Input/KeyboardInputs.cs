@@ -104,4 +104,14 @@ public class KeyboardInputs : MonoBehaviour {
             OnPause();
         }
     }
+
+    private void WASDControlsScheme()
+    {
+        
+    }
+
+    private void ArrowControlsScheme()
+    {
+        
+    }
 }
