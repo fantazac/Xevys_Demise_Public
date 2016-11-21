@@ -105,8 +105,8 @@ public class BehemothAI : MonoBehaviour
         {
             _rigidbody.velocity = new Vector2(_speed * _bossOrientation.Orientation, _rigidbody.velocity.y);
             if (_bossOrientation.IsFacingRight ?
-                _aimedWall.transform.position.x - _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 <= transform.position.x + GetComponent<SpriteRenderer>().bounds.size.x / 2:
-                _aimedWall.transform.position.x + _aimedWall.GetComponent<SpriteRenderer>().bounds.size.x / 2 >= transform.position.x - GetComponent<SpriteRenderer>().bounds.size.x / 2)
+                _aimedWall.transform.position.x - _aimedWall.transform.localScale.x / 2 <= transform.position.x + GetComponent<SpriteRenderer>().bounds.size.x / 2:
+                _aimedWall.transform.position.x + _aimedWall.transform.localScale.x / 2 >= transform.position.x - GetComponent<SpriteRenderer>().bounds.size.x / 2)
 
             {
                 _timeLeft = 1;
