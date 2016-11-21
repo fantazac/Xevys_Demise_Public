@@ -34,24 +34,6 @@ public class ScarabMovementWithPlatform : ScarabMovement
         StartCoroutine(Rotate());
     }
 
-    protected override IEnumerator MoveTowardsTarget()
-    {
-        while (true)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, _target, MOVEMENT_SPEED * Time.deltaTime);
-            if (CanStartRotation())
-            {
-                StartRotation();
-            }
-            if (_target == transform.position)
-            {
-                break;
-            }
-            yield return null;
-        }
-        MovementFinished();
-    }
-
     private void InitializeDimensions()
     {
         _wallPosition = _attachedWall.transform.position;

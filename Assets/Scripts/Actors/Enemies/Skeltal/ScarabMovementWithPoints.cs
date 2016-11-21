@@ -66,24 +66,6 @@ public class ScarabMovementWithPoints : ScarabMovement
         _rotationDirection = _currentRotateDirection ? Vector3.back : Vector3.forward;
     }
 
-    protected override IEnumerator MoveTowardsTarget()
-    {
-        while (true)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, _target, MOVEMENT_SPEED * Time.deltaTime);
-            if (CanStartRotation())
-            {
-                StartRotation();
-            }
-            if (_target == transform.position)
-            {
-                break;
-            }
-            yield return null;
-        }
-        MovementFinished();
-    }
-
     protected override void FindTarget()
     {
         if (IsAtAFlipCorner())

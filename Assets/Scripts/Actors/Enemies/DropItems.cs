@@ -11,11 +11,13 @@ public class DropItems : MonoBehaviour
     [SerializeField]
     private List<int> _dropRates;
 
+    [SerializeField]
+    private float _timeBeforeDrop = 0.2f;
+
     private List<GameObject> _itemsToDrop;
 
     private int itemToDropCount = 0;
 
-    private float _timeBeforeDrop = 0.2f;
     private WaitForSeconds _dropsDelay;
 
     private InventoryManager _inventoryManager;

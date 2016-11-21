@@ -67,8 +67,25 @@ public class ScarabMovement : MonoBehaviour
         return Vector3.Distance(_target, transform.position) < _halfOfScarabWidth;
     }
 
+    protected IEnumerator MoveTowardsTarget()
+    {
+        while (true)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, _target, MOVEMENT_SPEED * Time.deltaTime);
+            if (CanStartRotation())
+            {
+                StartRotation();
+            }
+            if (_target == transform.position)
+            {
+                break;
+            }
+            yield return null;
+        }
+        MovementFinished();
+    }
+
     protected virtual void StartRotation() { }
-    protected virtual IEnumerator MoveTowardsTarget() { yield return null; }
     protected virtual void InitializeSpriteDirection() { }
     protected virtual bool CanStartRotation() { return _canRotate; }
     protected virtual void FindTarget() { }
