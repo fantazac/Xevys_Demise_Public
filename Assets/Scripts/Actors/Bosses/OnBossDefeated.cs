@@ -3,7 +3,6 @@ using System.Collections;
 
 public class OnBossDefeated : MonoBehaviour
 {
-    private bool _isDead;
     private Health _health;
     private BoxCollider2D _boxCollider;
     private PolygonCollider2D _polygonCollider;

@@ -4,28 +4,22 @@ public class BossOrientation : ActorOrientation
 {
     GameObject _player;
 
-    protected override void Start()
+    private void Start()
     {
         _player = StaticObjects.GetPlayer();
     }
 
     public bool FlipTowardsSpecificPoint(Vector2 point)
     {
-        if (point.x > transform.position.x)
+        if (point.x > transform.position.x && !IsFacingRight)
         {
-            if (!_isFacingRight)
-            {
-                Flip();
-                return true;
-            }
+            Flip();
+            return true;
         }
-        else if (point.x < transform.position.x)
+        else if (point.x < transform.position.x && IsFacingRight)
         {
-            if (_isFacingRight)
-            {
-                Flip();
-                return true;
-            }
+            Flip();
+            return true;
         }
         return false;
     }

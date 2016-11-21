@@ -5,9 +5,9 @@ public class PlayerOrientation : ActorOrientation
 {
     public bool Flip(bool goesRight)
     {
-        if (goesRight != _isFacingRight)
+        if (goesRight != IsFacingRight)
         {
-            _isFacingRight = goesRight;
+            IsFacingRight = goesRight;
             return true;
         }
         return false;

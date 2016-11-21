@@ -3,15 +3,10 @@
 public abstract class ActorOrientation : MonoBehaviour
 {
     [SerializeField]
-    protected bool _isFacingRight;
+    private bool _isFacingRight;
 
-    public bool IsFacingRight { get { return _isFacingRight; } }
+    public bool IsFacingRight { get { return _isFacingRight; } protected set { _isFacingRight = value; } }
     public int Orientation { get { return (_isFacingRight ? 1 : -1); } }
-
-    protected virtual void Start ()
-    {
-	
-	}
 
     protected void Flip()
     {

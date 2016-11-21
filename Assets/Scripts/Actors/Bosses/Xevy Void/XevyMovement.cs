@@ -111,6 +111,7 @@ public class XevyMovement : MonoBehaviour
 
     public void StepBack()
     {
+        _actorDirection.IsGoingForward = false;
         _arrivalPosition = new Vector2(transform.position.x + (-_bossOrientation.Orientation * STEP_BACK_DISTANCE), transform.position.y);
         MovementStatus = XevyMovementStatus.RETREATING;
     }
@@ -204,7 +205,7 @@ public class XevyMovement : MonoBehaviour
     {
         transform.position = new Vector2(transform.position.x + speed * Time.fixedDeltaTime * orientation, transform.position.y);
         bool isFleeing = (speed == FLEE_SPEED);
-        if (CheckIfMovementCompleted(orientation == _bossOrientation.Orientation))
+        if (CheckIfMovementCompleted())
         {
             _startPosition = _referencePoints[FindClosestPoint()];
             if (isFleeing)
@@ -220,7 +221,7 @@ public class XevyMovement : MonoBehaviour
         float x = transform.position.x + (_bossOrientation.Orientation * BOUNCE_SPEED * Time.fixedDeltaTime) - _startPosition.x + (_isGoingUp ? 0 : deltaX);
         float _newHeight = BOUNCE_MODIFIER * x * (x - 2 * deltaX) + (_isGoingUp ? 0 : deltaY) + _startPosition.y;
         transform.position = new Vector2(x + _startPosition.x - +(_isGoingUp ? 0 : deltaX), _newHeight);
-        if (CheckIfMovementCompleted(true))
+        if (CheckIfMovementCompleted())
         {
             SetCurrentIndexToArrivalPosition();
             UpdateMovementStatus();
@@ -233,7 +234,7 @@ public class XevyMovement : MonoBehaviour
         _startPosition = _arrivalPosition;
     }
 
-    private bool CheckIfMovementCompleted(bool isGoingForward)
+    private bool CheckIfMovementCompleted()
     {
         return ((transform.position.x > _arrivalPosition.x) ^ _actorDirection.IsGoingForward) ^ _bossOrientation.IsFacingRight;
     }
@@ -248,6 +249,7 @@ public class XevyMovement : MonoBehaviour
 
     private void UpdateMovementStatus()
     {
+        _actorDirection.IsGoingForward = true;
         if (_commandStack.Count == 0)
         {
             _rigidbody.isKinematic = false;
