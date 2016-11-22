@@ -26,12 +26,19 @@ public class InvincibilityAfterBeingHit : MonoBehaviour
     {
         yield return _invincibilityDelay;
 
-        OnInvincibilityFinished();
+        if(OnInvincibilityFinished != null)
+        {
+            OnInvincibilityFinished();
+        } 
     }
 
     public void StartInvincibility(int hitPoints)
     {
-        OnInvincibilityStarted(_invincibilityTime);
+        if(OnInvincibilityStarted != null)
+        {
+            OnInvincibilityStarted(_invincibilityTime);
+        }
+        
         StartCoroutine(DisableInvincibility());
     }
 }
