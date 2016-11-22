@@ -32,24 +32,29 @@ public class PlayerOxygen : MonoBehaviour
     {
         if (!_inventoryManager.BubbleEnabled)
         {
+            Debug.Log(0);
             StartCoroutine(DamageIfMissingOxygen());
         }        
     }
 
     private void OnPlayerOutOfWater()
     {
-        StopCoroutine(DamageIfMissingOxygen());
+        Debug.Log(1);
+        StopAllCoroutines();
     }
 
     private IEnumerator DamageIfMissingOxygen()
     {
+        Debug.Log(2);
         yield return new WaitForSeconds(_timeBeforeOxygenMissing);
-
+        Debug.Log(3);
         while (_playerWaterMovement.enabled && !_playerWaterMovement.IsFloating)
         {
+            Debug.Log(4);
             _playerHealth.Hit(_damageOnHit, Vector2.zero);
 
             yield return new WaitForSeconds(_intervalBetweenHits);
         }
+        Debug.Log(5);
     }
 }

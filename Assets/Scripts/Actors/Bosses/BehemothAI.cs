@@ -145,7 +145,7 @@ public class BehemothAI : MonoBehaviour
         if (_timeLeft > 0)
         {
             _timeLeft -= Time.fixedDeltaTime;
-            _rigidbody.velocity = new Vector2(-_speed / 10 * _bossOrientation.Orientation, _rigidbody.velocity.y);
+            _rigidbody.velocity = new Vector2(-_speed / 5 * _bossOrientation.Orientation, _rigidbody.velocity.y);
         }
         else
         {

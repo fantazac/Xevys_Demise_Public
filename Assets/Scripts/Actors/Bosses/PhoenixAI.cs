@@ -22,7 +22,7 @@ public class PhoenixAI : MonoBehaviour
 
     private const float FLIGHT_DELAY = 0.5f;
     private const float ATTACK_DELAY = 5;
-    private const float PLAYER_APPROACH_LIMIT = 6;
+    private const float PLAYER_APPROACH_LIMIT = 3;
     private const float SPEED = 7;
     private const float WING_FLAP = 2.675f;
     private const float RADIAN_TO_DEGREE = 57.2958f;
