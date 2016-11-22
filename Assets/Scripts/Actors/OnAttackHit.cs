@@ -17,7 +17,7 @@ public class OnAttackHit : MonoBehaviour
     protected virtual void Start()
     {
         _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
-        if (tag == "BasicAttackHitbox")
+        if (tag == StaticObjects.GetUnityTags().BasicAttackHitbox)
         {
             _isPlayer = true; 
         }

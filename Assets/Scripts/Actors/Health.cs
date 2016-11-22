@@ -98,7 +98,7 @@ public class Health : MonoBehaviour
 
     private void ReloadHealth(float health)
     {
-        if(tag == "Player")
+        if(tag == StaticObjects.GetUnityTags().Player)
         {
             OnHealthChanged(Convert.ToInt32(-(_health - health)));
         }

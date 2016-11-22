@@ -7,12 +7,15 @@ public class CameraFollow : MonoBehaviour
 
     private BoxCollider2D cameraBox;
     private Transform player;
+    private BoxCollider2D _boundaryHitbox;
 
 	void Start ()
 	{
 	    cameraBox = GetComponent<BoxCollider2D>();
 	    player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-	}
+        _boundaryHitbox = GameObject.Find(StaticObjects.GetFindTags().Boundary).GetComponent<BoxCollider2D>();
+
+    }
 
 	void Update ()
 	{
@@ -22,16 +25,16 @@ public class CameraFollow : MonoBehaviour
 
     private void FollowPlayer()
     {
-        if (GameObject.Find("Boundary"))
+        if (_boundaryHitbox != null)
         {
             Vector3 bounds = new Vector3
                 (Mathf.Clamp(player.position.x,
-                    GameObject.Find("Boundary").GetComponent<BoxCollider2D>().bounds.min.x + cameraBox.size.x / 2,
-                    GameObject.Find("Boundary").GetComponent<BoxCollider2D>().bounds.max.x - cameraBox.size.x / 2),
+                    _boundaryHitbox.bounds.min.x + cameraBox.size.x / 2,
+                    _boundaryHitbox.bounds.max.x - cameraBox.size.x / 2),
 
                 Mathf.Clamp(player.position.y,
-                    GameObject.Find("Boundary").GetComponent<BoxCollider2D>().bounds.min.y + cameraBox.size.y / 2,
-                    GameObject.Find("Boundary").GetComponent<BoxCollider2D>().bounds.max.y - cameraBox.size.y / 2),
+                    _boundaryHitbox.bounds.min.y + cameraBox.size.y / 2,
+                    _boundaryHitbox.bounds.max.y - cameraBox.size.y / 2),
 
                 transform.position.z);
 

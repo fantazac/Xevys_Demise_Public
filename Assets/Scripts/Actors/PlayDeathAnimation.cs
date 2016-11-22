@@ -19,7 +19,7 @@ public class PlayDeathAnimation : MonoBehaviour
 
     private void OnDeath()
     {
-        _animator.SetBool("IsDying", true);
+        _animator.SetBool(StaticObjects.GetAnimationTags().IsDying, true);
         if (OnDyingAnimationFinished != null)
         {
             OnDyingAnimationFinished();

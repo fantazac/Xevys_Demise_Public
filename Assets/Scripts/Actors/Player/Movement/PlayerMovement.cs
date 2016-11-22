@@ -47,14 +47,14 @@ public class PlayerMovement : MonoBehaviour
         _playerBoxCollider = GetComponent<BoxCollider2D>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _inputManager = GetComponentInChildren<InputManager>();
-        _basicAttackBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
+        _basicAttackBox = GameObject.Find(StaticObjects.GetFindTags().CharacterBasicAttackBox).GetComponent<BoxCollider2D>();
         _showItems = StaticObjects.GetItemCanvas().GetComponent<ShowItems>();
         _playerHealth = GetComponent<Health>();
         _playerTouchesGround = GetComponentInChildren<PlayerTouchesGround>();
         _playerBasicAttack = GetComponent<PlayerBasicAttack>();
         _orientation = GetComponent<ActorOrientation>();
-        _playerCroutchHitbox = GameObject.Find("CharacterCroutchedHitbox").GetComponent<BoxCollider2D>();
-        _playerFloating = GameObject.Find("CharacterFloatingHitbox").GetComponent<PlayerFloatingInteraction>();
+        _playerCroutchHitbox = GameObject.Find(StaticObjects.GetFindTags().CharacterCroutchedHitbox).GetComponent<BoxCollider2D>();
+        _playerFloating = GameObject.Find(StaticObjects.GetFindTags().CharacterFloatingHitbox).GetComponent<PlayerFloatingInteraction>();
         _playerState = GetComponent<PlayerState>();
 
         _playerGroundMovement = GetComponent<PlayerGroundMovement>();
