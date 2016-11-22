@@ -142,7 +142,7 @@ public class PlayerMovement : MonoBehaviour
 
     protected bool PlayerIsMovingHorizontally()
     {
-        return _rigidbody.velocity.x != 0;
+        return _rigidbody.velocity.x != 0 || _playerState.IsMoving;
     }
 
     protected bool PlayerIsMovingVertically()
