@@ -13,7 +13,6 @@ public class UnityTags : MonoBehaviour
     public string Wall { get; private set; }
     public string KnifeDrop { get; private set; }
     public string AxeDrop { get; private set; }
-    public string BackgroundCam { get; private set; }
     public string Scarab { get; private set; }
     public string Bat { get; private set; }
     public string Skeltal { get; private set; }
@@ -45,7 +44,6 @@ public class UnityTags : MonoBehaviour
         Wall = "Wall";
         KnifeDrop = "KnifeDrop";
         AxeDrop = "AxeDrop";
-        BackgroundCam = "BackgroundCam";
         Bat = "Bat";
         Skeltal = "Skeltal";
         Scarab = "Scarab";
