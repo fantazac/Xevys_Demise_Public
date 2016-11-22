@@ -17,7 +17,7 @@ public class InvincibilityAfterBeingHit : MonoBehaviour
 
     private void Start()
     {
-        StaticObjects.GetPlayer().GetComponent<Health>().OnDamageTaken += StartInvincibility;
+        GetComponent<Health>().OnDamageTaken += StartInvincibility;
 
         _invincibilityDelay = new WaitForSeconds(_invincibilityTime);
     }
