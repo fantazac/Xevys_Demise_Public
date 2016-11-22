@@ -30,13 +30,13 @@ public class UIAnimationManager : MonoBehaviour
 
     private void FadeOut()
     {
-        _animator.SetTrigger("FadeOut");
+        _animator.SetTrigger(StaticObjects.GetAnimationTags().FadeOut);
         _active = false;
     }
 
     private void FadeIn()
     {
-        _animator.SetTrigger("FadeIn");
+        _animator.SetTrigger(StaticObjects.GetAnimationTags().FadeIn);
         _active = true;
     }
 }

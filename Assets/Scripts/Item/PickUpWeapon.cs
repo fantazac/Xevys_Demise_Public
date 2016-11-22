@@ -18,12 +18,12 @@ public class PickUpWeapon : MonoBehaviour
 
     private void EnableWeaponInInventory()
     {
-        if (gameObject.tag == "BaseKnifeItem")
+        if (gameObject.tag == StaticObjects.GetUnityTags().BaseKnifeItem)
         {
             _munitions.AddKnifeAmmo(_ammoOnUnlockingWeapon);
             _inventoryManager.EnableKnife();
         }
-        else if (gameObject.tag == "BaseAxeItem")
+        else if (gameObject.tag == StaticObjects.GetUnityTags().BaseAxeItem)
         {
             _munitions.AddAxeAmmo(_ammoOnUnlockingWeapon);
             _inventoryManager.EnableAxe();

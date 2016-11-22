@@ -25,6 +25,7 @@ public class EnvironmentOnTriggerDamage : MonoBehaviour
 
     private bool CanAttackPlayer(Collider2D collider)
     {
-        return !StaticObjects.GetPlayerState().IsInvincible && collider.gameObject.tag == "Player" && !_inventoryManager.FireProofArmorEnabled;
+        return !StaticObjects.GetPlayerState().IsInvincible && collider.gameObject.tag == StaticObjects.GetUnityTags().Player && 
+            !_inventoryManager.FireProofArmorEnabled;
     }
 }

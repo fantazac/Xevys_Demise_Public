@@ -28,7 +28,7 @@ public class EyeAnimationOnDeath : MonoBehaviour
 
     private IEnumerator PlayAnimationAndCallMoveObjectCoroutine()
     {
-        _anim.SetBool("IsDead", true);
+        _anim.SetBool(StaticObjects.GetAnimationTags().IsDead, true);
         yield return _finishedDeathAnimationDelay;
         OnAnimationOver();
     }

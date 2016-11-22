@@ -23,6 +23,6 @@ public class EnvironmentOnCollisionDamage : MonoBehaviour
 
     private bool CanAttackPlayer(Collision2D collision)
     {
-        return !StaticObjects.GetPlayerState().IsInvincible && collision.gameObject.tag == "Player";
+        return !StaticObjects.GetPlayerState().IsInvincible && collision.gameObject.tag == StaticObjects.GetUnityTags().Player;
     }
 }

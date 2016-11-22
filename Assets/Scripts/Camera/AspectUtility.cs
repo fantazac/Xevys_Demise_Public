@@ -54,7 +54,7 @@ public class AspectUtility: MonoBehaviour
         if (!backgroundCam)
         {
             // Make a new camera behind the normal camera which displays black; otherwise the unused space is undefined
-            backgroundCam = new GameObject("BackgroundCam", typeof(Camera)).GetComponent<Camera>();
+            backgroundCam = new GameObject(StaticObjects.GetUnityTags().BackgroundCam, typeof(Camera)).GetComponent<Camera>();
             backgroundCam.depth = int.MinValue;
             backgroundCam.clearFlags = CameraClearFlags.SolidColor;
             backgroundCam.backgroundColor = Color.black;

@@ -3,19 +3,26 @@ using System.Collections;
 
 public class PlayMusicZone : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D coll)
+    private AudioSource _audioSource;
+
+    private void Start()
     {
-        if(coll.gameObject.tag == "Player")
+        _audioSource = GetComponent<AudioSource>();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if(collider.gameObject.tag == StaticObjects.GetUnityTags().Player)
         {
-            GetComponent<AudioSource>().Play();
+            _audioSource.Play();
         }
     }
 
-    private void OnTriggerExit2D(Collider2D coll)
+    private void OnTriggerExit2D(Collider2D collider)
     {
-        if (coll.gameObject.tag == "Player")
+        if (collider.gameObject.tag == StaticObjects.GetUnityTags().Player)
         {
-            GetComponent<AudioSource>().Stop();
+            _audioSource.Stop();
         }
     }
 }
