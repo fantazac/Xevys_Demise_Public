@@ -22,7 +22,7 @@ public class PlayerWaterMovement : PlayerMovement
     protected override void Start()
     {
         base.Start();
-
+        _playerHealth.OnDeath += ExitWater;
         _audioReverbZone = GetComponent<AudioReverbZone>();
     }
 
@@ -46,7 +46,7 @@ public class PlayerWaterMovement : PlayerMovement
                     {
                         ChangePlayerVerticalVelocity(_jumpingSpeed * WATER_ACCELERATION_FACTOR);
                     }
-                    else
+                    else if(_isFloating)
                     {
                         ChangePlayerVerticalVelocity(_jumpingSpeed / (WATER_ACCELERATION_FACTOR - (PRECISION_MARGIN * WATER_ACCELERATION_FACTOR)));
                         ExitWater();

@@ -20,6 +20,7 @@ public class StaticObjects : MonoBehaviour
     {
         //Je dois utiliser le string "Tags" ici car _findTags n'a pas encore de valeur
         _tags = GameObject.Find("Tags");
+
         _findTags = _tags.GetComponent<FindTags>();
         _unityTags = _tags.GetComponent<UnityTags>();
         _animationTags = _tags.GetComponent<AnimationTags>();
