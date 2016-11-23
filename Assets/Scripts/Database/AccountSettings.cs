@@ -8,6 +8,10 @@ public class AccountSettings : DatabaseConnection
     public event OnMusicVolumeReloadedHandler OnMusicVolumeReloaded;
     public delegate void OnSfxVolumeReloadedHandler(float volume);
     public event OnSfxVolumeReloadedHandler OnSfxVolumeReloaded;
+    public delegate void OnKeyboardControlSchemeReloadedHandler(bool scheme);
+    public event OnKeyboardControlSchemeReloadedHandler OnKeyboardControlSchemeReloaded;
+    public delegate void OnGamepadControlSchemeReloadedHandler(bool scheme);
+    public event OnGamepadControlSchemeReloadedHandler OnGamepadControlSchemeReloaded;
 
     private DatabaseController _controller;
     
@@ -63,18 +67,20 @@ public class AccountSettings : DatabaseConnection
         reader.Close();
         _dbconnection.Close();
 
+        OnKeyboardControlSchemeReloaded(Convert.ToBoolean(_keyboardControlScheme));
+        OnGamepadControlSchemeReloaded(Convert.ToBoolean(_gamepadControlScheme));
         OnMusicVolumeReloaded(_musicVolume);
         OnSfxVolumeReloaded(_sfxVolume);
     }
 
-    private void ChangeKeyboardControl(bool control)
+    private void ChangeKeyboardControl(bool scheme)
     {
-        _keyboardControlScheme = Convert.ToInt32(control);
+        _keyboardControlScheme = Convert.ToInt32(scheme);
     }
 
-    private void ChangeGamepadControl(bool control)
+    private void ChangeGamepadControl(bool scheme)
     {
-        _gamepadControlScheme = Convert.ToInt32(control);
+        _gamepadControlScheme = Convert.ToInt32(scheme);
     }
 
     private void ChangeVolume(bool isMusic, float volume)
