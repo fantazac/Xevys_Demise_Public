@@ -91,6 +91,7 @@ public class PhoenixAI : MonoBehaviour
     private void GotHitByPlayer(int hitPoints)
     {
         _flyingSpeed = HIT_FLYING_SPEED;
+        _polygonHitbox.enabled = false;
     }
 
     private void FindFleeingPoint()
@@ -129,6 +130,7 @@ public class PhoenixAI : MonoBehaviour
             _rigidbody.isKinematic = true;
             _status = PhoenixStatus.ATTACK;
             _flyingSpeed = ATTACK_FLYING_SPEED;
+            _polygonHitbox.enabled = true;
         }
         else
         {
@@ -201,6 +203,7 @@ public class PhoenixAI : MonoBehaviour
         _bossOrientation.FlipTowardsSpecificPoint(_closestPoint);
         transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_closestPoint.y - transform.position.y) / (_closestPoint.x - transform.position.x)));
         _status = PhoenixStatus.FLEE;
+        _polygonHitbox.enabled = false;
     }
 
     public void OnPhoenixDefeated()
