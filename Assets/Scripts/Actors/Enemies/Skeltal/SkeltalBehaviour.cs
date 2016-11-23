@@ -82,6 +82,7 @@ public class SkeltalBehaviour : MonoBehaviour
     protected void StopMovementOnDeath()
     {
         StopAllCoroutines();
+        _swordHitbox.enabled = false;
         enabled = false;
     }
 
