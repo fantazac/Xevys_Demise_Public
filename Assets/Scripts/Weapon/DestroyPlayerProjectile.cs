@@ -14,7 +14,7 @@ public class DestroyPlayerProjectile : MonoBehaviour
 
     void Start()
     {
-        if (gameObject.tag == "Axe")
+        if (gameObject.tag == StaticObjects.GetUnityTags().Axe)
         {
             TouchesGround = GetComponentInChildren<AxeHandleHitWall>().TouchesGround;
         }

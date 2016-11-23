@@ -25,6 +25,8 @@ public class BatMovement : MonoBehaviour
     [SerializeField]
     private float _upSpeed = 3;
 
+    private const float LOWEST_Y_MARGIN = 0.01f;
+
     private WaitForSeconds _onGroundDelay;
 
     private BatPlayerDetector _detectPlayer;
@@ -66,7 +68,7 @@ public class BatMovement : MonoBehaviour
     private IEnumerator MoveBat()
     {
         _floorTarget = new Vector3(transform.position.x, _lowestY, transform.position.z);
-        while (transform.position.y > _lowestY)
+        while (transform.position.y > (_lowestY + LOWEST_Y_MARGIN))
         {
             transform.position = Vector3.MoveTowards(transform.position, _floorTarget, _downSpeed * Time.deltaTime);
 

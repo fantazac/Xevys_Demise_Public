@@ -57,7 +57,7 @@ public class InventoryManager : MonoBehaviour
 
     public void Start()
     {
-        Database.OnInventoryReloaded += ReloadInventory;
+        AccountStats.OnInventoryReloaded += ReloadInventory;
 
         _showItems = StaticObjects.GetItemCanvas().GetComponent<ShowItems>();
         GetComponentInChildren<InputManager>().OnThrowAttackChangeButtonPressed += OnSwitchWeapon;
@@ -158,11 +158,11 @@ public class InventoryManager : MonoBehaviour
 
     private void SetInfiniteAmmo(GameObject item, bool enable)
     {
-        if (item.tag == "Knife")
+        if (item.tag == StaticObjects.GetUnityTags().Knife)
         {
             HasInfiniteKnives = enable;
         }
-        else if (item.tag == "Axe")
+        else if (item.tag == StaticObjects.GetUnityTags().Axe)
         {
             HasInfiniteAxes = enable;
         }

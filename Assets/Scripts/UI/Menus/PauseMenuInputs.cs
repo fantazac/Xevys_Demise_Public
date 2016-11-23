@@ -6,12 +6,7 @@ public class PauseMenuInputs : MonoBehaviour
 {
 
     public delegate void PauseMenuOntriggerHandler();
-
     public event PauseMenuOntriggerHandler TriggerAnimations;
-
-    private InputManager _inputManager;
-    private PauseMenuAnimationManager _pauseMenuAnimationManager;
-    private EventSystem _pauseMenuEventSystem;
 
     public delegate void OnMainInterfaceIsCurrentHandler(string current);
     public event OnMainInterfaceIsCurrentHandler OnMainInterfaceIsCurrent;
@@ -25,6 +20,10 @@ public class PauseMenuInputs : MonoBehaviour
     public delegate void OnAudioInterfaceIsCurrentHandler(string current);
     public event OnAudioInterfaceIsCurrentHandler OnAudioInterfaceIsCurrent;
 
+    private InputManager _inputManager;
+    private PauseMenuAnimationManager _pauseMenuAnimationManager;
+    private EventSystem _pauseMenuEventSystem;
+
     private bool _canSlide;
     public bool CanSlide { private get { return _canSlide; } set { _canSlide = value; } }
 
@@ -37,7 +36,7 @@ public class PauseMenuInputs : MonoBehaviour
         _inputManager = StaticObjects.GetPlayer().GetComponentInChildren<InputManager>();
         _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
         _pauseMenuEventSystem = EventSystem.current;
-        _resumeBtnGameObject = GameObject.Find("ResumeBtn");
+        _resumeBtnGameObject = GameObject.Find(StaticObjects.GetFindTags().ResumeBtn);
 
         _waitForOneSecond = new WaitForSeconds(0.3f);
 

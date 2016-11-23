@@ -30,7 +30,7 @@ public class PlayerBasicAttack : MonoBehaviour
         _attackFrequency = BASIC_ATTACK_SPEED / _attackSpeed;
         _attackDuration = _attackFrequency * ATTACK_DURATION_MULTIPLIER;
         _inputManager = GetComponentInChildren<InputManager>();
-        _attackHitBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
+        _attackHitBox = GameObject.Find(StaticObjects.GetFindTags().CharacterBasicAttackBox).GetComponent<BoxCollider2D>();
 
         _inputManager.OnBasicAttack += Attack;
 

@@ -7,7 +7,7 @@ public class NeptuneBodyAI : NeptuneHeadAI
 
 	protected override void Start()
     {
-        _neptuneHead = GameObject.Find("Neptune Head").GetComponent<NeptuneHeadAI>();
+        _neptuneHead = GameObject.Find(StaticObjects.GetFindTags().NeptuneHead).GetComponent<NeptuneHeadAI>();
         _horizontalLimit = _neptuneHead.HorizontalLimit;
         _verticalLimit = _neptuneHead.VerticalLimit;
         InitializePoints();

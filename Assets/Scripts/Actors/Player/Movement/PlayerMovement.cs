@@ -32,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     protected const float INITIAL_GRAVITY_SCALE = 5;
     protected const float TERMINAL_SPEED = -18;
     protected const float LINEAR_DRAG = 18f;
+    protected const float CROUTCH_Y_OFFSET = 0.36f;
 
     protected float _horizontalSpeed = 7;
     protected float _jumpingSpeed = 17;
@@ -47,14 +48,14 @@ public class PlayerMovement : MonoBehaviour
         _playerBoxCollider = GetComponent<BoxCollider2D>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _inputManager = GetComponentInChildren<InputManager>();
-        _basicAttackBox = GameObject.Find("CharacterBasicAttackBox").GetComponent<BoxCollider2D>();
+        _basicAttackBox = GameObject.Find(StaticObjects.GetFindTags().CharacterBasicAttackBox).GetComponent<BoxCollider2D>();
         _showItems = StaticObjects.GetItemCanvas().GetComponent<ShowItems>();
         _playerHealth = GetComponent<Health>();
         _playerTouchesGround = GetComponentInChildren<PlayerTouchesGround>();
         _playerBasicAttack = GetComponent<PlayerBasicAttack>();
         _orientation = GetComponent<ActorOrientation>();
-        _playerCroutchHitbox = GameObject.Find("CharacterCroutchedHitbox").GetComponent<BoxCollider2D>();
-        _playerFloating = GameObject.Find("CharacterFloatingHitbox").GetComponent<PlayerFloatingInteraction>();
+        _playerCroutchHitbox = GameObject.Find(StaticObjects.GetFindTags().CharacterCroutchedHitbox).GetComponent<BoxCollider2D>();
+        _playerFloating = GameObject.Find(StaticObjects.GetFindTags().CharacterFloatingHitbox).GetComponent<PlayerFloatingInteraction>();
         _playerState = GetComponent<PlayerState>();
 
         _playerGroundMovement = GetComponent<PlayerGroundMovement>();
@@ -67,6 +68,9 @@ public class PlayerMovement : MonoBehaviour
         _inputManager.OnStop += OnStop;
         _inputManager.OnCrouch += OnCrouch;
         _inputManager.OnStandingUp += OnStandingUp;
+        _inputManager.OnFlip += Flip;
+
+        _playerHealth.OnDamageTaken += OnStandingUpAfterHit;
 
         _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
     }
@@ -117,7 +121,30 @@ public class PlayerMovement : MonoBehaviour
 
     protected virtual void OnCrouch() { }
 
-    protected virtual void OnStandingUp() { }
+    protected void OnStandingUp()
+    {
+        if (_playerState.IsCroutching)
+        {
+            if (!PlayerIsMovingVertically())
+            {
+                
+            }
+            transform.position += Vector3.up * CROUTCH_Y_OFFSET;
+            SetCroutch(false);
+        }
+    }
+
+    protected void SetCroutch(bool enable)
+    {
+        _playerCroutchHitbox.enabled = enable;
+        _playerBoxCollider.isTrigger = enable;
+        _playerState.SetCroutching(enable);
+    }
+
+    protected void OnStandingUpAfterHit(int hitPoints)
+    {
+        OnStandingUp();
+    }
 
     public virtual bool IsJumping()
     {
@@ -142,7 +169,7 @@ public class PlayerMovement : MonoBehaviour
 
     protected bool PlayerIsMovingHorizontally()
     {
-        return _rigidbody.velocity.x != 0;
+        return _rigidbody.velocity.x != 0 || _playerState.IsMoving;
     }
 
     protected bool PlayerIsMovingVertically()

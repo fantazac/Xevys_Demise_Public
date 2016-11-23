@@ -15,7 +15,7 @@ public class HealthItemHeal : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == "Player" && _playerHealth.CanHeal())
+        if (collider.gameObject.tag == StaticObjects.GetUnityTags().Player && _playerHealth.CanHeal())
         {
             _playerHealth.Heal(_healPoints);
             Destroy(gameObject);

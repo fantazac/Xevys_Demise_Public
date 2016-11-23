@@ -279,13 +279,13 @@ namespace UnityEngine.UI
                 yield break;
             }
 #endif
-            float time = Time.timeSinceLevelLoad;
+            float time = Time.unscaledTime;
             float elapsedTime = 0; //Elapsed time  as a ratio of passed time divided by the total time.
 
             isTweening = true;
             while (elapsedTime < 1)
             {
-                elapsedTime = (Time.timeSinceLevelLoad - time) / TransitionDuration;
+                elapsedTime = (Time.unscaledTime - time) / TransitionDuration;
                 //If None, there is no animation.
                 if (toggleTransition == Ease.None)
                     break;

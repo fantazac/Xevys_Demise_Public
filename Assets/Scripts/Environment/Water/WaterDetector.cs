@@ -19,14 +19,14 @@ public class WaterDetector : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == "AxeHandle" || collider.gameObject.tag == "AxeBlade")
+        if (collider.gameObject.tag == StaticObjects.GetUnityTags().AxeHandle || collider.gameObject.tag == StaticObjects.GetUnityTags().AxeBlade)
         {
             transform.parent.GetComponent<Water>().Splash(transform.position.x, collider.GetComponentInParent<Rigidbody2D>().velocity.y * collider.GetComponentInParent<Rigidbody2D>().mass / AXE_DAMPING_REDUCTION);
         }
 
         if (collider.GetComponent<Rigidbody2D>() != null)
         {
-            if (collider.gameObject.tag == "Player" && collider.GetComponent<InventoryManager>().IronBootsActive && collider.GetComponent<PlayerWaterMovement>().enabled)
+            if (collider.gameObject.tag == StaticObjects.GetUnityTags().Player && collider.GetComponent<InventoryManager>().IronBootsActive && collider.GetComponent<PlayerWaterMovement>().enabled)
             {
                 transform.parent.GetComponent<Water>().Splash(transform.position.x, collider.GetComponent<Rigidbody2D>().velocity.y * collider.GetComponent<Rigidbody2D>().mass / (DEFAULT_DAMPING_REDUCTION * 2));
             }
@@ -39,7 +39,7 @@ public class WaterDetector : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D collider)
     {
-        if (collider.GetComponent<Rigidbody2D>() != null && collider.tag == "Player")
+        if (collider.GetComponent<Rigidbody2D>() != null && collider.tag == StaticObjects.GetUnityTags().Player)
         {
             //Creating the swimming wave ahead and behind the player
             transform.parent.GetComponent<Water>().Splash(transform.position.x + WAVE_OFFSET,

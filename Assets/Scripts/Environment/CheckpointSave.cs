@@ -3,12 +3,15 @@ using System.Collections;
 
 public class CheckpointSave : MonoBehaviour
 {
-    private bool _showText;
     [SerializeField]
     private int _baseShowCounter = 200;
+
     [SerializeField]
     private int _checkpoint = 0;
+
+    private bool _showText;
     private int _showCounter;
+    private string _gameSaved = "Game saved";
 
     private void Update()
     {
@@ -24,11 +27,11 @@ public class CheckpointSave : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "Player")
+        if (coll.gameObject.tag == StaticObjects.GetUnityTags().Player)
         {
             _showText = true;
             _showCounter = _baseShowCounter;
-            StaticObjects.GetDatabase().GetComponent<Database>().SaveTemporaryStats();
+            StaticObjects.GetDatabase().GetComponent<AccountStats>().SaveTemporaryStats();
             StaticObjects.GetPlayer().GetComponent<SpawnToCheckpointAfterDeath>().SaveCheckpoint(_checkpoint);
         }
     }
@@ -37,7 +40,7 @@ public class CheckpointSave : MonoBehaviour
     {
         if(_showText)
         {
-            GUI.Label(new Rect(30, 40, 100, 20), "Game saved");
+            GUI.Label(new Rect(30, 40, 100, 20), _gameSaved);
         }
     }
 }

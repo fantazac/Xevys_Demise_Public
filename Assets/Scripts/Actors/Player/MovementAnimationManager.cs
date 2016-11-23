@@ -7,9 +7,12 @@ public class MovementAnimationManager : MonoBehaviour
     private Animator _anim;
     private PlayerMovement[] _playerMovements;
     private PlayerState _playerState;
+    private AnimationTags _animationTags;
 
     private void Start()
     {
+        _animationTags = StaticObjects.GetAnimationTags();
+
         _anim = GetComponent<Animator>();
 
         _playerState = StaticObjects.GetPlayerState();
@@ -31,41 +34,41 @@ public class MovementAnimationManager : MonoBehaviour
 
     private void AnimateJumping()
     {
-        _anim.SetBool("IsJumping", _playerState.IsJumping);
+        _anim.SetBool(_animationTags.IsJumping, _playerState.IsJumping);
     }
 
     private void AnimateFalling()
     {
-        _anim.SetBool("IsFalling", _playerState.IsFalling);
+        _anim.SetBool(_animationTags.IsFalling, _playerState.IsFalling);
     }
 
     private void AnimateMoving()
     {
-        _anim.SetBool("IsMoving", _playerState.IsMoving);
+        _anim.SetBool(_animationTags.IsMoving, _playerState.IsMoving);
     }
 
     private void AnimateFloating()
     {
-        _anim.SetBool("IsFloating", _playerState.IsFloating);
+        _anim.SetBool(_animationTags.IsFloating, _playerState.IsFloating);
     }
 
     private void AnimateCroutching()
     {
-        _anim.SetBool("IsCrouching", _playerState.IsCroutching);
+        _anim.SetBool(_animationTags.IsCrouching, _playerState.IsCroutching);
         if (_playerState.IsAttacking && _playerState.IsCroutching)
         {
-            _anim.Play("Character_Crouch_Attack", 0, _anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            _anim.Play(_animationTags.Character_Crouch_Attack, 0, _anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
         }
         else if (_playerState.IsAttacking)
         {
-            _anim.Play("Character_Attack", 0, _anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            _anim.Play(_animationTags.Character_Attack, 0, _anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
         }
     }
 
     private void AnimateAttacking(float animSpeed)
     {
         _anim.speed = animSpeed;
-        _anim.SetBool("IsAttacking", _playerState.IsAttacking);
+        _anim.SetBool(_animationTags.IsAttacking, _playerState.IsAttacking);
     }
 
     private void FlipAnimation()
@@ -76,7 +79,7 @@ public class MovementAnimationManager : MonoBehaviour
 
     private void AnimateKnockBack()
     {
-        _anim.SetBool("IsDamaged", _playerState.IsKnockedBack);
+        _anim.SetBool(_animationTags.IsDamaged, _playerState.IsKnockedBack);
     }
 
 }

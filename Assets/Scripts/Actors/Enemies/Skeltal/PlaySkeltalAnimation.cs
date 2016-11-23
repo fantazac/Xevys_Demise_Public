@@ -19,21 +19,21 @@ public class PlaySkeltalAnimation : MonoBehaviour
 
     private void BeginSkeltalMovementAnimation()
     {
-        _animator.SetBool("IsMoving", true);
+        _animator.SetBool(StaticObjects.GetAnimationTags().IsMoving, true);
     }
 
     private void StopSkeltalMovementAnimation()
     {
-        _animator.SetBool("IsMoving", false);
+        _animator.SetBool(StaticObjects.GetAnimationTags().IsMoving, false);
     }
 
     private void BeginSkeltalAttackAnimation()
     {
-        _animator.SetBool("IsAttacking", true);
+        _animator.SetBool(StaticObjects.GetAnimationTags().IsAttacking, true);
     }
 
     private void StopSkeltalAttackAnimation()
     {
-        _animator.SetBool("IsAttacking", false);
+        _animator.SetBool(StaticObjects.GetAnimationTags().IsAttacking, false);
     }
 }

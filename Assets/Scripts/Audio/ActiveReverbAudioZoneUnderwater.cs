@@ -3,21 +3,25 @@ using System.Collections;
 
 public class ActiveReverbAudioZoneUnderwater : MonoBehaviour
 {
+    private AudioReverbZone _audioReverbZone;
+    private PlayerFloatingInteraction playerFloatingInteraction;
+
     private void Start()
     {
         GameObject player = StaticObjects.GetPlayer();
-        PlayerFloatingInteraction playerFloatingInteraction = player.GetComponentInChildren<PlayerFloatingInteraction>();
+        _audioReverbZone = GetComponent<AudioReverbZone>();
+        playerFloatingInteraction = player.GetComponentInChildren<PlayerFloatingInteraction>();
         playerFloatingInteraction.OnPlayerUnderWater += ActivateReverbAudioZone;
         playerFloatingInteraction.OnPlayerOutOfWater += DisableReverbAudioZone;
     }
 
     private void ActivateReverbAudioZone()
     {
-        GetComponent<AudioReverbZone>().enabled = true;
+        _audioReverbZone.enabled = true;
     }
 
     private void DisableReverbAudioZone()
     {
-        GetComponent<AudioReverbZone>().enabled = false;
+        _audioReverbZone.enabled = false;
     }
 }

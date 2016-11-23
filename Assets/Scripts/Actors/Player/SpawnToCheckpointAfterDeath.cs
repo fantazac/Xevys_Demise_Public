@@ -21,6 +21,6 @@ public class SpawnToCheckpointAfterDeath : MonoBehaviour
     {
         transform.position = checkpoints[_lastCheckpoint];
         GetComponent<Health>().FullHeal();
-        GetComponentInChildren<Animator>().SetBool("IsDying", false);
+        GetComponentInChildren<Animator>().SetBool(StaticObjects.GetAnimationTags().IsDying, false);
     }
 }

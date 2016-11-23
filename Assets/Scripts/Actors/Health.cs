@@ -6,11 +6,11 @@ using System;
 public class Health : MonoBehaviour
 {
     [SerializeField]
-    private float _health = 1000f;
+    private int _health = 1000;
 
-    public float MaxHealth { get; private set; }
+    public int MaxHealth { get; private set; }
 
-    public float HealthPoint { get { return _health; } set { _health = value; } }
+    public int HealthPoint { get { return _health; } set { _health = value; } }
 
     public delegate void OnDamageTakenHandler(int hitPoints);
     public event OnDamageTakenHandler OnDamageTaken;
@@ -29,7 +29,7 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
-        Database.OnHealthReloaded += ReloadHealth;
+        AccountStats.OnHealthReloaded += ReloadHealth;
         MaxHealth = _health;
         OnHealthChanged += ChangeHealth;
     }
@@ -46,17 +46,20 @@ public class Health : MonoBehaviour
 
     public void FullHeal()
     {
-        OnHeal(Convert.ToInt32(MaxHealth));
-        OnHealthChanged(Convert.ToInt32(MaxHealth));
-
+        Heal(MaxHealth);
     }
 
     public void Hit(int hitPoints, Vector2 attackerPosition)
     {
         if (!IsDead())
         {
-            OnDamageTaken(-hitPoints);
-            OnHealthChanged(-hitPoints);        
+            if(OnDamageTaken != null)
+            {
+                OnDamageTaken(-hitPoints);
+            }
+            
+            OnHealthChanged(-hitPoints);    
+                
             if (IsDead())
             {
                 OnDeath();
@@ -68,6 +71,24 @@ public class Health : MonoBehaviour
         }
     }
 
+    public void Hit(int hitPoints)
+    {
+        if (!IsDead())
+        {
+            if (OnDamageTaken != null)
+            {
+                OnDamageTaken(-hitPoints);
+            }
+
+            OnHealthChanged(-hitPoints);
+
+            if (IsDead())
+            {
+                OnDeath();
+            }
+        }
+    }
+
     private void ChangeHealth(int healthPointsToAdd)
     {
         HealthPoint += healthPointsToAdd;
@@ -75,7 +96,7 @@ public class Health : MonoBehaviour
 
     private void ReloadHealth(float health)
     {
-        if(tag == "Player")
+        if(tag == StaticObjects.GetUnityTags().Player)
         {
             OnHealthChanged(Convert.ToInt32(-(_health - health)));
         }

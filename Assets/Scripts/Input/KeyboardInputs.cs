@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Networking;
 
-public class KeyboardInputs : MonoBehaviour {
+public class KeyboardInputs : MonoBehaviour
+{
 
     public delegate void KeyboardOnMoveHandler(Vector3 movement, bool goesRight);
     public event KeyboardOnMoveHandler OnMove;
@@ -39,59 +41,36 @@ public class KeyboardInputs : MonoBehaviour {
     public delegate void KeyboardOnPauseHandler();
     public event KeyboardOnPauseHandler OnPause;
 
+    public delegate void KeyboardOnFlipHandler(bool goesRight);
+    public event KeyboardOnFlipHandler OnFlip;
+
+    private bool _usingArrowControlsScheme;
+
+    private void Start()
+    {
+        GameObject.Find("PauseMenuControlsOptionsButtons").GetComponent<ControlsSchemeSettings>().OnKeyboardControlChanged += SetUsingArrowControlsScheme;
+        _usingArrowControlsScheme = false;
+    }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
+        if (_usingArrowControlsScheme)
         {
-            OnBasicAttack();
-        }
-        else if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.S))
-        {
-            OnMove(Vector3.left, false);
-        }
-        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S))
-        {
-            OnMove(Vector3.right, true);
+            ArrowControlsScheme();
         }
         else
         {
-            OnStop();
+            WASDControlsScheme();
         }
 
-        if (Input.GetKey(KeyCode.S))
-        {
-            OnCrouch();
-            OnUnderwaterControl(true);
+        CheckAllKeysPressed();
+    }
 
-            if (Input.GetKey(KeyCode.Space))
-            {
-                OnJumpDown();
-            }
-
-        }
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            OnJump();
-        }
-
-        if (!Input.GetKey(KeyCode.S))
-        {
-            OnStandingUp();
-        }
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            OnUnderwaterControl(false);
-        }
-
+    private void CheckAllKeysPressed()
+    {
         if (Input.GetKeyDown(KeyCode.E))
         {
             OnIronBootsEquip();
-        }
-
-        if (Input.GetKey(KeyCode.L))
-        {
-            OnThrowAttack();
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
@@ -103,5 +82,129 @@ public class KeyboardInputs : MonoBehaviour {
         {
             OnPause();
         }
+    }
+
+    private void WASDControlsScheme()
+    {
+        if (Input.GetKey(KeyCode.S))
+        {
+            OnCrouch();
+            OnUnderwaterControl(true);
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                OnJumpDown();
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            OnJump();
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            OnBasicAttack();
+        }
+        else if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !StaticObjects.GetPlayerState().IsCroutching)
+        {
+            OnMove(Vector3.left, false);
+        }
+        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && !StaticObjects.GetPlayerState().IsCroutching)
+        {
+            OnMove(Vector3.right, true);
+        }
+        else if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !StaticObjects.GetPlayerState().IsAttacking)
+        {
+            OnFlip(false);
+        }
+        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && !StaticObjects.GetPlayerState().IsAttacking)
+        {
+            OnFlip(true);
+        }
+        else
+        {
+            OnStop();
+        }
+
+        if (Input.GetKey(KeyCode.L))
+        {
+            OnThrowAttack();
+        }
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            OnUnderwaterControl(false);
+        }
+
+        if (!Input.GetKey(KeyCode.S))
+        {
+            OnStandingUp();
+        }
+    }
+
+    private void ArrowControlsScheme()
+    {
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            OnCrouch();
+            OnUnderwaterControl(true);
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                OnJumpDown();
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            OnJump();
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            OnBasicAttack();
+        }
+        else if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && !StaticObjects.GetPlayerState().IsCroutching)
+        {
+            OnMove(Vector3.left, false);
+        }
+        else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow) && !StaticObjects.GetPlayerState().IsCroutching)
+        {
+            OnMove(Vector3.right, true);
+        }
+        else if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && !StaticObjects.GetPlayerState().IsAttacking)
+        {
+            OnFlip(false);
+        }
+        else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow) && !StaticObjects.GetPlayerState().IsAttacking)
+        {
+            OnFlip(true);
+        }
+        else
+        {
+            OnStop();
+        }
+
+        if (Input.GetKey(KeyCode.S))
+        {
+            OnThrowAttack();
+        }
+
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            OnUnderwaterControl(false);
+        }
+
+        if (!Input.GetKey(KeyCode.DownArrow))
+        {
+            OnStandingUp();
+        }
+    }
+
+    private bool IsPressingDown()
+    {
+        return Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
+    }
+
+    private void SetUsingArrowControlsScheme(bool control)
+    {
+        _usingArrowControlsScheme = !control;
     }
 }

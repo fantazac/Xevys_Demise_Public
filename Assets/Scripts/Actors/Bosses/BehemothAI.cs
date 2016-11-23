@@ -25,11 +25,14 @@ public class BehemothAI : MonoBehaviour
     private const float FEIGN_TIME = 0.33f;
     private const int CHARGE_TIME = 5;
 
+    private OnAttackHit _attack;
+
     private Health _health;
     private GameObject _aimedWall;
     private Rigidbody2D _rigidbody;
     private Animator _animator;
     private BossOrientation _bossOrientation;
+    private PolygonCollider2D _polygonHitbox;
 
     private System.Random _rng = new System.Random();
     private BehemothStatus _status = BehemothStatus.WAIT;
@@ -42,6 +45,10 @@ public class BehemothAI : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _bossOrientation = GetComponent<BossOrientation>();
         _animator = GetComponent<Animator>();
+        _polygonHitbox = GetComponent<PolygonCollider2D>();
+ 
+        _attack = GetComponent<OnBehemothAttackHit>();
+
         _health.OnDeath += OnBehemothDefeated;
     }
 
@@ -83,12 +90,21 @@ public class BehemothAI : MonoBehaviour
             _timeLeft -= Time.fixedDeltaTime;
             if (_timeLeft < 2)
             {
+                _attack.enabled = true;
                 _animator.SetInteger("State", 1);
             }
         }
         //Upon countdown expired, Behemoth either feigns charging or charges.
         //The time charging depends from seconds specified in FEIGN_TIME or this amount of time plus the amount specified in CHARGE_TIME;
         else
+        {
+            SetChargeStatus();
+        }
+    }
+
+    public void SetChargeStatus()
+    {
+        if(_status == BehemothStatus.WAIT)
         {
             _animator.SetInteger("State", 2);
             _isCharging = (_rng.Next() % 2 == 0 ? true : false);
@@ -110,12 +126,16 @@ public class BehemothAI : MonoBehaviour
 
             {
                 _timeLeft = 1;
+                _polygonHitbox.enabled = true;
                 _animator.SetInteger("State", 3);
+                _attack.enabled = false;
                 _status = BehemothStatus.STRUCK;
+                
             }
         }
         else
         {
+            _attack.enabled = false;
             SetWaitStatus();
         }
     }
@@ -125,7 +145,7 @@ public class BehemothAI : MonoBehaviour
         if (_timeLeft > 0)
         {
             _timeLeft -= Time.fixedDeltaTime;
-            _rigidbody.velocity = new Vector2(-_speed / 10 * _bossOrientation.Orientation, _rigidbody.velocity.y);
+            _rigidbody.velocity = new Vector2(-_speed * 0.2f * _bossOrientation.Orientation, _rigidbody.velocity.y);
         }
         else
         {
@@ -138,9 +158,10 @@ public class BehemothAI : MonoBehaviour
 
     private void UpdateWhenStunned()
     {
-        _timeLeft -= Time.fixedDeltaTime;
+        _timeLeft -= Time.deltaTime;
         if (_timeLeft <= 0)
         {
+            _polygonHitbox.enabled = false;
             SetWaitStatus();
         }
     }

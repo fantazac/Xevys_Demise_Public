@@ -15,6 +15,6 @@ public class MovePickedUpItemOutsideOfMap : MonoBehaviour
 
     private void MoveObjectOutside()
     {
-        _animator.SetTrigger("ItemPickedUp");
+        _animator.SetTrigger(StaticObjects.GetAnimationTags().ItemPickedUp);
     }
 }
