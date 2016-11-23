@@ -161,19 +161,19 @@ public class KeyboardInputs : MonoBehaviour
         {
             OnBasicAttack();
         }
-        else if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && !StaticObjects.GetPlayerState().IsCroutching)
         {
             OnMove(Vector3.left, false);
         }
-        else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow) && !StaticObjects.GetPlayerState().IsCroutching)
         {
             OnMove(Vector3.right, true);
         }
-        else if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && !StaticObjects.GetPlayerState().IsAttacking)
         {
             OnFlip(false);
         }
-        else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow) && !StaticObjects.GetPlayerState().IsAttacking)
         {
             OnFlip(true);
         }
