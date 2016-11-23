@@ -67,6 +67,22 @@ public class PlayerWaterMovement : PlayerMovement
         enabled = false;
     }
 
+    protected override void OnCrouch()
+    {
+        if (!_playerState.IsCroutching && !_playerState.IsKnockedBack && enabled)
+        {
+            if (PlayerTouchesGround())
+            {
+                if (PlayerIsMovingHorizontally())
+                {
+                    _rigidbody.velocity = Vector2.zero;
+                }
+                SetCroutch(true);
+                transform.position += Vector3.down * CROUTCH_Y_OFFSET;
+            }
+        }
+    }
+
     protected override void OnUnderwaterControl(bool goesDown)
     {
         if ((goesDown && _inventoryManager.IronBootsActive) || (!goesDown && !_inventoryManager.IronBootsActive))

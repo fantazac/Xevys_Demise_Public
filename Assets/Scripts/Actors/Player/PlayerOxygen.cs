@@ -12,6 +12,9 @@ public class PlayerOxygen : MonoBehaviour
     [SerializeField]
     private int _damageOnHit = 50;
 
+    private WaitForSeconds _delayBetweenHits;
+    private WaitForSeconds _delayBeforeLosingHealth;
+
     private PlayerFloatingInteraction _playerFloating;
     private PlayerWaterMovement _playerWaterMovement;
     private Health _playerHealth;
@@ -23,6 +26,9 @@ public class PlayerOxygen : MonoBehaviour
         _playerWaterMovement = GetComponent<PlayerWaterMovement>();
         _inventoryManager = GetComponent<InventoryManager>();
 
+        _delayBetweenHits = new WaitForSeconds(_intervalBetweenHits);
+        _delayBeforeLosingHealth = new WaitForSeconds(_timeBeforeOxygenMissing);
+
         _playerFloating = GetComponentInChildren<PlayerFloatingInteraction>();
         _playerFloating.OnPlayerUnderWater += OnPlayerUnderWater;
         _playerFloating.OnPlayerOutOfWater += OnPlayerOutOfWater;
@@ -32,29 +38,24 @@ public class PlayerOxygen : MonoBehaviour
     {
         if (!_inventoryManager.BubbleEnabled)
         {
-            Debug.Log(0);
             StartCoroutine(DamageIfMissingOxygen());
         }        
     }
 
     private void OnPlayerOutOfWater()
     {
-        Debug.Log(1);
         StopAllCoroutines();
     }
 
     private IEnumerator DamageIfMissingOxygen()
     {
-        Debug.Log(2);
-        yield return new WaitForSeconds(_timeBeforeOxygenMissing);
-        Debug.Log(3);
+        yield return _delayBeforeLosingHealth;
+
         while (_playerWaterMovement.enabled && !_playerWaterMovement.IsFloating)
         {
-            Debug.Log(4);
             _playerHealth.Hit(_damageOnHit, Vector2.zero);
 
-            yield return new WaitForSeconds(_intervalBetweenHits);
+            yield return _delayBetweenHits;
         }
-        Debug.Log(5);
     }
 }

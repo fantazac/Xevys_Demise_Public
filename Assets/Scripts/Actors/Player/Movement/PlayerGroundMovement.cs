@@ -5,8 +5,6 @@ using System.Collections;
 public class PlayerGroundMovement : PlayerMovement
 {
 
-    private float CROUTCH_Y_OFFSET = 0.36f;
-
     protected override void Start()
     {
         base.Start();
@@ -64,7 +62,7 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void OnCrouch()
     {
-        if (!_playerState.IsCroutching && enabled)
+        if (!_playerState.IsCroutching && !_playerState.IsKnockedBack && enabled)
         {
             if (!PlayerIsMovingVertically())
             {
@@ -78,28 +76,9 @@ public class PlayerGroundMovement : PlayerMovement
         }
     }
 
-    protected override void OnStandingUp()
-    {
-        if (_playerState.IsCroutching && enabled)
-        {
-            if (!PlayerIsMovingVertically())
-            {
-                transform.position += Vector3.up * CROUTCH_Y_OFFSET;
-            }
-            SetCroutch(false);
-        }
-    }
-
     private void ActivateDoubleJump()
     {
         _canDoubleJump = true;
-    }
-
-    private void SetCroutch(bool enable)
-    {
-        _playerCroutchHitbox.enabled = enable;
-        _playerBoxCollider.isTrigger = enable;
-        _playerState.SetCroutching(enable);
     }
 
     private bool PlayerCanDoubleJump()
