@@ -48,6 +48,7 @@ public class KeyboardInputs : MonoBehaviour
 
     private void Start()
     {
+        GameObject.Find("PauseMenuControlsOptionsButtons").GetComponent<ControlsSchemeSettings>().OnKeyboardControlChanged += SetUsingArrowControlsScheme;
         _usingArrowControlsScheme = false;
     }
 
@@ -160,19 +161,19 @@ public class KeyboardInputs : MonoBehaviour
         {
             OnBasicAttack();
         }
-        else if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && !StaticObjects.GetPlayerState().IsCroutching)
         {
             OnMove(Vector3.left, false);
         }
-        else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow) && !StaticObjects.GetPlayerState().IsCroutching)
         {
             OnMove(Vector3.right, true);
         }
-        else if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && !StaticObjects.GetPlayerState().IsAttacking)
         {
             OnFlip(false);
         }
-        else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow) && !StaticObjects.GetPlayerState().IsAttacking)
         {
             OnFlip(true);
         }
@@ -202,13 +203,8 @@ public class KeyboardInputs : MonoBehaviour
         return Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
     }
 
-    private void SetUsingArrowControlsScheme()
+    private void SetUsingArrowControlsScheme(bool control)
     {
-        _usingArrowControlsScheme = true;
-    }
-
-    private void SetUsingWASDControlsScheme()
-    {
-        _usingArrowControlsScheme = false;
+        _usingArrowControlsScheme = !control;
     }
 }

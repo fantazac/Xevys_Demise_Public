@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.ComponentModel;
 
 public class ControlsSchemeSettings : MonoBehaviour
 {
     public delegate void OnKeyboardControlChangedHandler(bool control);
     public event OnKeyboardControlChangedHandler OnKeyboardControlChanged;
+
     public delegate void OnGamepadControlChangedHandler(bool control);
     public event OnGamepadControlChangedHandler OnGamepadControlChanged;
 
