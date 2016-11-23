@@ -109,7 +109,7 @@ public class DatabaseController : DatabaseConnection
         CreateFunFact("Xevy is actually a very sensitive guy.");
         CreateFunFact("The Game. You lost it.");
         CreateFunFact("No skeltals were hurt in the making of this game.");
-        CreateFunFact("Spam Games original name was Pawn V.");
+        CreateFunFact("Spam Games' original name was Pawn V.");
         _dbconnection.Close();
     }
 

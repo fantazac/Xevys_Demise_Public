@@ -36,7 +36,7 @@ public class PauseMenuInputs : MonoBehaviour
         _inputManager = StaticObjects.GetPlayer().GetComponentInChildren<InputManager>();
         _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
         _pauseMenuEventSystem = EventSystem.current;
-        _resumeBtnGameObject = GameObject.Find("ResumeBtn");
+        _resumeBtnGameObject = GameObject.Find(StaticObjects.GetFindTags().ResumeBtn);
 
         _waitForOneSecond = new WaitForSeconds(0.3f);
 

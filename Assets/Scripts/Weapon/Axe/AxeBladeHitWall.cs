@@ -7,6 +7,7 @@ public class AxeBladeHitWall : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private PolygonCollider2D _hitbox;
     private DestroyPlayerProjectile _destroyProjectile;
+    private UnityTags _unityTags;
 
     private void Start()
     {
@@ -14,12 +15,14 @@ public class AxeBladeHitWall : MonoBehaviour
         _rigidbody = GetComponentInParent<Rigidbody2D>();
         _hitbox = GetComponent<PolygonCollider2D>();
         _destroyProjectile = GetComponentInParent<DestroyPlayerProjectile>();
+        _unityTags = StaticObjects.GetUnityTags();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == "Wall" || collider.gameObject.tag == "LevelWall" || collider.gameObject.tag == "Spike"
-           || (collider.gameObject.tag == "FlyingPlatform" && _rigidbody.velocity.y < 0))
+        if (collider.gameObject.tag == _unityTags.Wall || collider.gameObject.tag == _unityTags.LevelWall
+            || collider.gameObject.tag == _unityTags.Spike
+            || (collider.gameObject.tag == _unityTags.FlyingPlatform && _rigidbody.velocity.y < 0))
         {
             _rotateAxe.Rotate = false;
             _rigidbody.velocity = Vector2.zero;

@@ -158,11 +158,11 @@ public class InventoryManager : MonoBehaviour
 
     private void SetInfiniteAmmo(GameObject item, bool enable)
     {
-        if (item.tag == "Knife")
+        if (item.tag == StaticObjects.GetUnityTags().Knife)
         {
             HasInfiniteKnives = enable;
         }
-        else if (item.tag == "Axe")
+        else if (item.tag == StaticObjects.GetUnityTags().Axe)
         {
             HasInfiniteAxes = enable;
         }

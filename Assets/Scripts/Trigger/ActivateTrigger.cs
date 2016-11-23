@@ -25,12 +25,15 @@ public class ActivateTrigger : MonoBehaviour
 
     private InventoryManager _playerInventory;
 
+    private UnityTags _unityTags;
+
     public delegate void OnTriggerHandler();
     public event OnTriggerHandler OnTrigger;
 
     private void Start()
     {
         _playerInventory = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
+        _unityTags = StaticObjects.GetUnityTags();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -83,17 +86,17 @@ public class ActivateTrigger : MonoBehaviour
 
     private bool PlayerCollided(Collider2D collider)
     {
-        return _playerCanTrigger && collider.gameObject.tag == "Player";
+        return _playerCanTrigger && collider.gameObject.tag == _unityTags.Player;
     }
 
     private bool KnifeCollided(Collider2D collider)
     {
-        return _knifeCanTrigger && collider.gameObject.tag == "Knife";
+        return _knifeCanTrigger && collider.gameObject.tag == _unityTags.Knife;
     }
 
     private bool AxeCollided(Collider2D collider)
     {
-        return _axeCanTrigger && (collider.gameObject.tag == "AxeBlade" || collider.gameObject.tag == "AxeHandle");
+        return _axeCanTrigger && (collider.gameObject.tag == _unityTags.AxeBlade || collider.gameObject.tag == _unityTags.AxeHandle);
     }
 
 }

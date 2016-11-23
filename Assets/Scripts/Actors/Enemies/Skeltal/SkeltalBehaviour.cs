@@ -12,8 +12,6 @@ public class SkeltalBehaviour : MonoBehaviour
 
     private BoxCollider2D _swordHitbox;
 
-    protected Animator _animator;
-
     protected Vector3 _initialPosition;
 
     protected SkeltalOrientation _skeltalOrientation;
@@ -38,7 +36,6 @@ public class SkeltalBehaviour : MonoBehaviour
         _initialPosition = transform.position;
         _swordHitbox = GetComponentsInChildren<BoxCollider2D>()[1];
         _swordHitbox.offset = new Vector2(_swordHitbox.offset.x * -1, _swordHitbox.offset.y);
-        _animator = GetComponent<Animator>();
 
         _waitForAttack = new WaitForSeconds(_attackTime);
         _waitForCooldown = new WaitForSeconds(_cooldownAfterAttack);
@@ -85,6 +82,7 @@ public class SkeltalBehaviour : MonoBehaviour
     protected void StopMovementOnDeath()
     {
         StopAllCoroutines();
+        _swordHitbox.enabled = false;
         enabled = false;
     }
 

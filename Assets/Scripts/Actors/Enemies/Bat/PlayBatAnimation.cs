@@ -18,12 +18,12 @@ public class PlayBatAnimation : MonoBehaviour
 
     private void BeginBatMovementAnimation()
     {
-        _animator.SetBool("IsFlying", true);
+        _animator.SetBool(StaticObjects.GetAnimationTags().IsFlying, true);
     }
 
     private void StopBatMovementAnimation()
     {
-        _animator.SetBool("IsFlying", false);
+        _animator.SetBool(StaticObjects.GetAnimationTags().IsFlying, false);
     }
 
 }

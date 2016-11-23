@@ -66,7 +66,7 @@ public class AccountStats : DatabaseConnection
         _nbScarabsKilled = _tempNbScarabsKilled;
         _nbBatsKilled = _tempNbBatsKilled;
         _nbSkeltalsKilled = _tempNbSkeltalsKilled;
-        _lifeRemaining = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>().HealthPoint;
+        _lifeRemaining = StaticObjects.GetPlayer().GetComponent<Health>().HealthPoint;
         _knifeEnabled = Convert.ToInt32(_inventoryManager.KnifeEnabled);
         _knifeAmmo = _munitions.KnifeAmmo;
         _axeAmmo = _munitions.AxeAmmo;
@@ -127,15 +127,15 @@ public class AccountStats : DatabaseConnection
 
     private void EnemyKilled(string tag)
     {
-        if (tag == "Scarab")
+        if (tag == StaticObjects.GetUnityTags().Scarab)
         {
             _tempNbScarabsKilled++;
         }
-        else if (tag == "Bat")
+        else if (tag == StaticObjects.GetUnityTags().Bat)
         {
             _tempNbBatsKilled++;
         }
-        else if (tag == "Skeltal")
+        else if (tag == StaticObjects.GetUnityTags().Skeltal)
         {
             _tempNbSkeltalsKilled++;
         }

@@ -17,7 +17,7 @@ public class InvincibilityAfterBeingHit : MonoBehaviour
 
     private void Start()
     {
-        StaticObjects.GetPlayer().GetComponent<Health>().OnDamageTaken += StartInvincibility;
+        GetComponent<Health>().OnDamageTaken += StartInvincibility;
 
         _invincibilityDelay = new WaitForSeconds(_invincibilityTime);
     }
@@ -26,12 +26,19 @@ public class InvincibilityAfterBeingHit : MonoBehaviour
     {
         yield return _invincibilityDelay;
 
-        OnInvincibilityFinished();
+        if(OnInvincibilityFinished != null)
+        {
+            OnInvincibilityFinished();
+        } 
     }
 
     public void StartInvincibility(int hitPoints)
     {
-        OnInvincibilityStarted(_invincibilityTime);
+        if(OnInvincibilityStarted != null)
+        {
+            OnInvincibilityStarted(_invincibilityTime);
+        }
+        
         StartCoroutine(DisableInvincibility());
     }
 }

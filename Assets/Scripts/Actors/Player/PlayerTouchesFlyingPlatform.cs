@@ -18,7 +18,7 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == "FlyingPlatform")
+        if (collider.gameObject.tag == StaticObjects.GetUnityTags().FlyingPlatform)
         {
             EnablePlatform();
             _flyingPlatform = collider.gameObject;
@@ -28,7 +28,7 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == "FlyingPlatform")
+        if (collider.gameObject.tag == StaticObjects.GetUnityTags().FlyingPlatform)
         {
             OnFlyingPlatform = false;
         }
