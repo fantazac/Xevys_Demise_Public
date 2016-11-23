@@ -48,6 +48,7 @@ public class KeyboardInputs : MonoBehaviour
 
     private void Start()
     {
+        GameObject.Find("PauseMenuControlsOptionsButtons").GetComponent<ControlsSchemeSettings>().OnKeyboardControlChanged += SetUsingArrowControlsScheme;
         _usingArrowControlsScheme = false;
     }
 
@@ -202,13 +203,8 @@ public class KeyboardInputs : MonoBehaviour
         return Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
     }
 
-    private void SetUsingArrowControlsScheme()
+    private void SetUsingArrowControlsScheme(bool control)
     {
-        _usingArrowControlsScheme = true;
-    }
-
-    private void SetUsingWASDControlsScheme()
-    {
-        _usingArrowControlsScheme = false;
+        _usingArrowControlsScheme = !control;
     }
 }

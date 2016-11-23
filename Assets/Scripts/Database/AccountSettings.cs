@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using UnityEngine;
 
 public class AccountSettings : DatabaseConnection
 {
@@ -19,8 +20,9 @@ public class AccountSettings : DatabaseConnection
     {
         base.Start();
         _controller = GetComponent<DatabaseController>();
-        GetComponent<ControlsSchemeSettings>().OnKeyboardControlChanged += ChangeKeyboardControl;
-        GetComponent<ControlsSchemeSettings>().OnGamepadControlChanged += ChangeGamepadControl;
+        ControlsSchemeSettings controlsSchemeSettings = GameObject.Find("PauseMenuControlsOptionsButtons").GetComponent<ControlsSchemeSettings>();
+        controlsSchemeSettings.OnKeyboardControlChanged += ChangeKeyboardControl;
+        controlsSchemeSettings.OnGamepadControlChanged += ChangeGamepadControl;
         PauseMenuAudioSettingsController.OnVolumeChanged += ChangeVolume;
     }
 
