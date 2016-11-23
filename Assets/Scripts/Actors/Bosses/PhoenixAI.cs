@@ -22,8 +22,8 @@ public class PhoenixAI : MonoBehaviour
 
     private const float FLIGHT_DELAY = 0.5f;
     private const float ATTACK_DELAY = 5;
-    private const float PLAYER_APPROACH_LIMIT = 3;
-    private const float SPEED = 7;
+    private const float PLAYER_APPROACH_LIMIT = 4.7f;
+    private const float SPEED = 5;
     private const float WING_FLAP = 2.675f;
     private const float RADIAN_TO_DEGREE = 57.2958f;
 
@@ -34,6 +34,7 @@ public class PhoenixAI : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private Animator _animator;
     private BossOrientation _bossOrientation;
+    private PolygonCollider2D _polygonHitbox;
 
     private System.Random _rng = new System.Random();
     private PhoenixStatus _status;
@@ -54,6 +55,8 @@ public class PhoenixAI : MonoBehaviour
         _bossOrientation = GetComponent<BossOrientation>();
         _animator = GetComponent<Animator>();
         _health.OnDeath += OnPhoenixDefeated;
+        _polygonHitbox = GetComponent<PolygonCollider2D>();
+        GetComponent<Health>().OnDamageTaken += GotHitByPlayer;
     }
 
     private void OnDestroy()
@@ -77,6 +80,35 @@ public class PhoenixAI : MonoBehaviour
         else if (_status == PhoenixStatus.ATTACK)
         {
             UpdateWhenAttacking();
+        }
+    }
+
+    private void GotHitByPlayer(int hitPoints)
+    {
+        FindFleeingPoint();
+    }
+
+    private void FindFleeingPoint()
+    {
+        while (_closestPoint.Equals(_currentPoint))
+        {
+            int pointToFleeIndex = _rng.Next() % 4;
+            if (pointToFleeIndex == 0)
+            {
+                _closestPoint = _northEastLimit;
+            }
+            else if (pointToFleeIndex == 1)
+            {
+                _closestPoint = _southEastLimit;
+            }
+            else if (pointToFleeIndex == 2)
+            {
+                _closestPoint = _southWestLimit;
+            }
+            else if (pointToFleeIndex == 3)
+            {
+                _closestPoint = _northWestLimit;
+            }
         }
     }
 
@@ -136,26 +168,7 @@ public class PhoenixAI : MonoBehaviour
         if (Vector2.Distance(transform.position, _playerPosition) < 1)
         {
             _closestPoint = _currentPoint;
-            while (_closestPoint.Equals(_currentPoint))
-            {
-                int pointToFleeIndex = _rng.Next() % 4;
-                if (pointToFleeIndex == 0)
-                {
-                    _closestPoint = _northEastLimit;
-                }
-                else if (pointToFleeIndex == 1)
-                {
-                    _closestPoint = _southEastLimit;
-                }
-                else if (pointToFleeIndex == 2)
-                {
-                    _closestPoint = _southWestLimit;
-                }
-                else if (pointToFleeIndex == 3)
-                {
-                    _closestPoint = _northWestLimit;
-                }
-            }
+            FindFleeingPoint();
             EngageInFleeStatus();
         }
     }
