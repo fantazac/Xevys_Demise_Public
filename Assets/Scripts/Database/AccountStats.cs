@@ -41,7 +41,7 @@ public class AccountStats : DatabaseConnection
     private int _waterArtefactEnabled;
     private int _fireArtefactEnabled;
 
-    private void Start()
+    protected override void Start()
     {
         base.Start();
         _controller = GetComponent<DatabaseController>();
@@ -84,8 +84,8 @@ public class AccountStats : DatabaseConnection
     public void SaveStats()
     {
         _dbconnection.Open();
-        string sqlQuery = String.Format("UPDATE STATS SET NB_KILLED_SCARABS = {0}, NB_KILLED_BATS = {1}, NB_KILLED_SKELTALS = {2}, LIFE_REMAINING = {3}, KNIFE_PICKED = {4}, KNIFE_AMMO = {5}, AXE_PICKED = {6}, AXE_AMMO = {7}, FEATHER_PICKED = {8}, BOOTS_PICKED = {9}, BUBBLE_PICKED = {10}, ARMOR_PICKED = {11}, ARTEFACT1_PICKED = {12}, ARTEFACT2_PICKED = {13}, ARTEFACT3_PICKED = {14}, ARTEFACT4_PICKED = {15} " +
-            "WHERE ACCOUNT_ID = {16}", _nbScarabsKilled, _nbBatsKilled, _nbSkeltalsKilled, _lifeRemaining, _knifeEnabled, _knifeAmmo, _axeEnabled, _axeAmmo, _featherEnabled, _bootsEnabled, _bubbleEnabled, _armorEnabled, _earthArtefactEnabled, _airArtefactEnabled, _waterArtefactEnabled, _fireArtefactEnabled, _controller.AccountID);
+        string sqlQuery = String.Format("UPDATE STATS SET NB_KILLED_SCARABS = {0}, NB_KILLED_BATS = {1}, NB_KILLED_SKELTALS = {2}, LIFE_REMAINING = {3}, KNIFE_PICKED = {4}, KNIFE_AMMO = {5}, AXE_PICKED = {6}, AXE_AMMO = {7}, FEATHER_PICKED = {8}, BOOTS_PICKED = {9}, BUBBLE_PICKED = {10}, ARMOR_PICKED = {11}, ARTEFACT1_PICKED = {12}, ARTEFACT2_PICKED = {13}, ARTEFACT3_PICKED = {14}, ARTEFACT4_PICKED = {15}" +
+            " WHERE ACCOUNT_ID = {16}", _nbScarabsKilled, _nbBatsKilled, _nbSkeltalsKilled, _lifeRemaining, _knifeEnabled, _knifeAmmo, _axeEnabled, _axeAmmo, _featherEnabled, _bootsEnabled, _bubbleEnabled, _armorEnabled, _earthArtefactEnabled, _airArtefactEnabled, _waterArtefactEnabled, _fireArtefactEnabled, _controller.AccountID);
         _dbcommand.CommandText = sqlQuery;
         _dbcommand.ExecuteNonQuery();
         _dbconnection.Close();
@@ -120,14 +120,9 @@ public class AccountStats : DatabaseConnection
         reader.Close();
         _dbconnection.Close();
 
-        ReloadInventory();
+        OnInventoryReloaded(Convert.ToBoolean(_knifeEnabled), Convert.ToBoolean(_axeEnabled), Convert.ToBoolean(_featherEnabled), Convert.ToBoolean(_bootsEnabled), Convert.ToBoolean(_bubbleEnabled), Convert.ToBoolean(_armorEnabled), Convert.ToBoolean(_earthArtefactEnabled), Convert.ToBoolean(_airArtefactEnabled), Convert.ToBoolean(_waterArtefactEnabled), Convert.ToBoolean(_fireArtefactEnabled));
         OnAmmoReloaded(_knifeAmmo, _axeAmmo);
         OnHealthReloaded(_lifeRemaining);
-    }
-
-    public void ReloadInventory()
-    {
-        OnInventoryReloaded(Convert.ToBoolean(_knifeEnabled), Convert.ToBoolean(_axeEnabled), Convert.ToBoolean(_featherEnabled), Convert.ToBoolean(_bootsEnabled), Convert.ToBoolean(_bubbleEnabled), Convert.ToBoolean(_armorEnabled), Convert.ToBoolean(_earthArtefactEnabled), Convert.ToBoolean(_airArtefactEnabled), Convert.ToBoolean(_waterArtefactEnabled), Convert.ToBoolean(_fireArtefactEnabled));
     }
 
     private void EnemyKilled(string tag)

@@ -8,7 +8,7 @@ public class DatabaseConnection : MonoBehaviour
     protected IDbConnection _dbconnection;
     protected IDbCommand _dbcommand;
 
-    protected void Start()
+    protected virtual void Start()
     {
         string connection = "URI=file:" + Path.Combine(Application.persistentDataPath, "Database.db");
         _dbconnection = (IDbConnection)new SqliteConnection(connection);
