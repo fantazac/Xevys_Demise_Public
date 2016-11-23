@@ -6,11 +6,11 @@ using System;
 public class Health : MonoBehaviour
 {
     [SerializeField]
-    private float _health = 1000f;
+    private int _health = 1000;
 
-    public float MaxHealth { get; private set; }
+    public int MaxHealth { get; private set; }
 
-    public float HealthPoint { get { return _health; } set { _health = value; } }
+    public int HealthPoint { get { return _health; } set { _health = value; } }
 
     public delegate void OnDamageTakenHandler(int hitPoints);
     public event OnDamageTakenHandler OnDamageTaken;
@@ -46,9 +46,7 @@ public class Health : MonoBehaviour
 
     public void FullHeal()
     {
-        OnHeal(Convert.ToInt32(MaxHealth));
-        OnHealthChanged(Convert.ToInt32(MaxHealth));
-
+        Heal(MaxHealth);
     }
 
     public void Hit(int hitPoints, Vector2 attackerPosition)

@@ -32,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     protected const float INITIAL_GRAVITY_SCALE = 5;
     protected const float TERMINAL_SPEED = -18;
     protected const float LINEAR_DRAG = 18f;
+    protected const float CROUTCH_Y_OFFSET = 0.36f;
 
     protected float _horizontalSpeed = 7;
     protected float _jumpingSpeed = 17;
@@ -67,6 +68,9 @@ public class PlayerMovement : MonoBehaviour
         _inputManager.OnStop += OnStop;
         _inputManager.OnCrouch += OnCrouch;
         _inputManager.OnStandingUp += OnStandingUp;
+        _inputManager.OnFlip += Flip;
+
+        _playerHealth.OnDamageTaken += OnStandingUpAfterHit;
 
         _rigidbody.gravityScale = INITIAL_GRAVITY_SCALE;
     }
@@ -117,7 +121,30 @@ public class PlayerMovement : MonoBehaviour
 
     protected virtual void OnCrouch() { }
 
-    protected virtual void OnStandingUp() { }
+    protected void OnStandingUp()
+    {
+        if (_playerState.IsCroutching)
+        {
+            if (!PlayerIsMovingVertically())
+            {
+                
+            }
+            transform.position += Vector3.up * CROUTCH_Y_OFFSET;
+            SetCroutch(false);
+        }
+    }
+
+    protected void SetCroutch(bool enable)
+    {
+        _playerCroutchHitbox.enabled = enable;
+        _playerBoxCollider.isTrigger = enable;
+        _playerState.SetCroutching(enable);
+    }
+
+    protected void OnStandingUpAfterHit(int hitPoints)
+    {
+        OnStandingUp();
+    }
 
     public virtual bool IsJumping()
     {
