@@ -23,6 +23,7 @@ public class PlayerOxygen : MonoBehaviour
     private void Start()
     {
         _playerHealth = GetComponent<Health>();
+
         _playerWaterMovement = GetComponent<PlayerWaterMovement>();
         _inventoryManager = GetComponent<InventoryManager>();
 

@@ -1,22 +1,45 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
-using System.ComponentModel;
 
 public class ControlsSchemeSettings : MonoBehaviour
 {
-    public delegate void OnKeyboardControlChangedHandler(bool control);
+    public delegate void OnKeyboardControlChangedHandler(bool scheme);
     public event OnKeyboardControlChangedHandler OnKeyboardControlChanged;
-
-    public delegate void OnGamepadControlChangedHandler(bool control);
+    public delegate void OnGamepadControlChangedHandler(bool scheme);
     public event OnGamepadControlChangedHandler OnGamepadControlChanged;
 
-    public void ChangeKeyboardControl(bool control)
+    private Switch _keyboardSwitch;
+    private Switch _gamepadSwitch;
+
+    private void Start()
     {
-        OnKeyboardControlChanged(control);
+        AccountSettings accountSettings = StaticObjects.GetDatabase().GetComponent<AccountSettings>();
+        accountSettings.OnKeyboardControlSchemeReloaded += ReloadKeyboardControlScheme;
+        accountSettings.OnGamepadControlSchemeReloaded += ReloadGamepadControlScheme;
+
+        Switch[] switches = GetComponentsInChildren<Switch>();
+        _keyboardSwitch = switches[0];
+        _gamepadSwitch = switches[1];
     }
 
-    public void ChangeGamepadControl(bool control)
+    public void ChangeKeyboardControl(bool scheme)
     {
-        OnGamepadControlChanged(control);
+        OnKeyboardControlChanged(scheme);
+    }
+
+    public void ChangeGamepadControl(bool scheme)
+    {
+        OnGamepadControlChanged(scheme);
+    }
+
+    private void ReloadKeyboardControlScheme(bool scheme)
+    {
+        _keyboardSwitch.isOn = scheme;
+    }
+
+    private void ReloadGamepadControlScheme(bool scheme)
+    {
+        _gamepadSwitch.isOn = scheme;
     }
 }
