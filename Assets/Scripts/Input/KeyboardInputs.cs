@@ -41,6 +41,9 @@ public class KeyboardInputs : MonoBehaviour
     public delegate void KeyboardOnPauseHandler();
     public event KeyboardOnPauseHandler OnPause;
 
+    public delegate void KeyboardOnFlipHandler(bool goesRight);
+    public event KeyboardOnFlipHandler OnFlip;
+
     private bool _usingArrowControlsScheme;
 
     private void Start()
@@ -101,13 +104,21 @@ public class KeyboardInputs : MonoBehaviour
         {
             OnBasicAttack();
         }
-        else if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !StaticObjects.GetPlayerState().IsCroutching)
         {
             OnMove(Vector3.left, false);
         }
-        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && !StaticObjects.GetPlayerState().IsCroutching)
         {
             OnMove(Vector3.right, true);
+        }
+        else if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D) && !StaticObjects.GetPlayerState().IsAttacking)
+        {
+            OnFlip(false);
+        }
+        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A) && !StaticObjects.GetPlayerState().IsAttacking)
+        {
+            OnFlip(true);
         }
         else
         {
@@ -157,6 +168,14 @@ public class KeyboardInputs : MonoBehaviour
         else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.DownArrow))
         {
             OnMove(Vector3.right, true);
+        }
+        else if (Input.GetKey(KeyCode.LeftArrow) && !Input.GetKey(KeyCode.RightArrow) && Input.GetKey(KeyCode.DownArrow))
+        {
+            OnFlip(false);
+        }
+        else if (Input.GetKey(KeyCode.RightArrow) && !Input.GetKey(KeyCode.LeftArrow) && Input.GetKey(KeyCode.DownArrow))
+        {
+            OnFlip(true);
         }
         else
         {

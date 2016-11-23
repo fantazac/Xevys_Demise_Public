@@ -33,15 +33,18 @@ public class KnockbackPlayer : MonoBehaviour
     {
         _playerState.SetKnockedBack(true);
 
-        if (transform.position.x < attackerPosition.x)
+        if(attackerPosition != Vector2.zero)
         {
-            _rigidbody.velocity = new Vector2(-_knockbackSpeed, _rigidbody.velocity.y);
+            if (transform.position.x < attackerPosition.x)
+            {
+                _rigidbody.velocity = new Vector2(-_knockbackSpeed, _rigidbody.velocity.y);
+            }
+            else if (transform.position.x > attackerPosition.x)
+            {
+                _rigidbody.velocity = new Vector2(_knockbackSpeed, _rigidbody.velocity.y);
+            }
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _knockbackSpeed);
         }
-        else if (transform.position.x > attackerPosition.x)
-        {
-            _rigidbody.velocity = new Vector2(_knockbackSpeed, _rigidbody.velocity.y);
-        }
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _knockbackSpeed);
 
         StartCoroutine(StopKnockback());
     }
