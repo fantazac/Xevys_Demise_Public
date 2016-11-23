@@ -58,7 +58,7 @@ public class GamepadInputs : MonoBehaviour
 
     private void Start()
     {
-        GameObject.Find("PauseMenuControlsOptionsButtons").GetComponent<ControlsSchemeSettings>().OnGamepadControlChanged += SetUsingDPadControlsScheme;
+        GameObject.Find(StaticObjects.GetFindTags().PauseMenuControlsOptionsButtons).GetComponent<ControlsSchemeSettings>().OnGamepadControlChanged += SetUsingDPadControlsScheme;
         _state = GamePad.GetState(PlayerIndex.One);
         _usingDpadControlsScheme = false;
     }
