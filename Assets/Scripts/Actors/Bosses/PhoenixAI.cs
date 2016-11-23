@@ -23,7 +23,9 @@ public class PhoenixAI : MonoBehaviour
     private const float FLIGHT_DELAY = 0.5f;
     private const float ATTACK_DELAY = 5;
     private const float PLAYER_APPROACH_LIMIT = 4.7f;
-    private const float SPEED = 5;
+    private const float NORMAL_FLYING_SPEED = 5;
+    private const float ATTACK_FLYING_SPEED = 7;
+    private const float HIT_FLYING_SPEED = 3;
     private const float WING_FLAP = 2.675f;
     private const float RADIAN_TO_DEGREE = 57.2958f;
 
@@ -42,6 +44,7 @@ public class PhoenixAI : MonoBehaviour
     private float _attackCooldownTimeLeft;
     private float _closestHorizontalPoint;
     private float _closestVerticalPoint;
+    private float _flyingSpeed;
 
     // Use this for initialization
     private void Start()
@@ -57,6 +60,8 @@ public class PhoenixAI : MonoBehaviour
         _health.OnDeath += OnPhoenixDefeated;
         _polygonHitbox = GetComponent<PolygonCollider2D>();
         GetComponent<Health>().OnDamageTaken += GotHitByPlayer;
+
+        _flyingSpeed = NORMAL_FLYING_SPEED;
     }
 
     private void OnDestroy()
@@ -85,7 +90,7 @@ public class PhoenixAI : MonoBehaviour
 
     private void GotHitByPlayer(int hitPoints)
     {
-        FindFleeingPoint();
+        _flyingSpeed = HIT_FLYING_SPEED;
     }
 
     private void FindFleeingPoint()
@@ -123,6 +128,7 @@ public class PhoenixAI : MonoBehaviour
             _attackCooldownTimeLeft = 0;
             _rigidbody.isKinematic = true;
             _status = PhoenixStatus.ATTACK;
+            _flyingSpeed = ATTACK_FLYING_SPEED;
         }
         else
         {
@@ -157,13 +163,13 @@ public class PhoenixAI : MonoBehaviour
 
     private void UpdateWhenFleeing()
     {
-        transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _closestPoint, SPEED * Time.fixedDeltaTime);
+        transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _closestPoint, _flyingSpeed * Time.fixedDeltaTime);
         CheckForFlyStatus();
     }
 
     private void UpdateWhenAttacking()
     {
-        transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _playerPosition, SPEED * Time.fixedDeltaTime);
+        transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _playerPosition, _flyingSpeed * Time.fixedDeltaTime);
 
         if (Vector2.Distance(transform.position, _playerPosition) < 1)
         {
@@ -188,6 +194,7 @@ public class PhoenixAI : MonoBehaviour
 
     private void EngageInFleeStatus()
     {
+        _flyingSpeed = NORMAL_FLYING_SPEED;
         transform.rotation = Quaternion.identity;
         _rigidbody.isKinematic = true;
         _attackCooldownTimeLeft = 0;
