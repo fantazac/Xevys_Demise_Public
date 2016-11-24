@@ -2,7 +2,6 @@
 
 public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
 {
-
     public delegate void OnMainInterfaceFadeHandler();
     public event OnMainInterfaceFadeHandler OnMainInterfaceFade;
 
@@ -24,9 +23,13 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
     public delegate void OnBackButtonPressedToClosePauseMenuHandler();
     public event OnBackButtonPressedToClosePauseMenuHandler OnBackButtonPressedToClosePauseMenu;
 
+    public delegate void OnPlayerDeathShowDeathInterfaceHandler();
+    public event OnPlayerDeathShowDeathInterfaceHandler OnPlayerDeathShowDeathInterface;
+
     private PauseMenuInputs _pauseMenuInputs;
     private InputManager _inputManager;
     private Animator _animator;
+    private Health _playeHealth;
 
     private string _currentInterface;
 
@@ -34,15 +37,24 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
     {
         _pauseMenuInputs = StaticObjects.GetPauseMenuPanel().GetComponentInChildren<PauseMenuInputs>();
         _inputManager = StaticObjects.GetPlayer().GetComponentInChildren<InputManager>();
+        _playeHealth = StaticObjects.GetPlayer().GetComponent<Health>();
+
         _pauseMenuInputs.OnOptionsInterfaceIsCurrent += OptionsInterfaceIsCurrent;
         _pauseMenuInputs.OnMainInterfaceIsCurrent += MainInterfaceIsCurrent;
         _pauseMenuInputs.OnControlsInterfaceIsCurrent += ControlsInterfaceIsCurrent;
         _pauseMenuInputs.OnAudioInterfaceIsCurrent += AudioInterfaceIsCurrent;
         _inputManager.OnBackButtonPressedInMenu += OnGamepadBackBtnPressed;
+        _playeHealth.OnDeath += OnPlayerDeath;
 
         _animator = GetComponent<Animator>();
 
         _currentInterface = "Main";
+    }
+
+    private void OnPlayerDeath()
+    {
+        _animator.SetTrigger("ShowDeathInterface");
+        OnPlayerDeathShowDeathInterface();
     }
 
     private void OnGamepadBackBtnPressed()
@@ -97,7 +109,7 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
                 _animator.SetTrigger(target);
                 _currentInterface = target;
             }
-            else if(target == "Main")
+            else if (target == "Main")
             {
                 _animator.SetTrigger("MainSlideIn");
                 _currentInterface = target;
