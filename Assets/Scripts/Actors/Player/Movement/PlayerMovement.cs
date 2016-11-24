@@ -222,14 +222,14 @@ public class PlayerMovement : MonoBehaviour
         return _rigidbody.velocity.x > -1 && !_orientation.IsFacingRight;
     }
 
-    protected virtual bool PlayerIsFalling()
+    protected bool PlayerIsFalling()
     {
         return IsJumping() && _rigidbody.velocity.y <= 0;
     }
 
     protected bool PlayerIsJumping()
     {
-        return (IsJumping() && _rigidbody.velocity.y > 0) || (_rigidbody.velocity.y > 2 && !_inventoryManager.IronBootsActive);
+        return IsJumping() && _rigidbody.velocity.y > 0;
     }
 
     protected void OnPlayerFalling()

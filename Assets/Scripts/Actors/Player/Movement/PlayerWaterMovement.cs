@@ -107,11 +107,6 @@ public class PlayerWaterMovement : PlayerMovement
         }
     }
 
-    protected override bool PlayerIsFalling()
-    {
-        return (IsJumping() && _rigidbody.velocity.y < 0 && !_inventoryManager.IronBootsActive) || (IsJumping() && _rigidbody.velocity.y <= 0 && _inventoryManager.IronBootsActive);
-    }
-
     public override bool IsJumping()
     {
         return !(_isFloating || _playerTouchesGround.OnGround);
