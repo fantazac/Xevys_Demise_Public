@@ -189,7 +189,12 @@ public class PlayerMovement : MonoBehaviour
 
     private bool PlayerTouchesFlyingPlatform()
     {
-        return _playerTouchesFlyingPlatform.OnFlyingPlatform;
+        return _playerTouchesFlyingPlatform.OnFlyingPlatform || PlayerIsOnEdgeOfFlyingPlatform();
+    }
+
+    private bool PlayerIsOnEdgeOfFlyingPlatform()
+    {
+        return !PlayerIsMovingHorizontally() && !PlayerTouchesGround() && _playerTouchesFlyingPlatform.HasFlyingPlatform();
     }
 
     private bool PlayerCanDropFromFlyingPlatform()

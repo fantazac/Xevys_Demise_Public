@@ -71,7 +71,7 @@ public class PlayerWaterMovement : PlayerMovement
     {
         if (!_playerState.IsCroutching && !_playerState.IsKnockedBack && enabled)
         {
-            if (PlayerTouchesGround())
+            if (PlayerTouchesGround() && _inventoryManager.IronBootsActive)
             {
                 if (PlayerIsMovingHorizontally())
                 {
@@ -99,6 +99,10 @@ public class PlayerWaterMovement : PlayerMovement
     {
         if (enabled && _inventoryManager.IronBootsEnabled)
         {
+            if (_inventoryManager.IronBootsActive)
+            {
+                OnStandingUp();
+            }
             base.OnIronBootsEquip();
         }
     }
