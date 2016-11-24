@@ -40,12 +40,14 @@ public class PauseMenuAnimationManager : MonoBehaviour
             SlideIn();
             FadeIn();
             OnPauseMenuStateChanged(_active);
+            Debug.Log(_active);
         }
         else
         {
             SlideOut();
             FadeOut();
             OnPauseMenuStateChanged(_active);
+            Debug.Log(_active);
         }
     }
 
