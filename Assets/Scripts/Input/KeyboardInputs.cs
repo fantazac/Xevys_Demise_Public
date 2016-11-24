@@ -52,7 +52,7 @@ public class KeyboardInputs : MonoBehaviour
     {
         GameObject.Find(StaticObjects.GetFindTags().PauseMenuControlsOptionsButtons).GetComponent<ControlsSchemeSettings>().OnKeyboardControlChanged += SetUsingArrowControlsScheme;
         _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
-        _pauseMenuAnimationManager.OnPauseMenuStateChanged += IsInMenu;
+        _pauseMenuAnimationManager.OnPauseMenuOutOfScreen += IsInMenu;
         _usingArrowControlsScheme = false;
         _inMenu = false;
     }
