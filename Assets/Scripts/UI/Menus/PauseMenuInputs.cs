@@ -20,6 +20,9 @@ public class PauseMenuInputs : MonoBehaviour
     public delegate void OnAudioInterfaceIsCurrentHandler(string current);
     public event OnAudioInterfaceIsCurrentHandler OnAudioInterfaceIsCurrent;
 
+    public delegate void OnMainInterfaceOpendedHandler();
+    public event OnMainInterfaceOpendedHandler OnMainInterfaceOpended;
+
     private InputManager _inputManager;
     private PauseMenuAnimationManager _pauseMenuAnimationManager;
     private EventSystem _pauseMenuEventSystem;
@@ -28,13 +31,14 @@ public class PauseMenuInputs : MonoBehaviour
     public bool CanSlide { private get { return _canSlide; } set { _canSlide = value; } }
 
     private GameObject _resumeBtnGameObject;
-
+    private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
     private WaitForSeconds _waitForOneSecond;
 
     private void Start()
     {
         _inputManager = StaticObjects.GetPlayer().GetComponentInChildren<InputManager>();
         _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
+        _pauseMenuCurrentInterfaceAnimator = GameObject.Find(StaticObjects.GetFindTags().PauseMenuButtons).GetComponent<PauseMenuCurrentInterfaceAnimator>();
         _pauseMenuEventSystem = EventSystem.current;
         _resumeBtnGameObject = GameObject.Find(StaticObjects.GetFindTags().ResumeBtn);
 
@@ -42,6 +46,7 @@ public class PauseMenuInputs : MonoBehaviour
 
         _pauseMenuAnimationManager.OnPauseMenuStateChanged += SyncFirstControlOnPauseMenuStateChanged;
         _inputManager.OnPause += PauseMenuTriggered;
+        _pauseMenuCurrentInterfaceAnimator.OnBackButtonPressedToClosePauseMenu += PauseMenuTriggered;
         _canSlide = true;
     }
 
@@ -92,7 +97,8 @@ public class PauseMenuInputs : MonoBehaviour
     {
         if (isActive)
         {
-            OnMainInterfaceIsCurrent("Main");
+            OnMainInterfaceIsCurrent("MainOpened");
+            OnMainInterfaceOpended();
         }
         else
         {

@@ -44,6 +44,9 @@ public class InputManager : MonoBehaviour
     public delegate void OnFlipHandler(bool goesRight);
     public event OnFlipHandler OnFlip;
 
+    public delegate void OnBackButtonPressedInMenuHandler();
+    public event OnBackButtonPressedInMenuHandler OnBackButtonPressedInMenu;
+
     private KeyboardInputs _keyboardInputs;
     private GamepadInputs _gamepadInputs;
 
@@ -77,6 +80,7 @@ public class InputManager : MonoBehaviour
         _gamepadInputs.OnThrowAttack += InputsOnThrowAttack;
         _gamepadInputs.OnThrowAttackChangeButtonPressed += InputsOnThrowAttackChangeButtonPressed;
         _gamepadInputs.OnPause += InputsOnPause;
+        _gamepadInputs.OnBackButtonPressedInMenu += OnGamepadBackButtonPressedInMenu;
 
     }
 
@@ -118,6 +122,11 @@ public class InputManager : MonoBehaviour
                     state.DPad.Left == ButtonState.Pressed || state.DPad.Right == ButtonState.Pressed ||
                     state.DPad.Up == ButtonState.Pressed || state.DPad.Down == ButtonState.Pressed);
 
+    }
+
+    private void OnGamepadBackButtonPressedInMenu()
+    {
+        OnBackButtonPressedInMenu();
     }
 
     private void InputsOnMove(Vector3 movement, bool goesRight)

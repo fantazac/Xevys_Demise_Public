@@ -12,7 +12,7 @@ public class PauseMenuControlsButtonsAnimationController : MonoBehaviour
 
     public void ShowControlsInterface()
     {
-        if (!_animator.GetCurrentAnimatorStateInfo(0).IsName("PauseMenuButtonsGroupActiveAnimation"))
+        if (!_animator.GetCurrentAnimatorStateInfo(0).IsName(StaticObjects.GetAnimationTags().PauseMenuButtonsGroupActiveAnimation))
         {
             _animator.SetTrigger("Show");
         }

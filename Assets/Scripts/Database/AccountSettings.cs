@@ -24,7 +24,7 @@ public class AccountSettings : DatabaseConnection
     {
         base.Start();
         _controller = GetComponent<DatabaseController>();
-        ControlsSchemeSettings controlsSchemeSettings = GameObject.Find("PauseMenuControlsOptionsButtons").GetComponent<ControlsSchemeSettings>();
+        ControlsSchemeSettings controlsSchemeSettings = GameObject.Find(StaticObjects.GetFindTags().PauseMenuControlsOptionsButtons).GetComponent<ControlsSchemeSettings>();
         controlsSchemeSettings.OnKeyboardControlChanged += ChangeKeyboardControl;
         controlsSchemeSettings.OnGamepadControlChanged += ChangeGamepadControl;
         PauseMenuAudioSettingsController.OnVolumeChanged += ChangeVolume;

@@ -42,6 +42,9 @@ public class GamepadInputs : MonoBehaviour
     public delegate void GamepadOnPauseHandler();
     public event GamepadOnPauseHandler OnPause;
 
+    public delegate void GamepadOnBackButtonPressedInMenuHandler();
+    public event GamepadOnBackButtonPressedInMenuHandler OnBackButtonPressedInMenu;
+
     private float _joysticksXAxisDeadZone = 0.7f;
     private float _joysticksYAxisDeadZone = 1f;
 
@@ -50,34 +53,71 @@ public class GamepadInputs : MonoBehaviour
     private bool _xButtonReady = true;
     private bool _yButtonReady = true;
     private bool _aButtonReady = true;
+    private bool _bButtonReady = true;
     private bool _startButtonReady = true;
 
     private bool _usingDpadControlsScheme;
-
+    private PauseMenuAnimationManager _pauseMenuAnimationManager;
     private GamePadState _state;
+    private bool _inMenu;
 
     private void Start()
     {
         GameObject.Find(StaticObjects.GetFindTags().PauseMenuControlsOptionsButtons).GetComponent<ControlsSchemeSettings>().OnGamepadControlChanged += SetUsingDPadControlsScheme;
         _state = GamePad.GetState(PlayerIndex.One);
+        _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
+        _pauseMenuAnimationManager.OnPauseMenuStateChanged += IsInMenu;
         _usingDpadControlsScheme = false;
+        _inMenu = false;
     }
 
     private void Update()
     {
         _state = GamePad.GetState(PlayerIndex.One);
 
-        if (_usingDpadControlsScheme)
+        if (!_inMenu)
         {
-            DPadControlsScheme();
+            if (_usingDpadControlsScheme)
+            {
+                DPadControlsScheme();
+            }
+            else
+            {
+                JoystickControlsScheme();
+            }
+
+            SyncAllButtonsState();
+            CheckAllButtonsPressed();
         }
         else
         {
-            JoystickControlsScheme();
-        }
+            if (_state.Buttons.B == ButtonState.Released && !_bButtonReady)
+            {
+                _bButtonReady = true;
+            }
 
-        SyncAllButtonsState();
-        CheckAllButtonsPressed();
+            if (_state.Buttons.B == ButtonState.Pressed && _bButtonReady)
+            {
+                _bButtonReady = false;
+                OnBackButtonPressedInMenu();
+            }
+
+            if (_state.Buttons.Start == ButtonState.Released && !_startButtonReady)
+            {
+                _startButtonReady = true;
+            }
+
+            if (_state.Buttons.Start == ButtonState.Pressed && _startButtonReady)
+            {
+                OnPause();
+                _startButtonReady = false;
+            }
+        }
+    }
+
+    private void IsInMenu(bool isActive)
+    {
+        _inMenu = isActive;
     }
 
     private void CheckAllButtonsPressed()
