@@ -14,7 +14,6 @@ public class AccountStats : DatabaseConnection
     public static event OnInventoryReloadedHandler OnInventoryReloaded;
     public delegate void OnAmmoReloadedHandler(int knifeAmmo, int axeAmmo);
     public static event OnAmmoReloadedHandler OnAmmoReloaded;
-    public delegate void OnHealthReloadedHandler(float health);
     public delegate void OnHealthReloadedHandler(int health);
     public static event OnHealthReloadedHandler OnHealthReloaded;
 
