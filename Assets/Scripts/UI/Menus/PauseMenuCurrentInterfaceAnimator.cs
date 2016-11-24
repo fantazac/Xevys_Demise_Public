@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
 {
@@ -16,7 +15,17 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
     public delegate void OnAudioInterfaceFadeHandler();
     public event OnAudioInterfaceFadeHandler OnAudioInterfaceFade;
 
+    public delegate void OnMainInterfaceIsCurrentHandler();
+    public event OnMainInterfaceIsCurrentHandler OnMainInterfaceIsCurrent;
+
+    public delegate void OnOptionsInterfaceIsCurrentHandler();
+    public event OnOptionsInterfaceIsCurrentHandler OnOptionsInterfaceIsCurrent;
+
+    public delegate void OnBackButtonPressedToClosePauseMenuHandler();
+    public event OnBackButtonPressedToClosePauseMenuHandler OnBackButtonPressedToClosePauseMenu;
+
     private PauseMenuInputs _pauseMenuInputs;
+    private InputManager _inputManager;
     private Animator _animator;
 
     private string _currentInterface;
@@ -24,72 +33,100 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
     private void Start()
     {
         _pauseMenuInputs = StaticObjects.GetPauseMenuPanel().GetComponentInChildren<PauseMenuInputs>();
+        _inputManager = StaticObjects.GetPlayer().GetComponentInChildren<InputManager>();
         _pauseMenuInputs.OnOptionsInterfaceIsCurrent += OptionsInterfaceIsCurrent;
         _pauseMenuInputs.OnMainInterfaceIsCurrent += MainInterfaceIsCurrent;
         _pauseMenuInputs.OnControlsInterfaceIsCurrent += ControlsInterfaceIsCurrent;
         _pauseMenuInputs.OnAudioInterfaceIsCurrent += AudioInterfaceIsCurrent;
+        _inputManager.OnBackButtonPressedInMenu += OnGamepadBackBtnPressed;
 
         _animator = GetComponent<Animator>();
 
         _currentInterface = "Main";
     }
 
-    private void OptionsInterfaceIsCurrent(string current)
+    private void OnGamepadBackBtnPressed()
     {
-        if (current != _currentInterface && _currentInterface == "Main")
+        switch (_currentInterface)
+        {
+            case "Main":
+                OnBackButtonPressedToClosePauseMenu();
+                break;
+            case "Options":
+                MainInterfaceIsCurrent("Main");
+                OnMainInterfaceIsCurrent();
+                break;
+            case "Controls":
+                OptionsInterfaceIsCurrent("Options");
+                OnOptionsInterfaceIsCurrent();
+                break;
+            case "Audio":
+                OptionsInterfaceIsCurrent("Options");
+                OnOptionsInterfaceIsCurrent();
+                break;
+        }
+    }
+
+    private void OptionsInterfaceIsCurrent(string target)
+    {
+        if (target != _currentInterface && _currentInterface == "Main")
         {
             _animator.SetTrigger("OptionsSlideIn");
-            _currentInterface = "Options";
+            _currentInterface = target;
             OnMainInterfaceFade();
         }
-        else if (current != _currentInterface && _currentInterface == "Controls")
+        else if (target != _currentInterface && _currentInterface == "Controls")
         {
             _animator.SetTrigger("OptionsSlideIn");
-            _currentInterface = "Options";
+            _currentInterface = target;
             OnControlsInterfaceFade();
         }
-        else if (current != _currentInterface && _currentInterface == "Audio")
+        else if (target != _currentInterface && _currentInterface == "Audio")
         {
             _animator.SetTrigger("OptionsSlideIn");
-            _currentInterface = "Options";
+            _currentInterface = target;
             OnAudioInterfaceFade();
         }
     }
 
-    private void MainInterfaceIsCurrent(string current)
+    private void MainInterfaceIsCurrent(string target)
     {
-        if (current != _currentInterface)
+        if (target != _currentInterface)
         {
-            if (current == "ShowMainInterface")
+            if (target == "ShowMainInterface")
             {
-                _animator.SetTrigger(current);
-                _currentInterface = "Main";
+                _animator.SetTrigger(target);
+                _currentInterface = target;
+            }
+            else if(target == "Main")
+            {
+                _animator.SetTrigger("MainSlideIn");
+                _currentInterface = target;
+                OnOptionsInterfaceFade();
             }
             else
             {
-                _animator.SetTrigger("MainSlideIn");
                 _currentInterface = "Main";
-                OnOptionsInterfaceFade();
             }
         }
     }
 
-    private void ControlsInterfaceIsCurrent(string current)
+    private void ControlsInterfaceIsCurrent(string target)
     {
-        if (current != _currentInterface && _currentInterface == "Options")
+        if (target != _currentInterface && _currentInterface == "Options")
         {
             _animator.SetTrigger("ControlsSlideIn");
-            _currentInterface = "Controls";
+            _currentInterface = target;
             OnOptionsInterfaceFade();
         }
     }
 
-    private void AudioInterfaceIsCurrent(string current)
+    private void AudioInterfaceIsCurrent(string target)
     {
-        if (current != _currentInterface && _currentInterface == "Options")
+        if (target != _currentInterface && _currentInterface == "Options")
         {
             _animator.SetTrigger("AudioSlideIn");
-            _currentInterface = "Audio";
+            _currentInterface = target;
             OnOptionsInterfaceFade();
         }
     }

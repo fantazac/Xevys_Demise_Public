@@ -45,7 +45,6 @@ public class KeyboardInputs : MonoBehaviour
     public event KeyboardOnFlipHandler OnFlip;
 
     private PauseMenuAnimationManager _pauseMenuAnimationManager;
-
     private bool _usingArrowControlsScheme;
     private bool _inMenu;
 

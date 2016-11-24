@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class AnimationTags : MonoBehaviour
 {
@@ -19,6 +18,7 @@ public class AnimationTags : MonoBehaviour
     public string ItemPickedUp { get; private set; }
     public string FadeOut { get; private set; }
     public string FadeIn { get; private set; }
+    public string PauseMenuButtonsGroupActiveAnimation { get; private set; }
 
     private void Start()
     {
@@ -37,5 +37,6 @@ public class AnimationTags : MonoBehaviour
         ItemPickedUp = "ItemPickedUp";
         FadeOut = "FadeOut";
         FadeIn = "FadeIn";
+        PauseMenuButtonsGroupActiveAnimation = "PauseMenuButtonsGroupActiveAnimation";
     }
 }
