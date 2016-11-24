@@ -3,16 +3,16 @@ using System.Collections;
 
 public class NeptuneHeadAI : MonoBehaviour
 {
-    private const int UPPER_FLAME_INDEX = 0;
-    private const int RIGHT_FLAME_INDEX = 2;
-    private const int LOWER_FLAME_INDEX = 4;
-    private const int LEFT_FLAME_INDEX = 6;
-    private const int SOUTH_EAST_LIMIT = 0;
-    private const int SOUTH_WEST_LIMIT = 2;
-    private const int NUMBER_FLAMES_SPAWNED = 8;
-    private const int NUMBER_POINTS_TO_REACH = 4;
-    protected const float SPEED = 5.95f;
+    protected const int UPPER_FLAME_INDEX = 0;
+    protected const int RIGHT_FLAME_INDEX = 2;
+    protected const int LOWER_FLAME_INDEX = 4;
+    protected const int LEFT_FLAME_INDEX = 6;
+    protected const int SOUTH_EAST_LIMIT = 0;
+    protected const int SOUTH_WEST_LIMIT = 2;
+    protected const int NUMBER_POINTS_TO_REACH = 4;
+    protected const float SPEED = 0.95f;
     protected const float RADIAN_TO_DEGREE = 57.2958f;
+    private const int NUMBER_FLAMES_SPAWNED = 8;
     private const float ATTACK_DELAY = 5;
     private const float WARNING_DELAY = 2;
     private const float ROTATION_BY_FLAME = 45;
@@ -26,15 +26,14 @@ public class NeptuneHeadAI : MonoBehaviour
     [SerializeField]
     protected float _verticalLimit;
 
-    protected Vector2 _origin;
-    protected Vector2[] _pointsToReach;
-
     private Health _health;
     private GameObject[] _bodyParts;
-    protected Rigidbody2D _rigidbody;
     private Animator _animator;
+    protected Rigidbody2D _rigidbody;
     protected BossOrientation _bossOrientation;
     protected OnBossDefeated _onBossDefeated;
+    protected Vector2 _origin;
+    protected Vector2[] _pointsToReach;
 
     protected int _targetedPointIndex;
     private int numberBodyPartsSpawned;
@@ -175,7 +174,7 @@ public class NeptuneHeadAI : MonoBehaviour
         }
     }
 
-    private bool CheckIfHasReachedTargetedPoint(Vector2 point)
+    protected bool CheckIfHasReachedTargetedPoint(Vector2 point)
     {
         return 0 == Vector2.Distance(transform.position, _pointsToReach[_targetedPointIndex]);
     }
