@@ -21,12 +21,8 @@ public class AxeHandleHitWall : MonoBehaviour
 
     private const float FLYING_PLATFORM_OFFSET = 0.15f;
 
-    public bool TouchesGround { get; set; }
-
     private void Start()
     {
-        TouchesGround = false;
-
         _rotateAxe = GetComponentInParent<RotateAxe>();
         _rigidbody = GetComponentInParent<Rigidbody2D>();
         _hitbox = GetComponent<PolygonCollider2D>();
@@ -48,8 +44,7 @@ public class AxeHandleHitWall : MonoBehaviour
         _hitbox.isTrigger = false;
         _bladeHitbox.isTrigger = false;
         _rigidbody.drag = _axeDrag;
-        TouchesGround = true;
-        _destroyProjectile.TouchesWall = true;
+        _destroyProjectile.TouchedWall();
     }
 
     private bool CanHitObject(Collider2D collider)

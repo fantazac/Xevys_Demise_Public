@@ -22,7 +22,8 @@ public class OnThrowingWeaponHit : MonoBehaviour
         if (CanHitEntity(collider) && CanAttackEnemy(collider))
         {
             collider.GetComponent<Health>().Hit(_baseDamage, Vector2.zero);
-            _destroyProjectile.DestroyNow = true;
+            _baseDamage = 0;
+            _destroyProjectile.DestroyNow();
         }
     }
 

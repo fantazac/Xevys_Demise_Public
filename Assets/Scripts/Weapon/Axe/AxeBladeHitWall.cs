@@ -44,7 +44,7 @@ public class AxeBladeHitWall : MonoBehaviour
         _rigidbody.velocity = Vector2.zero;
         _rigidbody.gravityScale = 0;
         _hitbox.isTrigger = false;
-        _destroyProjectile.TouchesWall = true;
+        _destroyProjectile.TouchedWall();
 
         StartCoroutine(DisableRigidbody());
     }
