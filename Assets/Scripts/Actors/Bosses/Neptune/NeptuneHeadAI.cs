@@ -11,7 +11,7 @@ public class NeptuneHeadAI : MonoBehaviour
     private const int SOUTH_WEST_LIMIT = 2;
     private const int NUMBER_FLAMES_SPAWNED = 8;
     private const int NUMBER_POINTS_TO_REACH = 4;
-    protected const float SPEED = 5.95f;
+    protected const float SPEED = 0.95f;
     protected const float RADIAN_TO_DEGREE = 57.2958f;
     private const float ATTACK_DELAY = 5;
     private const float WARNING_DELAY = 2;
