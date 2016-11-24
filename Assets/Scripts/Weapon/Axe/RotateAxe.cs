@@ -4,28 +4,31 @@ using System.Collections;
 public class RotateAxe : MonoBehaviour
 {
     [SerializeField]
-    private float _rotationByFrame = 10f;
+    private float _rotationPerSecond = 180f;
 
-    public bool Rotate { get; set; }
+    private int _orientation = 0;
+
+    public bool CanRotate { get; set; }
 
     private void Start()
     {
-        _rotationByFrame *= transform.localScale.x;
-        Rotate = true;
+        CanRotate = true;
+
+        StartCoroutine(Rotate());
     }
 
-    void Update()
+    private IEnumerator Rotate()
     {
-        if (Rotate)
+        //Il est nécessaire d'attendre un update pour connaitre l'orientation car elle est toujours > 0 au Start()
+        yield return null;
+
+        _orientation = transform.localScale.y > 0 ? -1 : 1;
+
+        while (CanRotate)
         {
-            if (transform.localScale.y > 0)
-            {
-                transform.Rotate(new Vector3(0, 0, -1 * _rotationByFrame));
-            }
-            else
-            {
-                transform.Rotate(new Vector3(0, 0, _rotationByFrame));
-            }
+            transform.Rotate(new Vector3(0, 0, _orientation * _rotationPerSecond * Time.deltaTime));
+
+            yield return null;
         }
     }
 }

@@ -1,33 +1,41 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class KnifeHitWall : MonoBehaviour
 {
+    [SerializeField]
+    private string[] _canHitObjects;
+
     private BoxCollider2D _hitbox;
     private Rigidbody2D _rigidbody;
     private DestroyPlayerProjectile _destroyProjectile;
-    private UnityTags _unityTags;
 
     private void Start()
     {
         _hitbox = GetComponent<BoxCollider2D>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _destroyProjectile = GetComponent<DestroyPlayerProjectile>();
-        _unityTags = StaticObjects.GetUnityTags();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == _unityTags.Wall || collider.gameObject.tag == _unityTags.Spike)
+        if (CanHitObject(collider))
         {
-            _hitbox.isTrigger = false;
-            _rigidbody.velocity = Vector2.zero;
-            _rigidbody.gravityScale = 0;
-            _destroyProjectile.TouchesGround = true;
+            StopKnife();
         }
-        else if (collider.gameObject.tag == _unityTags.LevelWall)
-        {
-            _destroyProjectile.DestroyNow = true;
-        }
+    }
+
+    private void StopKnife()
+    {
+        _hitbox.isTrigger = false;
+        _rigidbody.velocity = Vector2.zero;
+        _rigidbody.gravityScale = 0;
+        _destroyProjectile.TouchesWall = true;
+    }
+
+    private bool CanHitObject(Collider2D collider)
+    {
+        return _canHitObjects.Contains(collider.gameObject.tag);
     }
 }

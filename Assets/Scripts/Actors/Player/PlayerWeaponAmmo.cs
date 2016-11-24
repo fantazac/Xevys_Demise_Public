@@ -46,6 +46,7 @@ public class PlayerWeaponAmmo : MonoBehaviour
 
     public void AddKnifeAmmo(int ammoToAdd)
     {
+        Debug.Log(ammoToAdd);
         KnifeAmmo += ammoToAdd;
         OnKnifeAmmoChanged(KnifeAmmo);
     }

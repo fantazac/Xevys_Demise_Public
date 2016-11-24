@@ -36,7 +36,7 @@ public class Health : MonoBehaviour
 
     public void Heal(int healPoints)
     {
-        if(_health + healPoints > MaxHealth)
+        if (_health + healPoints > MaxHealth)
         {
             healPoints = (int)(MaxHealth - _health);
         }
@@ -46,25 +46,25 @@ public class Health : MonoBehaviour
 
     public void FullHeal()
     {
-        Heal(MaxHealth);
+        Heal(MaxHealth - _health);
     }
 
     public void Hit(int hitPoints, Vector2 attackerPosition)
     {
         if (!IsDead())
         {
-            if(OnDamageTaken != null)
+            if (OnDamageTaken != null)
             {
                 OnDamageTaken(-hitPoints);
             }
-            
-            OnHealthChanged(-hitPoints);    
-                
+
+            OnHealthChanged(-hitPoints);
+
             if (IsDead())
             {
                 OnDeath();
             }
-            if(OnDamageTakenByEnemy != null)
+            if (OnDamageTakenByEnemy != null)
             {
                 OnDamageTakenByEnemy(attackerPosition);
             }
@@ -96,7 +96,7 @@ public class Health : MonoBehaviour
 
     private void ReloadHealth(float health)
     {
-        if(tag == StaticObjects.GetUnityTags().Player)
+        if (tag == StaticObjects.GetUnityTags().Player)
         {
             OnHealthChanged(Convert.ToInt32(-(_health - health)));
         }
