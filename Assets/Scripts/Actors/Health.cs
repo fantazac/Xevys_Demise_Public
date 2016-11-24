@@ -72,7 +72,7 @@ public class Health : MonoBehaviour
                 OnDamageTaken(-hitPoints);
             }
 
-            if(OnHealthChanged != null)
+            if (OnHealthChanged != null)
             {
                 OnHealthChanged(-hitPoints);
             }
