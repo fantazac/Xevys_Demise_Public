@@ -46,7 +46,7 @@ public class PlayerWaterMovement : PlayerMovement
                     {
                         ChangePlayerVerticalVelocity(_jumpingSpeed * WATER_ACCELERATION_FACTOR);
                     }
-                    else if(_isFloating)
+                    else if (_isFloating)
                     {
                         ChangePlayerVerticalVelocity(_jumpingSpeed / (WATER_ACCELERATION_FACTOR - (PRECISION_MARGIN * WATER_ACCELERATION_FACTOR)));
                         ExitWater();
@@ -120,7 +120,7 @@ public class PlayerWaterMovement : PlayerMovement
             {
                 _rigidbody.gravityScale = _rigidbody.velocity.y <= 0 ?
                     0 : INITIAL_GRAVITY_SCALE / GRAVITY_DIVISION_FACTOR_ON_GROUND_UNDERWATER;
-            
+
                 if (_rigidbody.gravityScale == 0)
                 {
                     if (_rigidbody.velocity.y > (-_waterYSpeed + PRECISION_MARGIN))
@@ -156,17 +156,17 @@ public class PlayerWaterMovement : PlayerMovement
             {
                 ChangePlayerVerticalVelocity(_rigidbody.velocity.y + (WATER_DECELARATION * Time.deltaTime));
             }
-            else if(_rigidbody.velocity.y != _waterYSpeed)
+            else if (_rigidbody.velocity.y != _waterYSpeed)
             {
                 ChangePlayerVerticalVelocity(_waterYSpeed);
             }
 
-            if(_rigidbody.gravityScale != 0 && !_inventoryManager.IronBootsActive)
+            if (_rigidbody.gravityScale != 0 && !_inventoryManager.IronBootsActive)
             {
                 _rigidbody.gravityScale = 0;
             }
 
-            if(_waterYSpeed != INITIAL_WATER_FALLING_SPEED)
+            if (_waterYSpeed != INITIAL_WATER_FALLING_SPEED)
             {
                 _waterYSpeed = INITIAL_WATER_FALLING_SPEED;
             }
