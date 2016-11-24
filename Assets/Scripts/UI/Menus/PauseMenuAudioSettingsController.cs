@@ -6,6 +6,8 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
 {
     public delegate void OnVolumeChangedHandler(bool isMusic, float volume);
     public static event OnVolumeChangedHandler OnVolumeChanged;
+    public delegate void OnMusicStateChangedHandler(bool state);
+    public static event OnMusicStateChangedHandler OnMusicStateChanged;
 
     private Slider _musicVolumeSlider;
     private Slider _sfxVolumeSlider;
@@ -18,6 +20,7 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
         AccountSettings accountSettings = StaticObjects.GetDatabase().GetComponent<AccountSettings>();
         accountSettings.OnMusicVolumeReloaded += ReloadMusicVolume;
         accountSettings.OnSfxVolumeReloaded += ReloadSfxVolume;
+        accountSettings.OnMusicStateReloaded += ReloadMusicState;
 
         _musicSwitch = GetComponentInChildren<Switch>();
         Slider[] sliders = GetComponentsInChildren<Slider>();
@@ -51,6 +54,7 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
             _musicVolumeBeforeDesactivate = _musicVolumeSlider.value;
             _musicVolumeSlider.value = 0f;
         }
+        OnMusicStateChanged(activate);
     }
 
     private void ReloadMusicVolume(float volume)
@@ -61,5 +65,10 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
     private void ReloadSfxVolume(float volume)
     {
         _sfxVolumeSlider.value = volume;
+    }
+
+    private void ReloadMusicState(bool state)
+    {
+        _musicSwitch.isOn = state;
     }
 }
