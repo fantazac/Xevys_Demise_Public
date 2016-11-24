@@ -31,7 +31,7 @@ public class KnifeHitWall : MonoBehaviour
         _hitbox.isTrigger = false;
         _rigidbody.velocity = Vector2.zero;
         _rigidbody.gravityScale = 0;
-        _destroyProjectile.TouchesWall = true;
+        _destroyProjectile.TouchedWall();
     }
 
     private bool CanHitObject(Collider2D collider)
