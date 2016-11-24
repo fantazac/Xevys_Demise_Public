@@ -181,7 +181,8 @@ public class XevyMovement : MonoBehaviour
     {
         float distanceToClosestPoint = float.MaxValue;
         int indexClosestPosition = -1;
-        for (int n = 1; n < _referencePoints.Length; n++)
+        //Because we must only consider ground positions, air positions (even numbers) are ignored.
+        for (int n = 1; n < _referencePoints.Length; n+=2)
         {
             float distanceToSpecificPoint = Vector2.Distance(_referencePoints[n], transform.position);
             if (distanceToSpecificPoint < distanceToClosestPoint)
@@ -189,8 +190,6 @@ public class XevyMovement : MonoBehaviour
                 distanceToClosestPoint = distanceToSpecificPoint;
                 indexClosestPosition = n;
             }
-            //Because we must only consider ground positions, air positions (even numbers) are ignored.
-            n++;
         }
         return indexClosestPosition;
     }
