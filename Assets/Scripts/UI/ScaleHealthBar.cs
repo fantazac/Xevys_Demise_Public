@@ -18,6 +18,7 @@ public class ScaleHealthBar : MonoBehaviour
 
     private void Start()
     {
+        
         _health = StaticObjects.GetPlayer().GetComponent<Health>();
         _healthBar = StaticObjects.GetHealthBar().GetComponent<Transform>();
         _initialRectangleX = _healthBar.localScale.x;
