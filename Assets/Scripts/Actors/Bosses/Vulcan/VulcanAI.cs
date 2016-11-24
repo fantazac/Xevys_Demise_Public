@@ -21,11 +21,11 @@ public class VulcanAI : MonoBehaviour
     GameObject _fireball;
 
     private Health _health;
-    private GameObject _vulcanHead;
     private Rigidbody2D _rigidbody;
     private Animator _animator;
     private BossOrientation _bossOrientation;
     private OnBossDefeated _onBossDefeated;
+    private PolygonCollider2D _polygonHitbox;
 
     private System.Random _rng = new System.Random();
     private VulcanStatus _status;
@@ -50,13 +50,14 @@ public class VulcanAI : MonoBehaviour
         {
             _spawnPositions[x + 2] = transform.position.x + x * transform.localScale.x;
         }
-        _vulcanHead = transform.FindChild("Vulcan Head").gameObject;
         _health = GetComponent<Health>();
         _halfHealth = _health.HealthPoint / 2;
         _rigidbody = GetComponent<Rigidbody2D>();
         _bossOrientation = GetComponent<BossOrientation>();
         _animator = GetComponent<Animator>();
         _health.OnDeath += OnVulcanDefeated;
+        _polygonHitbox = GetComponent<PolygonCollider2D>();
+        _polygonHitbox.enabled = false;
     }
 
     private void OnDestroy()
@@ -152,7 +153,7 @@ public class VulcanAI : MonoBehaviour
         {
             _hasShotFireball = false;
             _rigidbody.isKinematic = false;
-            _vulcanHead.SetActive(true);
+            _polygonHitbox.enabled = true;
             _status = VulcanStatus.RETREATING;
         }
     }
@@ -173,7 +174,7 @@ public class VulcanAI : MonoBehaviour
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
             _timeLeft = LOWERED_TIME;
             _rigidbody.isKinematic = true;
-            _vulcanHead.SetActive(false);
+            _polygonHitbox.enabled = false;
             _status = VulcanStatus.LOWERED;
         }
     }
