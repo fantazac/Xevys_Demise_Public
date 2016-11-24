@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UpdateThorns : MonoBehaviour
+public class UpdateStalactites : MonoBehaviour
 {
-    private float DELAY_BETWEEN_THORN_ACTIVATION = 0.25f;
-    private float thornActivatorTimer = 0;
+    private const float DELAY_BETWEEN_STALACTITE_ACTIVATION = 0.25f;
+    private float _stalactiteActivatorTimer = 0;
 
     private void Update()
     {
@@ -14,20 +14,20 @@ public class UpdateThorns : MonoBehaviour
         }
         else
         {
-            thornActivatorTimer += Time.fixedDeltaTime;
+            _stalactiteActivatorTimer += Time.fixedDeltaTime;
             int index = 0;
             foreach (Transform child in transform)
             {
                 if (!child.gameObject.activeSelf)
                 {
-                    if (thornActivatorTimer >= DELAY_BETWEEN_THORN_ACTIVATION * index)
+                    if (_stalactiteActivatorTimer >= DELAY_BETWEEN_STALACTITE_ACTIVATION * index)
                     {
                         child.gameObject.SetActive(true);
                     }
                 }
                 else
                 {
-                    child.GetComponent<MoveEarthThorn>().UpdateEarthThorn();
+                    child.GetComponent<MoveStalactite>().UpdateEarthThorn();
                 }
                 index++;
             }

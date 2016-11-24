@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class ActorDirection : MonoBehaviour {
+public class BossDirection : MonoBehaviour {
 
     [SerializeField]
     private bool _isGoingForward = true;
