@@ -14,7 +14,7 @@ public class OnAttackCrow : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.tag == "BasicAttackHitbox" || collider.tag == "Knife" || collider.tag == "Axe")
+        if (collider.tag == "BasicAttackHitbox" || collider.tag == "Knife" || collider.tag == "AxeBlade")
         {
             _animator.SetBool("IsHit", true);
             StartCoroutine(WaitForAnimationCoroutine());
