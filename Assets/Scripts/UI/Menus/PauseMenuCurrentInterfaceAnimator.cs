@@ -15,10 +15,10 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
     public delegate void OnAudioInterfaceFadeHandler();
     public event OnAudioInterfaceFadeHandler OnAudioInterfaceFade;
 
-    public delegate void OnMainInterfaceIsCurrentHandler();
+    public delegate void OnMainInterfaceIsCurrentHandler(string from);
     public event OnMainInterfaceIsCurrentHandler OnMainInterfaceIsCurrent;
 
-    public delegate void OnOptionsInterfaceIsCurrentHandler();
+    public delegate void OnOptionsInterfaceIsCurrentHandler(string from);
     public event OnOptionsInterfaceIsCurrentHandler OnOptionsInterfaceIsCurrent;
 
     public delegate void OnBackButtonPressedToClosePauseMenuHandler();
@@ -54,15 +54,12 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
                 break;
             case "Options":
                 MainInterfaceIsCurrent("Main");
-                OnMainInterfaceIsCurrent();
                 break;
             case "Controls":
                 OptionsInterfaceIsCurrent("Options");
-                OnOptionsInterfaceIsCurrent();
                 break;
             case "Audio":
                 OptionsInterfaceIsCurrent("Options");
-                OnOptionsInterfaceIsCurrent();
                 break;
         }
     }
@@ -80,12 +77,14 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
             _animator.SetTrigger("OptionsSlideIn");
             _currentInterface = target;
             OnControlsInterfaceFade();
+            OnOptionsInterfaceIsCurrent("Controls");
         }
         else if (target != _currentInterface && _currentInterface == "Audio")
         {
             _animator.SetTrigger("OptionsSlideIn");
             _currentInterface = target;
             OnAudioInterfaceFade();
+            OnOptionsInterfaceIsCurrent("Audio");
         }
     }
 
@@ -103,6 +102,7 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
                 _animator.SetTrigger("MainSlideIn");
                 _currentInterface = target;
                 OnOptionsInterfaceFade();
+                OnMainInterfaceIsCurrent("Main");
             }
             else
             {
