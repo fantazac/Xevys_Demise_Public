@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using Mono.Data.Sqlite;
 using System.Data;
-using System.IO;
 using System;
 using System.Collections;
 
@@ -14,17 +12,15 @@ public class AccountStats : DatabaseConnection
     public static event OnInventoryReloadedHandler OnInventoryReloaded;
     public delegate void OnAmmoReloadedHandler(int knifeAmmo, int axeAmmo);
     public static event OnAmmoReloadedHandler OnAmmoReloaded;
-    public delegate void OnHealthReloadedHandler(float health);
     public delegate void OnHealthReloadedHandler(int health);
     public static event OnHealthReloadedHandler OnHealthReloaded;
 
     private DatabaseController _controller;
     private InventoryManager _inventoryManager;
     private PlayerWeaponAmmo _munitions;
-<<<<<<< HEAD
     
     private int _secondsPlayed = 0;
-    private float _lifeRemaining = 1000f;
+    private int _lifeRemaining = 1000;
     private int _tempNbScarabsKilled = 0;
     private int _tempNbBatsKilled = 0;
     private int _tempNbSkeltalsKilled = 0;
@@ -44,29 +40,6 @@ public class AccountStats : DatabaseConnection
     private int _airArtefactEnabled = 0;
     private int _waterArtefactEnabled = 0;
     private int _fireArtefactEnabled = 0;
-=======
-
-    private int _lifeRemaining = 1000;
-    private int _tempNbScarabsKilled;
-    private int _tempNbBatsKilled;
-    private int _tempNbSkeltalsKilled;
-    private int _nbScarabsKilled;
-    private int _nbBatsKilled;
-    private int _nbSkeltalsKilled;
-
-    private int _knifeEnabled;
-    private int _knifeAmmo;
-    private int _axeEnabled;
-    private int _axeAmmo;
-    private int _featherEnabled;
-    private int _bootsEnabled;
-    private int _bubbleEnabled;
-    private int _armorEnabled;
-    private int _earthArtefactEnabled;
-    private int _airArtefactEnabled;
-    private int _waterArtefactEnabled;
-    private int _fireArtefactEnabled;
->>>>>>> beta
 
     protected override void Start()
     {
@@ -114,7 +87,7 @@ public class AccountStats : DatabaseConnection
     {
         _dbconnection.Open();
         string sqlQuery = String.Format("UPDATE STATS SET SECONDS_PLAYED = {0}, NB_KILLED_SCARABS = {1}, NB_KILLED_BATS = {2}, NB_KILLED_SKELTALS = {3}, LIFE_REMAINING = {4}, KNIFE_PICKED = {5}, KNIFE_AMMO = {6}, AXE_PICKED = {7}, AXE_AMMO = {8}, FEATHER_PICKED = {9}, BOOTS_PICKED = {10}, BUBBLE_PICKED = {11}, ARMOR_PICKED = {12}, ARTEFACT1_PICKED = {13}, ARTEFACT2_PICKED = {14}, ARTEFACT3_PICKED = {15}, ARTEFACT4_PICKED = {16}" +
-            " WHERE ACCOUNT_ID = {16}", _secondsPlayed, _nbScarabsKilled, _nbBatsKilled, _nbSkeltalsKilled, _lifeRemaining, _knifeEnabled, _knifeAmmo, _axeEnabled, _axeAmmo, _featherEnabled, _bootsEnabled, _bubbleEnabled, _armorEnabled, _earthArtefactEnabled, _airArtefactEnabled, _waterArtefactEnabled, _fireArtefactEnabled, _controller.AccountID);
+            " WHERE ACCOUNT_ID = {17}", _secondsPlayed, _nbScarabsKilled, _nbBatsKilled, _nbSkeltalsKilled, _lifeRemaining, _knifeEnabled, _knifeAmmo, _axeEnabled, _axeAmmo, _featherEnabled, _bootsEnabled, _bubbleEnabled, _armorEnabled, _earthArtefactEnabled, _airArtefactEnabled, _waterArtefactEnabled, _fireArtefactEnabled, _controller.AccountID);
         _dbcommand.CommandText = sqlQuery;
         _dbcommand.ExecuteNonQuery();
         _dbconnection.Close();
@@ -129,12 +102,11 @@ public class AccountStats : DatabaseConnection
         IDataReader reader = _dbcommand.ExecuteReader();
         while (reader.Read())
         {
-<<<<<<< HEAD
             _secondsPlayed = reader.GetInt32(0);
             _tempNbScarabsKilled = reader.GetInt32(1);
             _tempNbBatsKilled = reader.GetInt32(2);
             _tempNbSkeltalsKilled = reader.GetInt32(3);
-            _lifeRemaining = reader.GetFloat(4);
+            _lifeRemaining = reader.GetInt32(4);
             _knifeEnabled = reader.GetInt32(5);
             _knifeAmmo = reader.GetInt32(6);
             _axeEnabled = reader.GetInt32(7);
@@ -147,24 +119,6 @@ public class AccountStats : DatabaseConnection
             _airArtefactEnabled = reader.GetInt32(14);
             _waterArtefactEnabled = reader.GetInt32(15);
             _fireArtefactEnabled = reader.GetInt32(16);
-=======
-            _tempNbScarabsKilled = reader.GetInt32(0);
-            _tempNbBatsKilled = reader.GetInt32(1);
-            _tempNbSkeltalsKilled = reader.GetInt32(2);
-            _lifeRemaining = reader.GetInt32(3);
-            _knifeEnabled = reader.GetInt32(4);
-            _knifeAmmo = reader.GetInt32(5);
-            _axeEnabled = reader.GetInt32(6);
-            _axeAmmo = reader.GetInt32(7);
-            _featherEnabled = reader.GetInt32(8);
-            _bootsEnabled = reader.GetInt32(9);
-            _bubbleEnabled = reader.GetInt32(10);
-            _armorEnabled = reader.GetInt32(11);
-            _earthArtefactEnabled = reader.GetInt32(12);
-            _airArtefactEnabled = reader.GetInt32(13);
-            _waterArtefactEnabled = reader.GetInt32(14);
-            _fireArtefactEnabled = reader.GetInt32(15);
->>>>>>> beta
         }
         reader.Close();
         _dbconnection.Close();
@@ -202,7 +156,6 @@ public class AccountStats : DatabaseConnection
         while (true)
         {
             _secondsPlayed++;
-            Debug.Log(_secondsPlayed);
             yield return new WaitForSeconds(1);
         }
     }
