@@ -13,14 +13,14 @@ public class AccountStats : DatabaseConnection
     public static event OnInventoryReloadedHandler OnInventoryReloaded;
     public delegate void OnAmmoReloadedHandler(int knifeAmmo, int axeAmmo);
     public static event OnAmmoReloadedHandler OnAmmoReloaded;
-    public delegate void OnHealthReloadedHandler(float health);
+    public delegate void OnHealthReloadedHandler(int health);
     public static event OnHealthReloadedHandler OnHealthReloaded;
 
     private DatabaseController _controller;
     private InventoryManager _inventoryManager;
     private PlayerWeaponAmmo _munitions;
 
-    private float _lifeRemaining = 1000f;
+    private int _lifeRemaining = 1000;
     private int _tempNbScarabsKilled;
     private int _tempNbBatsKilled;
     private int _tempNbSkeltalsKilled;
@@ -103,7 +103,7 @@ public class AccountStats : DatabaseConnection
             _tempNbScarabsKilled = reader.GetInt32(0);
             _tempNbBatsKilled = reader.GetInt32(1);
             _tempNbSkeltalsKilled = reader.GetInt32(2);
-            _lifeRemaining = reader.GetFloat(3);
+            _lifeRemaining = reader.GetInt32(3);
             _knifeEnabled = reader.GetInt32(4);
             _knifeAmmo = reader.GetInt32(5);
             _axeEnabled = reader.GetInt32(6);
