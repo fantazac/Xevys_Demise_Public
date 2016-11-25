@@ -93,6 +93,7 @@ public class GamepadInputs : MonoBehaviour
 
             SyncAllButtonsState();
             CheckAllButtonsPressed();
+            UpdateStartButton();
         }
         else if(!_died)
         {
@@ -107,16 +108,7 @@ public class GamepadInputs : MonoBehaviour
                 OnBackButtonPressedInMenu();
             }
 
-            if (_state.Buttons.Start == ButtonState.Released && !_startButtonReady)
-            {
-                _startButtonReady = true;
-            }
-
-            if (_state.Buttons.Start == ButtonState.Pressed && _startButtonReady)
-            {
-                OnPause();
-                _startButtonReady = false;
-            }
+            UpdateStartButton();
         }
     }
 
@@ -132,6 +124,20 @@ public class GamepadInputs : MonoBehaviour
     private void PlayerDied()
     {
         _died = true;
+    }
+
+    private void UpdateStartButton()
+    {
+        if (_state.Buttons.Start == ButtonState.Released && !_startButtonReady)
+        {
+            _startButtonReady = true;
+        }
+
+        if (_state.Buttons.Start == ButtonState.Pressed && _startButtonReady)
+        {
+            OnPause();
+            _startButtonReady = false;
+        }
     }
 
     private void CheckAllButtonsPressed()
@@ -173,21 +179,10 @@ public class GamepadInputs : MonoBehaviour
             _rightShoulderReady = false;
             OnThrowAttackChangeButtonPressed();
         }
-
-        if (_state.Buttons.Start == ButtonState.Pressed && _startButtonReady)
-        {
-            OnPause();
-            _startButtonReady = false;
-        }
     }
 
     private void SyncAllButtonsState()
     {
-        if (_state.Buttons.Start == ButtonState.Released && !_startButtonReady)
-        {
-            _startButtonReady = true;
-        }
-
         if (_state.Buttons.RightShoulder == ButtonState.Released && !_rightShoulderReady)
         {
             _rightShoulderReady = true;
