@@ -76,18 +76,20 @@ public class NeptuneHeadAI : MonoBehaviour
 
     private void InitializeNeptune()
     {
-        _attackCooldownTimeLeft = ATTACK_DELAY;
-        _spawnBodyPartTimeLeft = BODY_PART_SPAWN_DELAY;
-        numberBodyPartsSpawned = 0;
-        _health.HealthPoint = _health.MaxHealth;
-        foreach (GameObject bodyPart in _bodyParts)
+        if(_health != null)
         {
-            bodyPart.transform.position = transform.position;
-            bodyPart.SetActive(false);
+            _attackCooldownTimeLeft = ATTACK_DELAY;
+            _spawnBodyPartTimeLeft = BODY_PART_SPAWN_DELAY;
+            numberBodyPartsSpawned = 0;
+            _health.HealthPoint = _health.MaxHealth;
+            foreach (GameObject bodyPart in _bodyParts)
+            {
+                bodyPart.transform.position = transform.position;
+                bodyPart.SetActive(false);
+            }
+            InitializePoints();
+            RotateAndFlip();
         }
-        InitializePoints();
-        RotateAndFlip();
-
     }
 
     protected void InitializePoints()
