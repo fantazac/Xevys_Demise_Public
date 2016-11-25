@@ -18,7 +18,6 @@ public class DestroyPlayerProjectile : MonoBehaviour
 
     public void TouchedWall()
     {
-        Debug.Log(3);
         StartCoroutine(DestroyProjectile(_delayAfterWallCollision));
     }
 
@@ -34,7 +33,6 @@ public class DestroyPlayerProjectile : MonoBehaviour
 
     private IEnumerator DestroyProjectile(WaitForSeconds delay)
     {
-        Debug.Log(2);
         yield return delay;
 
         DestroyNow();
