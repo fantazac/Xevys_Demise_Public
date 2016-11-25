@@ -47,6 +47,7 @@ public class PauseMenuInputs : MonoBehaviour
         _pauseMenuAnimationManager.OnPauseMenuStateChanged += SyncFirstControlOnPauseMenuStateChanged;
         _inputManager.OnPause += PauseMenuTriggered;
         _pauseMenuCurrentInterfaceAnimator.OnBackButtonPressedToClosePauseMenu += PauseMenuTriggered;
+        _pauseMenuCurrentInterfaceAnimator.OnPlayerDeathShowDeathInterface += PauseMenuTriggered;
         _canSlide = true;
     }
 
