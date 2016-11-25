@@ -60,7 +60,8 @@ public class PhoenixAI : MonoBehaviour
         _animator = GetComponent<Animator>();
         _health.OnDeath += OnPhoenixDefeated;
         _polygonHitbox = GetComponent<PolygonCollider2D>();
-        GetComponent<Health>().OnDamageTaken += GotHitByPlayer;
+
+        _health.OnDamageTaken += GotHitByPlayer;
 
         SetupPhoenixReset();
         _canUseOnEnable = true;
@@ -83,6 +84,7 @@ public class PhoenixAI : MonoBehaviour
     private void InitializePhoenix()
     {
         _flyingSpeed = NORMAL_FLYING_SPEED;
+        _health.HealthPoint = _health.MaxHealth;
         _status = PhoenixStatus.FLY;
         _flightTimeLeft = 0;
         _attackCooldownTimeLeft = 0;
