@@ -53,7 +53,7 @@ public class MoveObjectOnBreakableItemDestroyed : MonoBehaviour
 
             yield return null;
         }
-
+        _distanceMade = 0;
         if (OnFinishedMoving != null)
         {
             OnFinishedMoving();

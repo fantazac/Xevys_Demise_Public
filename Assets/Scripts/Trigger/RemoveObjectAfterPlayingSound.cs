@@ -4,6 +4,8 @@ using System.Collections;
 
 public class RemoveObjectAfterPlayingSound : MonoBehaviour
 {
+    [SerializeField]
+    private bool _destroyParent = false;
 
     private void Start()
     {
@@ -13,5 +15,9 @@ public class RemoveObjectAfterPlayingSound : MonoBehaviour
     private void RemoveObject()
     {
         Destroy(gameObject);
+        if (_destroyParent)
+        {
+            Destroy(gameObject.transform.parent.gameObject);
+        }
     }
 }

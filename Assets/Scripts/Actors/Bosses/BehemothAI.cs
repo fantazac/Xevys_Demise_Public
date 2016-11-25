@@ -34,10 +34,14 @@ public class BehemothAI : MonoBehaviour
     private BossOrientation _bossOrientation;
     private PolygonCollider2D _polygonHitbox;
 
+    private Vector3 _initialPosition;
+
     private System.Random _rng = new System.Random();
     private BehemothStatus _status = BehemothStatus.WAIT;
     private float _timeLeft = CHARGE_TIME;
     private bool _isCharging;
+
+    private bool _canUseOnEnable = false;
 
     private void Start()
     {
@@ -50,11 +54,22 @@ public class BehemothAI : MonoBehaviour
         _attack = GetComponent<OnBehemothAttackHit>();
 
         _health.OnDeath += OnBehemothDefeated;
+        SetupBehemothReset();
+        _canUseOnEnable = true;
     }
 
-    private void OnDestroy()
+    private void SetupBehemothReset()
     {
-        _health.OnDeath -= OnBehemothDefeated;
+        _initialPosition = transform.position;
+    }
+
+    private void OnEnable()
+    {
+        if (_canUseOnEnable)
+        {
+            SetWaitStatus();
+            transform.position = _initialPosition;
+        }
     }
 
     private void FixedUpdate()
