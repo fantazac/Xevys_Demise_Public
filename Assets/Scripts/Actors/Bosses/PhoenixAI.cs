@@ -53,7 +53,6 @@ public class PhoenixAI : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        InitializePhoenix();
         _health = GetComponent<Health>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _bossOrientation = GetComponent<BossOrientation>();
@@ -62,7 +61,7 @@ public class PhoenixAI : MonoBehaviour
         _polygonHitbox = GetComponent<PolygonCollider2D>();
 
         _health.OnDamageTaken += GotHitByPlayer;
-
+        InitializePhoenix();
         SetupPhoenixReset();
         _canUseOnEnable = true;
     }
