@@ -18,7 +18,7 @@ public class DestroyPlayerProjectile : MonoBehaviour
 
     public void TouchedWall()
     {
-        DestroyProjectile(_delayAfterWallCollision);
+        StartCoroutine(DestroyProjectile(_delayAfterWallCollision));
     }
 
     public void DestroyNow()

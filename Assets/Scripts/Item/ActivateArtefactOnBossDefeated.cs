@@ -4,23 +4,25 @@ using System.Collections;
 public class ActivateArtefactOnBossDefeated : MonoBehaviour {
 
     [SerializeField]
-    private GameObject _artefactGuardian;
+    private GameObject _boss;
+
+    public GameObject Boss { get { return _boss; } }
 
     private Health _artefactGuardianHealth;
 
     private void Start()
     {
-        if (_artefactGuardian != null)
+        if (_boss != null)
         {
             gameObject.transform.parent.gameObject.SetActive(false);
-            _artefactGuardianHealth = _artefactGuardian.GetComponent<Health>();
+            _artefactGuardianHealth = _boss.GetComponent<Health>();
             _artefactGuardianHealth.OnDeath += OnGuardianDefeated;
         }
     }
 
     private void Destroy()
     {
-        if (_artefactGuardian != null && _artefactGuardianHealth != null)
+        if (_boss != null && _artefactGuardianHealth != null)
         {
             _artefactGuardianHealth.OnDeath -= OnGuardianDefeated;
         }
