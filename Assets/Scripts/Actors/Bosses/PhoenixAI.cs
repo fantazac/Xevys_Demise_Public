@@ -46,37 +46,58 @@ public class PhoenixAI : MonoBehaviour
     private float _closestVerticalPoint;
     private float _flyingSpeed;
 
+    private Vector3 _initialPosition;
+
+    private bool _canUseOnEnable = false;
+
+    // Use this for initialization
     private void Start()
     {
-        _status = PhoenixStatus.FLY;
-        _flightTimeLeft = 0;
-        _attackCooldownTimeLeft = 0;
-        _currentPoint = _southWestLimit;
         _health = GetComponent<Health>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _bossOrientation = GetComponent<BossOrientation>();
         _animator = GetComponent<Animator>();
         _health.OnDeath += OnPhoenixDefeated;
         _polygonHitbox = GetComponent<PolygonCollider2D>();
-        GetComponent<Health>().OnDamageTaken += GotHitByPlayer;
 
-        _flyingSpeed = NORMAL_FLYING_SPEED;
+        _health.OnDamageTaken += GotHitByPlayer;
+        InitializePhoenix();
+        SetupPhoenixReset();
+        _canUseOnEnable = true;
     }
 
-    private void OnDestroy()
+    private void SetupPhoenixReset()
     {
-        _health.OnDeath -= OnPhoenixDefeated;
+        _initialPosition = transform.position;
+    }
+
+    private void OnEnable()
+    {
+        if (_canUseOnEnable)
+        {
+            InitializePhoenix();
+            transform.position = _initialPosition;
+        }
+    }
+
+    private void InitializePhoenix()
+    {
+        _flyingSpeed = NORMAL_FLYING_SPEED;
+        _health.HealthPoint = _health.MaxHealth;
+        _status = PhoenixStatus.FLY;
+        _flightTimeLeft = 0;
+        _attackCooldownTimeLeft = 0;
+        _currentPoint = _southWestLimit;
     }
 
     private void FixedUpdate()
     {
-        //Phoenix attend Bimon et fuit lorsqu'il s'approche trop près de lui. Après un certains temps, il charge sur Bimon.
+        //This status allows Phoenix to watch the player and either charge on him after a few seconds or flee.
         if (_status == PhoenixStatus.FLY)
         {
             UpdateWhenFlying();
         }
         //Flee status makes Phoenix go to a neighbouring point in order to avoid the player.
-        //
         else if (_status == PhoenixStatus.FLEE)
         {
             UpdateWhenFleeing();
@@ -88,37 +109,10 @@ public class PhoenixAI : MonoBehaviour
         }
     }
 
-
-    private void Flap()
-    {
-        if (_flightTimeLeft > 0)
-        {
-            _flightTimeLeft -= Time.fixedDeltaTime;
-        }
-        else
-        {
-            _flightTimeLeft = FLIGHT_DELAY;
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, WING_FLAP);
-        }
-    }
-
     private void GotHitByPlayer(int hitPoints)
     {
         _flyingSpeed = HIT_FLYING_SPEED;
         _polygonHitbox.enabled = false;
-    }
-
-    private void FindAdjacentPoint()
-    {
-        int randomNumber = _rng.Next();
-        if (_currentPoint.Equals(_northEastLimit) || _currentPoint.Equals(_southWestLimit))
-        {
-            _closestPoint = (randomNumber % 2 == 0 ? _northWestLimit : _southEastLimit);
-        }
-        else
-        {
-            _closestPoint = (randomNumber % 2 == 0 ? _northEastLimit : _southWestLimit);
-        }
     }
 
     private void FindFleeingPoint()
@@ -151,57 +145,77 @@ public class PhoenixAI : MonoBehaviour
         _attackCooldownTimeLeft += Time.fixedDeltaTime;
         if (_attackCooldownTimeLeft > ATTACK_DELAY)
         {
-            SetAttackStatus();
+            _playerPosition = StaticObjects.GetPlayer().transform.position;//GameObject.Find("Character").transform.position;
+            transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_playerPosition.y - transform.position.y) / (_playerPosition.x - transform.position.x)));
+            _attackCooldownTimeLeft = 0;
+            _rigidbody.isKinematic = true;
+            _status = PhoenixStatus.ATTACK;
+            _flyingSpeed = ATTACK_FLYING_SPEED;
+            _polygonHitbox.enabled = true;
         }
         else
         {
-            if (CheckIfPlayerIsTooClose())
+            float playerDistance = Vector2.Distance(StaticObjects.GetPlayer().transform.position, transform.position);
+            if (playerDistance < PLAYER_APPROACH_LIMIT)
             {
-                FindAdjacentPoint();
-                SetFleeStatus();
+                int randomNumber = _rng.Next();
+                if (_currentPoint.Equals(_northEastLimit) || _currentPoint.Equals(_southWestLimit))
+                {
+                    _closestPoint = (randomNumber % 2 == 0 ? _northWestLimit : _southEastLimit);
+                }
+                else
+                {
+                    _closestPoint = (randomNumber % 2 == 0 ? _northEastLimit : _southWestLimit);
+                }
+                EngageInFleeStatus();
             }
             else
             {
-                Flap();
+                if (_flightTimeLeft > 0)
+                {
+                    _flightTimeLeft -= Time.fixedDeltaTime;
+                }
+                else
+                {
+                    _flightTimeLeft = FLIGHT_DELAY;
+                    _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, WING_FLAP);
+                }
             }
         }
-    }
-
-    private bool CheckIfPlayerIsTooClose()
-    {
-        return Vector2.Distance(StaticObjects.GetPlayer().transform.position, transform.position) < PLAYER_APPROACH_LIMIT;
     }
 
     private void UpdateWhenFleeing()
     {
         transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _closestPoint, _flyingSpeed * Time.fixedDeltaTime);
-        if (Vector2.Distance(_closestPoint, transform.position) < 1)
-        {
-            SetFlyStatus();
-        }
+        CheckForFlyStatus();
     }
 
     private void UpdateWhenAttacking()
     {
         transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _playerPosition, _flyingSpeed * Time.fixedDeltaTime);
+
         if (Vector2.Distance(transform.position, _playerPosition) < 1)
         {
             _closestPoint = _currentPoint;
             FindFleeingPoint();
-            SetFleeStatus();
+            EngageInFleeStatus();
         }
     }
 
-    private void SetFlyStatus()
+    private void CheckForFlyStatus()
     {
-        _currentPoint = _closestPoint;
-        _rigidbody.isKinematic = false;
-        transform.rotation = Quaternion.identity;
-        _flightTimeLeft = 0;
-        _status = PhoenixStatus.FLY;
+        float closestPointDistance = Vector2.Distance(_closestPoint, transform.position);
+        if (closestPointDistance < 1)
+        {
+            _currentPoint = _closestPoint;
+            _rigidbody.isKinematic = false;
+            transform.rotation = Quaternion.identity;
+            _flightTimeLeft = 0;
+            _status = PhoenixStatus.FLY;
+        }
     }
 
-    private void SetFleeStatus()
+    private void EngageInFleeStatus()
     {
         _flyingSpeed = NORMAL_FLYING_SPEED;
         transform.rotation = Quaternion.identity;
@@ -209,19 +223,8 @@ public class PhoenixAI : MonoBehaviour
         _attackCooldownTimeLeft = 0;
         _bossOrientation.FlipTowardsSpecificPoint(_closestPoint);
         transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_closestPoint.y - transform.position.y) / (_closestPoint.x - transform.position.x)));
-        _polygonHitbox.enabled = false;
         _status = PhoenixStatus.FLEE;
-    }
-
-    private void SetAttackStatus()
-    {
-        _playerPosition = StaticObjects.GetPlayer().transform.position;
-        transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_playerPosition.y - transform.position.y) / (_playerPosition.x - transform.position.x)));
-        _attackCooldownTimeLeft = 0;
-        _rigidbody.isKinematic = true;
-        _status = PhoenixStatus.ATTACK;
-        _flyingSpeed = ATTACK_FLYING_SPEED;
-        _polygonHitbox.enabled = true;
+        _polygonHitbox.enabled = false;
     }
 
     public void OnPhoenixDefeated()

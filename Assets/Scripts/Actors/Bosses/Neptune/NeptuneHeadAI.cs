@@ -59,26 +59,37 @@ public class NeptuneHeadAI : MonoBehaviour
 
     protected virtual void Start()
     {
-        _attackCooldownTimeLeft = ATTACK_DELAY;
-        _spawnBodyPartTimeLeft = BODY_PART_SPAWN_DELAY;
-        numberBodyPartsSpawned = 0;
         _bodyParts = GameObject.FindGameObjectsWithTag("NeptuneBody");
-        foreach (GameObject bodyPart in _bodyParts)
-        {
-            bodyPart.SetActive(false);
-        }
+        
         _health = GetComponent<Health>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _onBossDefeated = GetComponent<OnBossDefeated>();
         _health.OnDeath += OnNeptuneDefeated;
-        InitializePoints();
-        RotateAndFlip();
+        InitializeNeptune();
     }
 
-    private void Destroy()
+    private void OnEnable()
     {
-        _health.OnDeath -= OnNeptuneDefeated;
+        InitializeNeptune();
+    }
+
+    private void InitializeNeptune()
+    {
+        if(_health != null)
+        {
+            _attackCooldownTimeLeft = ATTACK_DELAY;
+            _spawnBodyPartTimeLeft = BODY_PART_SPAWN_DELAY;
+            numberBodyPartsSpawned = 0;
+            _health.HealthPoint = _health.MaxHealth;
+            foreach (GameObject bodyPart in _bodyParts)
+            {
+                bodyPart.transform.position = transform.position;
+                bodyPart.SetActive(false);
+            }
+            InitializePoints();
+            RotateAndFlip();
+        }
     }
 
     protected void InitializePoints()

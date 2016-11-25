@@ -70,6 +70,7 @@ public class BehemothAI : MonoBehaviour
         if (_canUseOnEnable)
         {
             SetWaitStatus();
+            _health.HealthPoint = _health.MaxHealth;
             transform.position = _initialPosition;
         }
     }
