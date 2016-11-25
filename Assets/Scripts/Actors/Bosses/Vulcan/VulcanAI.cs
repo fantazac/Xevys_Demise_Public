@@ -37,11 +37,31 @@ public class VulcanAI : MonoBehaviour
     private float _timeLeft = LOWERED_TIME;
     private float _halfHealth;
     private bool _hasShotFireball = false;
+    private Vector3 _initialPosition;
+
+    private bool _canUseOnEnable = false;
 
     public int CurrentIndex { get; private set; }
 
     private void Start()
     {
+        _health = GetComponent<Health>();
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _bossOrientation = GetComponent<BossOrientation>();
+        _animator = GetComponent<Animator>();
+        _health.OnDeath += OnVulcanDefeated;
+        _polygonHitbox = GetComponent<PolygonCollider2D>();
+        _initialPosition = transform.position;
+        InitializeVulcan();
+        _canUseOnEnable = true;
+    }
+
+    private void InitializeVulcan()
+    {
+        transform.position = _initialPosition;
+        _health.HealthPoint = _health.MaxHealth;
+        _halfHealth = _health.HealthPoint / 2;
+        _polygonHitbox.enabled = false;
         _status = VulcanStatus.LOWERED;
         _initialHeight = transform.position.y;
         _bodyHeight = transform.localScale.y;
@@ -50,19 +70,14 @@ public class VulcanAI : MonoBehaviour
         {
             _positionsForRaise[x + 2] = transform.position.x + x * transform.localScale.x;
         }
-        _health = GetComponent<Health>();
-        _halfHealth = _health.HealthPoint / 2;
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _bossOrientation = GetComponent<BossOrientation>();
-        _animator = GetComponent<Animator>();
-        _health.OnDeath += OnVulcanDefeated;
-        _polygonHitbox = GetComponent<PolygonCollider2D>();
-        _polygonHitbox.enabled = false;
     }
 
-    private void OnDestroy()
+    private void OnEnable()
     {
-        _health.OnDeath -= OnVulcanDefeated;
+        if (_canUseOnEnable)
+        {
+            InitializeVulcan();
+        }
     }
 
     private void FixedUpdate()
