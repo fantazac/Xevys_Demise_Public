@@ -7,6 +7,7 @@ public class SpawnBossOnBreakableItemDestroyed : MonoBehaviour
     private GameObject _boss;
 
     private Health _health;
+    private Health _playerHealth;
 
     private void Start ()
     {
@@ -15,7 +16,8 @@ public class SpawnBossOnBreakableItemDestroyed : MonoBehaviour
 
         _boss.GetComponent<Health>().OnDeath += DestroyBreakableItem;
 
-        StaticObjects.GetPlayer().GetComponent<Health>().OnDeath += ResetBossRoom;
+        _playerHealth =  StaticObjects.GetPlayer().GetComponent<Health>();
+        _playerHealth.OnDeath += ResetBossRoom;
 
         _boss.SetActive(false);
 	}
@@ -35,6 +37,7 @@ public class SpawnBossOnBreakableItemDestroyed : MonoBehaviour
 
     private void DestroyBreakableItem()
     {
+        _playerHealth.OnDeath -= ResetBossRoom;
         Destroy(gameObject);
     }
 }
