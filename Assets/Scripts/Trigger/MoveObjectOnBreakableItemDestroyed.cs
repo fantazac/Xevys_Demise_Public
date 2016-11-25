@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MoveObjectOnTrigger : MonoBehaviour
+public class MoveObjectOnBreakableItemDestroyed : MonoBehaviour
 {
-
     [SerializeField]
-    private GameObject _triggerActivationObject;
+    private GameObject _breakableItem;
 
     [SerializeField]
     private MoveDirection _moveDirection;
@@ -22,19 +21,12 @@ public class MoveObjectOnTrigger : MonoBehaviour
     private Vector3 _directionalVector;
     private Vector3 _finalPosition;
 
-    private ActivateTrigger _trigger;
-
     public delegate void OnFinishedMovingHandler();
     public event OnFinishedMovingHandler OnFinishedMoving;
 
     private void Start()
     {
-        _trigger = _triggerActivationObject.GetComponent<ActivateTrigger>();
-
-        if (_trigger != null)
-        {
-            _trigger.OnTrigger += StartObjectMovement;
-        }
+        _breakableItem.GetComponent<Health>().OnDeath += StartObjectMovement;
 
         _directionalVectors = new Vector3[] { Vector3.up, Vector3.down, Vector3.left, Vector3.right };
         _directionalVector = _directionalVectors[(int)_moveDirection];
@@ -67,4 +59,5 @@ public class MoveObjectOnTrigger : MonoBehaviour
             OnFinishedMoving();
         }
     }
+
 }
