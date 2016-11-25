@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
 using XInputDotNetPure;
 
 public class GamepadInputs : MonoBehaviour
@@ -58,17 +57,23 @@ public class GamepadInputs : MonoBehaviour
 
     private bool _usingDpadControlsScheme;
     private PauseMenuAnimationManager _pauseMenuAnimationManager;
+    private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
     private GamePadState _state;
     private bool _inMenu;
+    private bool _died;
 
     private void Start()
     {
         GameObject.Find(StaticObjects.GetFindTags().PauseMenuControlsOptionsButtons).GetComponent<ControlsSchemeSettings>().OnGamepadControlChanged += SetUsingDPadControlsScheme;
+        _pauseMenuCurrentInterfaceAnimator = GameObject.Find(StaticObjects.GetFindTags().PauseMenuButtons).GetComponent<PauseMenuCurrentInterfaceAnimator>();
         _state = GamePad.GetState(PlayerIndex.One);
         _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
         _pauseMenuAnimationManager.OnPauseMenuOutOfScreen += IsInMenu;
+        _pauseMenuCurrentInterfaceAnimator.OnPlayerDeathShowDeathInterface += PlayerDied;
+
         _usingDpadControlsScheme = false;
         _inMenu = false;
+        _died = false;
     }
 
     private void Update()
@@ -89,7 +94,7 @@ public class GamepadInputs : MonoBehaviour
             SyncAllButtonsState();
             CheckAllButtonsPressed();
         }
-        else
+        else if(!_died)
         {
             if (_state.Buttons.B == ButtonState.Released && !_bButtonReady)
             {
@@ -118,6 +123,15 @@ public class GamepadInputs : MonoBehaviour
     private void IsInMenu(bool isActive)
     {
         _inMenu = isActive;
+        if (!isActive)
+        {
+            _died = false;
+        }
+    }
+
+    private void PlayerDied()
+    {
+        _died = true;
     }
 
     private void CheckAllButtonsPressed()
