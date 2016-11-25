@@ -59,7 +59,12 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
     private IEnumerator EnablePlatformWhenPlayerPassedThrough()
     {
         yield return _enablePlatformDelay;
-
+        
         EnablePlatform();
+    }
+
+    public bool HasFlyingPlatform()
+    {
+        return _flyingPlatform != null;
     }
 }

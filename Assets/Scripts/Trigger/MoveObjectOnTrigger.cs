@@ -3,13 +3,6 @@ using System.Collections;
 
 public class MoveObjectOnTrigger : MonoBehaviour
 {
-    private enum MoveDirection
-    {
-        Up,
-        Down,
-        Left,
-        Right
-    }
 
     [SerializeField]
     private GameObject _triggerActivationObject;

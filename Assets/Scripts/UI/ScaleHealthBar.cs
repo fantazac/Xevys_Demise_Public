@@ -12,21 +12,26 @@ public class ScaleHealthBar : MonoBehaviour
     private Health _health;
     private Vector3 _finalSize;
 
+    private float _healthBarLosingHealthFactor;
+
     private float _initialRectangleX;
 
     private void Start()
     {
+        
         _health = StaticObjects.GetPlayer().GetComponent<Health>();
         _healthBar = StaticObjects.GetHealthBar().GetComponent<Transform>();
         _initialRectangleX = _healthBar.localScale.x;
+
+        _finalSize = _healthBar.localScale;
+        _healthBarLosingHealthFactor = 1f / _health.MaxHealth;
 
         _health.OnHealthChanged += OnHealthChanged;
     }
 
     private void OnHealthChanged(int hitPoints)
     {
-        _finalSize = new Vector3(_initialRectangleX - (100 - ((_health.HealthPoint - 10)*100)/1000)*_initialRectangleX/100,
-                                _healthBar.localScale.y, _healthBar.localScale.z);
+        _finalSize -= Vector3.left * (hitPoints * _initialRectangleX * _healthBarLosingHealthFactor);
         StartCoroutine(ScaleHealthBarCouroutine());
     }
 

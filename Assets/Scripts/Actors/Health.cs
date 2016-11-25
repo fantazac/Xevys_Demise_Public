@@ -31,40 +31,30 @@ public class Health : MonoBehaviour
     {
         AccountStats.OnHealthReloaded += ReloadHealth;
         MaxHealth = _health;
-        OnHealthChanged += ChangeHealth;
     }
 
     public void Heal(int healPoints)
     {
-        if(_health + healPoints > MaxHealth)
+        if (_health + healPoints > MaxHealth)
         {
             healPoints = (int)(MaxHealth - _health);
         }
+        _health += healPoints;
         OnHeal(healPoints);
         OnHealthChanged(healPoints);
     }
 
     public void FullHeal()
     {
-        Heal(MaxHealth);
+        Heal(MaxHealth - _health);
     }
 
     public void Hit(int hitPoints, Vector2 attackerPosition)
     {
         if (!IsDead())
         {
-            if(OnDamageTaken != null)
-            {
-                OnDamageTaken(-hitPoints);
-            }
-            
-            OnHealthChanged(-hitPoints);    
-                
-            if (IsDead())
-            {
-                OnDeath();
-            }
-            if(OnDamageTakenByEnemy != null)
+            Hit(hitPoints);
+            if (OnDamageTakenByEnemy != null)
             {
                 OnDamageTakenByEnemy(attackerPosition);
             }
@@ -75,12 +65,17 @@ public class Health : MonoBehaviour
     {
         if (!IsDead())
         {
+            _health -= hitPoints;
+
             if (OnDamageTaken != null)
             {
                 OnDamageTaken(-hitPoints);
             }
 
-            OnHealthChanged(-hitPoints);
+            if (OnHealthChanged != null)
+            {
+                OnHealthChanged(-hitPoints);
+            }
 
             if (IsDead())
             {
@@ -89,17 +84,9 @@ public class Health : MonoBehaviour
         }
     }
 
-    private void ChangeHealth(int healthPointsToAdd)
+    private void ReloadHealth(int health)
     {
-        HealthPoint += healthPointsToAdd;
-    }
-
-    private void ReloadHealth(float health)
-    {
-        if(tag == StaticObjects.GetUnityTags().Player)
-        {
-            OnHealthChanged(Convert.ToInt32(-(_health - health)));
-        }
+        Hit(-(_health - health));
     }
 
     private bool IsDead()

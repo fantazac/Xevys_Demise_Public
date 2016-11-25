@@ -21,16 +21,16 @@ public class VulcanAI : MonoBehaviour
     GameObject _fireball;
 
     private Health _health;
-    private GameObject _vulcanHead;
     private Rigidbody2D _rigidbody;
     private Animator _animator;
     private BossOrientation _bossOrientation;
     private OnBossDefeated _onBossDefeated;
+    private PolygonCollider2D _polygonHitbox;
 
-    private System.Random _rng = new System.Random();
+    private System.Random _random = new System.Random();
     private VulcanStatus _status;
     private bool _criticalStatus = true;
-    private float[] _spawnPositions;
+    private float[] _positionsForRaise;
     private float _attackCooldownTimeLeft;
     private float _bodyHeight;
     private float _initialHeight;
@@ -45,18 +45,19 @@ public class VulcanAI : MonoBehaviour
         _status = VulcanStatus.LOWERED;
         _initialHeight = transform.position.y;
         _bodyHeight = transform.localScale.y;
-        _spawnPositions = new float[5];
+        _positionsForRaise = new float[5];
         for (int x = -2; x < 3; x++)
         {
-            _spawnPositions[x + 2] = transform.position.x + x * transform.localScale.x;
+            _positionsForRaise[x + 2] = transform.position.x + x * transform.localScale.x;
         }
-        _vulcanHead = transform.FindChild("Vulcan Head").gameObject;
         _health = GetComponent<Health>();
         _halfHealth = _health.HealthPoint / 2;
         _rigidbody = GetComponent<Rigidbody2D>();
         _bossOrientation = GetComponent<BossOrientation>();
         _animator = GetComponent<Animator>();
         _health.OnDeath += OnVulcanDefeated;
+        _polygonHitbox = GetComponent<PolygonCollider2D>();
+        _polygonHitbox.enabled = false;
     }
 
     private void OnDestroy()
@@ -95,23 +96,35 @@ public class VulcanAI : MonoBehaviour
             _criticalStatus = (_health.HealthPoint <= _halfHealth);
             if (_criticalStatus)
             {
-                if (StaticObjects.GetPlayer().transform.position.x < _spawnPositions[0] / 2)
+                float horizontalDistanceToClosestPoint = float.MaxValue;
+                int closestPointIndex = -1;
+                for (int n = 0; n < _positionsForRaise.Length; n+= 2)
                 {
-                    transform.position = new Vector3(_spawnPositions[0], transform.position.y, transform.position.z);
+                    float horizontalDistanceToSpecificPoint = Mathf.Abs(StaticObjects.GetPlayer().transform.position.x - _positionsForRaise[n]);
+                    if (horizontalDistanceToClosestPoint > horizontalDistanceToSpecificPoint)
+                    {
+                        horizontalDistanceToClosestPoint = horizontalDistanceToSpecificPoint;
+                        closestPointIndex = n;
+                    }
                 }
-                else if (StaticObjects.GetPlayer().transform.position.x > _spawnPositions[4] / 2)
+                transform.position = new Vector3(_positionsForRaise[closestPointIndex], transform.position.y);
+                /*if (StaticObjects.GetPlayer().transform.position.x < _positionsForRaise[0] / 2)
                 {
-                    transform.position = new Vector3(_spawnPositions[4], transform.position.y, transform.position.z);
+                    transform.position = new Vector3(_positionsForRaise[0], transform.position.y, transform.position.z);
+                }
+                else if (StaticObjects.GetPlayer().transform.position.x > _positionsForRaise[4] / 2)
+                {
+                    transform.position = new Vector3(_positionsForRaise[4], transform.position.y, transform.position.z);
                 }
                 else
                 {
-                    transform.position = new Vector3(_spawnPositions[2], transform.position.y, transform.position.z);
-                }
+                    transform.position = new Vector3(_positionsForRaise[2], transform.position.y, transform.position.z);
+                }*/
             }
             else
             {
-                CurrentIndex = _rng.Next() % 2 * 2 + 1;
-                transform.position = new Vector3(_spawnPositions[CurrentIndex], transform.position.y, transform.position.z);
+                CurrentIndex = _random.Next() % 2 * 2 + 1;
+                transform.position = new Vector3(_positionsForRaise[CurrentIndex], transform.position.y, transform.position.z);
             }
             _bossOrientation.FlipTowardsPlayer();
             //_animator.SetInteger("State", 2);
@@ -152,7 +165,7 @@ public class VulcanAI : MonoBehaviour
         {
             _hasShotFireball = false;
             _rigidbody.isKinematic = false;
-            _vulcanHead.SetActive(true);
+            _polygonHitbox.enabled = true;
             _status = VulcanStatus.RETREATING;
         }
     }
@@ -173,7 +186,7 @@ public class VulcanAI : MonoBehaviour
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
             _timeLeft = LOWERED_TIME;
             _rigidbody.isKinematic = true;
-            _vulcanHead.SetActive(false);
+            _polygonHitbox.enabled = false;
             _status = VulcanStatus.LOWERED;
         }
     }

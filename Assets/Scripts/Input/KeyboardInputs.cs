@@ -44,26 +44,44 @@ public class KeyboardInputs : MonoBehaviour
     public delegate void KeyboardOnFlipHandler(bool goesRight);
     public event KeyboardOnFlipHandler OnFlip;
 
+    private PauseMenuAnimationManager _pauseMenuAnimationManager;
     private bool _usingArrowControlsScheme;
+    private bool _inMenu;
 
     private void Start()
     {
-        GameObject.Find("PauseMenuControlsOptionsButtons").GetComponent<ControlsSchemeSettings>().OnKeyboardControlChanged += SetUsingArrowControlsScheme;
+        GameObject.Find(StaticObjects.GetFindTags().PauseMenuControlsOptionsButtons).GetComponent<ControlsSchemeSettings>().OnKeyboardControlChanged += SetUsingArrowControlsScheme;
+        _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
+        _pauseMenuAnimationManager.OnPauseMenuOutOfScreen += IsInMenu;
         _usingArrowControlsScheme = false;
+        _inMenu = false;
     }
 
     private void Update()
     {
-        if (_usingArrowControlsScheme)
+        if (!_inMenu)
         {
-            ArrowControlsScheme();
-        }
-        else
-        {
-            WASDControlsScheme();
+            if (_usingArrowControlsScheme)
+            {
+                ArrowControlsScheme();
+            }
+            else
+            {
+                WASDControlsScheme();
+            }
+
+            CheckAllKeysPressed();
         }
 
-        CheckAllKeysPressed();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            OnPause();
+        }
+    }
+
+    private void IsInMenu(bool isActive)
+    {
+        _inMenu = isActive;
     }
 
     private void CheckAllKeysPressed()
@@ -76,11 +94,6 @@ public class KeyboardInputs : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             OnThrowAttackChangeButtonPressed();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            OnPause();
         }
     }
 
@@ -196,11 +209,6 @@ public class KeyboardInputs : MonoBehaviour
         {
             OnStandingUp();
         }
-    }
-
-    private bool IsPressingDown()
-    {
-        return Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
     }
 
     private void SetUsingArrowControlsScheme(bool control)

@@ -19,7 +19,7 @@ public class PlayerThrowAttack : MonoBehaviour
 
     private WaitForSeconds _enableAttackDelay;
 
-    protected void Start()
+    protected virtual void Start()
     {
         _inputManager = GetComponentInChildren<InputManager>();
         _inputManager.OnThrowAttack += OnThrowAttack;

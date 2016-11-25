@@ -4,42 +4,37 @@ using System.Collections;
 public class DestroyPlayerProjectile : MonoBehaviour
 {
     [SerializeField]
-    private  float _delayAfterWallCollision = 0.833f;
+    private  float _wallCollisionDuration = 0.833f;
 
-    public bool TouchesGround { get; set; }
-    public bool DestroyNow { get; set; }
+    private WaitForSeconds _delayAfterWallCollision;
 
     public delegate void OnProjectileDestroyedHandler(GameObject projectile);
     public event OnProjectileDestroyedHandler OnProjectileDestroyed;
 
     void Start()
     {
-        if (gameObject.tag == StaticObjects.GetUnityTags().Axe)
-        {
-            TouchesGround = GetComponentInChildren<AxeHandleHitWall>().TouchesGround;
-        }
-
-        DestroyNow = false;
+        _delayAfterWallCollision = new WaitForSeconds(_wallCollisionDuration);
     }
 
-    void Update()
+    public void TouchedWall()
     {
-        if (TouchesGround)
+        StartCoroutine(DestroyProjectile(_delayAfterWallCollision));
+    }
+
+    public void DestroyNow()
+    {
+        if (OnProjectileDestroyed != null)
         {
-            Destroy(gameObject, _delayAfterWallCollision);
-            if (OnProjectileDestroyed != null)
-            {
-                OnProjectileDestroyed(gameObject);
-            }
-            TouchesGround = false;
+            OnProjectileDestroyed(gameObject);
         }
-        else if (DestroyNow)
-        {
-            if (OnProjectileDestroyed != null)
-            {
-                OnProjectileDestroyed(gameObject);
-            }
-            Destroy(gameObject);
-        }
+
+        Destroy(gameObject);
+    }
+
+    private IEnumerator DestroyProjectile(WaitForSeconds delay)
+    {
+        yield return delay;
+
+        DestroyNow();
     }
 }

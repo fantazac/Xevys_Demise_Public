@@ -1,12 +1,15 @@
 fileFormatVersion: 2
 guid: 9698dc09c7d342e44b70db2631fd4af0
-timeCreated: 1480013675
+timeCreated: 1480080120
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: Earth Thorns_0
     21300002: Earth Thorns_1
     21300004: Earth Thorns_2
+    21300006: Stalactite_0
+    21300008: Stalactite_1
+    21300010: Stalactite_2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -56,7 +59,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Earth Thorns_0
+      name: Stalactite_0
       rect:
         serializedVersion: 2
         x: 52
@@ -69,7 +72,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Earth Thorns_1
+      name: Stalactite_1
       rect:
         serializedVersion: 2
         x: 104
@@ -82,7 +85,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Earth Thorns_2
+      name: Stalactite_2
       rect:
         serializedVersion: 2
         x: 152

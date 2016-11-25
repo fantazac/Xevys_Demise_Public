@@ -91,7 +91,7 @@ public class CameraManager : MonoBehaviour
         }
 
         // Adjust the camera's position to that of the newly determined position
-        transform.position = Vector3.Lerp(transform.position, newPosition, smoothTime);
+        transform.position = Vector3.Lerp(transform.position, newPosition, smoothTime * 60 * Time.deltaTime);
     }
 
     // Method to check what area the player has entered and sets the CurrentArea to this new area
