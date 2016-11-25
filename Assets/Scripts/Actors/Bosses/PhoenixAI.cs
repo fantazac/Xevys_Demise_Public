@@ -46,13 +46,14 @@ public class PhoenixAI : MonoBehaviour
     private float _closestVerticalPoint;
     private float _flyingSpeed;
 
+    private Vector3 _initialPosition;
+
+    private bool _canUseOnEnable = false;
+
     // Use this for initialization
     private void Start()
     {
-        _status = PhoenixStatus.FLY;
-        _flightTimeLeft = 0;
-        _attackCooldownTimeLeft = 0;
-        _currentPoint = _southWestLimit;
+        InitializePhoenix();
         _health = GetComponent<Health>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _bossOrientation = GetComponent<BossOrientation>();
@@ -61,12 +62,31 @@ public class PhoenixAI : MonoBehaviour
         _polygonHitbox = GetComponent<PolygonCollider2D>();
         GetComponent<Health>().OnDamageTaken += GotHitByPlayer;
 
-        _flyingSpeed = NORMAL_FLYING_SPEED;
+        SetupPhoenixReset();
+        _canUseOnEnable = true;
     }
 
-    private void OnDestroy()
+    private void SetupPhoenixReset()
     {
-        _health.OnDeath -= OnPhoenixDefeated;
+        _initialPosition = transform.position;
+    }
+
+    private void OnEnable()
+    {
+        if (_canUseOnEnable)
+        {
+            InitializePhoenix();
+            transform.position = _initialPosition;
+        }
+    }
+
+    private void InitializePhoenix()
+    {
+        _flyingSpeed = NORMAL_FLYING_SPEED;
+        _status = PhoenixStatus.FLY;
+        _flightTimeLeft = 0;
+        _attackCooldownTimeLeft = 0;
+        _currentPoint = _southWestLimit;
     }
 
     private void FixedUpdate()
