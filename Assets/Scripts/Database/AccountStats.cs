@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using Mono.Data.Sqlite;
 using System.Data;
-using System.IO;
 using System;
 
 public class AccountStats : DatabaseConnection
