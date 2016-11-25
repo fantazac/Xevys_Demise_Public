@@ -28,7 +28,7 @@ public class XevyMovement : MonoBehaviour
     private const float MISALIGNMENT_MARGIN = 0.5f;
 
     private BossOrientation _bossOrientation;
-    private ActorDirection _actorDirection;
+    private BossDirection _actorDirection;
     private Rigidbody2D _rigidbody;
     private Vector2 _arrivalPosition;
     private Vector2 _startPosition;
@@ -58,7 +58,7 @@ public class XevyMovement : MonoBehaviour
         MovementStatus = XevyMovementStatus.NONE;
         _commandStack = new Stack<XevyMovementCommand>();
         _rigidbody = GetComponent<Rigidbody2D>();
-        _actorDirection = GetComponent<ActorDirection>();
+        _actorDirection = GetComponent<BossDirection>();
         _bossOrientation = GetComponent<BossOrientation>();
         _bossOrientation.OnBossFlipped += OnBossFlipped;
         _referencePoints = new Vector2[]

@@ -21,7 +21,7 @@ public class XevyHubAI : MonoBehaviour
     private const float SPEED = 2.5f;
 
     private Health _health;
-    private ActorDirection _actorDirection;
+    private BossDirection _actorDirection;
     private BossOrientation _bossOrientation;
     private GameObject _xevySword;
     private PolygonCollider2D _collisionBox;
@@ -40,7 +40,7 @@ public class XevyHubAI : MonoBehaviour
         _rightLimit = transform.position.x + _rightDistance;
         _timer = DEFENSIVE_TIMER_COOLDOWN;
         _health = GetComponent<Health>();
-        _actorDirection = GetComponent<ActorDirection>();
+        _actorDirection = GetComponent<BossDirection>();
         _bossOrientation = GetComponent<BossOrientation>();
         _xevySword = transform.FindChild("Xevy Sword").gameObject;
         _collisionBox = GetComponent<PolygonCollider2D>();

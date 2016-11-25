@@ -18,11 +18,11 @@ public class MoveFireball : MonoBehaviour
     {
         _vulcan = GameObject.Find(StaticObjects.GetFindTags().Vulcan);
         _vulcanBossOrientation = _vulcan.GetComponent<BossOrientation>();
+        _rigidbody = GetComponent<Rigidbody2D>();
         if (transform.localEulerAngles.z == 0)
         {
             _criticalStatus = true;
         }
-        _rigidbody = GetComponent<Rigidbody2D>();
         _rigidbody.isKinematic = _criticalStatus;
         if (_criticalStatus)
         {
@@ -31,8 +31,8 @@ public class MoveFireball : MonoBehaviour
         else
         {
             _rigidbody.velocity = new Vector2(_vulcanBossOrientation.Orientation * HORIZONTAL_SPEED,
-                (_vulcan.GetComponent<VulcanAI>().CurrentIndex == VULCAN_RIGHT_PIT_INDEX ^
-                _vulcanBossOrientation.IsFacingRight ? VERTICAL_SPEED : -VERTICAL_SPEED));
+                ((_vulcan.GetComponent<VulcanAI>().CurrentIndex == VULCAN_RIGHT_PIT_INDEX ? -1 : 1) *
+                _vulcanBossOrientation.Orientation * VERTICAL_SPEED));
         }
     }
 

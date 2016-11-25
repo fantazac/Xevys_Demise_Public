@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MoveEarthThorn : MonoBehaviour
+public class MoveStalactite : MonoBehaviour
 {
     private const float SPEED = 2.5f;
     private float maximumHeight;

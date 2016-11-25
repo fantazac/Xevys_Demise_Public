@@ -5,16 +5,16 @@ public class XevyAction: MonoBehaviour
 {
     private int _sameAttackCount;
 
-    private const float AIR_SPIKE_SPEED = 15;
+    private const float TORNADO_SPEED = 15;
     private const float HORIZONTAL_AXIS_MODIFIER = 3.5f;
-    private const float FIRE_BALL_SPEED = 2;
+    private const float THUNDER_BALL_SPEED = 2;
 
     [SerializeField]
-    private GameObject _airSpike;
+    private GameObject _tornado;
     [SerializeField]
-    private GameObject _fireBall;
+    private GameObject _thunderBall;
     [SerializeField]
-    private GameObject _earthThorns;
+    private GameObject _stalactites;
 
     private BossOrientation _bossOrientation;
     private GameObject _clawHitbox;
@@ -59,23 +59,23 @@ public class XevyAction: MonoBehaviour
 
     public XevyAttackType FireAttack(float horizontalForce, float verticalForce)
     {
-        var fireBall = Instantiate(_fireBall, transform.position, transform.rotation);
+        var fireBall = Instantiate(_thunderBall, transform.position, transform.rotation);
         ((GameObject)fireBall).SetActive(true);
-        ((GameObject)fireBall).GetComponent<Rigidbody2D>().velocity = new Vector2(horizontalForce * FIRE_BALL_SPEED, (verticalForce * FIRE_BALL_SPEED) + (horizontalForce / HORIZONTAL_AXIS_MODIFIER ));
+        ((GameObject)fireBall).GetComponent<Rigidbody2D>().velocity = new Vector2(horizontalForce * THUNDER_BALL_SPEED, (verticalForce * THUNDER_BALL_SPEED) + (horizontalForce / HORIZONTAL_AXIS_MODIFIER ));
         return XevyAttackType.FIRE;
     }
 
     public XevyAttackType AirAttack()
     {
-        var airSpike = Instantiate(_airSpike, transform.position, transform.rotation);
+        var airSpike = Instantiate(_tornado, transform.position, transform.rotation);
         ((GameObject)airSpike).SetActive(true);
-        ((GameObject)airSpike).GetComponent<Rigidbody2D>().velocity = new Vector2(AIR_SPIKE_SPEED * _bossOrientation.Orientation, 0);
+        ((GameObject)airSpike).GetComponent<Rigidbody2D>().velocity = new Vector2(TORNADO_SPEED * _bossOrientation.Orientation, 0);
         return XevyAttackType.AIR;
     }
 
     public XevyAttackType EarthAttack()
     {
-        var earthThorns = Instantiate(_earthThorns, new Vector2(transform.position.x + _bossOrientation.Orientation, transform.position.y - _earthThorns.transform.localScale.y), transform.rotation);
+        var earthThorns = Instantiate(_stalactites, new Vector2(transform.position.x + _bossOrientation.Orientation + _bossOrientation.Orientation, transform.position.y - _stalactites.transform.localScale.y), transform.rotation);
         ((GameObject)earthThorns).transform.localScale = new Vector2(_bossOrientation.Orientation * ((GameObject)earthThorns).transform.localScale.x, ((GameObject)earthThorns).transform.localScale.y);
         ((GameObject)earthThorns).SetActive(true);
         return XevyAttackType.EARTH;
