@@ -9,3 +9,4 @@ heritage: PlaySound, EnvironmentOnDamage, MoveObject, RemoveObject
 enlever anim de SpawnToCheckpointAfterDeath
 checkpointsave coroutine?
 optimisé WaterDetector
+optimisé ColorHealthBar
