@@ -12,6 +12,7 @@ public class XevyHubAI : MonoBehaviour
 
     [SerializeField]
     private float _leftDistance;
+
     [SerializeField]
     private float _rightDistance;
 
@@ -30,7 +31,7 @@ public class XevyHubAI : MonoBehaviour
     private Health _health;
     private BossDirection _actorDirection;
     private BossOrientation _bossOrientation;
-    private GameObject _xevySword;
+    private BoxCollider2D _swordHitbox;
     private PolygonCollider2D _collisionBox;
 
     private XevyHubStatus _status = XevyHubStatus.DEFENSIVE;
@@ -49,7 +50,7 @@ public class XevyHubAI : MonoBehaviour
         _health = GetComponent<Health>();
         _actorDirection = GetComponent<BossDirection>();
         _bossOrientation = GetComponent<BossOrientation>();
-        _xevySword = transform.FindChild("Xevy Sword").gameObject;
+        _swordHitbox = GetComponentsInChildren<BoxCollider2D>()[1];
         _collisionBox = GetComponent<PolygonCollider2D>();
         _bossOrientation.OnBossFlipped += OnBossFlipped;
     }
@@ -103,13 +104,13 @@ public class XevyHubAI : MonoBehaviour
             {
                 _timer = _attackingTimerCooldown;
                 _collisionBox.enabled = false;
-                _xevySword.SetActive(true);
+                _swordHitbox.enabled = true;
                 _status = XevyHubStatus.ATTACKING;
             }
             else if (_status == XevyHubStatus.ATTACKING)
             {
                 _timer = _defensiveTimerCooldown;
-                _xevySword.SetActive(false);
+                _swordHitbox.enabled = false;
                 _collisionBox.enabled = false;
                 _status = XevyHubStatus.DEFENSIVE;
                 _isNotMoving = false;
