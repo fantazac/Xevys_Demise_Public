@@ -1,0 +1,8 @@
+ScarabMovement (truc de template, voir si c'est fait)
+FallDamage (expliqué qu'on check la distance) ventilateur
+OnItemDrop (expliqué le script au complet)
+remove les using System.Collections qui sont inutiles
+possibilité de skip la collision WaterHitbox en sortant de l'eau
+faire les anims de boss comme celles des ennemis (script indiv.)
+regarder pour les chiffres magiques
+heritage: PlaySound, 

@@ -10,16 +10,12 @@ public class DestroyEnemyOnDeath : MonoBehaviour
     public static event OnEnemyDeathHandler OnEnemyDeath;
 
     private BoxCollider2D _hitbox;
-    private Health _health;
-    private PlaySoundOnEnemyDeath _enemyDeathSound;
 
     private void Start()
     {
-        _health = GetComponent<Health>();
-        _health.OnDeath += OnDeath;
+        GetComponent<Health>().OnDeath += OnDeath;
 
-        _enemyDeathSound = GetComponent<PlaySoundOnEnemyDeath>();
-        _enemyDeathSound.OnDeathSoundFinished += Destroy;
+        GetComponent<PlaySoundOnEnemyDeath>().OnDeathSoundFinished += Destroy;
 
         _hitbox = GetComponent<BoxCollider2D>();
     }

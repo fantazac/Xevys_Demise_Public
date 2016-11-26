@@ -15,5 +15,4 @@ public class MoveArtefactToBossDeathSpot : MonoBehaviour
     {
         transform.position = _boss.transform.position;
     }
-
 }

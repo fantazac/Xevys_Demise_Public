@@ -45,8 +45,8 @@ public class MoveBouncySkeltal : SkeltalBehaviour
         //formule pour trouver la vitesse horizontale par rapport au temps et à la distance
         _horizontalSpeed = (_leftDistance + _rightDistance) / _timeInAir;
 
-        _initialPosition = new Vector3(transform.position.x + _rightDistance, transform.position.y, transform.position.z);
-        _initialPositionLeft = new Vector3(transform.position.x - _leftDistance, transform.position.y, transform.position.z);
+        _initialPosition = transform.position + (Vector3.right * _rightDistance);
+        _initialPositionLeft = transform.position + (Vector3.left * _leftDistance);
 
         base.Start();
     }
@@ -69,7 +69,8 @@ public class MoveBouncySkeltal : SkeltalBehaviour
             _newYPosition = _startingPosition.y + (_initialVerticalSpeed * _timeInAirCount) +
                 (HALF_VALUE * _verticalAcceleration * _timeInAirCount * _timeInAirCount);
 
-            transform.position = new Vector3(_newXPosition, _newYPosition, transform.position.z);
+            transform.position += (Vector3.right * (_newXPosition - transform.position.x)) 
+                + (Vector3.up * (_newYPosition - transform.position.y));
             _timeInAirCount += Time.deltaTime;
 
             yield return null;

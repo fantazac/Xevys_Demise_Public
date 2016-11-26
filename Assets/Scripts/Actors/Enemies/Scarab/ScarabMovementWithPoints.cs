@@ -9,9 +9,6 @@ public class ScarabMovementWithPoints : ScarabMovement
     [SerializeField]
     private bool[] _rotationDirections;
 
-    private ScarabDirection _initialDirection;
-
-    private bool _goesBackwards = false;
     private bool _currentRotateDirection = false;
 
     protected override void Start()
@@ -29,31 +26,10 @@ public class ScarabMovementWithPoints : ScarabMovement
         base.Start();
     }
 
-    private void SetInitialDirection()
-    {
-        if (_points[_selectedTargetPoint].x < _points[_selectedTargetPoint + 1].x)
-        {
-            _initialDirection = ScarabDirection.Right;
-        }
-        else if (_points[_selectedTargetPoint].x > _points[_selectedTargetPoint + 1].x)
-        {
-            _initialDirection = ScarabDirection.Left;
-        }
-        else if (_points[_selectedTargetPoint].y < _points[_selectedTargetPoint + 1].y)
-        {
-            _initialDirection = ScarabDirection.Up;
-        }
-        else
-        {
-            _initialDirection = ScarabDirection.Down;
-        }
-    }
-
     protected override void StartRotation()
     {
-        _canRotate = false;
         SetRotationDirection();
-        StartCoroutine(Rotate());
+        base.StartRotation();
     }
 
     private void SetRotationDirection()
@@ -80,12 +56,6 @@ public class ScarabMovementWithPoints : ScarabMovement
             _selectedTargetPoint == _points.Length - 1 ? _target = _points[--_selectedTargetPoint] : _target = _points[++_selectedTargetPoint];
     }
 
-    private void FlipSprite()
-    {
-        GetComponent<SpriteRenderer>().flipX = !GetComponent<SpriteRenderer>().flipX;
-        _goesBackwards = !_goesBackwards;
-    }
-
     protected override void InitializeSpriteDirection()
     {
         switch (_initialDirection)
@@ -105,10 +75,5 @@ public class ScarabMovementWithPoints : ScarabMovement
     protected override bool CanStartRotation()
     {
         return _canRotate && IsCloseToTarget() && !IsAtAFlipCorner();
-    }
-
-    private bool IsAtAFlipCorner()
-    {
-        return _selectedTargetPoint == 0 || _selectedTargetPoint == _points.Length - 1;
     }
 }

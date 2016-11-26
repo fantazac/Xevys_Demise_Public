@@ -1,3 +1,0 @@
-ScarabMovement (truc de template)
-FallDamage (expliqué qu'on check la distance) ventilateur
-OnItemDrop (expliqué le script au complet)
