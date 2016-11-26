@@ -2,9 +2,22 @@
 
 public class SpawnToCheckpointAfterDeath : MonoBehaviour
 {
-    [SerializeField] private Vector3 centralCheckpoint;
-    [SerializeField] private Vector3[] checkpoints;
+    [SerializeField]
+    private Vector3 centralCheckpoint;
+
+    [SerializeField]
+    private Vector3[] checkpoints;
+
     private int _lastCheckpoint = 0;
+
+    private Health _playerHealth;
+    private Animator _animator;
+
+    private void Start()
+    {
+        _playerHealth = GetComponent<Health>();
+        _animator = GetComponentInChildren<Animator>();
+    }
 
     public void SaveCheckpoint(int checkPoint)
     {
@@ -35,7 +48,7 @@ public class SpawnToCheckpointAfterDeath : MonoBehaviour
 
     private void RestartPlayer()
     {
-        GetComponent<Health>().FullHeal();
-        GetComponentInChildren<Animator>().SetBool(StaticObjects.GetAnimationTags().IsDying, false);
+        _playerHealth.FullHeal();
+        _animator.SetBool(StaticObjects.GetAnimationTags().IsDying, false);
     }
 }

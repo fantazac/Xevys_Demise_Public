@@ -27,6 +27,7 @@ public class PlayerTouchesGround : MonoBehaviour
     private bool ColliderIsGround(Collider2D collider)
     {
         return collider.gameObject.tag == StaticObjects.GetUnityTags().Wall || 
-            collider.gameObject.tag == StaticObjects.GetUnityTags().FlyingPlatform;
+            collider.gameObject.tag == StaticObjects.GetUnityTags().FlyingPlatform ||
+            collider.gameObject.tag == StaticObjects.GetUnityTags().Spike;
     }
 }

@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.Networking;
 
 public class KeyboardInputs : MonoBehaviour
 {
@@ -77,16 +75,12 @@ public class KeyboardInputs : MonoBehaviour
             }
 
             CheckAllKeysPressed();
+            UpdateStartButton();
         }
         else if (!_died)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                OnPause();
-            }
+            UpdateStartButton();
         }
-
-
     }
 
     private void IsInMenu(bool isActive)
@@ -103,6 +97,14 @@ public class KeyboardInputs : MonoBehaviour
         _died = true;
     }
 
+    private void UpdateStartButton()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            OnPause();
+        }
+    }
+
     private void CheckAllKeysPressed()
     {
         if (Input.GetKeyDown(KeyCode.E))
@@ -113,11 +115,6 @@ public class KeyboardInputs : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             OnThrowAttackChangeButtonPressed();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            OnPause();
         }
     }
 

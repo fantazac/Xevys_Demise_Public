@@ -40,7 +40,7 @@ public class MoveJumpySkeltal : SkeltalBehaviour
             _newYPosition = _initialPosition.y + (_initialVerticalSpeed * _timeInAirCount) +
                 (HALF_VALUE * _verticalAcceleration * _timeInAirCount * _timeInAirCount);
 
-            transform.position = new Vector3(transform.position.x, _newYPosition, transform.position.z);
+            transform.position += Vector3.up * (_newYPosition - transform.position.y);
             _timeInAirCount += Time.deltaTime;
 
             yield return null;

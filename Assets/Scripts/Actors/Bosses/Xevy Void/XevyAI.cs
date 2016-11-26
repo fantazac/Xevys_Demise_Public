@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class XevyAI : MonoBehaviour
 {
@@ -12,10 +11,17 @@ public class XevyAI : MonoBehaviour
         DEAD,
     }
 
-    private const int NUMBER_SAME_ATTACKS_BEFORE_MOVEMENT = 5;
-    private const float IDLE_STATUS_COOLDOWN = 0.5f;
-    private const float VULNERABLE_STATUS_COOLDOWN = 0.5f;
-    private const float CRITICAL_HEALTH_PERCENTAGE = 0.33f;
+    [SerializeField]
+    private int _numberSameAttacksBeforeMovement = 5;
+
+    [SerializeField]
+    private float _idleStatusCooldown = 0.5f;
+
+    [SerializeField]
+    private float _vulnerableStatusCooldown = 0.5f;
+
+    [SerializeField]
+    private float _criticalHealthPercentage = 0.33f;
 
     private Health _health;
     private XevyAction _action;
@@ -80,7 +86,7 @@ public class XevyAI : MonoBehaviour
         {
             _action.RetreatClaws();
             bool playerProximity = _playerInteraction.CheckPlayerDistance();
-            bool healthStatus = (_health.HealthPoint > _health.MaxHealth * CRITICAL_HEALTH_PERCENTAGE);
+            bool healthStatus = (_health.HealthPoint > _health.MaxHealth * _criticalHealthPercentage);
             SetVulnerableStatus();
             if (playerProximity && !healthStatus)
             {
@@ -122,7 +128,7 @@ public class XevyAI : MonoBehaviour
                 _sameAttackCount = (_currentAttack == _lastAttack ? _sameAttackCount + 1 : 0);
                 _lastAttack = _currentAttack;
 
-                if (_sameAttackCount == NUMBER_SAME_ATTACKS_BEFORE_MOVEMENT)
+                if (_sameAttackCount == _numberSameAttacksBeforeMovement)
                 {
                     _movement.BounceTowardsRandomPoint();
                     _sameAttackCount = 0;
@@ -165,7 +171,7 @@ public class XevyAI : MonoBehaviour
 
     private void SetIdleStatus()
     {
-        _statusTimer = IDLE_STATUS_COOLDOWN;
+        _statusTimer = _idleStatusCooldown;
         _action.LowerGuard();
         _playerInteraction.IsFocusedOnPlayer = true;
         _status = XevyStatus.IDLE;
@@ -173,7 +179,7 @@ public class XevyAI : MonoBehaviour
 
     private void SetVulnerableStatus()
     {
-        _statusTimer = VULNERABLE_STATUS_COOLDOWN;
+        _statusTimer = _vulnerableStatusCooldown;
         _playerInteraction.IsFocusedOnPlayer = false;
         _status = XevyStatus.VULNERABLE;
     }

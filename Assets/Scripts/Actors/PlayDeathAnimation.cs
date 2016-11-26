@@ -6,13 +6,11 @@ public class PlayDeathAnimation : MonoBehaviour
     public delegate void OnDyingAnimationFinishedHandler();
     public event OnDyingAnimationFinishedHandler OnDyingAnimationFinished;
 
-    private Health _health;
     private Animator _animator;
 
     private void Start()
     {
-        _health = GetComponent<Health>();
-        _health.OnDeath += OnDeath;
+        GetComponent<Health>().OnDeath += OnDeath;
 
         _animator = GetComponentInChildren<Animator>();
     }

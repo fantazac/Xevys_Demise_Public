@@ -35,7 +35,7 @@ public class Health : MonoBehaviour
 
     public void Heal(int healPoints)
     {
-        if (_health + healPoints > MaxHealth)
+        if (HealWouldGiveTooMuchHealth(healPoints))
         {
             healPoints = (int)(MaxHealth - _health);
         }
@@ -51,13 +51,10 @@ public class Health : MonoBehaviour
 
     public void Hit(int hitPoints, Vector2 attackerPosition)
     {
-        if (!IsDead())
+        Hit(hitPoints);
+        if (OnDamageTakenByEnemy != null && !IsDead())
         {
-            Hit(hitPoints);
-            if (OnDamageTakenByEnemy != null)
-            {
-                OnDamageTakenByEnemy(attackerPosition);
-            }
+            OnDamageTakenByEnemy(attackerPosition);
         }
     }
 
@@ -97,5 +94,10 @@ public class Health : MonoBehaviour
     public bool CanHeal()
     {
         return _health < MaxHealth;
+    }
+
+    private bool HealWouldGiveTooMuchHealth(float healPoints)
+    {
+        return _health + healPoints > MaxHealth;
     }
 }

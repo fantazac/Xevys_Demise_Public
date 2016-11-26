@@ -28,12 +28,6 @@ public class ScarabMovementWithPlatform : ScarabMovement
         base.Start();
     }
 
-    protected override void StartRotation()
-    {
-        _canRotate = false;
-        StartCoroutine(Rotate());
-    }
-
     private void InitializeDimensions()
     {
         _wallPosition = _attachedWall.transform.position;
@@ -58,20 +52,5 @@ public class ScarabMovementWithPlatform : ScarabMovement
             _wallPosition.y + _halfOfWallHeight + _halfOfScarabHeight, transform.position.z);
         _points[3] = new Vector3(_wallPosition.x - _halfOfWallWidth - _halfOfScarabWidth,
             _wallPosition.y + _halfOfWallHeight + _halfOfScarabHeight, transform.position.z);
-    }
-
-    protected override bool CanStartRotation()
-    {
-        return _canRotate && IsCloseToTarget();
-    }
-
-    protected override void FindTarget()
-    {
-        _target = _points[(++_selectedTargetPoint) % _points.Length];
-    }
-
-    protected override void InitializeSpriteDirection()
-    {
-        transform.Rotate(Vector3.forward * MAX_ROTATION * (_selectedTargetPoint + 1));
     }
 }

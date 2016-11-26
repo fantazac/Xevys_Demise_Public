@@ -73,8 +73,7 @@ public class MovementAnimationManager : MonoBehaviour
 
     private void FlipAnimation()
     {
-        _anim.transform.localScale = new Vector3(-1 * _anim.transform.localScale.x,
-                _anim.transform.localScale.y, _anim.transform.localScale.z);
+        _anim.transform.localScale += Vector3.left * _anim.transform.localScale.x * 2;
     }
 
     private void AnimateKnockBack()

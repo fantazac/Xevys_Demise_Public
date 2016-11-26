@@ -3,7 +3,6 @@ using System.Collections;
 
 public class ActivateTrigger : MonoBehaviour
 {
-
     private enum ArtefactType
     {
         None,
@@ -18,20 +17,24 @@ public class ActivateTrigger : MonoBehaviour
 
     [SerializeField]
     private bool _axeCanTrigger = false;
+
     [SerializeField]
     private bool _knifeCanTrigger = false;
+
     [SerializeField]
     private bool _playerCanTrigger = false;
 
     private InventoryManager _playerInventory;
 
     private UnityTags _unityTags;
+    private BoxCollider2D _hitbox;
 
     public delegate void OnTriggerHandler();
     public event OnTriggerHandler OnTrigger;
 
     private void Start()
     {
+        _hitbox = GetComponent<BoxCollider2D>();
         _playerInventory = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
         _unityTags = StaticObjects.GetUnityTags();
     }
@@ -40,6 +43,7 @@ public class ActivateTrigger : MonoBehaviour
     {
         if (TriggerIsValid(collider) && ArtefactIsUnlocked())
         {
+            _hitbox.enabled = false;
             OnTrigger();
         }
     }

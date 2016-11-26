@@ -31,56 +31,51 @@ public class KnockbackPlayer : MonoBehaviour
 
     private void Knockback(Vector2 attackerPosition)
     {
-        _playerState.SetKnockedBack(true);
-
-        if(attackerPosition != Vector2.zero)
-        {
-            if (transform.position.x < attackerPosition.x)
-            {
-                _rigidbody.velocity = new Vector2(-_knockbackSpeed, _rigidbody.velocity.y);
-            }
-            else if (transform.position.x > attackerPosition.x)
-            {
-                _rigidbody.velocity = new Vector2(_knockbackSpeed, _rigidbody.velocity.y);
-            }
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _knockbackSpeed);
-        }
-
+        SetupKnockback(attackerPosition);
         StartCoroutine(StopKnockback());
+    }
+
+    private void SetupKnockback(Vector2 attackerPosition)
+    {
+        _playerState.SetKnockedBack(true);
+        if (attackerPosition != Vector2.zero)
+        {
+            if (transform.position.x != attackerPosition.x)
+            {
+                _rigidbody.velocity = _knockbackSpeed * (transform.position.x < attackerPosition.x ?
+                    Vector2.left : Vector2.right);
+            }
+
+            _rigidbody.velocity += Vector2.up * _knockbackSpeed;
+        }
+        StopAllCoroutines();
     }
 
     private void KnockbackOnBehemothHit(Vector2 behemothPosition)
     {
-        _playerState.SetKnockedBack(true);
-
-        if (transform.position.x < behemothPosition.x)
-        {
-            _rigidbody.velocity = new Vector2(-_knockbackSpeed * BEHEMOTH_KNOCKBACK_INCREASE_MODIFIER, _rigidbody.velocity.y);
-        }
-        else if (transform.position.x > behemothPosition.x)
-        {
-            _rigidbody.velocity = new Vector2(_knockbackSpeed * BEHEMOTH_KNOCKBACK_INCREASE_MODIFIER, _rigidbody.velocity.y);
-        }
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _knockbackSpeed * BEHEMOTH_KNOCKBACK_INCREASE_MODIFIER);
-
-        StopAllCoroutines();
+        SetupKnockback(behemothPosition);
+        _rigidbody.velocity *= BEHEMOTH_KNOCKBACK_INCREASE_MODIFIER;
         StartCoroutine(StopBehemothKnockback());
+    }
+
+    private void SetPlayerImmobile()
+    {
+        _playerState.SetKnockedBack(false);
+        _playerState.SetImmobile();
     }
 
     private IEnumerator StopKnockback()
     {
         yield return _knockbackDelay;
 
-        _playerState.SetKnockedBack(false);
-        _playerState.SetImmobile();
+        SetPlayerImmobile();
     }
 
     private IEnumerator StopBehemothKnockback()
     {
         yield return _knockbackBehemothDelay;
 
-        _playerState.SetKnockedBack(false);
-        _playerState.SetImmobile();
+        SetPlayerImmobile();
     }
 
     public void EnableBehemothKnockback(GameObject behemoth)

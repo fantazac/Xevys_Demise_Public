@@ -4,9 +4,7 @@ using System.Collections;
 public class ScaleHealthBar : MonoBehaviour
 {
     [SerializeField]
-    private const float FINAL_SIZE_MARGIN = 0.00015f;
-    [SerializeField]
-    private const int SCALING_SPEED = 4;
+    private int _scalingSpeed = 4;
 
     private Transform _healthBar;
     private Health _health;
@@ -14,13 +12,14 @@ public class ScaleHealthBar : MonoBehaviour
 
     private float _healthBarLosingHealthFactor;
 
+    private const float BAR_SCALING_MARGIN = 0.00015f;
+
     private float _initialRectangleX;
 
     private void Start()
     {
-        
         _health = StaticObjects.GetPlayer().GetComponent<Health>();
-        _healthBar = StaticObjects.GetHealthBar().GetComponent<Transform>();
+        _healthBar = StaticObjects.GetHealthBar().transform;
         _initialRectangleX = _healthBar.localScale.x;
 
         _finalSize = _healthBar.localScale;
@@ -31,16 +30,17 @@ public class ScaleHealthBar : MonoBehaviour
 
     private void OnHealthChanged(int hitPoints)
     {
-        _finalSize -= Vector3.left * (hitPoints * _initialRectangleX * _healthBarLosingHealthFactor);
-        StartCoroutine(ScaleHealthBarCouroutine());
+        _finalSize -= Vector3.left * hitPoints * _initialRectangleX * _healthBarLosingHealthFactor;
+        StopAllCoroutines();
+        StartCoroutine(SetHealthBarSize());
     }
 
-    private IEnumerator ScaleHealthBarCouroutine()
+    private IEnumerator SetHealthBarSize()
     {
-        while (_healthBar.localScale.x > _finalSize.x + FINAL_SIZE_MARGIN ||
-               _healthBar.localScale.x < _finalSize.x - FINAL_SIZE_MARGIN)
+        while (_healthBar.localScale.x < _finalSize.x - BAR_SCALING_MARGIN || 
+            _healthBar.localScale.x > _finalSize.x + BAR_SCALING_MARGIN)
         {
-            _healthBar.localScale = Vector3.Lerp(_healthBar.localScale, _finalSize, Time.deltaTime * SCALING_SPEED);
+            _healthBar.localScale = Vector3.Lerp(_healthBar.localScale, _finalSize, Time.deltaTime * _scalingSpeed);
             yield return null;
         }
         _healthBar.localScale = _finalSize;

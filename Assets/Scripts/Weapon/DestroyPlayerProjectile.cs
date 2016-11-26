@@ -11,7 +11,7 @@ public class DestroyPlayerProjectile : MonoBehaviour
     public delegate void OnProjectileDestroyedHandler(GameObject projectile);
     public event OnProjectileDestroyedHandler OnProjectileDestroyed;
 
-    void Start()
+    private void Start()
     {
         _delayAfterWallCollision = new WaitForSeconds(_wallCollisionDuration);
     }

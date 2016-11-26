@@ -12,6 +12,15 @@ public class CheckpointSave : MonoBehaviour
     private int _showCounter;
     private string _gameSaved = "Game saved";
 
+    private AccountStats _accountStats;
+    private SpawnToCheckpointAfterDeath _checkpointSpawn;
+
+    private void Start()
+    {
+        _checkpointSpawn = StaticObjects.GetPlayer().GetComponent<SpawnToCheckpointAfterDeath>();
+        _accountStats = StaticObjects.GetDatabase().GetComponent<AccountStats>();
+    }
+
     private void Update()
     {
         if(_showText)
@@ -30,8 +39,8 @@ public class CheckpointSave : MonoBehaviour
         {
             _showText = true;
             _showCounter = _baseShowCounter;
-            StaticObjects.GetDatabase().GetComponent<AccountStats>().SaveTemporaryStats();
-            StaticObjects.GetPlayer().GetComponent<SpawnToCheckpointAfterDeath>().SaveCheckpoint(_checkpoint);
+            _accountStats.SaveTemporaryStats();
+            _checkpointSpawn.SaveCheckpoint(_checkpoint);
         }
     }
 
