@@ -3,7 +3,8 @@ using System.Collections;
 
 public class PlayerTouchesFlyingPlatform : MonoBehaviour
 {
-    private const float ENABLE_HITBOX_CD = 0.3f;
+    [SerializeField]
+    private float _enableHitboxCD = 0.3f;
 
     private GameObject _flyingPlatform;
 
@@ -14,7 +15,7 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
 
     private void Start()
     {
-        _enablePlatformDelay = new WaitForSeconds(ENABLE_HITBOX_CD);
+        _enablePlatformDelay = new WaitForSeconds(_enableHitboxCD);
         _playerTouchesGround = GetComponent<PlayerTouchesGround>();
     }
 
