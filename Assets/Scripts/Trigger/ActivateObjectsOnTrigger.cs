@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ActivateObjectsOnBossDeath : MonoBehaviour
+public class ActivateObjectsOnTrigger : MonoBehaviour
 {
     [SerializeField]
     private GameObject[] _objectsToActivate;
 
     private void Start()
     {
-        GetComponent<Health>().OnDeath += Activate;
+        GetComponent<ActivateTrigger>().OnTrigger += Activate;
     }
 
     private void Activate()

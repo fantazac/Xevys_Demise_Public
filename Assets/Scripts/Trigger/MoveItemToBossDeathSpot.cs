@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MoveArtefactToBossDeathSpot : MonoBehaviour
+public class MoveItemToBossDeathSpot : MonoBehaviour
 {
     private GameObject _boss;
 
