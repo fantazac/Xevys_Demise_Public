@@ -8,12 +8,14 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
     private GameObject _flyingPlatform;
 
     private WaitForSeconds _enablePlatformDelay;
+    private PlayerTouchesGround _playerTouchesGround;
 
     public bool OnFlyingPlatform { get; set; }
 
     private void Start()
     {
         _enablePlatformDelay = new WaitForSeconds(ENABLE_HITBOX_CD);
+        _playerTouchesGround = GetComponent<PlayerTouchesGround>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -46,7 +48,7 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
     {
         _flyingPlatform.GetComponent<BoxCollider2D>().enabled = false;
         OnFlyingPlatform = false;
-        GetComponent<PlayerTouchesGround>().OnGround = false;
+        _playerTouchesGround.OnGround = false;
     }
 
     public void DropFromPlatform()

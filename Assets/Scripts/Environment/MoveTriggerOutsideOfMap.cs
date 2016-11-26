@@ -3,17 +3,16 @@ using System.Collections;
 
 public class MoveTriggerOutsideOfMap: MonoBehaviour
 {
-    private EyeAnimationOnDeath _eyeAnimationOnDeath;
+    [SerializeField]
+    private int _farAwayPosition = -1000;
 
     private void Start()
     {
-        _eyeAnimationOnDeath = GetComponent<EyeAnimationOnDeath>();
-        _eyeAnimationOnDeath.OnAnimationOver += MoveObjectOutside;
+        GetComponent<EyeAnimationOnDeath>().OnAnimationOver += MoveObjectOutside;
     }
 
     private void MoveObjectOutside()
     {
-        transform.position = new Vector3(-1000, -1000, 0);
+        transform.position = (Vector2.right + Vector2.up) * _farAwayPosition;
     }
-
 }

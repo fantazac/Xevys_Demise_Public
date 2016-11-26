@@ -3,7 +3,6 @@ using System.Collections;
 
 public class MovePickedUpItemOutsideOfMap : MonoBehaviour
 {
-
     private Animator _animator;
 
     private void Start()

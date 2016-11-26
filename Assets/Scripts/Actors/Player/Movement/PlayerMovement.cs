@@ -100,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (PlayerIsMovingHorizontally() && !_playerState.IsKnockedBack)
         {
-            _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+            _rigidbody.velocity = Vector2.up * _rigidbody.velocity.y;
             _playerState.SetImmobile();
         }
     }

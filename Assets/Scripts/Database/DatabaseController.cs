@@ -103,7 +103,7 @@ public class DatabaseController : DatabaseConnection
     {
         _dbconnection.Open();
         //Dummie fun facts.
-        CreateFunFact("All achievement names are actually parody of song titles.");
+        CreateFunFact("All achievement names are actually parodies of song titles.");
         CreateFunFact("Xevy is actually a very sensitive guy.");
         CreateFunFact("The Game. You lost it.");
         CreateFunFact("No skeltals were hurt in the making of this game.");

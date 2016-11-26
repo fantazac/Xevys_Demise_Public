@@ -8,27 +8,15 @@ public class ActivateArtefactOnBossDefeated : MonoBehaviour {
 
     public GameObject Boss { get { return _boss; } }
 
-    private Health _artefactGuardianHealth;
+    private Health _bossHealth;
 
     private void Start()
     {
-        if (_boss != null)
-        {
-            gameObject.transform.parent.gameObject.SetActive(false);
-            _artefactGuardianHealth = _boss.GetComponent<Health>();
-            _artefactGuardianHealth.OnDeath += OnGuardianDefeated;
-        }
+        gameObject.transform.parent.gameObject.SetActive(false);
+        _boss.GetComponent<Health>().OnDeath += OnBossDefeated;
     }
 
-    private void Destroy()
-    {
-        if (_boss != null && _artefactGuardianHealth != null)
-        {
-            _artefactGuardianHealth.OnDeath -= OnGuardianDefeated;
-        }
-    }
-
-    private void OnGuardianDefeated()
+    private void OnBossDefeated()
     {
         gameObject.transform.parent.gameObject.SetActive(true);
     }

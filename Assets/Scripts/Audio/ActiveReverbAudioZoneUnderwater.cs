@@ -8,9 +8,8 @@ public class ActiveReverbAudioZoneUnderwater : MonoBehaviour
 
     private void Start()
     {
-        GameObject player = StaticObjects.GetPlayer();
         _audioReverbZone = GetComponent<AudioReverbZone>();
-        playerFloatingInteraction = player.GetComponentInChildren<PlayerFloatingInteraction>();
+        playerFloatingInteraction = StaticObjects.GetPlayer().GetComponentInChildren<PlayerFloatingInteraction>();
         playerFloatingInteraction.OnPlayerUnderWater += ActivateReverbAudioZone;
         playerFloatingInteraction.OnPlayerOutOfWater += DisableReverbAudioZone;
     }

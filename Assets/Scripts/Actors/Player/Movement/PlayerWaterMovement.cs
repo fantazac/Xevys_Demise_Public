@@ -30,7 +30,7 @@ public class PlayerWaterMovement : PlayerMovement
     {
         if (enabled)
         {
-            base.OnMove(new Vector2(vector.x * SPEED_REDUCTION_FACTOR_IN_WATER, vector.y), goesRight);
+            base.OnMove(vector * SPEED_REDUCTION_FACTOR_IN_WATER, goesRight);
         }
     }
 
