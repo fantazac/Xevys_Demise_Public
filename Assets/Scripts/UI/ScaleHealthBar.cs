@@ -12,6 +12,8 @@ public class ScaleHealthBar : MonoBehaviour
 
     private float _healthBarLosingHealthFactor;
 
+    private const float BAR_SCALING_MARGIN = 0.00015f;
+
     private float _initialRectangleX;
 
     private void Start()
@@ -29,12 +31,14 @@ public class ScaleHealthBar : MonoBehaviour
     private void OnHealthChanged(int hitPoints)
     {
         _finalSize -= Vector3.left * hitPoints * _initialRectangleX * _healthBarLosingHealthFactor;
+        StopAllCoroutines();
         StartCoroutine(SetHealthBarSize());
     }
 
     private IEnumerator SetHealthBarSize()
     {
-        while (_healthBar.localScale.x != _finalSize.x)
+        while (_healthBar.localScale.x < _finalSize.x - BAR_SCALING_MARGIN || 
+            _healthBar.localScale.x > _finalSize.x + BAR_SCALING_MARGIN)
         {
             _healthBar.localScale = Vector3.Lerp(_healthBar.localScale, _finalSize, Time.deltaTime * _scalingSpeed);
             yield return null;
