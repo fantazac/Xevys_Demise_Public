@@ -9,15 +9,17 @@ public class ActivateArtefactOnBossDefeated : MonoBehaviour {
     public GameObject Boss { get { return _boss; } }
 
     private Health _bossHealth;
+    private GameObject _parent;
 
     private void Start()
     {
-        gameObject.transform.parent.gameObject.SetActive(false);
+        _parent = gameObject.transform.parent.gameObject;
+        _parent.SetActive(false);
         _boss.GetComponent<Health>().OnDeath += OnBossDefeated;
     }
 
     private void OnBossDefeated()
     {
-        gameObject.transform.parent.gameObject.SetActive(true);
+        _parent.SetActive(true);
     }
 }

@@ -1,44 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MoveObjectOnBreakableItemDestroyed : MonoBehaviour
+public class MoveObjectOnEvent : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _breakableItem;
+    protected MoveDirection _moveDirection;
 
     [SerializeField]
-    private MoveDirection _moveDirection;
+    protected float _distanceToMoveObject;
 
     [SerializeField]
-    private float _distanceToMoveObject;
+    protected float _speedInUnitsPerSecond;
 
-    [SerializeField]
-    private float _speedInUnitsPerSecond;
+    protected float _distanceMade = 0;
 
-    private float _distanceMade = 0;
-
-    private Vector3[] _directionalVectors;
-    private Vector3 _directionalVector;
-    private Vector3 _finalPosition;
+    protected Vector3[] _directionalVectors;
+    protected Vector3 _directionalVector;
+    protected Vector3 _finalPosition;
 
     public delegate void OnFinishedMovingHandler();
     public event OnFinishedMovingHandler OnFinishedMoving;
 
-    private void Start()
+    protected virtual void Start()
     {
-        _breakableItem.GetComponent<Health>().OnDeath += StartObjectMovement;
-
         _directionalVectors = new Vector3[] { Vector3.up, Vector3.down, Vector3.left, Vector3.right };
         _directionalVector = _directionalVectors[(int)_moveDirection];
     }
 
-    public void StartObjectMovement()
+    protected void StartObjectMovement()
     {
         _finalPosition = transform.position + (_directionalVector * _distanceToMoveObject);
         StartCoroutine(MoveObject());
     }
 
-    private IEnumerator MoveObject()
+    protected IEnumerator MoveObject()
     {
         while (true)
         {
@@ -59,5 +54,4 @@ public class MoveObjectOnBreakableItemDestroyed : MonoBehaviour
             OnFinishedMoving();
         }
     }
-
 }

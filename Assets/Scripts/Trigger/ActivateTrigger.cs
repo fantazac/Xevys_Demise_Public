@@ -3,7 +3,6 @@ using System.Collections;
 
 public class ActivateTrigger : MonoBehaviour
 {
-
     private enum ArtefactType
     {
         None,
@@ -18,8 +17,10 @@ public class ActivateTrigger : MonoBehaviour
 
     [SerializeField]
     private bool _axeCanTrigger = false;
+
     [SerializeField]
     private bool _knifeCanTrigger = false;
+
     [SerializeField]
     private bool _playerCanTrigger = false;
 

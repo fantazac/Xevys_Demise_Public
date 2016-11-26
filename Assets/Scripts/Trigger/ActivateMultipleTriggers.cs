@@ -24,8 +24,7 @@ public class ActivateMultipleTriggers : MonoBehaviour
 
     private void HitTrigger()
     {
-        _amountOfTriggersToActivate--;
-        if (_amountOfTriggersToActivate == 0)
+        if (--_amountOfTriggersToActivate == 0)
         {
             _trigger.MultipleTriggersActivated();
         }

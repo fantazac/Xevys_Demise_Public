@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MovePickedUpItemOutsideOfMap : MonoBehaviour
+public class MovePickedUpItemAnimationOutsideOfMap : MoveOutsideOfMap
 {
     private Animator _animator;
 
-    private void Start()
+    protected void Start()
     {
         GetComponent<ActivateTrigger>().OnTrigger += MoveObjectOutside;
 
         _animator = GetComponent<Animator>();
     }
 
-    private void MoveObjectOutside()
+    protected override void MoveObjectOutside()
     {
         _animator.SetTrigger(StaticObjects.GetAnimationTags().ItemPickedUp);
     }
