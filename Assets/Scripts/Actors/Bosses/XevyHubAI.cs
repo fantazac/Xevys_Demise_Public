@@ -28,7 +28,6 @@ public class XevyHubAI : MonoBehaviour
     [SerializeField]
     private float _speed = 2.5f;
 
-    private Health _health;
     private BossDirection _actorDirection;
     private BossOrientation _bossOrientation;
     private BoxCollider2D _swordHitbox;
@@ -47,7 +46,6 @@ public class XevyHubAI : MonoBehaviour
         _leftLimit = transform.position.x - _leftDistance;
         _rightLimit = transform.position.x + _rightDistance;
         _timer = _defensiveTimerCooldown;
-        _health = GetComponent<Health>();
         _actorDirection = GetComponent<BossDirection>();
         _bossOrientation = GetComponent<BossOrientation>();
         _swordHitbox = GetComponentsInChildren<BoxCollider2D>()[1];
