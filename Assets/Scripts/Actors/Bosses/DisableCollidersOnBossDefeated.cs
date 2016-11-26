@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class OnBossDefeated : MonoBehaviour
+public class DisableCollidersOnBossDefeated : MonoBehaviour
 {
     private Health _health;
     private BoxCollider2D _boxCollider;

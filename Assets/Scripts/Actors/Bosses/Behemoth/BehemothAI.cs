@@ -21,11 +21,20 @@ public class BehemothAI : MonoBehaviour
     [SerializeField]
     private float _speed = 25;
 
-    private const int STUN_TIME = 3;
-    private const int CHARGE_TIME = 5;
-    private const float FEIGN_TIME = 0.33f;
-    private const float STUN_SPEED_MODIFIER = 0.2f;
-    private const float TIME_BEFORE_WARNING = 2;
+    [SerializeField]
+    private int _stunTime = 3;
+
+    [SerializeField]
+    private int _chargeTime = 5;
+
+    [SerializeField]
+    private float _feignTime = 0.33f;
+
+    [SerializeField]
+    private float _stunSpeedModifier = 0.2f;
+
+    [SerializeField]
+    private float _timeBeforeWarning = 2;
 
     private OnAttackHit _attack;
 
@@ -39,7 +48,7 @@ public class BehemothAI : MonoBehaviour
 
     private System.Random _random = new System.Random();
     private BehemothStatus _status = BehemothStatus.WAIT;
-    private float _timeLeft = CHARGE_TIME;
+    private float _timeLeft;
     private bool _isCharging;
     private bool _canUseOnEnable = false;
 
@@ -59,6 +68,7 @@ public class BehemothAI : MonoBehaviour
     private void SetupBehemothReset()
     {
         _initialPosition = transform.position;
+        _timeLeft = _chargeTime;
     }
 
     private void OnEnable()
@@ -109,7 +119,7 @@ public class BehemothAI : MonoBehaviour
         if (_timeLeft > 0)
         {
             _timeLeft -= Time.fixedDeltaTime;
-            if (_timeLeft < TIME_BEFORE_WARNING)
+            if (_timeLeft < _timeBeforeWarning)
             {
                 _attack.enabled = true;
                 _animator.SetInteger("State", 1);
@@ -144,7 +154,7 @@ public class BehemothAI : MonoBehaviour
         if (_timeLeft > 0)
         {
             _timeLeft -= Time.fixedDeltaTime;
-            _rigidbody.velocity = new Vector2(-_speed * STUN_SPEED_MODIFIER * _bossOrientation.Orientation, _rigidbody.velocity.y);
+            _rigidbody.velocity = new Vector2(-_speed * _stunSpeedModifier * _bossOrientation.Orientation, _rigidbody.velocity.y);
         }
         else
         {
@@ -168,7 +178,7 @@ public class BehemothAI : MonoBehaviour
         {
             _animator.SetInteger("State", 2);
             _isCharging = (_random.Next() % 2 == 0 ? true : false);
-            _timeLeft = FEIGN_TIME + (_isCharging ? CHARGE_TIME : 0);
+            _timeLeft = _feignTime + (_isCharging ? _chargeTime : 0);
             _status = BehemothStatus.CHARGE;
             _aimedWall = (_bossOrientation.IsFacingRight ? _rightWall : _leftWall);
         }
@@ -194,7 +204,7 @@ public class BehemothAI : MonoBehaviour
     private void SetStunnedStatus()
     {
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-        _timeLeft = STUN_TIME;
+        _timeLeft = _stunTime;
         _animator.SetInteger("State", 4);
         _status = BehemothStatus.STUN;
     }

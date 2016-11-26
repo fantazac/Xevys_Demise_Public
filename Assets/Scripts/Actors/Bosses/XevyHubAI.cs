@@ -15,10 +15,17 @@ public class XevyHubAI : MonoBehaviour
     [SerializeField]
     private float _rightDistance;
 
-    private const float ATTACKING_TIMER_COOLDOWN = 1;
-    private const float DEFENSIVE_TIMER_COOLDOWN = 1;
-    private const float VULNERABLE_TIMER_COOLDOWN = 1;
-    private const float SPEED = 2.5f;
+    [SerializeField]
+    private float _attackingTimerCooldown = 1;
+
+    [SerializeField]
+    private float _defensiveTimerCooldown = 1;
+
+    [SerializeField]
+    private float _vulnerableTimerCooldown = 1;
+
+    [SerializeField]
+    private float _speed = 2.5f;
 
     private Health _health;
     private BossDirection _actorDirection;
@@ -38,19 +45,13 @@ public class XevyHubAI : MonoBehaviour
         _rightDistance = Mathf.Abs(_rightDistance);
         _leftLimit = transform.position.x - _leftDistance;
         _rightLimit = transform.position.x + _rightDistance;
-        _timer = DEFENSIVE_TIMER_COOLDOWN;
+        _timer = _defensiveTimerCooldown;
         _health = GetComponent<Health>();
         _actorDirection = GetComponent<BossDirection>();
         _bossOrientation = GetComponent<BossOrientation>();
         _xevySword = transform.FindChild("Xevy Sword").gameObject;
         _collisionBox = GetComponent<PolygonCollider2D>();
         _bossOrientation.OnBossFlipped += OnBossFlipped;
-        _health.OnDeath += OnXevyHubDefeated;
-    }
-
-    private void Destroy()
-    {
-        _health.OnDeath -= OnXevyHubDefeated;
     }
 
     private void FixedUpdate()
@@ -66,7 +67,7 @@ public class XevyHubAI : MonoBehaviour
             else
             {
                 transform.position = new Vector3(transform.position.x + 
-                    _bossOrientation.Orientation * _actorDirection.Direction * SPEED * Time.deltaTime, transform.position.y);
+                    _bossOrientation.Orientation * _actorDirection.Direction * _speed * Time.deltaTime, transform.position.y);
             }
         }
         else
@@ -94,30 +95,25 @@ public class XevyHubAI : MonoBehaviour
         {
             if (_status == XevyHubStatus.DEFENSIVE)
             {
-                _timer = VULNERABLE_TIMER_COOLDOWN;
+                _timer = _vulnerableTimerCooldown;
                 _collisionBox.enabled = true;
                 _status = XevyHubStatus.VULNERABLE;
             }
             else if (_status == XevyHubStatus.VULNERABLE)
             {
-                _timer = ATTACKING_TIMER_COOLDOWN;
+                _timer = _attackingTimerCooldown;
                 _collisionBox.enabled = false;
                 _xevySword.SetActive(true);
                 _status = XevyHubStatus.ATTACKING;
             }
             else if (_status == XevyHubStatus.ATTACKING)
             {
-                _timer = DEFENSIVE_TIMER_COOLDOWN;
+                _timer = _defensiveTimerCooldown;
                 _xevySword.SetActive(false);
                 _collisionBox.enabled = false;
                 _status = XevyHubStatus.DEFENSIVE;
                 _isNotMoving = false;
             }
         }
-    }
-
-    private void OnXevyHubDefeated()
-    {
-
     }
 }
