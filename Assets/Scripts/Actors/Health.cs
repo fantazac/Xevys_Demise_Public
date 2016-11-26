@@ -40,6 +40,14 @@ public class Health : MonoBehaviour
             healPoints = (int)(MaxHealth - _health);
         }
         _health += healPoints;
+
+        //DONT TOUCH THAT
+        if(gameObject.tag == StaticObjects.GetUnityTags().Player)
+        {
+            Debug.Log("Heal");
+            Debug.Log(_health);
+        }
+
         OnHeal(healPoints);
         OnHealthChanged(healPoints);
     }
@@ -52,6 +60,15 @@ public class Health : MonoBehaviour
     public void Hit(int hitPoints, Vector2 attackerPosition)
     {
         Hit(hitPoints);
+
+        //DONT TOUCH THAT
+        if (gameObject.tag == StaticObjects.GetUnityTags().Player)
+        {
+            Debug.Log("Hit");
+            Debug.Log(attackerPosition);
+            Debug.Log(_health);
+        }
+
         if (OnDamageTakenByEnemy != null && !IsDead())
         {
             OnDamageTakenByEnemy(attackerPosition);

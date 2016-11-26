@@ -53,6 +53,12 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
 
     private void OnPlayerDeath()
     {
+        //DONT TOUCH THAT
+        if (gameObject.tag == StaticObjects.GetUnityTags().Player)
+        {
+            Debug.Log("DEATH UI");
+            Debug.Log(_playeHealth);
+        }
         _animator.SetTrigger("ShowDeathInterface");
         OnPlayerDeathShowDeathInterface();
     }
