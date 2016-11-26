@@ -1,5 +1,5 @@
-ScarabMovement (truc de template, voir si c'est fait)
-FallDamage (expliqué qu'on check la distance) ventilateur
+ScarabMovement (truc de template)
+FallDamage (regarder pour coroutine)
 OnItemDrop (expliqué le script au complet)
 remove les using System.Collections qui sont inutiles
 possibilité de skip la collision WaterHitbox en sortant de l'eau
