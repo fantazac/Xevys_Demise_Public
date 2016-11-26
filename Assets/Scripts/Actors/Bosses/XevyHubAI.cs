@@ -30,11 +30,15 @@ public class XevyHubAI : MonoBehaviour
 
     private BossDirection _actorDirection;
     private BossOrientation _bossOrientation;
+    private GameObject _xevySpell;
+    private Animator _animator;
+
     private BoxCollider2D _swordHitbox;
     private PolygonCollider2D _collisionBox;
 
     private XevyHubStatus _status = XevyHubStatus.DEFENSIVE;
     private bool _isNotMoving = false;
+    private bool _hasAttacked = false;
     private float _timer;
     private float _leftLimit;
     private float _rightLimit;
@@ -50,7 +54,10 @@ public class XevyHubAI : MonoBehaviour
         _bossOrientation = GetComponent<BossOrientation>();
         _swordHitbox = GetComponentsInChildren<BoxCollider2D>()[1];
         _collisionBox = GetComponent<PolygonCollider2D>();
+        _animator = GetComponent<Animator>();
+        _animator.SetInteger("State", 1);
         _bossOrientation.OnBossFlipped += OnBossFlipped;
+        _xevySpell = transform.FindChild("Xevy Spell").gameObject;
     }
 
     private void FixedUpdate()
@@ -60,6 +67,7 @@ public class XevyHubAI : MonoBehaviour
         {
             if (CheckIfMovementCompleted())
             {
+                _hasAttacked = false;
                 _isNotMoving = true;
                 _actorDirection.FlipDirection();
             }
@@ -71,6 +79,7 @@ public class XevyHubAI : MonoBehaviour
         }
         else
         {
+            _animator.SetInteger("State", 0);
             UpdateWhenNotMoving();
         }
     }
@@ -95,12 +104,16 @@ public class XevyHubAI : MonoBehaviour
             if (_status == XevyHubStatus.DEFENSIVE)
             {
                 _timer = _vulnerableTimerCooldown;
-                _collisionBox.enabled = true;
-                _status = XevyHubStatus.VULNERABLE;
+                _animator.SetInteger("State", (_hasAttacked ? 1:2));
+                _collisionBox.enabled = !_hasAttacked;
+                _xevySpell.SetActive(_hasAttacked);
+                _status = (_hasAttacked ? XevyHubStatus.DEFENSIVE : XevyHubStatus.VULNERABLE);
+                _isNotMoving = !_hasAttacked;
             }
             else if (_status == XevyHubStatus.VULNERABLE)
             {
                 _timer = _attackingTimerCooldown;
+                _animator.SetInteger("State", 3);
                 _collisionBox.enabled = false;
                 _swordHitbox.enabled = true;
                 _status = XevyHubStatus.ATTACKING;
@@ -108,10 +121,11 @@ public class XevyHubAI : MonoBehaviour
             else if (_status == XevyHubStatus.ATTACKING)
             {
                 _timer = _defensiveTimerCooldown;
+                _animator.SetInteger("State", 2);
+                _xevySpell.SetActive(true);
                 _swordHitbox.enabled = false;
-                _collisionBox.enabled = false;
                 _status = XevyHubStatus.DEFENSIVE;
-                _isNotMoving = false;
+                _hasAttacked = true;
             }
         }
     }
