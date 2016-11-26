@@ -3,7 +3,6 @@ using System.Collections;
 
 public class ResetObjectPositionOnPlayerDeath : MonoBehaviour
 {
-
     private Vector3 _initialPosition;
 
     private Health _playerHealth;
@@ -15,7 +14,6 @@ public class ResetObjectPositionOnPlayerDeath : MonoBehaviour
         _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
 
         _playerHealth.OnDeath += ResetPosition;
-        GetComponent<MoveObjectOnTrigger>().OnFinishedMoving += RemoveEventFromPlayerHealth;
     }
 
     private void ResetPosition()
@@ -23,9 +21,8 @@ public class ResetObjectPositionOnPlayerDeath : MonoBehaviour
         transform.position = _initialPosition;
     }
 
-    private void RemoveEventFromPlayerHealth()
+    private void OnDestroy()
     {
         _playerHealth.OnDeath -= ResetPosition;
     }
-
 }
