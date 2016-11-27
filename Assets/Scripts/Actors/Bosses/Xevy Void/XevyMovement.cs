@@ -12,14 +12,15 @@ public class XevyMovement : MonoBehaviour
         FLEEING,
     }
 
-    [SerializeField]
-    private int _numberNodes = 6;
-
-    [SerializeField]
-    private int _centralNode = 3;
-
-    [SerializeField]
-    private int _numberGroundPositions = 3;
+    /* BEN COUNTER-CORRECTION
+     * Lorsque la variable _numberNodes est sérialisée, l'erreur suivante apparaît:
+     * error CS0150: A constant value is expected
+     * Qu'est-ce qui est moins pire? Un jeu qui ne compile pas ou des 
+     * points perdus parce que ces variables ne sont pas sérialisées?
+     */
+    private const int NUMBER_NODES = 6;
+    private const int CENTRAL_NODE = 3;
+    private const int NUMBER_GROUND_POSITIONS = 3;
 
     [SerializeField]
     private float _fleeSpeed = 5;
@@ -73,7 +74,7 @@ public class XevyMovement : MonoBehaviour
 
     private void Start()
     {
-        _currentPositionIndex = _centralNode;
+        _currentPositionIndex = CENTRAL_NODE;
         MovementStatus = XevyMovementStatus.NONE;
         
         _commandStack = new Stack<XevyMovementCommand>();
@@ -82,7 +83,7 @@ public class XevyMovement : MonoBehaviour
         _actorDirection = GetComponent<BossDirection>();
         _bossOrientation = GetComponent<BossOrientation>();
         _bossOrientation.OnBossFlipped += OnBossFlipped;
-        _referencePoints = new Vector2[]
+        _referencePoints = new Vector2[NUMBER_NODES]
         {
             new Vector2(transform.position.x, transform.position.y + 2 * _verticalDistanceToReachPlatform),
             new Vector2(transform.position.x - 2 * _horizontalDistanceToReachPlatform, transform.position.y),
@@ -91,7 +92,7 @@ public class XevyMovement : MonoBehaviour
             new Vector2(transform.position.x + _horizontalDistanceToReachPlatform, transform.position.y + _verticalDistanceToReachPlatform),
             new Vector2(transform.position.x + 2 * _horizontalDistanceToReachPlatform, transform.position.y),
         };
-        _referencePointsConnections = new List<int>[_numberNodes];
+        _referencePointsConnections = new List<int>[NUMBER_NODES];
         for (int n = 0; n < _referencePointsConnections.Length; n++)
         {
             _referencePointsConnections[n] = new List<int>();
@@ -187,7 +188,8 @@ public class XevyMovement : MonoBehaviour
         _arrivalPositionIndex = indexClosestPosition;
         while (_arrivalPositionIndex == indexClosestPosition)
         {
-            _arrivalPositionIndex = _random.Next() % _numberGroundPositions * 2 + 1;
+            //Les positions terrestres sont sur des nombres impairs, il faut donc ajuster le _random en conséquence.
+            _arrivalPositionIndex = _random.Next() % NUMBER_GROUND_POSITIONS * 2 + 1;
         }
         _arrivalPosition = _referencePoints[_arrivalPositionIndex];
     }
