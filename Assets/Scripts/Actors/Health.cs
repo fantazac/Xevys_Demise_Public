@@ -85,7 +85,10 @@ public class Health : MonoBehaviour
 
     private void ReloadHealth(int health)
     {
-        Hit(-(_health - health));
+        if (tag == "Player")
+        {
+            Hit(-(_health - health));
+        }
     }
 
     private bool IsDead()

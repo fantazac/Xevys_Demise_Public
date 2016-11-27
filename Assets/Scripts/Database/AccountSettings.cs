@@ -14,6 +14,7 @@ public class AccountSettings : DatabaseConnection
     public event OnGamepadControlSchemeReloadedHandler OnGamepadControlSchemeReloaded;
 
     private DatabaseController _controller;
+    private PauseMenuAudioSettingsController _audioSettingsController;
     
     private int _keyboardControlScheme = 1;
     private int _gamepadControlScheme = 1;
@@ -25,9 +26,10 @@ public class AccountSettings : DatabaseConnection
         base.Start();
         _controller = GetComponent<DatabaseController>();
         ControlsSchemeSettings controlsSchemeSettings = GameObject.Find(StaticObjects.GetFindTags().PauseMenuControlsOptionsButtons).GetComponent<ControlsSchemeSettings>();
+        PauseMenuAudioSettingsController.OnVolumeChanged += ChangeVolume;
+        _audioSettingsController = GameObject.Find("PauseMenuAudioOptionsButtons").GetComponent<PauseMenuAudioSettingsController>();
         controlsSchemeSettings.OnKeyboardControlChanged += ChangeKeyboardControl;
         controlsSchemeSettings.OnGamepadControlChanged += ChangeGamepadControl;
-        PauseMenuAudioSettingsController.OnVolumeChanged += ChangeVolume;
     }
 
     public void CreateSettings()
@@ -42,6 +44,7 @@ public class AccountSettings : DatabaseConnection
 
     public void SaveSettings()
     {
+        _sfxVolume = _audioSettingsController._sfxVolumeBeforeDesactivate;
         _dbconnection.Open();
         string sqlQuery = String.Format("UPDATE SETTINGS SET KEYBOARD_CONTROL_SCHEME = {0}, GAMEPAD_CONTROL_SCHEME = {1}, MUSIC_VOLUME = {2}, SFX_VOLUME = {3}" +
             " WHERE ACCOUNT_ID = {4}", _keyboardControlScheme, _gamepadControlScheme, _musicVolume, _sfxVolume, _controller.AccountID);

@@ -4,9 +4,6 @@ using System;
 
 public class AccountStats : DatabaseConnection
 {
-    [SerializeField]
-    public bool _loadStats = false;
-
     public delegate void OnInventoryReloadedHandler(bool knifeEnabled, bool axeEnabled, bool featherEnabled, bool bootsEnabled, bool bubbleEnabled, bool armorEnabled, bool earthArtefactEnabled, bool airArtefactEnabled, bool waterArtefactEnabled, bool fireArtefactEnabled);
     public static event OnInventoryReloadedHandler OnInventoryReloaded;
     public delegate void OnAmmoReloadedHandler(int knifeAmmo, int axeAmmo);

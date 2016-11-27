@@ -12,7 +12,7 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
     private Switch _musicSwitch;
 
     private float _musicVolumeBeforeDesactivate;
-    private float _sfxVolumeBeforeDesactivate;
+    public float _sfxVolumeBeforeDesactivate { get; private set; }
     private bool _sfxVolumeChanged;
     private PauseMenuAnimationManager _pauseMenuAnimationManager;
     private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
