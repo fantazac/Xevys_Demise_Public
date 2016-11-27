@@ -100,10 +100,9 @@ public class PhoenixAI : MonoBehaviour
     {
         _flyingSpeed = _normalFlyingSpeed;
         _health.HealthPoint = _health.MaxHealth;
-        _status = PhoenixStatus.FLY;
-        _flightTimeLeft = 0;
         _attackCooldownTimeLeft = 0;
-        _currentPoint = _southWestLimit;
+        _currentPoint = (_southWestLimit + _northEastLimit) / 2;
+        SetFlyStatus();
     }
 
     private void FixedUpdate()
