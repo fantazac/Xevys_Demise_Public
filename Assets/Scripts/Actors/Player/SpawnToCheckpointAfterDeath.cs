@@ -1,26 +1,54 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class SpawnToCheckpointAfterDeath : MonoBehaviour
 {
     [SerializeField]
-    Vector3[] checkpoints;
+    private Vector3 centralCheckpoint;
+
+    [SerializeField]
+    private Vector3[] checkpoints;
+
     private int _lastCheckpoint = 0;
+
+    private Health _playerHealth;
+    private Animator _animator;
 
     private void Start()
     {
-        GetComponent<PlayDeathAnimation>().OnDyingAnimationFinished += SpawnToCheckpoint;
+        _playerHealth = GetComponent<Health>();
+        _animator = GetComponentInChildren<Animator>();
     }
 
-    public void SaveCheckpoint(int _checkPoint)
+    public void SaveCheckpoint(int checkPoint)
     {
-        _lastCheckpoint = _checkPoint;
+        if (checkPoint != 0)
+        {
+            _lastCheckpoint = checkPoint;
+        }
     }
 
-    private void SpawnToCheckpoint()
+    public void SpawnToCentralCheckpoint()
     {
-        transform.position = checkpoints[_lastCheckpoint];
-        GetComponent<Health>().FullHeal();
-        GetComponentInChildren<Animator>().SetBool(StaticObjects.GetAnimationTags().IsDying, false);
+        transform.position = centralCheckpoint;
+        RestartPlayer();
+    }
+
+    public void SpawnToLastCheckpoint()
+    {
+        if (_lastCheckpoint > 0)
+        {
+            transform.position = checkpoints[_lastCheckpoint-1];
+            RestartPlayer();
+        }
+        else
+        {
+            SpawnToCentralCheckpoint();
+        }
+    }
+
+    private void RestartPlayer()
+    {
+        _playerHealth.FullHeal();
+        _animator.SetBool(StaticObjects.GetAnimationTags().IsDying, false);
     }
 }

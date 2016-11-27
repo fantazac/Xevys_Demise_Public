@@ -8,44 +8,33 @@ public class DestroyPlayerProjectile : MonoBehaviour
 
     private WaitForSeconds _delayAfterWallCollision;
 
-    public bool TouchesGround { get; set; }
-    public bool DestroyNow { get; set; }
-
     public delegate void OnProjectileDestroyedHandler(GameObject projectile);
     public event OnProjectileDestroyedHandler OnProjectileDestroyed;
 
-    void Start()
+    private void Start()
     {
         _delayAfterWallCollision = new WaitForSeconds(_wallCollisionDuration);
-
-        TouchesGround = false;
-        DestroyNow = false;
-
-        StartCoroutine(WaitForCollision());
     }
 
-    private IEnumerator WaitForCollision()
+    public void TouchedWall()
     {
-        while (!DestroyNow)
-        {
-            if (TouchesGround)
-            {
-                StartCoroutine(DestroyProjectile(_delayAfterWallCollision));
-            }
-            yield return null;
-        }
-        StartCoroutine(DestroyProjectile(null));
+        StartCoroutine(DestroyProjectile(_delayAfterWallCollision));
     }
 
-    private IEnumerator DestroyProjectile(WaitForSeconds delay)
+    public void DestroyNow()
     {
-        yield return delay;
-
         if (OnProjectileDestroyed != null)
         {
             OnProjectileDestroyed(gameObject);
         }
 
         Destroy(gameObject);
+    }
+
+    private IEnumerator DestroyProjectile(WaitForSeconds delay)
+    {
+        yield return delay;
+
+        DestroyNow();
     }
 }

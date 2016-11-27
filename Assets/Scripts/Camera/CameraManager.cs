@@ -5,12 +5,12 @@ using System.Collections.Generic;
 // Source: https://www.assetstore.unity3d.com/en/#!/content/55578
 public class CameraManager : MonoBehaviour
 {
-
-    public float smoothTime;
-    public float zoomspeed;
+    [SerializeField]
+    private float _smoothTime = 7f;
 
     [Header("Target Elements")]
     private Vector3 followtarget;
+
     [SerializeField]
     private Vector3 focusPosition;
 
@@ -91,7 +91,7 @@ public class CameraManager : MonoBehaviour
         }
 
         // Adjust the camera's position to that of the newly determined position
-        transform.position = Vector3.Lerp(transform.position, newPosition, smoothTime);
+        transform.position = Vector3.Lerp(transform.position, newPosition, _smoothTime * Time.deltaTime);
     }
 
     // Method to check what area the player has entered and sets the CurrentArea to this new area

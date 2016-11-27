@@ -10,16 +10,25 @@ public class FallDamage: MonoBehaviour
 
     private Health _playerHealth;
     private PlayerMovement _playerMovement;
+    private InputManager _inputManager;
 
-    private float _fallingCount = 0;
+    private float _fallingCount;
 
     private void Start()
     {
         _playerHealth = GetComponent<Health>();
         _playerMovement = GetComponent<PlayerGroundMovement>();
+        _inputManager = GetComponentInChildren<InputManager>();
 
+        _fallingCount = 0;
         _playerMovement.OnFalling += OnFalling;
         _playerMovement.OnLanding += OnLanding;
+        _inputManager.OnJump += ResetCounterOnPlayerJump;
+    }
+
+    private void ResetCounterOnPlayerJump()
+    {
+        _fallingCount = 0;
     }
 
     private void OnFalling()
@@ -29,11 +38,11 @@ public class FallDamage: MonoBehaviour
 
     private void OnLanding()
     {
-        if (_fallingCount > _timeBeforeHit && !StaticObjects.GetPlayerState().IsInvincible && _playerHealth.HealthPoint > 0)
+        if (_fallingCount > _timeBeforeHit && !StaticObjects.GetPlayerState().IsInvincible)
         {
             _playerHealth.Hit((int)Mathf.Clamp(_fallingCount * _damageMultiplier, 
                 _fallingCount * _damageMultiplier, _playerHealth.HealthPoint), 
-                new Vector2(transform.position.x, transform.position.y - 1));
+                transform.position + Vector3.down);
         }
 
         _fallingCount = 0;

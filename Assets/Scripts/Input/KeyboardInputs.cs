@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.Networking;
 
 public class KeyboardInputs : MonoBehaviour
 {
@@ -45,17 +43,22 @@ public class KeyboardInputs : MonoBehaviour
     public event KeyboardOnFlipHandler OnFlip;
 
     private PauseMenuAnimationManager _pauseMenuAnimationManager;
-
+    private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
     private bool _usingArrowControlsScheme;
     private bool _inMenu;
+    private bool _died;
 
     private void Start()
     {
         GameObject.Find(StaticObjects.GetFindTags().PauseMenuControlsOptionsButtons).GetComponent<ControlsSchemeSettings>().OnKeyboardControlChanged += SetUsingArrowControlsScheme;
+        _pauseMenuCurrentInterfaceAnimator = GameObject.Find(StaticObjects.GetFindTags().PauseMenuButtons).GetComponent<PauseMenuCurrentInterfaceAnimator>();
         _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
-        _pauseMenuAnimationManager.OnPauseMenuStateChanged += IsInMenu;
+        _pauseMenuAnimationManager.OnPauseMenuOutOfScreen += IsInMenu;
+        _pauseMenuCurrentInterfaceAnimator.OnPlayerDeathShowDeathInterface += PlayerDied;
+
         _usingArrowControlsScheme = false;
         _inMenu = false;
+        _died = false;
     }
 
     private void Update()
@@ -72,17 +75,34 @@ public class KeyboardInputs : MonoBehaviour
             }
 
             CheckAllKeysPressed();
+            UpdateStartButton();
         }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
+        else if (!_died)
         {
-            OnPause();
+            UpdateStartButton();
         }
     }
 
     private void IsInMenu(bool isActive)
     {
         _inMenu = isActive;
+        if (!isActive)
+        {
+            _died = false;
+        }
+    }
+
+    private void PlayerDied()
+    {
+        _died = true;
+    }
+
+    private void UpdateStartButton()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            OnPause();
+        }
     }
 
     private void CheckAllKeysPressed()

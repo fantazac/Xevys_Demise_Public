@@ -22,6 +22,10 @@ public class ScarabMovement : MonoBehaviour
 
     protected Vector3 _target;
 
+    protected bool _goesBackwards = false;
+
+    protected ScarabDirection _initialDirection;
+
     protected virtual void Start()
     {
         GetComponent<Health>().OnDeath += StopMovementOnDeath;
@@ -62,6 +66,26 @@ public class ScarabMovement : MonoBehaviour
         RotationFinished();
     }
 
+    protected void SetInitialDirection()
+    {
+        if (_points[_selectedTargetPoint].x < _points[_selectedTargetPoint + 1].x)
+        {
+            _initialDirection = ScarabDirection.Right;
+        }
+        else if (_points[_selectedTargetPoint].x > _points[_selectedTargetPoint + 1].x)
+        {
+            _initialDirection = ScarabDirection.Left;
+        }
+        else if (_points[_selectedTargetPoint].y < _points[_selectedTargetPoint + 1].y)
+        {
+            _initialDirection = ScarabDirection.Up;
+        }
+        else
+        {
+            _initialDirection = ScarabDirection.Down;
+        }
+    }
+
     protected bool IsCloseToTarget()
     {
         return Vector3.Distance(_target, transform.position) < _halfOfScarabWidth;
@@ -85,10 +109,37 @@ public class ScarabMovement : MonoBehaviour
         MovementFinished();
     }
 
-    protected virtual void StartRotation() { }
-    protected virtual void InitializeSpriteDirection() { }
-    protected virtual bool CanStartRotation() { return _canRotate; }
-    protected virtual void FindTarget() { }
+    protected virtual void StartRotation()
+    {
+        _canRotate = false;
+        StartCoroutine(Rotate());
+    }
+
+    protected virtual void InitializeSpriteDirection()
+    {
+        transform.Rotate(Vector3.forward * MAX_ROTATION * (_selectedTargetPoint + 1));
+    }
+
+    protected void FlipSprite()
+    {
+        GetComponent<SpriteRenderer>().flipX = !GetComponent<SpriteRenderer>().flipX;
+        _goesBackwards = !_goesBackwards;
+    }
+
+    protected virtual bool CanStartRotation()
+    {
+        return _canRotate && IsCloseToTarget();
+    }
+
+    protected bool IsAtAFlipCorner()
+    {
+        return _selectedTargetPoint == 0 || _selectedTargetPoint == _points.Length - 1;
+    }
+
+    protected virtual void FindTarget()
+    {
+        _target = _points[(++_selectedTargetPoint) % _points.Length];
+    }
 
     private void StopMovementOnDeath()
     {

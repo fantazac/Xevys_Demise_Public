@@ -1,0 +1,409 @@
+fileFormatVersion: 2
+guid: b87a241f05108f84fafd21f58b131b94
+timeCreated: 1480216749
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: XevyVoid_0
+    21300002: XevyVoid_1
+    21300004: XevyVoid_2
+    21300006: XevyVoid_3
+    21300008: XevyVoid_4
+    21300010: XevyVoid_5
+    21300012: XevyVoid_6
+    21300014: XevyVoid_7
+    21300016: XevyVoid_8
+    21300018: XevyVoid_9
+    21300020: XevyVoid_10
+    21300022: XevyVoid_11
+    21300024: XevyVoid_12
+    21300026: XevyVoid_13
+    21300028: XevyVoid_14
+    21300030: XevyVoid_15
+    21300032: XevyVoid_16
+    21300034: XevyVoid_17
+    21300036: XevyVoid_18
+    21300038: XevyVoid_19
+    21300040: XevyVoid_20
+    21300042: XevyVoid_21
+    21300044: XevyVoid_22
+    21300046: XevyVoid_23
+    21300048: XevyVoid_24
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: XevyVoid_0
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 905
+        width: 120
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_1
+      rect:
+        serializedVersion: 2
+        x: 145
+        y: 905
+        width: 119
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_2
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 905
+        width: 118
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_3
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 905
+        width: 120
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_4
+      rect:
+        serializedVersion: 2
+        x: 505
+        y: 906
+        width: 122
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_5
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 781
+        width: 120
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_6
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 781
+        width: 119
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_7
+      rect:
+        serializedVersion: 2
+        x: 268
+        y: 781
+        width: 118
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_8
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 781
+        width: 120
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_9
+      rect:
+        serializedVersion: 2
+        x: 508
+        y: 782
+        width: 122
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_10
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 651
+        width: 120
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_11
+      rect:
+        serializedVersion: 2
+        x: 155
+        y: 651
+        width: 119
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_12
+      rect:
+        serializedVersion: 2
+        x: 275
+        y: 651
+        width: 118
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_13
+      rect:
+        serializedVersion: 2
+        x: 394
+        y: 651
+        width: 120
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_14
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 652
+        width: 122
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_15
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 627
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_16
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 627
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_17
+      rect:
+        serializedVersion: 2
+        x: 281
+        y: 504
+        width: 118
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_18
+      rect:
+        serializedVersion: 2
+        x: 162
+        y: 328
+        width: 123
+        height: 140
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_19
+      rect:
+        serializedVersion: 2
+        x: 286
+        y: 328
+        width: 123
+        height: 147
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_20
+      rect:
+        serializedVersion: 2
+        x: 410
+        y: 328
+        width: 123
+        height: 157
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_21
+      rect:
+        serializedVersion: 2
+        x: 175
+        y: 185
+        width: 111
+        height: 110
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_22
+      rect:
+        serializedVersion: 2
+        x: 299
+        y: 186
+        width: 115
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_23
+      rect:
+        serializedVersion: 2
+        x: 417
+        y: 186
+        width: 115
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: XevyVoid_24
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 28
+        width: 123
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

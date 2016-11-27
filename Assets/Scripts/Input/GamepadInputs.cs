@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
 using XInputDotNetPure;
 
 public class GamepadInputs : MonoBehaviour
@@ -42,6 +41,9 @@ public class GamepadInputs : MonoBehaviour
     public delegate void GamepadOnPauseHandler();
     public event GamepadOnPauseHandler OnPause;
 
+    public delegate void GamepadOnBackButtonPressedInMenuHandler();
+    public event GamepadOnBackButtonPressedInMenuHandler OnBackButtonPressedInMenu;
+
     private float _joysticksXAxisDeadZone = 0.7f;
     private float _joysticksYAxisDeadZone = 1f;
 
@@ -50,34 +52,92 @@ public class GamepadInputs : MonoBehaviour
     private bool _xButtonReady = true;
     private bool _yButtonReady = true;
     private bool _aButtonReady = true;
+    private bool _bButtonReady = true;
     private bool _startButtonReady = true;
 
     private bool _usingDpadControlsScheme;
-
+    private PauseMenuAnimationManager _pauseMenuAnimationManager;
+    private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
     private GamePadState _state;
+    private bool _inMenu;
+    private bool _died;
 
     private void Start()
     {
         GameObject.Find(StaticObjects.GetFindTags().PauseMenuControlsOptionsButtons).GetComponent<ControlsSchemeSettings>().OnGamepadControlChanged += SetUsingDPadControlsScheme;
+        _pauseMenuCurrentInterfaceAnimator = GameObject.Find(StaticObjects.GetFindTags().PauseMenuButtons).GetComponent<PauseMenuCurrentInterfaceAnimator>();
         _state = GamePad.GetState(PlayerIndex.One);
+        _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
+        _pauseMenuAnimationManager.OnPauseMenuOutOfScreen += IsInMenu;
+        _pauseMenuCurrentInterfaceAnimator.OnPlayerDeathShowDeathInterface += PlayerDied;
+
         _usingDpadControlsScheme = false;
+        _inMenu = false;
+        _died = false;
     }
 
     private void Update()
     {
         _state = GamePad.GetState(PlayerIndex.One);
 
-        if (_usingDpadControlsScheme)
+        if (!_inMenu)
         {
-            DPadControlsScheme();
+            if (_usingDpadControlsScheme)
+            {
+                DPadControlsScheme();
+            }
+            else
+            {
+                JoystickControlsScheme();
+            }
+
+            SyncAllButtonsState();
+            CheckAllButtonsPressed();
+            UpdateStartButton();
         }
-        else
+        else if(!_died)
         {
-            JoystickControlsScheme();
+            if (_state.Buttons.B == ButtonState.Released && !_bButtonReady)
+            {
+                _bButtonReady = true;
+            }
+
+            if (_state.Buttons.B == ButtonState.Pressed && _bButtonReady)
+            {
+                _bButtonReady = false;
+                OnBackButtonPressedInMenu();
+            }
+
+            UpdateStartButton();
+        }
+    }
+
+    private void IsInMenu(bool isActive)
+    {
+        _inMenu = isActive;
+        if (!isActive)
+        {
+            _died = false;
+        }
+    }
+
+    private void PlayerDied()
+    {
+        _died = true;
+    }
+
+    private void UpdateStartButton()
+    {
+        if (_state.Buttons.Start == ButtonState.Released && !_startButtonReady)
+        {
+            _startButtonReady = true;
         }
 
-        SyncAllButtonsState();
-        CheckAllButtonsPressed();
+        if (_state.Buttons.Start == ButtonState.Pressed && _startButtonReady)
+        {
+            OnPause();
+            _startButtonReady = false;
+        }
     }
 
     private void CheckAllButtonsPressed()
@@ -119,21 +179,10 @@ public class GamepadInputs : MonoBehaviour
             _rightShoulderReady = false;
             OnThrowAttackChangeButtonPressed();
         }
-
-        if (_state.Buttons.Start == ButtonState.Pressed && _startButtonReady)
-        {
-            OnPause();
-            _startButtonReady = false;
-        }
     }
 
     private void SyncAllButtonsState()
     {
-        if (_state.Buttons.Start == ButtonState.Released && !_startButtonReady)
-        {
-            _startButtonReady = true;
-        }
-
         if (_state.Buttons.RightShoulder == ButtonState.Released && !_rightShoulderReady)
         {
             _rightShoulderReady = true;

@@ -11,9 +11,8 @@ public class EnableObject : MonoBehaviour
         GetComponent<MoveObjectOnTrigger>().OnFinishedMoving += Enable;
     }
 
-    public void Enable()
+    private void Enable()
     {
         _objectToEnable.SetActive(true);
     }
-
 }

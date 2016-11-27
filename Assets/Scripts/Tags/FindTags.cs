@@ -18,6 +18,8 @@ public class FindTags : MonoBehaviour
     public string ItemCanvas { get; private set; }
     public string Database { get; private set; }
     public string PauseMenuControlsOptionsButtons { get; private set; }
+    public string PauseMenuButtons { get; private set; }
+    public string PauseMenuAudioOptionsButtons { get; private set; }
 
     private void Start()
     {
@@ -36,5 +38,7 @@ public class FindTags : MonoBehaviour
         ItemCanvas = "ItemCanvas";
         Database = "Database";
         PauseMenuControlsOptionsButtons = "PauseMenuControlsOptionsButtons";
+        PauseMenuButtons = "PauseMenuButtons";
+        PauseMenuAudioOptionsButtons = "PauseMenuAudioOptionsButtons";
     }
 }

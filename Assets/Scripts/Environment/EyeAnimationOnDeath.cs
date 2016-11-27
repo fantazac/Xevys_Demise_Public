@@ -10,28 +10,27 @@ public class EyeAnimationOnDeath : MonoBehaviour
     public event OnAnimationOverHandler OnAnimationOver;
 
     private Animator _anim;
-    private ActivateTrigger _activateTrigger;
     private WaitForSeconds _finishedDeathAnimationDelay;
 
     private void Start()
 	{
 	    _anim = GetComponentInChildren<Animator>();
-	    _activateTrigger = GetComponent<ActivateTrigger>();
+        GetComponent<ActivateTrigger>().OnTrigger += OnTrigger;
+
         _finishedDeathAnimationDelay = new WaitForSeconds(_timeBeforeCallingDeathAnimation);
-        _activateTrigger.OnTrigger += OnTrigger;
 	}
 
     private void OnTrigger()
-    {       
-        StartCoroutine(PlayAnimationAndCallMoveObjectCoroutine());
-    }
-
-    private IEnumerator PlayAnimationAndCallMoveObjectCoroutine()
     {
         _anim.SetBool(StaticObjects.GetAnimationTags().IsDead, true);
-        yield return _finishedDeathAnimationDelay;
-        OnAnimationOver();
+
+        StartCoroutine(FinishAnimation());
     }
 
+    private IEnumerator FinishAnimation()
+    {
+        yield return _finishedDeathAnimationDelay;
 
+        OnAnimationOver();
+    }
 }

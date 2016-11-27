@@ -62,17 +62,14 @@ public class PlayerGroundMovement : PlayerMovement
 
     protected override void OnCrouch()
     {
-        if (!_playerState.IsCroutching && !_playerState.IsKnockedBack && enabled)
+        if (PlayerCanCroutch() && enabled)
         {
-            if (!PlayerIsMovingVertically())
+            if (PlayerIsMovingHorizontally())
             {
-                if (PlayerIsMovingHorizontally())
-                {
-                    _rigidbody.velocity = Vector2.zero;
-                }
-                SetCroutch(true);
-                transform.position += Vector3.down * CROUTCH_Y_OFFSET;
+                _rigidbody.velocity = Vector2.zero;
             }
+            SetCroutch(true);
+            transform.position += Vector3.down * CROUTCH_Y_OFFSET;
         }
     }
 
@@ -84,6 +81,11 @@ public class PlayerGroundMovement : PlayerMovement
     private bool PlayerCanDoubleJump()
     {
         return _canDoubleJump && IsJumping() && _inventoryManager.FeatherEnabled;
+    }
+
+    private bool PlayerCanCroutch()
+    {
+        return !_playerState.IsCroutching && !_playerState.IsKnockedBack && !PlayerIsMovingVertically();
     }
 
     protected override void UpdateMovement()
@@ -108,7 +110,7 @@ public class PlayerGroundMovement : PlayerMovement
 
             if (_rigidbody.velocity.y < TERMINAL_SPEED)
             {
-                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, TERMINAL_SPEED);
+                _rigidbody.velocity += Vector2.up * (TERMINAL_SPEED - _rigidbody.velocity.y);
             }
         }
     }

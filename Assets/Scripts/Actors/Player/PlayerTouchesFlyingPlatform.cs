@@ -3,17 +3,20 @@ using System.Collections;
 
 public class PlayerTouchesFlyingPlatform : MonoBehaviour
 {
-    private const float ENABLE_HITBOX_CD = 0.3f;
+    [SerializeField]
+    private float _enableHitboxCD = 0.3f;
 
     private GameObject _flyingPlatform;
 
     private WaitForSeconds _enablePlatformDelay;
+    private PlayerTouchesGround _playerTouchesGround;
 
     public bool OnFlyingPlatform { get; set; }
 
     private void Start()
     {
-        _enablePlatformDelay = new WaitForSeconds(ENABLE_HITBOX_CD);
+        _enablePlatformDelay = new WaitForSeconds(_enableHitboxCD);
+        _playerTouchesGround = GetComponent<PlayerTouchesGround>();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -46,7 +49,7 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
     {
         _flyingPlatform.GetComponent<BoxCollider2D>().enabled = false;
         OnFlyingPlatform = false;
-        GetComponent<PlayerTouchesGround>().OnGround = false;
+        _playerTouchesGround.OnGround = false;
     }
 
     public void DropFromPlatform()
@@ -59,7 +62,12 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
     private IEnumerator EnablePlatformWhenPlayerPassedThrough()
     {
         yield return _enablePlatformDelay;
-
+        
         EnablePlatform();
+    }
+
+    public bool HasFlyingPlatform()
+    {
+        return _flyingPlatform != null;
     }
 }

@@ -100,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (PlayerIsMovingHorizontally() && !_playerState.IsKnockedBack)
         {
-            _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+            _rigidbody.velocity = Vector2.up * _rigidbody.velocity.y;
             _playerState.SetImmobile();
         }
     }
@@ -189,7 +189,12 @@ public class PlayerMovement : MonoBehaviour
 
     private bool PlayerTouchesFlyingPlatform()
     {
-        return _playerTouchesFlyingPlatform.OnFlyingPlatform;
+        return _playerTouchesFlyingPlatform.OnFlyingPlatform || PlayerIsOnEdgeOfFlyingPlatform();
+    }
+
+    private bool PlayerIsOnEdgeOfFlyingPlatform()
+    {
+        return !PlayerIsMovingHorizontally() && !PlayerTouchesGround() && _playerTouchesFlyingPlatform.HasFlyingPlatform();
     }
 
     private bool PlayerCanDropFromFlyingPlatform()

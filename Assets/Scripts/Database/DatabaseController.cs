@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
-using System.Collections;
-using Mono.Data.Sqlite;
 using System.Data;
 using System.IO;
 using System;
 
 public class DatabaseController : DatabaseConnection
 {
+    [SerializeField]
+    private bool _loadDB;
+
     private AccountStats _accountStats;
     private AccountSettings _accountSettings;
     public int AccountID { get; private set; }
@@ -16,7 +17,7 @@ public class DatabaseController : DatabaseConnection
         base.Start();
         _accountStats = GetComponent<AccountStats>();
         _accountSettings = GetComponent<AccountSettings>();
-        if(!_accountStats._loadStats)
+        if(!_loadDB)
         {
             File.Copy(Path.Combine(Application.streamingAssetsPath, "Database.db"), Path.Combine(Application.persistentDataPath, "Database.db"), true);
             CreateAll();
@@ -105,7 +106,7 @@ public class DatabaseController : DatabaseConnection
     {
         _dbconnection.Open();
         //Dummie fun facts.
-        CreateFunFact("All achievement names are actually parody of song titles.");
+        CreateFunFact("All achievement names are actually parodies of song titles.");
         CreateFunFact("Xevy is actually a very sensitive guy.");
         CreateFunFact("The Game. You lost it.");
         CreateFunFact("No skeltals were hurt in the making of this game.");
