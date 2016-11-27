@@ -51,4 +51,10 @@ public class FlickerSprite : MonoBehaviour
             _invincibilityTimeCount += Time.deltaTime + _flickerInterval;
         }
     }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+        _sprite.color = _initialColor;
+    }
 }
