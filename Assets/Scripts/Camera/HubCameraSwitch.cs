@@ -4,7 +4,7 @@ using System.Collections;
 public class HubCameraSwitch : MonoBehaviour {
 
     protected CameraManager _cameraManager;
-    protected float _resetingNodeTime = 0.8f;
+    protected float _resetingNodeTime = 0.5f;
     protected WaitForSeconds _resetingCameraNodeDelay;
     protected int _nbNode1;
     protected int _nbNode2;
