@@ -10,16 +10,25 @@ public class FallDamage: MonoBehaviour
 
     private Health _playerHealth;
     private PlayerMovement _playerMovement;
+    private InputManager _inputManager;
 
-    private float _fallingCount = 0;
+    private float _fallingCount;
 
     private void Start()
     {
         _playerHealth = GetComponent<Health>();
         _playerMovement = GetComponent<PlayerGroundMovement>();
+        _inputManager = GetComponentInChildren<InputManager>();
 
+        _fallingCount = 0;
         _playerMovement.OnFalling += OnFalling;
         _playerMovement.OnLanding += OnLanding;
+        _inputManager.OnJump += ResetCounterOnPlayerJump;
+    }
+
+    private void ResetCounterOnPlayerJump()
+    {
+        _fallingCount = 0;
     }
 
     private void OnFalling()
