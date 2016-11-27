@@ -13,7 +13,7 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
 
     private float _musicVolumeBeforeDesactivate;
     private float _sfxVolumeBeforeDesactivate;
-    private float _sfxVolume;
+    private bool _sfxVolumeChanged;
     private PauseMenuAnimationManager _pauseMenuAnimationManager;
     private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
 
@@ -31,6 +31,7 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
         Slider[] sliders = GetComponentsInChildren<Slider>();
         _sfxVolumeSlider = sliders[0];
         _musicVolumeSlider = sliders[1];
+        _sfxVolumeChanged = false;
     }
 
     public void SetMusicVolume(Single volume)
@@ -46,7 +47,6 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
     public void SetSoundVolume(Single volume)
     {
         OnVolumeChanged(false, volume);
-        _sfxVolume = _sfxVolumeSlider.value;
     }
 
     public void MusicState(bool activate)
@@ -79,9 +79,13 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
             _sfxVolumeBeforeDesactivate = _sfxVolumeSlider.value;
             _sfxVolumeSlider.value = 0f;
         }
+        else if (!_sfxVolumeChanged)
+        {
+            _sfxVolumeSlider.value = _sfxVolumeBeforeDesactivate;
+        }
         else
         {
-            _sfxVolumeSlider.value = _sfxVolume;
+            _sfxVolumeChanged = false;
         }
     }
 
@@ -89,12 +93,14 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
     {
         if (isCurrent)
         {
+            _sfxVolumeChanged = true;
             _sfxVolumeSlider.value = _sfxVolumeBeforeDesactivate;
         }
         else
         {
             _sfxVolumeBeforeDesactivate = _sfxVolumeSlider.value;
             _sfxVolumeSlider.value = 0f;
+            _sfxVolumeChanged = false;
         }
     }
 }
