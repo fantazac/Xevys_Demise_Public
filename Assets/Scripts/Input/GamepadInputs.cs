@@ -64,6 +64,7 @@ public class GamepadInputs : MonoBehaviour
     private GamePadState _state;
     private bool _inMenu;
     private bool _died;
+    private bool _pressedEnterPortal = false;
 
     private void Start()
     {
@@ -249,7 +250,16 @@ public class GamepadInputs : MonoBehaviour
             if (_state.ThumbSticks.Left.Y > 0)
             {
                 OnUnderwaterControl(false);
-                OnEnterPortal();
+                if (!_pressedEnterPortal)
+                {
+                    _pressedEnterPortal = true;
+                    OnEnterPortal();
+                }
+                
+            }
+            else
+            {
+                _pressedEnterPortal = false;
             }
         }
     }
@@ -283,10 +293,15 @@ public class GamepadInputs : MonoBehaviour
         {
             OnStandingUp();
             OnUnderwaterControl(false);
-            OnEnterPortal();
+            if (!_pressedEnterPortal)
+            {
+                _pressedEnterPortal = true;
+                OnEnterPortal();
+            }
         }
         else
         {
+            _pressedEnterPortal = false;
             OnStandingUp();
         }
     }

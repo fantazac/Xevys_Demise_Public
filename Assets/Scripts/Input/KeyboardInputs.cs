@@ -170,6 +170,10 @@ public class KeyboardInputs : MonoBehaviour
         if (Input.GetKey(KeyCode.W))
         {
             OnUnderwaterControl(false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
             OnEnterPortal();
         }
 
@@ -228,6 +232,10 @@ public class KeyboardInputs : MonoBehaviour
         if (Input.GetKey(KeyCode.UpArrow))
         {
             OnUnderwaterControl(false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
             OnEnterPortal();
         }
 

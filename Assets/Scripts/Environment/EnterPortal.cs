@@ -5,20 +5,15 @@ using System.Collections;
 public class EnterPortal : MonoBehaviour
 {
     [SerializeField]
-    private bool _voidPortal;
+    private GameObject _otherPortal;
 
+    private GameObject _player;
     private bool _playerIsOnPortal = false;
 
     private void Start()
     {
-        if (_voidPortal)
-        {
-            StaticObjects.GetPlayer().GetComponentInChildren<InputManager>().OnEnterPortal += EnterVoid;
-        }
-        else
-        {
-            StaticObjects.GetPlayer().GetComponentInChildren<InputManager>().OnEnterPortal += EnterMainLevel;
-        }
+        _player = StaticObjects.GetPlayer();
+        _player.GetComponentInChildren<InputManager>().OnEnterPortal += GoToOtherDimension;
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -37,19 +32,11 @@ public class EnterPortal : MonoBehaviour
         }
     }
 
-    private void EnterVoid()
+    private void GoToOtherDimension()
     {
         if (_playerIsOnPortal)
         {
-            SceneManager.LoadScene("Void", LoadSceneMode.Single);
-        }
-    }
-
-    private void EnterMainLevel()
-    {
-        if (_playerIsOnPortal)
-        {
-            SceneManager.LoadScene("MainLevel", LoadSceneMode.Single);
+            _player.transform.position = _otherPortal.transform.position + (Vector3.forward * _player.transform.position.z);
         }
     }
 }
