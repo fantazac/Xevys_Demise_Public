@@ -13,6 +13,7 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
 
     private float _musicVolumeBeforeDesactivate;
     private float _sfxVolumeBeforeDesactivate;
+    private float _sfxVolume;
     private PauseMenuAnimationManager _pauseMenuAnimationManager;
     private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
 
@@ -45,6 +46,7 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
     public void SetSoundVolume(Single volume)
     {
         OnVolumeChanged(false, volume);
+        _sfxVolume = _sfxVolumeSlider.value;
     }
 
     public void MusicState(bool activate)
@@ -79,7 +81,7 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
         }
         else
         {
-            _sfxVolumeSlider.value = _sfxVolumeBeforeDesactivate;
+            _sfxVolumeSlider.value = _sfxVolume;
         }
     }
 
