@@ -51,6 +51,7 @@ public class XevyMovement : MonoBehaviour
     [SerializeField]
     private float _bounceModifier = -0.09467455f;
 
+    private Animator _animator;
     private BossOrientation _bossOrientation;
     private BossDirection _actorDirection;
     private Rigidbody2D _rigidbody;
@@ -74,7 +75,9 @@ public class XevyMovement : MonoBehaviour
     {
         _currentPositionIndex = _centralNode;
         MovementStatus = XevyMovementStatus.NONE;
+        
         _commandStack = new Stack<XevyMovementCommand>();
+        _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _actorDirection = GetComponent<BossDirection>();
         _bossOrientation = GetComponent<BossOrientation>();
@@ -130,6 +133,7 @@ public class XevyMovement : MonoBehaviour
 
     public void StepBack()
     {
+        _animator.SetInteger("State", 3);
         _actorDirection.IsGoingForward = false;
         _arrivalPosition = new Vector2(transform.position.x - (_bossOrientation.Orientation * _stepBackDistance), transform.position.y);
         MovementStatus = XevyMovementStatus.RETREATING;
@@ -164,6 +168,7 @@ public class XevyMovement : MonoBehaviour
 
     private void Bounce()
     {
+        _animator.SetInteger("State", 4);
         _rigidbody.isKinematic = true;
         _bossOrientation.FlipTowardsSpecificPoint(_arrivalPosition);
         MovementStatus = XevyMovementStatus.BOUNCING;
@@ -171,6 +176,7 @@ public class XevyMovement : MonoBehaviour
 
     private void Flee()
     {
+        _animator.SetInteger("State", 3);
         _bossOrientation.FlipTowardsSpecificPoint(_arrivalPosition);
         MovementStatus = XevyMovementStatus.FLEEING;
     }
@@ -282,6 +288,7 @@ public class XevyMovement : MonoBehaviour
             _bossOrientation.FlipTowardsSpecificPoint(_arrivalPosition);
             if (MovementStatus == XevyMovementStatus.BOUNCING)
             {
+                _animator.SetInteger("State", 4);
                 _rigidbody.isKinematic = true;
             }
         }
