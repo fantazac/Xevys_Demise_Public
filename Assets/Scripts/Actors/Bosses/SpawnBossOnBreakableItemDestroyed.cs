@@ -44,6 +44,7 @@ public class SpawnBossOnBreakableItemDestroyed : MonoBehaviour
     private void DestroyBreakableItem()
     {
         _playerHealth.OnDeath -= ResetBossRoom;
+        _boss.GetComponent<AudioSourcePlayer>().Stop();
         Destroy(gameObject);
     }
 }
