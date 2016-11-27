@@ -54,15 +54,19 @@ public class XevyAI : MonoBehaviour
         _playerInteraction.UpdatePlayerInteraction();
         switch (_status)
         {
+            //Xevy attend un peu avant de prendre une décision.
             case XevyStatus.IDLE:
                 UpdateWhenIdle();
                 break;
+            //Xevy est exposé aux coups pendant un certain temps.
             case XevyStatus.VULNERABLE:
                 UpdateWhenVulnerable();
                 break;
+            //Xevy bloque tous les coups.
             case XevyStatus.BLOCKING:
                 UpdateWhenBlocking();
                 break;
+            //Xevy se repose et se soigne.
             case XevyStatus.HEALING:
                 UpdateWhenHealing();
                 break;
@@ -116,7 +120,7 @@ public class XevyAI : MonoBehaviour
                 _lastAttack = _currentAttack;
             }
             else
-            {             
+            {
                 if (_playerInteraction.CheckAlignmentWithPlayer())
                 {
                     _currentAttack = _action.AirAttack();

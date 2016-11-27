@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class XevyAction: MonoBehaviour
 {
@@ -68,7 +67,8 @@ public class XevyAction: MonoBehaviour
     {
         var fireBall = Instantiate(_thunderBall, transform.position, transform.rotation);
         ((GameObject)fireBall).SetActive(true);
-        ((GameObject)fireBall).GetComponent<Rigidbody2D>().velocity = new Vector2(horizontalForce * _thunderBallSpeed, (verticalForce * _thunderBallSpeed) + (horizontalForce / _horizontalAxisModifier ));
+        ((GameObject)fireBall).GetComponent<Rigidbody2D>().velocity = new Vector2(horizontalForce * _thunderBallSpeed,
+            (verticalForce * _thunderBallSpeed) + (horizontalForce / _horizontalAxisModifier ));
         return XevyAttackType.FIRE;
     }
 
@@ -82,8 +82,10 @@ public class XevyAction: MonoBehaviour
 
     public XevyAttackType EarthAttack()
     {
-        var earthThorns = Instantiate(_stalactites, new Vector2(transform.position.x + _bossOrientation.Orientation + _bossOrientation.Orientation, transform.position.y - _stalactites.transform.localScale.y), transform.rotation);
-        ((GameObject)earthThorns).transform.localScale = new Vector2(_bossOrientation.Orientation * ((GameObject)earthThorns).transform.localScale.x, ((GameObject)earthThorns).transform.localScale.y);
+        var earthThorns = Instantiate(_stalactites, new Vector2(transform.position.x + _bossOrientation.Orientation + _bossOrientation.Orientation,
+            transform.position.y - _stalactites.transform.localScale.y), transform.rotation);
+        ((GameObject)earthThorns).transform.localScale = new Vector2(_bossOrientation.Orientation * ((GameObject)earthThorns).transform.localScale.x,
+            ((GameObject)earthThorns).transform.localScale.y);
         ((GameObject)earthThorns).SetActive(true);
         return XevyAttackType.EARTH;
     }

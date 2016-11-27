@@ -30,7 +30,7 @@ public class XevyProjectileInteraction : MonoBehaviour
 
         _throwKnifeAttack.OnKnifeThrown += OnKnifeThrown;
         _throwAxeAttack.OnAxeThrown += OnAxeThrown;
-	}
+    }
 
     private void Destroy()
     {
@@ -46,7 +46,8 @@ public class XevyProjectileInteraction : MonoBehaviour
         {
             if (_knivesDictionary[knife] >= _reactionTime)
             {
-                if (Vector2.Distance(knife.transform.position, transform.position) < _knifeHorizontalBlockDetectionDistance && Mathf.Abs(knife.transform.position.y - transform.position.y) < _knifeVerticalBlockDetectionDistance)
+                if (Vector2.Distance(knife.transform.position, transform.position) < _knifeHorizontalBlockDetectionDistance &&
+                    Mathf.Abs(knife.transform.position.y - transform.position.y) < _knifeVerticalBlockDetectionDistance)
                 {
                     return true;
                 }
