@@ -34,7 +34,7 @@ public class InvincibilityAfterBeingHit : MonoBehaviour
 
     public void StartInvincibility(int hitPoints)
     {
-        if(OnInvincibilityStarted != null)
+        if (OnInvincibilityStarted != null)
         {
             OnInvincibilityStarted(_invincibilityTime);
         }
