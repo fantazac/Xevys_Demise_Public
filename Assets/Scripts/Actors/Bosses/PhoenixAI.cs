@@ -108,20 +108,20 @@ public class PhoenixAI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Phoenix attend Bimon et fuit lorsqu'il s'approche trop près de lui. Après un certains temps, il charge sur Bimon.
-        if (_status == PhoenixStatus.FLY)
+        switch (_status)
         {
-            UpdateWhenFlying();
-        }
-        //Phoenix fuit vers un point adjacent pour éviter Bimon.
-        else if (_status == PhoenixStatus.FLEE)
-        {
-            UpdateWhenFleeing();
-        }
-        //Phoenix fonce sur Bimon, lui donnant une chance de contre-attaquer.
-        else if (_status == PhoenixStatus.ATTACK)
-        {
-            UpdateWhenAttacking();
+            //Phoenix observe Bimon et fuit lorsqu'il s'approche trop près de lui. Après un certains temps, il charge sur Bimon.
+            case PhoenixStatus.FLY:
+                UpdateWhenFlying();
+                break;
+            //Phoenix fuit vers un point adjacent pour éviter Bimon.
+            case PhoenixStatus.FLEE:
+                UpdateWhenFleeing();
+                break;
+            //Phoenix fonce sur Bimon, lui donnant une chance de contre-attaquer.
+            case PhoenixStatus.ATTACK:
+                UpdateWhenAttacking();
+                break;
         }
     }
 

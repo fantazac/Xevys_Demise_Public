@@ -89,25 +89,24 @@ public class VulcanAI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Vulcan attend au fond du cratère.
-        if (_status == VulcanStatus.LOWERED)
+        switch (_status)
         {
-            UpdateWhenLowered();
-        }
-        //Vulcan remonte à la surface pour affronter Bimon.
-        else if (_status == VulcanStatus.RAISING)
-        {
-            UpdateWhenRaising();
-        }
-        //Vulcan surveille Bimon pour lui lancer un projectile.
-        else if (_status == VulcanStatus.STANDING)
-        {
-            UpdateWhenStanding();
-        }
-        //Vulcan redescend au fond du cratère pour démarrer une autre manche.
-        else if (_status == VulcanStatus.RETREATING)
-        {
-            UpdateWhenRetreating();
+            //Vulcan attend au fond du cratère.
+            case VulcanStatus.LOWERED:
+                UpdateWhenLowered();
+                break;
+            //Vulcan remonte à la surface pour affronter Bimon.
+            case VulcanStatus.RAISING:
+                UpdateWhenRaising();
+                break;
+            //Vulcan surveille Bimon pour lui lancer un projectile.
+            case VulcanStatus.STANDING:
+                UpdateWhenStanding();
+                break;
+            //Vulcan redescend au fond du cratère pour démarrer une autre manche.
+            case VulcanStatus.RETREATING:
+                UpdateWhenRetreating();
+                break;
         }
     }
 

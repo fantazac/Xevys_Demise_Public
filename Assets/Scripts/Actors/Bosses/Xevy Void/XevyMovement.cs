@@ -58,6 +58,7 @@ public class XevyMovement : MonoBehaviour
     private Vector2 _startPosition;
     private Vector2[] _referencePoints;
     private Stack<XevyMovementCommand> _commandStack;
+    //Un tableau de listes d'entiers. Oui, oui, oui, tu as bien lu; un tableau de listes d'entiers!
     private List<int>[] _referencePointsConnections;
     private System.Random _random = new System.Random();
 
@@ -213,10 +214,11 @@ public class XevyMovement : MonoBehaviour
     }
     /* BEN COUNTER-CORRECTION
      * 
-     * Le verbe d'action continue idéal ici est 走 (zǒu). Malheureusement, c'est en Chinois.
+     * Le verbe idéal ici est 走 (zǒu). Malheureusement, c'est en Chinois.
      * Malheureusement, en Anglais, il n'y a pas de verbe pour un déplacement terrestre indifférent de la vitesse.
-     * "Walk" et "Run" sont trop spécifiques (hypernymes) et "Move" est indifférent de la méthode de locomotion (hyponyme);
-     * cela inclut la marche, le saut, la nage, la course, le vol, le bond et plus encore. Ainsi, "Roaming" a été choisi.
+     * "Walk" et "Run" sont trop spécifiques et impliquent une vitesse (hypernymes) et "Move" est indifférent de 
+     * la méthode de locomotion (hyponyme); cela inclut la marche, le saut, la nage, la course, le vol, le bond et plus encore.
+     * Ainsi, "Roaming" a été choisi.
      */
     private void UpdateWhenRoaming(float speed, int orientation)
     {

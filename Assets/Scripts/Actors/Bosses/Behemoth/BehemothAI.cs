@@ -83,26 +83,25 @@ public class BehemothAI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Permet à Behemoth de se préparer à charger tout en faisant face au joueur.
-        if (_status == BehemothStatus.WAIT)
+        switch (_status)
         {
-            UpdateWhenWaiting();
-        }
-        //Behemoth fonce tout droit dans un mur pour un certains temps donné.
-        //Une feinte près du mur fera une collision quand même.
-        else if (_status == BehemothStatus.CHARGE)
-        {
-            UpdateWhenCharging();
-        }
-        //Recul de Behemoth pendant une seconde avant d'être assomé.
-        else if (_status == BehemothStatus.STRUCK)
-        {
-            UpdateWhenStruckWall();
-        }
-        //Permet à Bimon de frapper Behemoth pendant le temps spécifié dans STUN_TIME.
-        else if (_status == BehemothStatus.STUN)
-        {
-            UpdateWhenStunned();
+            //Permet à Behemoth de se préparer à charger tout en faisant face au joueur.
+            case BehemothStatus.WAIT:
+                UpdateWhenWaiting();
+                break;
+            //Behemoth fonce tout droit dans un mur pour un certains temps donné.
+            //Une feinte près du mur fera une collision quand même.
+            case BehemothStatus.CHARGE:
+                UpdateWhenCharging();
+                break;
+            //Recul de Behemoth pendant une seconde avant d'être assomé.
+            case BehemothStatus.STRUCK:
+                UpdateWhenStruckWall();
+                break;
+            //Permet à Bimon de frapper Behemoth pendant le temps spécifié dans STUN_TIME.
+            case BehemothStatus.STUN:
+                UpdateWhenStunned();
+                break;
         }
     }
 
