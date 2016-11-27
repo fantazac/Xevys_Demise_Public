@@ -20,6 +20,9 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
     public delegate void OnOptionsInterfaceIsCurrentHandler(string from);
     public event OnOptionsInterfaceIsCurrentHandler OnOptionsInterfaceIsCurrent;
 
+    public delegate void OnAudioInterfaceIsCurrentHandler(bool isCurrent);
+    public event OnAudioInterfaceIsCurrentHandler OnAudioInterfaceIsCurrent;
+
     public delegate void OnBackButtonPressedToClosePauseMenuHandler();
     public event OnBackButtonPressedToClosePauseMenuHandler OnBackButtonPressedToClosePauseMenu;
 
@@ -30,6 +33,7 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
     private InputManager _inputManager;
     private Animator _animator;
     private Health _playeHealth;
+    private PauseMenuGroupButtonsFadeListener _pauseMenuGroupButtonsFadeListener;
 
     private string _currentInterface;
 
@@ -38,6 +42,7 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
         _pauseMenuInputs = StaticObjects.GetPauseMenuPanel().GetComponentInChildren<PauseMenuInputs>();
         _inputManager = StaticObjects.GetPlayer().GetComponentInChildren<InputManager>();
         _playeHealth = StaticObjects.GetPlayer().GetComponent<Health>();
+        _pauseMenuGroupButtonsFadeListener = GameObject.Find(StaticObjects.GetFindTags().PauseMenuAudioOptionsButtons).GetComponent<PauseMenuGroupButtonsFadeListener>();
 
         _pauseMenuInputs.OnOptionsInterfaceIsCurrent += OptionsInterfaceIsCurrent;
         _pauseMenuInputs.OnMainInterfaceIsCurrent += MainInterfaceIsCurrent;
@@ -45,6 +50,7 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
         _pauseMenuInputs.OnAudioInterfaceIsCurrent += AudioInterfaceIsCurrent;
         _inputManager.OnBackButtonPressedInMenu += OnGamepadBackBtnPressed;
         _playeHealth.OnDeath += OnPlayerDeath;
+        _pauseMenuGroupButtonsFadeListener.OnAudioInterfaceFadingEnded += AudioInterfaceFadingEnded;
 
         _animator = GetComponent<Animator>();
 
@@ -140,6 +146,12 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
             _animator.SetTrigger("AudioSlideIn");
             _currentInterface = target;
             OnOptionsInterfaceFade();
+            OnAudioInterfaceIsCurrent(true);
         }
+    }
+
+    private void AudioInterfaceFadingEnded()
+    {
+        OnAudioInterfaceIsCurrent(false);
     }
 }

@@ -12,12 +12,19 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
     private Switch _musicSwitch;
 
     private float _musicVolumeBeforeDesactivate;
+    private float _sfxVolumeBeforeDesactivate;
+    private PauseMenuAnimationManager _pauseMenuAnimationManager;
+    private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
 
     private void Start()
     {
         AccountSettings accountSettings = StaticObjects.GetDatabase().GetComponent<AccountSettings>();
+        _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
+        _pauseMenuCurrentInterfaceAnimator = GameObject.Find(StaticObjects.GetFindTags().PauseMenuButtons).GetComponent<PauseMenuCurrentInterfaceAnimator>();
         accountSettings.OnMusicVolumeReloaded += ReloadMusicVolume;
         accountSettings.OnSfxVolumeReloaded += ReloadSfxVolume;
+        _pauseMenuAnimationManager.OnPauseMenuStateChanged += FXVolumeStateInPauseMenu;
+        _pauseMenuCurrentInterfaceAnimator.OnAudioInterfaceIsCurrent += FXVolumeInAudioInterface;
 
         _musicSwitch = GetComponentInChildren<Switch>();
         Slider[] sliders = GetComponentsInChildren<Slider>();
@@ -61,5 +68,31 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
     private void ReloadSfxVolume(float volume)
     {
         _sfxVolumeSlider.value = volume;
+    }
+
+    private void FXVolumeStateInPauseMenu(bool menuIsActive)
+    {
+        if (menuIsActive)
+        {
+            _sfxVolumeBeforeDesactivate = _sfxVolumeSlider.value;
+            _sfxVolumeSlider.value = 0f;
+        }
+        else
+        {
+            _sfxVolumeSlider.value = _sfxVolumeBeforeDesactivate;
+        }
+    }
+
+    private void FXVolumeInAudioInterface(bool isCurrent)
+    {
+        if (isCurrent)
+        {
+            _sfxVolumeSlider.value = _sfxVolumeBeforeDesactivate;
+        }
+        else
+        {
+            _sfxVolumeBeforeDesactivate = _sfxVolumeSlider.value;
+            _sfxVolumeSlider.value = 0f;
+        }
     }
 }

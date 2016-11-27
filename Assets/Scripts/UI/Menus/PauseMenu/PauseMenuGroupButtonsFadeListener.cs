@@ -3,6 +3,9 @@ using System.Collections;
 
 public class PauseMenuGroupButtonsFadeListener : MonoBehaviour
 {
+    public delegate void OnAudioInterfaceIsCurrentHandler();
+    public event OnAudioInterfaceIsCurrentHandler OnAudioInterfaceFadingEnded;
+
     private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
     private Animator _animator;
 
@@ -32,5 +35,13 @@ public class PauseMenuGroupButtonsFadeListener : MonoBehaviour
     private void InterfaceFade()
     {
         _animator.SetTrigger("FadeOut");
+    }
+
+    private void AudioInterfaceFadingEnded()
+    {
+        if (gameObject.name == "PauseMenuAudioOptionsButtons")
+        {
+            OnAudioInterfaceFadingEnded();
+        }
     }
 }
