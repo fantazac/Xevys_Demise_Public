@@ -26,6 +26,9 @@ public class VulcanAI : MonoBehaviour
     [SerializeField]
     private float _raisingUpwardForce = 1650;
 
+    [SerializeField]
+    private GameObject[] _excludedObjets;
+
     private Health _health;
     private Rigidbody2D _rigidbody;
     private BossOrientation _bossOrientation;
@@ -155,11 +158,12 @@ public class VulcanAI : MonoBehaviour
             {
                 GameObject fireball = (GameObject)Instantiate(_fireball, new Vector3(transform.position.x + _bossOrientation.Orientation * 4.5f,
                     transform.position.y + 1.7f + (_criticalStatus ? 0 : 1.8f)), Quaternion.identity);
+                fireball.GetComponent<DestroyBossProjectile>().ExcludedObjects = _excludedObjets;
                 if (!_criticalStatus)
                 {
-                    fireball.transform.Rotate(0, 0, 60);
+                    fireball.transform.Rotate(0, 0, 60 * _bossOrientation.Orientation);
                 }
-                fireball.GetComponent<MoveFireball>().SetVulcan(gameObject);
+                fireball.GetComponent<MoveFireball>().Vulcan = gameObject;
                 fireball.SetActive(true);
                 _hasShotFireball = true;
             }
