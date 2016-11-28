@@ -8,6 +8,8 @@ public class AccountSettings : DatabaseConnection
     public event OnMusicVolumeReloadedHandler OnMusicVolumeReloaded;
     public delegate void OnSfxVolumeReloadedHandler(float volume);
     public event OnSfxVolumeReloadedHandler OnSfxVolumeReloaded;
+    public delegate void OnMusicStateReloadedHandler(bool state);
+    public event OnMusicStateReloadedHandler OnMusicStateReloaded;
     public delegate void OnKeyboardControlSchemeReloadedHandler(bool scheme);
     public event OnKeyboardControlSchemeReloadedHandler OnKeyboardControlSchemeReloaded;
     public delegate void OnGamepadControlSchemeReloadedHandler(bool scheme);
@@ -20,6 +22,7 @@ public class AccountSettings : DatabaseConnection
     private int _gamepadControlScheme = 1;
     private float _musicVolume = 1;
     private float _sfxVolume = 1;
+    private int _musicState = 1;
 
     protected override void Start()
     {
@@ -30,13 +33,15 @@ public class AccountSettings : DatabaseConnection
         _audioSettingsController = GameObject.Find("PauseMenuAudioOptionsButtons").GetComponent<PauseMenuAudioSettingsController>();
         controlsSchemeSettings.OnKeyboardControlChanged += ChangeKeyboardControl;
         controlsSchemeSettings.OnGamepadControlChanged += ChangeGamepadControl;
+        PauseMenuAudioSettingsController.OnVolumeChanged += ChangeVolume;
+        PauseMenuAudioSettingsController.OnMusicStateChanged += ChangeMusicState;
     }
 
     public void CreateSettings()
     {
         _dbconnection.Open();
         string sqlQuery = String.Format("INSERT INTO SETTINGS (MUSIC_PLAYING, MUSIC_VOLUME, SFX_VOLUME, KEYBOARD_CONTROL_SCHEME, GAMEPAD_CONTROL_SCHEME, ACCOUNT_ID)" +
-            " VALUES (0, 1, 1, 1, 1, {0})", _controller.AccountID);
+            " VALUES (1, 1, 1, 1, 1, {0})", _controller.AccountID);
         _dbcommand.CommandText = sqlQuery;
         _dbcommand.ExecuteNonQuery();
         _dbconnection.Close();
@@ -46,8 +51,8 @@ public class AccountSettings : DatabaseConnection
     {
         _sfxVolume = _audioSettingsController._sfxVolumeBeforeDesactivate;
         _dbconnection.Open();
-        string sqlQuery = String.Format("UPDATE SETTINGS SET KEYBOARD_CONTROL_SCHEME = {0}, GAMEPAD_CONTROL_SCHEME = {1}, MUSIC_VOLUME = {2}, SFX_VOLUME = {3}" +
-            " WHERE ACCOUNT_ID = {4}", _keyboardControlScheme, _gamepadControlScheme, _musicVolume, _sfxVolume, _controller.AccountID);
+        string sqlQuery = String.Format("UPDATE SETTINGS SET MUSIC_PLAYING = {0}, KEYBOARD_CONTROL_SCHEME = {1}, GAMEPAD_CONTROL_SCHEME = {2}, MUSIC_VOLUME = {3}, SFX_VOLUME = {4}" +
+            " WHERE ACCOUNT_ID = {5}", _musicState, _keyboardControlScheme, _gamepadControlScheme, _musicVolume, _sfxVolume, _controller.AccountID);
         _dbcommand.CommandText = sqlQuery;
         _dbcommand.ExecuteNonQuery();
         _dbconnection.Close();
@@ -56,16 +61,17 @@ public class AccountSettings : DatabaseConnection
     public void LoadSettings()
     {
         _dbconnection.Open();
-        string sqlQuery = String.Format("SELECT KEYBOARD_CONTROL_SCHEME, GAMEPAD_CONTROL_SCHEME, MUSIC_VOLUME, SFX_VOLUME" +
+        string sqlQuery = String.Format("SELECT MUSIC_PLAYING, KEYBOARD_CONTROL_SCHEME, GAMEPAD_CONTROL_SCHEME, MUSIC_VOLUME, SFX_VOLUME" +
             " FROM SETTINGS WHERE ACCOUNT_ID = {0}", _controller.AccountID);
         _dbcommand.CommandText = sqlQuery;
         IDataReader reader = _dbcommand.ExecuteReader();
         while (reader.Read())
         {
-            _keyboardControlScheme = reader.GetInt32(0);
-            _gamepadControlScheme = reader.GetInt32(1);
-            _musicVolume = reader.GetFloat(2);
-            _sfxVolume = reader.GetFloat(3);
+            _musicState = reader.GetInt32(0);
+            _keyboardControlScheme = reader.GetInt32(1);
+            _gamepadControlScheme = reader.GetInt32(2);
+            _musicVolume = reader.GetFloat(3);
+            _sfxVolume = reader.GetFloat(4);
         }
         reader.Close();
         _dbconnection.Close();
@@ -74,6 +80,7 @@ public class AccountSettings : DatabaseConnection
         OnGamepadControlSchemeReloaded(Convert.ToBoolean(_gamepadControlScheme));
         OnMusicVolumeReloaded(_musicVolume);
         OnSfxVolumeReloaded(_sfxVolume);
+        OnMusicStateReloaded(Convert.ToBoolean(_musicState));
     }
 
     private void ChangeKeyboardControl(bool scheme)
@@ -96,5 +103,10 @@ public class AccountSettings : DatabaseConnection
         {
             _sfxVolume = volume;
         }
+    }
+
+    private void ChangeMusicState(bool state)
+    {
+        _musicState = Convert.ToInt32(state);
     }
 }
