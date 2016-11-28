@@ -12,16 +12,17 @@ public class MoveFireball : MonoBehaviour
     [SerializeField]
     private float _vulcanRightPitIndex = 3;
 
+    [SerializeField]
     private GameObject _vulcan;
+
     private BossOrientation _vulcanBossOrientation;
     private Rigidbody2D _rigidbody;
     private Vector3 _direction;
 
-    bool _criticalStatus = false;
+    private bool _criticalStatus = false;
 
     private void Start()
     {
-        _vulcan = GameObject.Find(StaticObjects.GetFindTags().Vulcan);
         _vulcanBossOrientation = _vulcan.GetComponent<BossOrientation>();
         _rigidbody = GetComponent<Rigidbody2D>();
         if (transform.localEulerAngles.z == 0)
