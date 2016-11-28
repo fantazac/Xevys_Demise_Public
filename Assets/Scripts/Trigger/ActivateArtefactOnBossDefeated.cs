@@ -4,22 +4,27 @@ using System.Collections;
 public class ActivateArtefactOnBossDefeated : MonoBehaviour {
 
     [SerializeField]
-    private GameObject _boss;
+    private GameObject _artefact;
 
-    public GameObject Boss { get { return _boss; } }
+    [SerializeField]
+    private bool _spawnOnDeathSpot = true;
 
-    private Health _bossHealth;
     private GameObject _parent;
 
     private void Start()
     {
-        _parent = gameObject.transform.parent.gameObject;
+        _parent = _artefact.transform.parent.gameObject;
         _parent.SetActive(false);
-        _boss.GetComponent<Health>().OnDeath += OnBossDefeated;
+        GetComponent<Health>().OnDeath += OnBossDefeated;
     }
 
     private void OnBossDefeated()
     {
+        if (_spawnOnDeathSpot)
+        {
+            _parent.transform.position = transform.position;
+        }
+        
         _parent.SetActive(true);
     }
 }

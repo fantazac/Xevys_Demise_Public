@@ -74,6 +74,7 @@ public class NeptuneHeadAI : MonoBehaviour
     private int numberBodyPartsSpawned;
     private float _spawnBodyPartTimeLeft;
     private float _attackCooldownTimeLeft;
+    private bool _isDead = false;
 
     public float HorizontalLimit { get { return _horizontalLimit; } }
 
@@ -123,22 +124,25 @@ public class NeptuneHeadAI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        SpawnOtherBodyParts();
-        _attackCooldownTimeLeft -= Time.fixedDeltaTime;
-        if (_attackCooldownTimeLeft <= 0)
+        if (!_isDead)
         {
-            _attackCooldownTimeLeft = _attackDelay;
-            SetFlamesAroundHead();
+            SpawnOtherBodyParts();
+            _attackCooldownTimeLeft -= Time.deltaTime;
+            if (_attackCooldownTimeLeft <= 0)
+            {
+                _attackCooldownTimeLeft = _attackDelay;
+                SetFlamesAroundHead();
+            }
+            else if (_attackCooldownTimeLeft < _warningDelay)
+            {
+                _animator.SetBool("IsAttacking", true);
+            }
+            else
+            {
+                _animator.SetBool("IsAttacking", false);
+            }
+            MoveInTrajectory();
         }
-        else if (_attackCooldownTimeLeft < _warningDelay)
-        {
-            _animator.SetBool("IsAttacking", true);
-        }
-        else
-        {
-            _animator.SetBool("IsAttacking", false);
-        }
-        MoveInTrajectory();
     }
 
     private void SpawnOtherBodyParts()
@@ -220,5 +224,6 @@ public class NeptuneHeadAI : MonoBehaviour
         }
         _rigidbody.isKinematic = false;
         _animator.SetBool("IsDead", true);
+        _isDead = true;
     }
 }
