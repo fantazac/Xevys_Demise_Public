@@ -51,6 +51,9 @@ public class NeptuneHeadAI : MonoBehaviour
     [SerializeField]
     private float _bodyPartSpawnDelay = 1.8f;
 
+    [SerializeField]
+    private GameObject[] _bodyParts;
+
     /* BEN COUNTER-CORRECTION
      *
      * À moins de vouloir réinventer la roue inutilement, cette variable doit
@@ -62,7 +65,6 @@ public class NeptuneHeadAI : MonoBehaviour
     protected Vector2[] _pointsToReach;
 
     private Health _health;
-    private GameObject[] _bodyParts;
     protected Rigidbody2D _rigidbody;
     private Animator _animator;
     protected BossOrientation _bossOrientation;
@@ -73,46 +75,44 @@ public class NeptuneHeadAI : MonoBehaviour
     private float _spawnBodyPartTimeLeft;
     private float _attackCooldownTimeLeft;
 
-    public float HorizontalLimit
-    {
-        get
-        {
-            return _horizontalLimit;
-        }
-    }
+    public float HorizontalLimit { get { return _horizontalLimit; } }
 
-    public float VerticalLimit
-    {
-        get
-        {
-            return _verticalLimit;
-        }
-    }
+    public float VerticalLimit { get { return _verticalLimit; } }
+
+    private bool _canUseEnable = false;
+    private Vector3 _initialPosition;
 
     protected virtual void Start()
     {
-        _bodyParts = GameObject.FindGameObjectsWithTag("NeptuneBody");
-        
         _health = GetComponent<Health>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _onBossDefeated = GetComponent<DisableCollidersOnBossDefeated>();
+        _bossOrientation = GetComponent<BossOrientation>();
         _health.OnDeath += OnNeptuneDefeated;
+        _initialPosition = transform.position;
         InitializeNeptune();
+        _canUseEnable = _health != null;
     }
 
     private void OnEnable()
     {
-        InitializeNeptune();
+        if (_canUseEnable)
+        {
+            InitializeNeptune();
+            transform.position = _initialPosition;
+        }
+
     }
 
     private void InitializeNeptune()
     {
-        if(_health != null)
+        if (_health != null)
         {
             _attackCooldownTimeLeft = _attackDelay;
             _spawnBodyPartTimeLeft = _bodyPartSpawnDelay;
             numberBodyPartsSpawned = 0;
+            _bossOrientation.Flip(true);
             _health.HealthPoint = _health.MaxHealth;
             foreach (GameObject bodyPart in _bodyParts)
             {
@@ -126,7 +126,11 @@ public class NeptuneHeadAI : MonoBehaviour
 
     protected void InitializePoints()
     {
-        _bossOrientation = GetComponent<BossOrientation>();
+        if(_health == null)
+        {
+            _bossOrientation = GetComponent<BossOrientation>();
+        }
+        
         _horizontalLimit = Mathf.Abs(_horizontalLimit);
         _verticalLimit = Mathf.Abs(_verticalLimit);
         _origin = transform.position;
