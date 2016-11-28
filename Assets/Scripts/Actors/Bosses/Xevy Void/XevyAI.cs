@@ -24,6 +24,7 @@ public class XevyAI : MonoBehaviour
     private float _criticalHealthPercentage = 0.33f;
 
     private Health _health;
+    private Animator _animator;
     private XevyAction _action;
     private XevyMovement _movement;
     private XevyPlayerInteraction _playerInteraction;
@@ -42,6 +43,7 @@ public class XevyAI : MonoBehaviour
         _lastAttack = XevyAction.XevyAttackType.NONE;
         _status = XevyStatus.IDLE;
         _health = GetComponent<Health>();
+        _animator = GetComponent<Animator>();
         _action = GetComponent<XevyAction>();
         _movement = GetComponent<XevyMovement>();
         _playerInteraction = GetComponent<XevyPlayerInteraction>();
@@ -175,6 +177,7 @@ public class XevyAI : MonoBehaviour
 
     private void SetIdleStatus()
     {
+        _animator.SetInteger("State", 0);
         _statusTimer = _idleStatusCooldown;
         _action.LowerGuard();
         _playerInteraction.IsFocusedOnPlayer = true;
@@ -183,6 +186,7 @@ public class XevyAI : MonoBehaviour
 
     private void SetVulnerableStatus()
     {
+        _animator.SetInteger("State", 1);
         _statusTimer = _vulnerableStatusCooldown;
         _playerInteraction.IsFocusedOnPlayer = false;
         _status = XevyStatus.VULNERABLE;
@@ -190,6 +194,7 @@ public class XevyAI : MonoBehaviour
 
     private void SetBlockingStatus()
     {
+        _animator.SetInteger("State", 2);
         _action.Block();
         _playerInteraction.IsFocusedOnPlayer = true;
         _status = XevyStatus.BLOCKING;

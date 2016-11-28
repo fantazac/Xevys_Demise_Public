@@ -5,6 +5,9 @@ using System;
 
 public class DatabaseController : DatabaseConnection
 {
+    [SerializeField]
+    private bool _loadDB;
+
     private AccountStats _accountStats;
     private AccountSettings _accountSettings;
     public int AccountID { get; private set; }
@@ -14,7 +17,7 @@ public class DatabaseController : DatabaseConnection
         base.Start();
         _accountStats = GetComponent<AccountStats>();
         _accountSettings = GetComponent<AccountSettings>();
-        if(!_accountStats._loadStats)
+        if(!_loadDB)
         {
             File.Copy(Path.Combine(Application.streamingAssetsPath, "Database.db"), Path.Combine(Application.persistentDataPath, "Database.db"), true);
             CreateAll();

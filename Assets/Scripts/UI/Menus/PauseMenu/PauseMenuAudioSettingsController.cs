@@ -6,13 +6,15 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
 {
     public delegate void OnVolumeChangedHandler(bool isMusic, float volume);
     public static event OnVolumeChangedHandler OnVolumeChanged;
+    public delegate void OnMusicStateChangedHandler(bool state);
+    public static event OnMusicStateChangedHandler OnMusicStateChanged;
 
     private Slider _musicVolumeSlider;
     private Slider _sfxVolumeSlider;
     private Switch _musicSwitch;
 
     private float _musicVolumeBeforeDesactivate;
-    private float _sfxVolumeBeforeDesactivate;
+    public float _sfxVolumeBeforeDesactivate { get; private set; }
     private bool _sfxVolumeChanged;
     private PauseMenuAnimationManager _pauseMenuAnimationManager;
     private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
@@ -26,6 +28,7 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
         accountSettings.OnSfxVolumeReloaded += ReloadSfxVolume;
         _pauseMenuAnimationManager.OnPauseMenuStateChanged += FXVolumeStateInPauseMenu;
         _pauseMenuCurrentInterfaceAnimator.OnAudioInterfaceIsCurrent += FXVolumeInAudioInterface;
+        accountSettings.OnMusicStateReloaded += ReloadMusicState;
 
         _musicSwitch = GetComponentInChildren<Switch>();
         Slider[] sliders = GetComponentsInChildren<Slider>();
@@ -60,6 +63,7 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
             _musicVolumeBeforeDesactivate = _musicVolumeSlider.value;
             _musicVolumeSlider.value = 0f;
         }
+        OnMusicStateChanged(activate);
     }
 
     private void ReloadMusicVolume(float volume)
@@ -71,7 +75,7 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
     {
         _sfxVolumeSlider.value = volume;
     }
-
+    
     private void FXVolumeStateInPauseMenu(bool menuIsActive)
     {
         if (menuIsActive)
@@ -102,5 +106,10 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
             _sfxVolumeSlider.value = 0f;
             _sfxVolumeChanged = false;
         }
+    }
+
+    private void ReloadMusicState(bool state)
+    {
+        _musicSwitch.isOn = state;
     }
 }

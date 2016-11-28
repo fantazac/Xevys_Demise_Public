@@ -11,8 +11,12 @@ public class InitializeKnife : MonoBehaviour
     private void Start()
     {
         _flipKnife = StaticObjects.GetPlayer().GetComponent<ActorOrientation>().Orientation;
-
+        if (StaticObjects.GetPlayerState().IsFloating)
+        {
+            _horizontalSpeed = 5f;
+        }
         GetComponent<Rigidbody2D>().velocity = new Vector2(_flipKnife * _horizontalSpeed, 0);
         transform.localScale = new Vector2(transform.localScale.x * _flipKnife, transform.localScale.y);
+        
     }
 }

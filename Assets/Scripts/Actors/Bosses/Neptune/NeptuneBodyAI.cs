@@ -2,13 +2,16 @@
 
 public class NeptuneBodyAI : NeptuneHeadAI
 {
-    private NeptuneHeadAI _neptuneHead;
+    [SerializeField]
+    private GameObject _neptuneHead;
+
+    private NeptuneHeadAI _headAi;
 
 	protected override void Start()
     {
-        _neptuneHead = GameObject.Find(StaticObjects.GetFindTags().NeptuneHead).GetComponent<NeptuneHeadAI>();
-        _horizontalLimit = _neptuneHead.HorizontalLimit;
-        _verticalLimit = _neptuneHead.VerticalLimit;
+        _headAi = _neptuneHead.GetComponent<NeptuneHeadAI>();
+        _horizontalLimit = _headAi.HorizontalLimit;
+        _verticalLimit = _headAi.VerticalLimit;
         InitializePoints();
         RotateAndFlip();
     }

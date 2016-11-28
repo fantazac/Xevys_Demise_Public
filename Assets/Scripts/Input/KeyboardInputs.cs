@@ -42,6 +42,9 @@ public class KeyboardInputs : MonoBehaviour
     public delegate void KeyboardOnFlipHandler(bool goesRight);
     public event KeyboardOnFlipHandler OnFlip;
 
+    public delegate void KeyboardOnEnterPortalHandler();
+    public event KeyboardOnEnterPortalHandler OnEnterPortal;
+
     private PauseMenuAnimationManager _pauseMenuAnimationManager;
     private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
     private bool _usingArrowControlsScheme;
@@ -169,6 +172,11 @@ public class KeyboardInputs : MonoBehaviour
             OnUnderwaterControl(false);
         }
 
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            OnEnterPortal();
+        }
+
         if (!Input.GetKey(KeyCode.S))
         {
             OnStandingUp();
@@ -224,6 +232,11 @@ public class KeyboardInputs : MonoBehaviour
         if (Input.GetKey(KeyCode.UpArrow))
         {
             OnUnderwaterControl(false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            OnEnterPortal();
         }
 
         if (!Input.GetKey(KeyCode.DownArrow))

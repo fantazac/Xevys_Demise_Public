@@ -8,5 +8,5 @@ public class HubCameraSwitchDown : HubCameraSwitch
 	    base.Start();
 	    _nbNode1 = 0;
 	    _nbNode2 = 38;
-	}
+    }
 }
