@@ -5,6 +5,9 @@ public class SpawnBossOnBreakableItemDestroyed : MonoBehaviour
 {
     [SerializeField]
     private GameObject _boss;
+    [SerializeField]
+    private GameObject _bossBattleMusicZone;
+    private AudioSourcePlayer _bossBattleMusic;
 
     [SerializeField]
     private bool _instanciateBoss = false;
@@ -19,6 +22,7 @@ public class SpawnBossOnBreakableItemDestroyed : MonoBehaviour
     {
         _health = GetComponent<Health>();
         _health.OnDeath += EnableBossFight;
+        _bossBattleMusic = _bossBattleMusicZone.GetComponent<AudioSourcePlayer>();
 
         if (!_instanciateBoss)
         {
@@ -52,6 +56,7 @@ public class SpawnBossOnBreakableItemDestroyed : MonoBehaviour
         else
         {
             _boss.SetActive(true);
+            _bossBattleMusic.Play();
         }
         _health.HealthPoint = _health.MaxHealth;
         gameObject.SetActive(false);
@@ -65,6 +70,7 @@ public class SpawnBossOnBreakableItemDestroyed : MonoBehaviour
         }
         else
         {
+            _bossBattleMusic.Stop();
             _boss.SetActive(false);
         }
         
@@ -74,7 +80,7 @@ public class SpawnBossOnBreakableItemDestroyed : MonoBehaviour
     private void DestroyBreakableItem()
     {
         _playerHealth.OnDeath -= ResetBossRoom;
-        _boss.GetComponent<AudioSourcePlayer>().Stop();
+        _bossBattleMusic.Stop();
         Destroy(gameObject);
     }
 }
