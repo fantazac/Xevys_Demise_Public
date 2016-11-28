@@ -51,6 +51,9 @@ public class NeptuneHeadAI : MonoBehaviour
     [SerializeField]
     private float _bodyPartSpawnDelay = 1.8f;
 
+    [SerializeField]
+    private GameObject[] _bodyParts;
+
     /* BEN COUNTER-CORRECTION
      *
      * À moins de vouloir réinventer la roue inutilement, cette variable doit
@@ -62,7 +65,6 @@ public class NeptuneHeadAI : MonoBehaviour
     protected Vector2[] _pointsToReach;
 
     private Health _health;
-    private GameObject[] _bodyParts;
     protected Rigidbody2D _rigidbody;
     private Animator _animator;
     protected BossOrientation _bossOrientation;
@@ -72,27 +74,14 @@ public class NeptuneHeadAI : MonoBehaviour
     private int numberBodyPartsSpawned;
     private float _spawnBodyPartTimeLeft;
     private float _attackCooldownTimeLeft;
+    private bool _isDead = false;
 
-    public float HorizontalLimit
-    {
-        get
-        {
-            return _horizontalLimit;
-        }
-    }
+    public float HorizontalLimit { get { return _horizontalLimit; } }
 
-    public float VerticalLimit
-    {
-        get
-        {
-            return _verticalLimit;
-        }
-    }
+    public float VerticalLimit { get { return _verticalLimit; } }
 
     protected virtual void Start()
     {
-        _bodyParts = GameObject.FindGameObjectsWithTag("NeptuneBody");
-        
         _health = GetComponent<Health>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
@@ -101,27 +90,19 @@ public class NeptuneHeadAI : MonoBehaviour
         InitializeNeptune();
     }
 
-    private void OnEnable()
-    {
-        InitializeNeptune();
-    }
-
     private void InitializeNeptune()
     {
-        if(_health != null)
+        _attackCooldownTimeLeft = _attackDelay;
+        _spawnBodyPartTimeLeft = _bodyPartSpawnDelay;
+        numberBodyPartsSpawned = 0;
+        _health.HealthPoint = _health.MaxHealth;
+        foreach (GameObject bodyPart in _bodyParts)
         {
-            _attackCooldownTimeLeft = _attackDelay;
-            _spawnBodyPartTimeLeft = _bodyPartSpawnDelay;
-            numberBodyPartsSpawned = 0;
-            _health.HealthPoint = _health.MaxHealth;
-            foreach (GameObject bodyPart in _bodyParts)
-            {
-                bodyPart.transform.position = transform.position;
-                bodyPart.SetActive(false);
-            }
-            InitializePoints();
-            RotateAndFlip();
+            bodyPart.transform.position = transform.position;
+            bodyPart.SetActive(false);
         }
+        InitializePoints();
+        RotateAndFlip();
     }
 
     protected void InitializePoints()
@@ -143,22 +124,25 @@ public class NeptuneHeadAI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        SpawnOtherBodyParts();
-        _attackCooldownTimeLeft -= Time.fixedDeltaTime;
-        if (_attackCooldownTimeLeft <= 0)
+        if (!_isDead)
         {
-            _attackCooldownTimeLeft = _attackDelay;
-            SetFlamesAroundHead();
+            SpawnOtherBodyParts();
+            _attackCooldownTimeLeft -= Time.deltaTime;
+            if (_attackCooldownTimeLeft <= 0)
+            {
+                _attackCooldownTimeLeft = _attackDelay;
+                SetFlamesAroundHead();
+            }
+            else if (_attackCooldownTimeLeft < _warningDelay)
+            {
+                _animator.SetBool("IsAttacking", true);
+            }
+            else
+            {
+                _animator.SetBool("IsAttacking", false);
+            }
+            MoveInTrajectory();
         }
-        else if (_attackCooldownTimeLeft < _warningDelay)
-        {
-            _animator.SetBool("IsAttacking", true);
-        }
-        else
-        {
-            _animator.SetBool("IsAttacking", false);
-        }
-        MoveInTrajectory();
     }
 
     private void SpawnOtherBodyParts()
@@ -240,5 +224,6 @@ public class NeptuneHeadAI : MonoBehaviour
         }
         _rigidbody.isKinematic = false;
         _animator.SetBool("IsDead", true);
+        _isDead = true;
     }
 }

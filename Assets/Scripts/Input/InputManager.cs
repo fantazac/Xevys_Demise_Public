@@ -44,6 +44,9 @@ public class InputManager : MonoBehaviour
     public delegate void OnFlipHandler(bool goesRight);
     public event OnFlipHandler OnFlip;
 
+    public delegate void OnEnterPortalHandler();
+    public event OnEnterPortalHandler OnEnterPortal;
+
     public delegate void OnBackButtonPressedInMenuHandler();
     public event OnBackButtonPressedInMenuHandler OnBackButtonPressedInMenu;
 
@@ -66,6 +69,7 @@ public class InputManager : MonoBehaviour
         _keyboardInputs.OnThrowAttackChangeButtonPressed += InputsOnThrowAttackChangeButtonPressed;
         _keyboardInputs.OnPause += InputsOnPause;
         _keyboardInputs.OnFlip += InputsOnFlip;
+        _keyboardInputs.OnEnterPortal += InputsOnEnterPortal;
 
         _gamepadInputs = GetComponentInChildren<GamepadInputs>();
         _gamepadInputs.OnMove += InputsOnMove;
@@ -81,6 +85,7 @@ public class InputManager : MonoBehaviour
         _gamepadInputs.OnThrowAttackChangeButtonPressed += InputsOnThrowAttackChangeButtonPressed;
         _gamepadInputs.OnPause += InputsOnPause;
         _gamepadInputs.OnBackButtonPressedInMenu += OnGamepadBackButtonPressedInMenu;
+        _gamepadInputs.OnEnterPortal += InputsOnEnterPortal;
 
     }
 
@@ -137,6 +142,11 @@ public class InputManager : MonoBehaviour
     private void InputsOnJump()
     {
         OnJump();
+    }
+
+    private void InputsOnEnterPortal()
+    {
+        OnEnterPortal();
     }
 
     private void InputsOnJumpDown()

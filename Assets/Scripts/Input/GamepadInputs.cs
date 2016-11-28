@@ -41,6 +41,9 @@ public class GamepadInputs : MonoBehaviour
     public delegate void GamepadOnPauseHandler();
     public event GamepadOnPauseHandler OnPause;
 
+    public delegate void GamepadOnEnterPortalHandler();
+    public event GamepadOnEnterPortalHandler OnEnterPortal;
+
     public delegate void GamepadOnBackButtonPressedInMenuHandler();
     public event GamepadOnBackButtonPressedInMenuHandler OnBackButtonPressedInMenu;
 
@@ -61,6 +64,7 @@ public class GamepadInputs : MonoBehaviour
     private GamePadState _state;
     private bool _inMenu;
     private bool _died;
+    private bool _pressedEnterPortal = false;
 
     private void Start()
     {
@@ -246,6 +250,16 @@ public class GamepadInputs : MonoBehaviour
             if (_state.ThumbSticks.Left.Y > 0)
             {
                 OnUnderwaterControl(false);
+                if (!_pressedEnterPortal)
+                {
+                    _pressedEnterPortal = true;
+                    OnEnterPortal();
+                }
+                
+            }
+            else
+            {
+                _pressedEnterPortal = false;
             }
         }
     }
@@ -275,10 +289,20 @@ public class GamepadInputs : MonoBehaviour
                 OnJumpDown();
             }
         }
-        else
+        else if(_state.DPad.Up == ButtonState.Pressed)
         {
             OnStandingUp();
             OnUnderwaterControl(false);
+            if (!_pressedEnterPortal)
+            {
+                _pressedEnterPortal = true;
+                OnEnterPortal();
+            }
+        }
+        else
+        {
+            _pressedEnterPortal = false;
+            OnStandingUp();
         }
     }
 
