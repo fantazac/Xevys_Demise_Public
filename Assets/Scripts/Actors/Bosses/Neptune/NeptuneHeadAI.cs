@@ -96,10 +96,11 @@ public class NeptuneHeadAI : MonoBehaviour
         _spawnBodyPartTimeLeft = _bodyPartSpawnDelay;
         numberBodyPartsSpawned = 0;
         _health.HealthPoint = _health.MaxHealth;
-        foreach (GameObject bodyPart in _bodyParts)
+        for(int i = 0; i < _bodyParts.Length; i++)
         {
-            bodyPart.transform.position = transform.position;
-            bodyPart.SetActive(false);
+            _bodyParts[i] = (GameObject)Instantiate(_bodyParts[i], transform.position, new Quaternion());
+            _bodyParts[i].transform.parent = gameObject.transform.parent;
+            _bodyParts[i].SetActive(false);
         }
         InitializePoints();
         RotateAndFlip();
@@ -186,9 +187,9 @@ public class NeptuneHeadAI : MonoBehaviour
             {
                 yPosition = -_flameSpawnDistanceFromHead;
             }
-            var flame = Instantiate(_flame, transform.position + new Vector3(xPosition, yPosition), Quaternion.identity);
-            ((GameObject)flame).transform.Rotate(0, 0, x * _rotationByFlame);
-            ((GameObject)flame).SetActive(true);
+            GameObject flame = (GameObject)Instantiate(_flame, transform.position + new Vector3(xPosition, yPosition), Quaternion.identity);
+            flame.transform.Rotate(0, 0, x * _rotationByFlame);
+            flame.SetActive(true);
         }
     }
 

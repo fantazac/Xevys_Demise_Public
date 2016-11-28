@@ -50,7 +50,6 @@ public class BehemothAI : MonoBehaviour
     private BehemothStatus _status = BehemothStatus.WAIT;
     private float _timeLeft;
     private bool _isCharging;
-    private bool _canUseOnEnable = false;
 
     private void Start()
     {
@@ -61,24 +60,7 @@ public class BehemothAI : MonoBehaviour
         _polygonHitbox = GetComponent<PolygonCollider2D>();
         _attack = GetComponent<OnBehemothAttackHit>();
         _health.OnDeath += OnBehemothDefeated;
-        SetupBehemothReset();
-        _canUseOnEnable = true;
-    }
-
-    private void SetupBehemothReset()
-    {
-        _initialPosition = transform.position;
         _timeLeft = _chargeTime;
-    }
-
-    private void OnEnable()
-    {
-        if (_canUseOnEnable)
-        {
-            SetWaitStatus();
-            _health.HealthPoint = _health.MaxHealth;
-            transform.position = _initialPosition;
-        }
     }
 
     private void FixedUpdate()

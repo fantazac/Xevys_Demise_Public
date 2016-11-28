@@ -63,10 +63,6 @@ public class PhoenixAI : MonoBehaviour
     private float _closestVerticalPoint;
     private float _flyingSpeed;
 
-    private Vector3 _initialPosition;
-
-    private bool _canUseOnEnable = false;
-
     private void Start()
     {
         _health = GetComponent<Health>();
@@ -78,22 +74,6 @@ public class PhoenixAI : MonoBehaviour
 
         _health.OnDamageTaken += GotHitByPlayer;
         InitializePhoenix();
-        SetupPhoenixReset();
-        _canUseOnEnable = true;
-    }
-
-    private void SetupPhoenixReset()
-    {
-        _initialPosition = transform.position;
-    }
-
-    private void OnEnable()
-    {
-        if (_canUseOnEnable)
-        {
-            InitializePhoenix();
-            transform.position = _initialPosition;
-        }
     }
 
     private void InitializePhoenix()

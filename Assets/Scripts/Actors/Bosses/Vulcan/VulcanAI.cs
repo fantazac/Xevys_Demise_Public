@@ -28,7 +28,6 @@ public class VulcanAI : MonoBehaviour
 
     private Health _health;
     private Rigidbody2D _rigidbody;
-    private Animator _animator;
     private BossOrientation _bossOrientation;
     private DisableCollidersOnBossDefeated _onBossDefeated;
     private PolygonCollider2D _polygonHitbox;
@@ -43,9 +42,6 @@ public class VulcanAI : MonoBehaviour
     private float _timeLeft;
     private float _halfHealth;
     private bool _hasShotFireball = false;
-    private Vector3 _initialPosition;
-
-    private bool _canUseOnEnable = false;
 
     public int CurrentIndex { get; private set; }
 
@@ -54,18 +50,14 @@ public class VulcanAI : MonoBehaviour
         _health = GetComponent<Health>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _bossOrientation = GetComponent<BossOrientation>();
-        _animator = GetComponent<Animator>();
         _health.OnDeath += OnVulcanDefeated;
         _polygonHitbox = GetComponent<PolygonCollider2D>();
-        _initialPosition = transform.position;
         InitializeVulcan();
-        _canUseOnEnable = true;
     }
 
     private void InitializeVulcan()
     {
         _timeLeft = _loweredTime;
-        transform.position = _initialPosition;
         _health.HealthPoint = _health.MaxHealth;
         _halfHealth = _health.HealthPoint / 2;
         _polygonHitbox.enabled = false;
@@ -76,14 +68,6 @@ public class VulcanAI : MonoBehaviour
         for (int x = -2; x < 3; x++)
         {
             _positionsForRaise[x + 2] = transform.position.x + x * transform.localScale.x;
-        }
-    }
-
-    private void OnEnable()
-    {
-        if (_canUseOnEnable)
-        {
-            InitializeVulcan();
         }
     }
 
@@ -169,13 +153,14 @@ public class VulcanAI : MonoBehaviour
             _timeLeft -= Time.fixedDeltaTime;
             if (_timeLeft < 2 && !_hasShotFireball)
             {
-                var fireball = Instantiate(_fireball, new Vector3(transform.position.x + _bossOrientation.Orientation * 4.5f,
+                GameObject fireball = (GameObject)Instantiate(_fireball, new Vector3(transform.position.x + _bossOrientation.Orientation * 4.5f,
                     transform.position.y + 1.7f + (_criticalStatus ? 0 : 1.8f)), Quaternion.identity);
                 if (!_criticalStatus)
                 {
-                    ((GameObject)fireball).transform.Rotate(0, 0, 60);
+                    fireball.transform.Rotate(0, 0, 60);
                 }
-                ((GameObject)fireball).SetActive(true);
+                fireball.GetComponent<MoveFireball>().SetVulcan(gameObject);
+                fireball.SetActive(true);
                 _hasShotFireball = true;
             }
         }
@@ -212,9 +197,6 @@ public class VulcanAI : MonoBehaviour
     private void OnVulcanDefeated()
     {
         _status = VulcanStatus.DEAD;
-        _animator.SetBool("IsDead", true);
         _rigidbody.isKinematic = false;
     }
-
-
 }

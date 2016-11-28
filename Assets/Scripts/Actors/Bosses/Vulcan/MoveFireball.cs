@@ -12,7 +12,6 @@ public class MoveFireball : MonoBehaviour
     [SerializeField]
     private float _vulcanRightPitIndex = 3;
 
-    [SerializeField]
     private GameObject _vulcan;
 
     private BossOrientation _vulcanBossOrientation;
@@ -40,6 +39,11 @@ public class MoveFireball : MonoBehaviour
                 ((_vulcan.GetComponent<VulcanAI>().CurrentIndex == _vulcanRightPitIndex ? -1 : 1) *
                 _vulcanBossOrientation.Orientation * _verticalSpeed));
         }
+    }
+
+    public void SetVulcan(GameObject vulcan)
+    {
+        _vulcan = vulcan;
     }
 
     private void FixedUpdate()
