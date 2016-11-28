@@ -17,6 +17,9 @@ public class XevyAction: MonoBehaviour
     private float _tornadoSpeed = 15;
 
     [SerializeField]
+    private float _tornadoHeightModifier = 0.5f;
+
+    [SerializeField]
     private float _horizontalAxisModifier = 3.5f;
 
     [SerializeField]
@@ -74,7 +77,7 @@ public class XevyAction: MonoBehaviour
 
     public XevyAttackType AirAttack()
     {
-        var tornado = Instantiate(_tornado, transform.position, transform.rotation);
+        var tornado = Instantiate(_tornado, new Vector2(transform.position.x + _tornadoHeightModifier,transform.position.y), transform.rotation);
         ((GameObject)tornado).transform.localScale = new Vector2(_bossOrientation.Orientation * ((GameObject)tornado).transform.localScale.x,
             ((GameObject)tornado).transform.localScale.y);
         ((GameObject)tornado).SetActive(true);
