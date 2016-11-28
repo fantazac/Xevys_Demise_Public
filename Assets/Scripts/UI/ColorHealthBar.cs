@@ -4,34 +4,27 @@ using UnityEngine.UI;
 
 public class ColorHealthBar : MonoBehaviour
 {
-    [SerializeField]
-    public const int MAX_HEALTH = 1000;
-    [SerializeField]
-    public const float HP_MULTIPLICATOR_FOR_COLOR = 0.0010f;
-
-    [SerializeField]
-    private Color _color;
-
     private Image _healthBarImage;
     private Health _health;
+
+    private float _halfHealth;
 
 	private void Start()
 	{
 	    _health = StaticObjects.GetPlayer().GetComponent<Health>();
 	    _healthBarImage = StaticObjects.GetHealthBar().GetComponent<Image>();
-	    _color = new Color(0, 1, 0, 1);
-	    _healthBarImage.color = _color;
+	    _healthBarImage.color = new Color(0, 1, 0, 1);
+        _halfHealth = _health.MaxHealth * 0.5f;
 
         _health.OnHealthChanged += OnHealthChanged;
 	}
 
     private void OnHealthChanged(int hitPoints)
     {
-        // Change la couleur de la barre de vie en fonction du % de vie restant
-        if (_health.HealthPoint + hitPoints >= 50f * MAX_HEALTH / 100f)
+        if (_health.HealthPoint >= _halfHealth)
         {
-            Color interpolatedColor = _healthBarImage.color;
-            interpolatedColor.r = _healthBarImage.color.r - hitPoints * HP_MULTIPLICATOR_FOR_COLOR;
+            Color interpolatedColor;
+            interpolatedColor.r = 1 - ((_health.HealthPoint - _halfHealth) / _halfHealth);
             interpolatedColor.g = 1;
             interpolatedColor.b = 0;
             interpolatedColor.a = 1;
@@ -39,9 +32,9 @@ public class ColorHealthBar : MonoBehaviour
         }
         else
         {
-            Color interpolatedColor = _healthBarImage.color;
+            Color interpolatedColor;
             interpolatedColor.r = 1;
-            interpolatedColor.g = _healthBarImage.color.g + hitPoints * HP_MULTIPLICATOR_FOR_COLOR;
+            interpolatedColor.g = 1 - ((_halfHealth - _health.HealthPoint) / _halfHealth);
             interpolatedColor.b = 0;
             interpolatedColor.a = 1;
             _healthBarImage.color = interpolatedColor;
