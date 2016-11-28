@@ -79,58 +79,34 @@ public class NeptuneHeadAI : MonoBehaviour
 
     public float VerticalLimit { get { return _verticalLimit; } }
 
-    private bool _canUseEnable = false;
-    private Vector3 _initialPosition;
-
     protected virtual void Start()
     {
         _health = GetComponent<Health>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _onBossDefeated = GetComponent<DisableCollidersOnBossDefeated>();
-        _bossOrientation = GetComponent<BossOrientation>();
         _health.OnDeath += OnNeptuneDefeated;
-        _initialPosition = transform.position;
         InitializeNeptune();
-        _canUseEnable = _health != null;
-    }
-
-    private void OnEnable()
-    {
-        if (_canUseEnable)
-        {
-            InitializeNeptune();
-            transform.position = _initialPosition;
-        }
-
     }
 
     private void InitializeNeptune()
     {
-        if (_health != null)
+        _attackCooldownTimeLeft = _attackDelay;
+        _spawnBodyPartTimeLeft = _bodyPartSpawnDelay;
+        numberBodyPartsSpawned = 0;
+        _health.HealthPoint = _health.MaxHealth;
+        foreach (GameObject bodyPart in _bodyParts)
         {
-            _attackCooldownTimeLeft = _attackDelay;
-            _spawnBodyPartTimeLeft = _bodyPartSpawnDelay;
-            numberBodyPartsSpawned = 0;
-            _bossOrientation.Flip(true);
-            _health.HealthPoint = _health.MaxHealth;
-            foreach (GameObject bodyPart in _bodyParts)
-            {
-                bodyPart.transform.position = transform.position;
-                bodyPart.SetActive(false);
-            }
-            InitializePoints();
-            RotateAndFlip();
+            bodyPart.transform.position = transform.position;
+            bodyPart.SetActive(false);
         }
+        InitializePoints();
+        RotateAndFlip();
     }
 
     protected void InitializePoints()
     {
-        if(_health == null)
-        {
-            _bossOrientation = GetComponent<BossOrientation>();
-        }
-        
+        _bossOrientation = GetComponent<BossOrientation>();
         _horizontalLimit = Mathf.Abs(_horizontalLimit);
         _verticalLimit = Mathf.Abs(_verticalLimit);
         _origin = transform.position;
