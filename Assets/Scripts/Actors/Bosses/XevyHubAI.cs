@@ -8,6 +8,7 @@ public class XevyHubAI : MonoBehaviour
         DEFENSIVE,
         VULNERABLE,
         ATTACKING,
+        DEAD,
     }
 
     [SerializeField]
@@ -30,10 +31,10 @@ public class XevyHubAI : MonoBehaviour
 
     private BossDirection _actorDirection;
     private BossOrientation _bossOrientation;
-    private GameObject _xevySpell;
     private Animator _animator;
 
-    private BoxCollider2D _swordHitbox;
+    private GameObject _xevySword;
+    private GameObject _xevySpell;
     private PolygonCollider2D _collisionBox;
 
     private XevyHubStatus _status = XevyHubStatus.DEFENSIVE;
@@ -52,12 +53,14 @@ public class XevyHubAI : MonoBehaviour
         _timer = _defensiveTimerCooldown;
         _actorDirection = GetComponent<BossDirection>();
         _bossOrientation = GetComponent<BossOrientation>();
-        _swordHitbox = GetComponentsInChildren<BoxCollider2D>()[1];
+        _xevySword = transform.FindChild("Xevy Sword").gameObject;
         _collisionBox = GetComponent<PolygonCollider2D>();
         _animator = GetComponent<Animator>();
         _animator.SetInteger("State", 1);
         _bossOrientation.OnBossFlipped += OnBossFlipped;
         _xevySpell = transform.FindChild("Xevy Spell").gameObject;
+        GetComponent<Health>().OnDeath += OnXevyHubDefeated;
+
     }
 
     private void FixedUpdate()
@@ -115,7 +118,7 @@ public class XevyHubAI : MonoBehaviour
                 _timer = _attackingTimerCooldown;
                 _animator.SetInteger("State", 3);
                 _collisionBox.enabled = false;
-                _swordHitbox.enabled = true;
+                _xevySword.SetActive(true);
                 _status = XevyHubStatus.ATTACKING;
             }
             else if (_status == XevyHubStatus.ATTACKING)
@@ -123,10 +126,18 @@ public class XevyHubAI : MonoBehaviour
                 _timer = _defensiveTimerCooldown;
                 _animator.SetInteger("State", 2);
                 _xevySpell.SetActive(true);
-                _swordHitbox.enabled = false;
+                _xevySword.SetActive(false);
                 _status = XevyHubStatus.DEFENSIVE;
                 _hasAttacked = true;
             }
         }
+    }
+
+    private void OnXevyHubDefeated()
+    {
+        _status = XevyHubStatus.DEAD;
+        _animator.SetInteger("State", 0);
+        _xevySpell.SetActive(false);
+        _xevySword.SetActive(false);
     }
 }
