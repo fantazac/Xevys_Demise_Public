@@ -10,7 +10,7 @@ public class DestroyBossProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (ExcludedObjects.Contains(collider.gameObject))
+        if (ExcludedObjects != null && ExcludedObjects.Contains(collider.gameObject))
         {
             return;
         }
