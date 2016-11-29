@@ -10,8 +10,6 @@ using UnityEngine.SceneManagement;
 public class SceneSwitcher : MonoBehaviour
 {
     public Texture2D maskTexture;
-    private bool _isUiVisible = true;
-
 
     private void Start()
     {
@@ -71,31 +69,4 @@ public class SceneSwitcher : MonoBehaviour
     //        TransitionKit.instance.transitionWithDelegate(mask);
     //    }
     //}
-
-
-    void OnEnable()
-    {
-        TransitionKit.onScreenObscured += onScreenObscured;
-        TransitionKit.onTransitionComplete += onTransitionComplete;
-    }
-
-
-    void OnDisable()
-    {
-        // as good citizens we ALWAYS remove event handlers that we added
-        TransitionKit.onScreenObscured -= onScreenObscured;
-        TransitionKit.onTransitionComplete -= onTransitionComplete;
-    }
-
-
-    void onScreenObscured()
-    {
-        _isUiVisible = false;
-    }
-
-
-    void onTransitionComplete()
-    {
-        _isUiVisible = true;
-    }
 }
