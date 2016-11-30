@@ -12,8 +12,7 @@ public class MoveFireball : MonoBehaviour
     [SerializeField]
     private float _vulcanRightPitIndex = 3;
 
-    [SerializeField]
-    private GameObject _vulcan;
+    public GameObject Vulcan { get; set; }
 
     private BossOrientation _vulcanBossOrientation;
     private Rigidbody2D _rigidbody;
@@ -23,7 +22,7 @@ public class MoveFireball : MonoBehaviour
 
     private void Start()
     {
-        _vulcanBossOrientation = _vulcan.GetComponent<BossOrientation>();
+        _vulcanBossOrientation = Vulcan.GetComponent<BossOrientation>();
         _rigidbody = GetComponent<Rigidbody2D>();
         if (transform.localEulerAngles.z == 0)
         {
@@ -37,7 +36,7 @@ public class MoveFireball : MonoBehaviour
         else
         {
             _rigidbody.velocity = new Vector2(_vulcanBossOrientation.Orientation * _horizontalSpeed,
-                ((_vulcan.GetComponent<VulcanAI>().CurrentIndex == _vulcanRightPitIndex ? -1 : 1) *
+                ((Vulcan.GetComponent<VulcanAI>().CurrentIndex == _vulcanRightPitIndex ? -1 : 1) *
                 _vulcanBossOrientation.Orientation * _verticalSpeed));
         }
     }

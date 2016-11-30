@@ -50,6 +50,9 @@ public class InputManager : MonoBehaviour
     public delegate void OnBackButtonPressedInMenuHandler();
     public event OnBackButtonPressedInMenuHandler OnBackButtonPressedInMenu;
 
+    public delegate void OnCheatHandler(int item);
+    public event OnCheatHandler OnCheat;
+
     private KeyboardInputs _keyboardInputs;
     private GamepadInputs _gamepadInputs;
 
@@ -70,6 +73,7 @@ public class InputManager : MonoBehaviour
         _keyboardInputs.OnPause += InputsOnPause;
         _keyboardInputs.OnFlip += InputsOnFlip;
         _keyboardInputs.OnEnterPortal += InputsOnEnterPortal;
+        _keyboardInputs.OnCheat += InputsOnCheat;
 
         _gamepadInputs = GetComponentInChildren<GamepadInputs>();
         _gamepadInputs.OnMove += InputsOnMove;
@@ -205,5 +209,10 @@ public class InputManager : MonoBehaviour
     private void InputsOnFlip(bool goesRight)
     {
         OnFlip(goesRight);
+    }
+
+    private void InputsOnCheat(int item)
+    {
+        OnCheat(item);
     }
 }

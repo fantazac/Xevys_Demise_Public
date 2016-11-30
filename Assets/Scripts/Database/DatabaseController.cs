@@ -17,7 +17,7 @@ public class DatabaseController : DatabaseConnection
         base.Start();
         _accountStats = GetComponent<AccountStats>();
         _accountSettings = GetComponent<AccountSettings>();
-        if(!_loadDB)
+        if(!_loadDB || !File.Exists(Path.Combine(Application.persistentDataPath, "Database.db")))
         {
             File.Copy(Path.Combine(Application.streamingAssetsPath, "Database.db"), Path.Combine(Application.persistentDataPath, "Database.db"), true);
             CreateAll();

@@ -47,6 +47,10 @@ public class KeyboardInputs : MonoBehaviour
 
     private PauseMenuAnimationManager _pauseMenuAnimationManager;
     private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
+
+    public delegate void KeyboardOnCheatHandler(int item);
+    public event KeyboardOnCheatHandler OnCheat;
+
     private bool _usingArrowControlsScheme;
     private bool _inMenu;
     private bool _died;
@@ -77,12 +81,65 @@ public class KeyboardInputs : MonoBehaviour
                 WASDControlsScheme();
             }
 
+            CheckCheatKeys();
             CheckAllKeysPressed();
             UpdateStartButton();
         }
         else if (!_died)
         {
             UpdateStartButton();
+        }
+    }
+
+    private void CheckCheatKeys()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            OnCheat(0);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            OnCheat(1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            OnCheat(2);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            OnCheat(3);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            OnCheat(4);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            OnCheat(5);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            OnCheat(6);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            OnCheat(7);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            OnCheat(8);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            OnCheat(9);
+        }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            OnCheat(10);
+        }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            OnCheat(11);
         }
     }
 

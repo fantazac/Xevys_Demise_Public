@@ -22,10 +22,13 @@ public class BehemothAI : MonoBehaviour
     private float _speed = 25;
 
     [SerializeField]
-    private int _stunTime = 3;
+    private float _struckTime = 2;
 
     [SerializeField]
-    private int _chargeTime = 5;
+    private float _stunTime = 1;
+
+    [SerializeField]
+    private float _chargeTime = 5;
 
     [SerializeField]
     private float _feignTime = 0.33f;
@@ -50,7 +53,6 @@ public class BehemothAI : MonoBehaviour
     private BehemothStatus _status = BehemothStatus.WAIT;
     private float _timeLeft;
     private bool _isCharging;
-    private bool _canUseOnEnable = false;
 
     private void Start()
     {
@@ -61,24 +63,7 @@ public class BehemothAI : MonoBehaviour
         _polygonHitbox = GetComponent<PolygonCollider2D>();
         _attack = GetComponent<OnBehemothAttackHit>();
         _health.OnDeath += OnBehemothDefeated;
-        SetupBehemothReset();
-        _canUseOnEnable = true;
-    }
-
-    private void SetupBehemothReset()
-    {
-        _initialPosition = transform.position;
         _timeLeft = _chargeTime;
-    }
-
-    private void OnEnable()
-    {
-        if (_canUseOnEnable)
-        {
-            SetWaitStatus();
-            _health.HealthPoint = _health.MaxHealth;
-            transform.position = _initialPosition;
-        }
     }
 
     private void FixedUpdate()
