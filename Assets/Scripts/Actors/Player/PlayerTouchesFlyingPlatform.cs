@@ -54,6 +54,8 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
 
     public void DropFromPlatform()
     {
+        StopAllCoroutines();
+        EnablePlatform();
         DisablePlatform();
 
         StartCoroutine(EnablePlatformWhenPlayerPassedThrough());
