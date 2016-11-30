@@ -38,7 +38,7 @@ public class XevyProjectileInteraction : MonoBehaviour
         _throwAxeAttack.OnAxeThrown -= OnAxeThrown;
     }
 
-    public bool CheckKnivesDistance()
+    private bool CheckKnivesDistance()
     {
         List<GameObject> knifeDictionaryKeys = new List<GameObject>(_knivesDictionary.Keys);
 
@@ -60,7 +60,7 @@ public class XevyProjectileInteraction : MonoBehaviour
         return false;
     }
 
-    public bool CheckAxesDistance()
+    private bool CheckAxesDistance()
     {
         List<GameObject> axeDictionaryKeys = new List<GameObject>(_axesDictionary.Keys);
 
@@ -79,6 +79,11 @@ public class XevyProjectileInteraction : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public bool CheckIfProjectilesInSight()
+    {
+        return (CheckKnivesDistance() || CheckAxesDistance());
     }
 
     private void OnKnifeThrown(GameObject knife)

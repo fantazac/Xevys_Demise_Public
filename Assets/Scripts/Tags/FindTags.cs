@@ -20,6 +20,7 @@ public class FindTags : MonoBehaviour
     public string PauseMenuControlsOptionsButtons { get; private set; }
     public string PauseMenuButtons { get; private set; }
     public string PauseMenuAudioOptionsButtons { get; private set; }
+    public string CharacterGroundHitbox { get; private set; }
 
     private void Start()
     {
@@ -40,5 +41,6 @@ public class FindTags : MonoBehaviour
         PauseMenuControlsOptionsButtons = "PauseMenuControlsOptionsButtons";
         PauseMenuButtons = "PauseMenuButtons";
         PauseMenuAudioOptionsButtons = "PauseMenuAudioOptionsButtons";
+        CharacterGroundHitbox = "CharacterTouchesGround";
     }
 }

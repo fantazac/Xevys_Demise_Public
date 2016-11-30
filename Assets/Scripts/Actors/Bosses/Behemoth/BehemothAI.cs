@@ -178,7 +178,7 @@ public class BehemothAI : MonoBehaviour
 
     private void SetStruckStatus()
     {
-        _timeLeft = 1;
+        _timeLeft = _struckTime;
         _polygonHitbox.enabled = true;
         _animator.SetInteger("State", 3);
         _attack.enabled = false;

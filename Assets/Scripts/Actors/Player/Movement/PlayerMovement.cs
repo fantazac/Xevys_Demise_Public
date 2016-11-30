@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     protected BoxCollider2D _basicAttackBox;
     protected BoxCollider2D _playerBoxCollider;
     protected BoxCollider2D _playerCroutchHitbox;
+    protected BoxCollider2D _playerGroundHitbox;
     protected SpriteRenderer _playerSpriteRenderer;
     protected InventoryManager _inventoryManager;
     protected PlayerTouchesGround _playerTouchesGround;
@@ -49,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _inputManager = GetComponentInChildren<InputManager>();
         _basicAttackBox = GameObject.Find(StaticObjects.GetFindTags().CharacterBasicAttackBox).GetComponent<BoxCollider2D>();
+        _playerGroundHitbox = GameObject.Find(StaticObjects.GetFindTags().CharacterGroundHitbox).GetComponent<BoxCollider2D>();
         _showItems = StaticObjects.GetItemCanvas().GetComponent<ShowItems>();
         _playerHealth = GetComponent<Health>();
         _playerTouchesGround = GetComponentInChildren<PlayerTouchesGround>();
@@ -125,10 +127,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_playerState.IsCroutching)
         {
-            if (!PlayerIsMovingVertically())
-            {
-                
-            }
             transform.position += Vector3.up * CROUTCH_Y_OFFSET;
             SetCroutch(false);
         }

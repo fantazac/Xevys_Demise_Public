@@ -42,7 +42,10 @@ public class Health : MonoBehaviour
         _health += healPoints;
 
         OnHeal(healPoints);
-        OnHealthChanged(healPoints);
+        if (OnHealthChanged != null)
+        {
+            OnHealthChanged(healPoints);
+        }
     }
 
     public void FullHeal()
