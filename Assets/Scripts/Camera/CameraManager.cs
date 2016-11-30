@@ -23,6 +23,9 @@ public class CameraManager : MonoBehaviour
     [SerializeField]
     private List<GameObject> listAreaNodes = new List<GameObject>();
 
+    public delegate void OnAreaChangedHandler(int roomId);
+    public event OnAreaChangedHandler OnAreaChanged;
+
     public int CurrentArea { get { return _currentArea; } }
 
     void Start()
@@ -110,6 +113,10 @@ public class CameraManager : MonoBehaviour
                     return;
                 }
                 _currentArea = previousArea;
+                if (gameObject.name == StaticObjects.GetFindTags().MainCamera && OnAreaChanged != null)
+                {
+                    OnAreaChanged(listAreaNodes.IndexOf(n));
+                }
             }
         }
     }
@@ -192,5 +199,5 @@ public class CameraManager : MonoBehaviour
     public List<GameObject> getListNodes()
     {
         return listAreaNodes;
-    }       
+    }
 }

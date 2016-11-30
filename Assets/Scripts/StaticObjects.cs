@@ -11,6 +11,7 @@ public class StaticObjects : MonoBehaviour
     private static GameObject _itemCanvas;
     private static GameObject _database;
     private static GameObject _tags;
+    private static GameObject _mainCamera;
     private static PlayerState _playerState;
     private static FindTags _findTags;
     private static UnityTags _unityTags;
@@ -32,6 +33,7 @@ public class StaticObjects : MonoBehaviour
         _healthBar = GameObject.Find(_findTags.HealthBar);
         _itemCanvas = GameObject.Find(_findTags.ItemCanvas);
         _database = GameObject.Find(_findTags.Database);
+        _mainCamera = GameObject.Find(_findTags.MainCamera);
         _respawnEnemy = GameObject.Find(_findTags.RespawnEnemy);
         
         _playerState = _player.GetComponent<PlayerState>();
@@ -90,5 +92,10 @@ public class StaticObjects : MonoBehaviour
     public static GameObject GetRespawnEnemy()
     {
         return _respawnEnemy;
+    }
+
+    public static GameObject GetMainCamera()
+    {
+        return _mainCamera;
     }
 }
