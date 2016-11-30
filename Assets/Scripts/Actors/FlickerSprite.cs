@@ -54,7 +54,10 @@ public class FlickerSprite : MonoBehaviour
 
     private void OnDisable()
     {
-        StopAllCoroutines();
-        _sprite.color = _initialColor;
+        if(_flickerDelay != null)
+        {
+            StopAllCoroutines();
+            _sprite.color = _initialColor;
+        }
     }
 }
