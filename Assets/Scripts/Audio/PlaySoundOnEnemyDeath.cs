@@ -37,6 +37,9 @@ public class PlaySoundOnEnemyDeath : MonoBehaviour
     {
         yield return _finishedSoundDelay;
 
-        OnDeathSoundFinished();
+        if (OnDeathSoundFinished != null)
+        {
+            OnDeathSoundFinished();
+        }
     }
 }

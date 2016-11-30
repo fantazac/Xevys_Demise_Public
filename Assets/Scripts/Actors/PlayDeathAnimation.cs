@@ -9,7 +9,7 @@ public class PlayDeathAnimation : MonoBehaviour
     private Animator _animator;
 
     private void Start()
-    {
+    {   
         GetComponent<Health>().OnDeath += OnDeath;
 
         _animator = GetComponentInChildren<Animator>();
@@ -18,6 +18,14 @@ public class PlayDeathAnimation : MonoBehaviour
     private void OnDeath()
     {
         _animator.SetBool(StaticObjects.GetAnimationTags().IsDying, true);
+
+        StartCoroutine(FinishAnimation());
+    }
+
+    private IEnumerator FinishAnimation()
+    {
+        yield return null;
+
         if (OnDyingAnimationFinished != null)
         {
             OnDyingAnimationFinished();
