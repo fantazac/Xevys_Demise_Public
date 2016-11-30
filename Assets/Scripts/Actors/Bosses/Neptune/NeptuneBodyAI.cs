@@ -3,15 +3,15 @@
 public class NeptuneBodyAI : NeptuneHeadAI
 {
     [SerializeField]
-    private GameObject _neptuneHead;
+    private GameObject _neptune;
 
-    private NeptuneHeadAI _headAi;
+    private NeptuneHeadAI _neptuneAI;
 
 	protected override void Start()
     {
-        _headAi = _neptuneHead.GetComponent<NeptuneHeadAI>();
-        _horizontalLimit = _headAi.HorizontalLimit;
-        _verticalLimit = _headAi.VerticalLimit;
+        _neptuneAI = GetComponentInParent<NeptuneHeadAI>();
+        _horizontalLimit = _neptuneAI.HorizontalLimit;
+        _verticalLimit = _neptuneAI.VerticalLimit;
         InitializePoints();
         RotateAndFlip();
     }

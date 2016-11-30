@@ -1,30 +1,47 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+struct SingleAudioListener
+{
+    public int audioSourceID;
+    public AudioSource audioSource;
+    public float maxVolume;
+    public bool isMusic;
+}
 
 public class PauseMenuAudioSettingListener : MonoBehaviour
 {
-    [SerializeField]
-    private int _audioSourceID = 0;
-    private AudioSource _audioSource;
-    private float _maxVolume;
-    private bool _isMusic = false;
+    private List<SingleAudioListener> _audioListeners;
 
     private void Start()
     {
-        if(tag == "MusicZone")
+        _audioListeners = new List<SingleAudioListener>();
+        AudioSourcePlayer audioSourcePlayer = GetComponent<AudioSourcePlayer>();
+        for(int i = 0; i < audioSourcePlayer.GetAudioSourcesLength(); i++)
         {
-            _isMusic = true;
+            SingleAudioListener audioListener = new SingleAudioListener();
+            AudioSource audioSource = audioSourcePlayer.GetAudioSource(i);
+            audioListener.audioSourceID = i;
+            audioListener.audioSource = audioSource;
+            audioListener.maxVolume = audioSource.volume;
+            if (tag == "MusicZone")
+            {
+                audioListener.isMusic = true;
+            }
+            _audioListeners.Add(audioListener);
         }
-        AudioSource[] audioSources = GetComponents<AudioSource>();
-        _audioSource = audioSources[_audioSourceID];
-        _maxVolume = _audioSource.volume;
         PauseMenuAudioSettingsController.OnVolumeChanged += SetVolume;
     }
 
     private void SetVolume(bool isMusic, float volume)
     {
-        if(_isMusic == isMusic)
+        if(_audioListeners.First().isMusic == isMusic)
         {
-            _audioSource.volume = volume * _maxVolume;
+            foreach (SingleAudioListener audioListener in _audioListeners)
+            {
+                audioListener.audioSource.volume = volume * audioListener.maxVolume;
+            }
         }
     }
 

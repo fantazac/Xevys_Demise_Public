@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class AudioSourcePlayer : MonoBehaviour
 {
@@ -56,5 +55,10 @@ public class AudioSourcePlayer : MonoBehaviour
     public AudioSource GetAudioSource(int index)
     {
         return _audioSources[index];
+    }
+
+    public int GetAudioSourcesLength()
+    {
+        return _audioSources.Length;
     }
 }

@@ -3,7 +3,6 @@ using System.Collections;
 
 public class PlaySoundOnTrigger : MonoBehaviour
 {
-
     private AudioSourcePlayer _audioSourcePlayer;
     
     public delegate void OnSoundFinishedHandler();

@@ -5,12 +5,9 @@ public class SpawnBossOnBreakableItemDestroyed : MonoBehaviour
 {
     [SerializeField]
     private GameObject _boss;
-    [SerializeField]
-    private GameObject _bossBattleMusicZone;
-    private AudioSourcePlayer _bossBattleMusic;
 
     [SerializeField]
-    private bool _instanciateBoss = false;
+    private bool _destroyOnBossDefeated = true;
 
     private GameObject _bossInstance;
 
@@ -18,69 +15,74 @@ public class SpawnBossOnBreakableItemDestroyed : MonoBehaviour
     private Health _playerHealth;
     private Health _bossHealth;
 
-    private void Start ()
+    public delegate void OnBossFightEnabledHandler();
+    public event OnBossFightEnabledHandler OnBossFightEnabled;
+
+    public delegate void OnBossSpawnHandler(GameObject bossInstance);
+    public event OnBossSpawnHandler OnBossSpawn;
+
+    public delegate void OnBossFightDisabledHandler();
+    public event OnBossFightDisabledHandler OnBossFightDisabled;
+
+    public delegate void OnBossFightFinishedHandler();
+    public event OnBossFightFinishedHandler OnBossFightFinished;
+
+    private void Start()
     {
         _health = GetComponent<Health>();
         _health.OnDeath += EnableBossFight;
-        _bossBattleMusic = _bossBattleMusicZone.GetComponent<AudioSourcePlayer>();
 
-        if (!_instanciateBoss)
-        {
-            _bossHealth = _boss.GetComponent<Health>();
-            if (_bossHealth == null)
-            {
-                _bossHealth = _boss.GetComponentInChildren<Health>();
-            }
-            _bossHealth.OnDeath += DestroyBreakableItem;
-        }
-
-        _playerHealth =  StaticObjects.GetPlayer().GetComponent<Health>();
+        _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
         _playerHealth.OnDeath += ResetBossRoom;
 
         _boss.SetActive(false);
-	}
+    }
 
     private void EnableBossFight()
     {
-        if (_instanciateBoss)
+        _bossInstance = (GameObject)Instantiate(_boss, _boss.transform.position, new Quaternion());
+
+        _bossHealth = _bossInstance.GetComponent<Health>();
+        if (_bossHealth == null)
         {
-            _bossInstance = (GameObject)Instantiate(_boss, _boss.transform.position, new Quaternion());
-            _bossHealth = _bossInstance.GetComponent<Health>();
-            if (_bossHealth == null)
-            {
-                _bossHealth = _boss.GetComponentInChildren<Health>();
-            }
-            _bossHealth.OnDeath += DestroyBreakableItem;
-            _bossInstance.SetActive(true);
+            _bossHealth = _bossInstance.GetComponentInChildren<Health>();
         }
-        else
-        {
-            _boss.SetActive(true);
-            _bossBattleMusic.Play();
-        }
-        _health.HealthPoint = _health.MaxHealth;
+        _bossHealth.OnDeath += BossFightFinished;
+
+        _bossInstance.SetActive(true);
         gameObject.SetActive(false);
+
+        if(OnBossSpawn != null)
+        {
+            OnBossSpawn(_bossInstance);
+        }
+        
+        OnBossFightEnabled();
     }
 
     private void ResetBossRoom()
     {
-        if (_instanciateBoss)
+        if (_bossInstance != null)
         {
             Destroy(_bossInstance);
+
+            _health.HealthPoint = _health.MaxHealth;
+            gameObject.SetActive(true);
+
+            OnBossFightDisabled();
         }
-        else
-        {
-            _bossBattleMusic.Stop();
-            _boss.SetActive(false);
-        }
-        
-        gameObject.SetActive(true);
     }
 
-    private void DestroyBreakableItem()
+    private void BossFightFinished()
     {
-        _playerHealth.OnDeath -= ResetBossRoom;
-        _bossBattleMusic.Stop();
-        Destroy(gameObject);
+        OnBossFightFinished();
+        Destroy(_bossInstance);
+
+        if (_destroyOnBossDefeated)
+        {
+            _playerHealth.OnDeath -= ResetBossRoom;
+            Destroy(_boss);
+            Destroy(gameObject);
+        }
     }
 }

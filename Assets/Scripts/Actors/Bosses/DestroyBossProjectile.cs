@@ -6,12 +6,11 @@ public class DestroyBossProjectile : MonoBehaviour
     [SerializeField]
     private string[] _tags;
 
-    [SerializeField]
-    private GameObject[] _excludedObjects;
+    public GameObject[] ExcludedObjects { get; set; }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (_excludedObjects.Contains(collider.gameObject))
+        if (ExcludedObjects != null && ExcludedObjects.Contains(collider.gameObject))
         {
             return;
         }
