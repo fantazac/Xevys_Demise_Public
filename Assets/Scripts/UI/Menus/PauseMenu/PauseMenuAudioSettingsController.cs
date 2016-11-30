@@ -14,6 +14,7 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
     private Switch _musicSwitch;
 
     private float _musicVolumeBeforeDesactivate;
+    public static float _sfxVolume { get; private set; }
     public float _sfxVolumeBeforeDesactivate { get; private set; }
     private bool _sfxVolumeChanged;
     private PauseMenuAnimationManager _pauseMenuAnimationManager;
@@ -30,6 +31,7 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
         _pauseMenuCurrentInterfaceAnimator.OnAudioInterfaceIsCurrent += FXVolumeInAudioInterface;
         accountSettings.OnMusicStateReloaded += ReloadMusicState;
 
+        _sfxVolume = 1f;
         _musicSwitch = GetComponentInChildren<Switch>();
         Slider[] sliders = GetComponentsInChildren<Slider>();
         _sfxVolumeSlider = sliders[0];
@@ -49,6 +51,7 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
 
     public void SetSoundVolume(Single volume)
     {
+        _sfxVolume = volume;
         OnVolumeChanged(false, volume);
     }
 
