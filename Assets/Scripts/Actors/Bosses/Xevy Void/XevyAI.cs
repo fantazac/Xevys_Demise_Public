@@ -79,7 +79,7 @@ public class XevyAI : MonoBehaviour
     {
         if (_statusTimer > 0)
         {
-            if (_projectileInteraction.CheckKnivesDistance() || _projectileInteraction.CheckAxesDistance())
+            if (_projectileInteraction.CheckIfProjectilesInSight())
             {
                 SetBlockingStatus();
             }
@@ -145,7 +145,7 @@ public class XevyAI : MonoBehaviour
 
     private void UpdateWhenBlocking()
     {
-        if (!_projectileInteraction.CheckKnivesDistance() && !_projectileInteraction.CheckAxesDistance())
+        if (!_projectileInteraction.CheckIfProjectilesInSight())
         {
             SetIdleStatus();
         }
@@ -154,7 +154,7 @@ public class XevyAI : MonoBehaviour
     private void UpdateWhenHealing()
     {
         _action.Heal();
-        if ((!_projectileInteraction.CheckKnivesDistance() && !_projectileInteraction.CheckAxesDistance()) || _playerInteraction.CheckPlayerDistance())
+        if (!_projectileInteraction.CheckIfProjectilesInSight() || _playerInteraction.CheckPlayerDistance())
         {
             SetVulnerableStatus();
         }

@@ -17,7 +17,7 @@ public class XevyAction: MonoBehaviour
     private float _tornadoSpeed = 15;
 
     [SerializeField]
-    private float _tornadoHeightModifier = 0.5f;
+    private float _tornadoHeightModifier = 1.25f;
 
     [SerializeField]
     private float _horizontalAxisModifier = 3.5f;
@@ -57,7 +57,7 @@ public class XevyAction: MonoBehaviour
 
     public void Heal()
     {
-        GetComponent<Health>().Heal(2);
+        GetComponent<Health>().Heal(50);
     }
 
     public XevyAttackType Block()
