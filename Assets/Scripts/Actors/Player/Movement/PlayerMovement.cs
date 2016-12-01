@@ -273,7 +273,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _playerState.SetFalling();
         }
-
+        
         UpdateMovement();
     }
 
