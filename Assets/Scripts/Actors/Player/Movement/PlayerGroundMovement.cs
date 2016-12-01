@@ -88,6 +88,12 @@ public class PlayerGroundMovement : PlayerMovement
         return !_playerState.IsCroutching && !_playerState.IsKnockedBack && !PlayerIsMovingVertically();
     }
 
+    private bool CanReactivateDoubleJump()
+    {
+        return !IsJumping() && !PlayerTouchesRoof()
+            && _inventoryManager.FeatherEnabled && !_canDoubleJump;
+    }
+
     protected override void UpdateMovement()
     {
         if (enabled)
@@ -103,7 +109,7 @@ public class PlayerGroundMovement : PlayerMovement
                 OnPlayerLanding();
             }
 
-            if (!IsJumping() && PlayerTouchesGround() && _inventoryManager.FeatherEnabled && !_canDoubleJump)
+            if (CanReactivateDoubleJump())
             {
                 ActivateDoubleJump();
             }

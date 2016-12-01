@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour
     protected BoxCollider2D _playerBoxCollider;
     protected BoxCollider2D _playerCroutchHitbox;
     protected BoxCollider2D _playerGroundHitbox;
+    protected PlayerTouchesRoof _playertouchesRoof;
     protected SpriteRenderer _playerSpriteRenderer;
     protected InventoryManager _inventoryManager;
     protected PlayerTouchesGround _playerTouchesGround;
@@ -51,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
         _inputManager = GetComponentInChildren<InputManager>();
         _basicAttackBox = GameObject.Find(StaticObjects.GetFindTags().CharacterBasicAttackBox).GetComponent<BoxCollider2D>();
         _playerGroundHitbox = GameObject.Find(StaticObjects.GetFindTags().CharacterGroundHitbox).GetComponent<BoxCollider2D>();
+        _playertouchesRoof = GetComponentInChildren<PlayerTouchesRoof>();
         _showItems = StaticObjects.GetItemCanvas().GetComponent<ShowItems>();
         _playerHealth = GetComponent<Health>();
         _playerTouchesGround = GetComponentInChildren<PlayerTouchesGround>();
@@ -230,6 +232,11 @@ public class PlayerMovement : MonoBehaviour
         return IsJumping() && _rigidbody.velocity.y > 0;
     }
 
+    protected bool PlayerTouchesRoof()
+    {
+        return _playertouchesRoof.TouchesRoof;
+    }
+
     protected void OnPlayerFalling()
     {
         OnFalling();
@@ -246,12 +253,12 @@ public class PlayerMovement : MonoBehaviour
         Flip(goesRight);
     }
 
-    private bool IsInJumpingStateAndIsJumping()
+    protected bool IsInJumpingStateAndIsJumping()
     {
         return PlayerIsJumping() == _playerState.IsJumping;
     }
 
-    private bool IsInFallingStateAndIsFalling()
+    protected bool IsInFallingStateAndIsFalling()
     {
         return PlayerIsFalling() == _playerState.IsFalling;
     }
