@@ -22,10 +22,10 @@ public class BehemothAI : MonoBehaviour
     private float _speed = 25;
 
     [SerializeField]
-    private float _struckTime = 2;
+    private float _struckTime = 1;
 
     [SerializeField]
-    private float _stunTime = 1;
+    private float _stunTime = 3;
 
     [SerializeField]
     private float _chargeTime = 5;

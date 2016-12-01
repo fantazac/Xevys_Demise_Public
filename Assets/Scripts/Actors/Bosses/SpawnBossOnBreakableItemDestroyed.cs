@@ -50,7 +50,6 @@ public class SpawnBossOnBreakableItemDestroyed : MonoBehaviour
         _bossHealth.OnDeath += BossFightFinished;
 
         _bossInstance.SetActive(true);
-        gameObject.SetActive(false);
 
         if(OnBossSpawn != null)
         {

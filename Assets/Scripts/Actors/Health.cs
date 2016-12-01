@@ -94,7 +94,7 @@ public class Health : MonoBehaviour
         }
     }
 
-    private bool IsDead()
+    public bool IsDead()
     {
         return _health <= 0;
     }

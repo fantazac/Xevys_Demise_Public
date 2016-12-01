@@ -13,6 +13,11 @@ public class PlaySoundOnHealthChanged : MonoBehaviour
 
     private AudioSourcePlayer _audioSourcePlayer;
 
+    private WaitForSeconds _delayHitSound;
+
+    public delegate void OnHitSoundFinishedHandler();
+    public event OnHitSoundFinishedHandler OnHitSoundFinished;
+
     private void Start()
     {
         _health = GetComponent<Health>();
@@ -20,15 +25,26 @@ public class PlaySoundOnHealthChanged : MonoBehaviour
         _health.OnHeal += PlayHealSound;
 
         _audioSourcePlayer = GetComponent<AudioSourcePlayer>();
+
+        _delayHitSound = new WaitForSeconds(_audioSourcePlayer.GetAudioSource(_hitSoundIndex).clip.length);
     }
 
     private void PlayHitSound(int hitPoints)
     {
         _audioSourcePlayer.Play(_hitSoundIndex);
+        StartCoroutine(FinishHitSound());
     }
 
     private void PlayHealSound(int hitPoints)
     {
         _audioSourcePlayer.Play(_healSoundIndex);
     }
+
+    private IEnumerator FinishHitSound()
+    {
+        yield return _delayHitSound;
+
+        OnHitSoundFinished();
+    }
+
 }
