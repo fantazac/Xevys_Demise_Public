@@ -41,7 +41,7 @@ public class AudioSourcePlayer : MonoBehaviour
 
     public void StopAll()
     {
-        foreach (AudioSource audioSource in _audioSources)
+        foreach(AudioSource audioSource in _audioSources)
         {
             audioSource.Stop();
         }

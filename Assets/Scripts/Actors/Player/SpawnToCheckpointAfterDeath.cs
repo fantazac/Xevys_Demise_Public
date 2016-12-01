@@ -11,14 +11,12 @@ public class SpawnToCheckpointAfterDeath : MonoBehaviour
     private int _lastCheckpoint = 0;
 
     private Health _playerHealth;
-    private PlayerGroundMovement _playerGroundMovement;
     private Animator _animator;
 
     private void Start()
     {
         _playerHealth = GetComponent<Health>();
         _animator = GetComponentInChildren<Animator>();
-        _playerGroundMovement = GetComponent<PlayerGroundMovement>();
     }
 
     public void SaveCheckpoint(int checkPoint)
@@ -51,7 +49,6 @@ public class SpawnToCheckpointAfterDeath : MonoBehaviour
     private void RestartPlayer()
     {
         _playerHealth.FullHeal();
-        _playerGroundMovement.enabled = true;
         _animator.SetBool(StaticObjects.GetAnimationTags().IsDying, false);
     }
 }
