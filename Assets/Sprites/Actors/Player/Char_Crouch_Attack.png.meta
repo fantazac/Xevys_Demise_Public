@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 54949f7d0176dd244a0f8f21eb143788
-timeCreated: 1478542205
+timeCreated: 1480617614
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -61,12 +61,12 @@ TextureImporter:
       name: Char_Crouch_Attack_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 2
         y: 0
-        width: 159
+        width: 161
         height: 160
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -74,12 +74,12 @@ TextureImporter:
       name: Char_Crouch_Attack_1
       rect:
         serializedVersion: 2
-        x: 159
+        x: 163
         y: 0
-        width: 159
+        width: 161
         height: 160
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -87,12 +87,12 @@ TextureImporter:
       name: Char_Crouch_Attack_2
       rect:
         serializedVersion: 2
-        x: 318
+        x: 324
         y: 0
-        width: 159
+        width: 161
         height: 160
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -100,12 +100,12 @@ TextureImporter:
       name: Char_Crouch_Attack_3
       rect:
         serializedVersion: 2
-        x: 477
+        x: 484
         y: 0
-        width: 159
+        width: 161
         height: 160
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -113,12 +113,12 @@ TextureImporter:
       name: Char_Crouch_Attack_4
       rect:
         serializedVersion: 2
-        x: 636
+        x: 644
         y: 0
-        width: 159
+        width: 161
         height: 160
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
