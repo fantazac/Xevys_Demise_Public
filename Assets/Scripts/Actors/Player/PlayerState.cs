@@ -15,6 +15,7 @@ public class PlayerState : MonoBehaviour
     public bool IsKnockedBack { get; private set; }
 
     private float _xSpeed = 0;
+    private Health _playerHealth;
 
     public delegate void OnChangedJumpingHandler();
     public event OnChangedJumpingHandler OnChangedJumping;
@@ -39,24 +40,29 @@ public class PlayerState : MonoBehaviour
 
     private void Start()
     {
+        _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
+
         _invincibility = GetComponent<InvincibilityAfterBeingHit>();
         _invincibility.OnInvincibilityStarted += EnableInvincibility;
         _invincibility.OnInvincibilityFinished += DisableInvincibility;
 
-        StaticObjects.GetPlayer().GetComponent<Health>().OnDeath += ResetState;
+        StaticObjects.GetPlayer().GetComponent<PlaySoundOnHealthChanged>().OnHitSoundFinished += ResetState;
 
         IsFloating = false;
     }
 
     private void ResetState()
     {
-        IsJumping = false;
-        IsFalling = false;
-        SetImmobile();
-        IsFloating = false;
-        IsCroutching = false;
-        IsAttacking = false;
-        IsKnockedBack = false;
+        if (_playerHealth.IsDead())
+        {
+            IsJumping = false;
+            IsFalling = false;
+            SetImmobile();
+            IsFloating = false;
+            IsCroutching = false;
+            IsAttacking = false;
+            IsKnockedBack = false;
+        }
     }
 
     private void EnableInvincibility(float invincibilityTime)

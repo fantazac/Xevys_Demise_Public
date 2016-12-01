@@ -32,7 +32,7 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
     private PauseMenuInputs _pauseMenuInputs;
     private InputManager _inputManager;
     private Animator _animator;
-    private Health _playeHealth;
+    private Health _playerHealth;
     private PauseMenuGroupButtonsFadeListener _pauseMenuGroupButtonsFadeListener;
 
     private string _currentInterface;
@@ -41,7 +41,7 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
     {
         _pauseMenuInputs = StaticObjects.GetPauseMenuPanel().GetComponentInChildren<PauseMenuInputs>();
         _inputManager = StaticObjects.GetPlayer().GetComponentInChildren<InputManager>();
-        _playeHealth = StaticObjects.GetPlayer().GetComponent<Health>();
+        _playerHealth = StaticObjects.GetPlayer().GetComponent<Health>();
         _pauseMenuGroupButtonsFadeListener = GameObject.Find(StaticObjects.GetFindTags().PauseMenuAudioOptionsButtons).GetComponent<PauseMenuGroupButtonsFadeListener>();
 
         _pauseMenuInputs.OnOptionsInterfaceIsCurrent += OptionsInterfaceIsCurrent;
@@ -49,7 +49,8 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
         _pauseMenuInputs.OnControlsInterfaceIsCurrent += ControlsInterfaceIsCurrent;
         _pauseMenuInputs.OnAudioInterfaceIsCurrent += AudioInterfaceIsCurrent;
         _inputManager.OnBackButtonPressedInMenu += OnGamepadBackBtnPressed;
-        _playeHealth.OnDeath += OnPlayerDeath;
+        //_playerHealth.OnDeath += OnPlayerDeath;
+        StaticObjects.GetPlayer().GetComponent<PlaySoundOnHealthChanged>().OnHitSoundFinished += OnPlayerDeath;
         _pauseMenuGroupButtonsFadeListener.OnAudioInterfaceFadingEnded += AudioInterfaceFadingEnded;
 
         _animator = GetComponent<Animator>();
@@ -59,8 +60,11 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
 
     private void OnPlayerDeath()
     {
-        _animator.SetTrigger("ShowDeathInterface");
-        OnPlayerDeathShowDeathInterface();
+        if (_playerHealth.IsDead())
+        {
+            _animator.SetTrigger("ShowDeathInterface");
+            OnPlayerDeathShowDeathInterface();
+        }
     }
 
     private void OnGamepadBackBtnPressed()
