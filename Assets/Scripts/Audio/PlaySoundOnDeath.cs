@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlaySoundOnEnemyDeath : MonoBehaviour
+public class PlaySoundOnDeath : MonoBehaviour
 {
     [SerializeField]
     private int _deathSoundIndex = -1;
@@ -13,16 +13,33 @@ public class PlaySoundOnEnemyDeath : MonoBehaviour
 
     private float _soundDuration = 0;
 
+    private Health _playerHealth;
     private WaitForSeconds _finishedSoundDelay;
 
     private void Start()
     {
-        GetComponent<Health>().OnDeath += PlayDeathSound;
+        if (gameObject.tag == StaticObjects.GetUnityTags().Player)
+        {
+            _playerHealth = GetComponent<Health>();
+            GetComponent<PlaySoundOnHealthChanged>().OnHitSoundFinished += CheckIfPlayerIsDead;
+        }
+        else
+        {
+            GetComponent<Health>().OnDeath += PlayDeathSound;
+        }
 
         _audioSourcePlayer = GetComponent<AudioSourcePlayer>();
 
         _soundDuration = _audioSourcePlayer.GetAudioSource(_deathSoundIndex).clip.length;
         _finishedSoundDelay = new WaitForSeconds(_soundDuration);
+    }
+
+    private void CheckIfPlayerIsDead()
+    {
+        if (_playerHealth.IsDead())
+        {
+            PlayDeathSound();
+        }
     }
 
     private void PlayDeathSound()
