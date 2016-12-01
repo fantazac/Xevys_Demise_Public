@@ -12,9 +12,11 @@ public class PlayerFloatingInteraction : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private PlayerGroundMovement _playerGroundMovement;
     private PlayerWaterMovement _playerWaterMovement;
+    private PlayerState _playerState;
 
     private void Start()
     {
+        _playerState = StaticObjects.GetPlayerState();
         _rigidbody = StaticObjects.GetPlayer().GetComponent<Rigidbody2D>();
         _playerGroundMovement = StaticObjects.GetPlayer().GetComponent<PlayerGroundMovement>();
         _playerWaterMovement = StaticObjects.GetPlayer().GetComponent<PlayerWaterMovement>();
@@ -47,13 +49,13 @@ public class PlayerFloatingInteraction : MonoBehaviour
         _playerWaterMovement.enabled = true;
         _playerGroundMovement.enabled = false;
 
-        _playerWaterMovement.IsFloating = false;
+        _playerState.DisableFloating();
     }
 
     private void ExitWater()
     {
         OnPlayerOutOfWater();
 
-        _playerWaterMovement.IsFloating = true;
+        _playerState.EnableFloating();
     }
 }

@@ -19,9 +19,12 @@ public class PlayerOxygen : MonoBehaviour
     private PlayerWaterMovement _playerWaterMovement;
     private Health _playerHealth;
     private InventoryManager _inventoryManager;
+    private PlayerState _playerState;
 
     private void Start()
     {
+        _playerState = StaticObjects.GetPlayerState();
+
         _playerHealth = GetComponent<Health>();
 
         _playerWaterMovement = GetComponent<PlayerWaterMovement>();
@@ -52,7 +55,7 @@ public class PlayerOxygen : MonoBehaviour
     {
         yield return _delayBeforeLosingHealth;
 
-        while (_playerWaterMovement.enabled && !_playerWaterMovement.IsFloating)
+        while (_playerWaterMovement.enabled && !_playerState.IsFloating)
         {
             _playerHealth.Hit(_damageOnHit, Vector2.zero);
 

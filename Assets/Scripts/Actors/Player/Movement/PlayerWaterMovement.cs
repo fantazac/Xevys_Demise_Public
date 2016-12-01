@@ -12,12 +12,9 @@ public class PlayerWaterMovement : PlayerMovement
     private const float SPEED_REDUCTION_FACTOR_IN_WATER = 0.3f;
     private const float WATER_DECELARATION = 95f;
 
-    private bool _isFloating = false;
     private float _waterYSpeed;
 
     private AudioReverbZone _audioReverbZone;
-
-    public bool IsFloating { get { return _isFloating; } set { _isFloating = value; } }
 
     protected override void Start()
     {
@@ -42,23 +39,22 @@ public class PlayerWaterMovement : PlayerMovement
             {
                 if (!IsJumping())
                 {
-                    if (_inventoryManager.IronBootsActive)
-                    {
-                        ChangePlayerVerticalVelocity(_jumpingSpeed * WATER_ACCELERATION_FACTOR);
-                    }
-                    else if (_isFloating)
+                    if (!_inventoryManager.IronBootsActive && _playerState.IsFloating)
                     {
                         ChangePlayerVerticalVelocity(_jumpingSpeed / (WATER_ACCELERATION_FACTOR - (PRECISION_MARGIN * WATER_ACCELERATION_FACTOR)));
                         ExitWater();
+                    }
+                    else if (_inventoryManager.IronBootsActive && !_playerState.IsFloating)
+                    {
+                        ChangePlayerVerticalVelocity(_jumpingSpeed * WATER_ACCELERATION_FACTOR);
                     }
                 }
             }
         }
     }
 
-    private void ExitWater()
+    public void ExitWater()
     {
-        _isFloating = false;
         _playerState.DisableFloating();
 
         _playerGroundMovement.enabled = true;
@@ -107,15 +103,30 @@ public class PlayerWaterMovement : PlayerMovement
         }
     }
 
+    protected override bool PlayerIsFalling()
+    {
+        return IsJumping() && _rigidbody.velocity.y < 0;
+    }
+
+    protected override bool PlayerIsJumping()
+    {
+        return IsJumping() && _rigidbody.velocity.y >= 0;
+    }
+
     public override bool IsJumping()
     {
-        return !(_isFloating || _playerTouchesGround.OnGround);
+        return !(_playerState.IsFloating || _playerTouchesGround.OnGround);
     }
 
     protected override void UpdateMovement()
     {
         if (enabled)
         {
+            if (_rigidbody.gravityScale != 0 && !_inventoryManager.IronBootsActive)
+            {
+                _rigidbody.gravityScale = 0;
+            }
+
             if (_inventoryManager.IronBootsActive)
             {
                 _rigidbody.gravityScale = _rigidbody.velocity.y <= 0 ?
@@ -137,11 +148,12 @@ public class PlayerWaterMovement : PlayerMovement
                     }
                 }
             }
-            else if (_isFloating)
+            else if (_playerState.IsFloating)
             {
                 if (_rigidbody.velocity.y > MINIMUM_SPEED_TO_CONTINUE_JUMPING)
                 {
-                    ChangePlayerVerticalVelocity(_rigidbody.velocity.y - MINIMUM_SPEED_TO_CONTINUE_JUMPING - PRECISION_MARGIN);
+                    ExitWater();
+                    ChangePlayerVerticalVelocity(_rigidbody.velocity.y - MINIMUM_SPEED_TO_CONTINUE_JUMPING - (PRECISION_MARGIN * 2));
                 }
                 else
                 {
@@ -159,11 +171,6 @@ public class PlayerWaterMovement : PlayerMovement
             else if (_rigidbody.velocity.y != _waterYSpeed)
             {
                 ChangePlayerVerticalVelocity(_waterYSpeed);
-            }
-
-            if (_rigidbody.gravityScale != 0 && !_inventoryManager.IronBootsActive)
-            {
-                _rigidbody.gravityScale = 0;
             }
 
             if (_waterYSpeed != INITIAL_WATER_FALLING_SPEED)

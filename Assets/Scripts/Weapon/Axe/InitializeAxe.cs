@@ -20,11 +20,6 @@ public class InitializeAxe : MonoBehaviour
     private void Start()
     {
         _flipAxe = StaticObjects.GetPlayer().GetComponent<ActorOrientation>().Orientation;
-        if (StaticObjects.GetPlayerState().IsFloating)
-        {
-            _horinzontalSpeed = 3f;
-            _verticalSpeed = 6f;
-        }
         transform.position = new Vector2(transform.position.x, transform.position.y + _initialHeight);
         transform.eulerAngles = new Vector3(0, 0, _initialRotation);
         GetComponent<Rigidbody2D>().velocity = new Vector2(_horinzontalSpeed * _flipAxe, _verticalSpeed);
