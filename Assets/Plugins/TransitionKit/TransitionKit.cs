@@ -81,7 +81,7 @@ namespace Prime31.TransitionKit
 						obj.transform.position = new Vector3( 99999f, 99999f, 99999f );
 
 						_instance = obj.AddComponent<TransitionKit>();
-						DontDestroyOnLoad( obj );
+						//DontDestroyOnLoad( obj );
 					}
 				}
 				return _instance;

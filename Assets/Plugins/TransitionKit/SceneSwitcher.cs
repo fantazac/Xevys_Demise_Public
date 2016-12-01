@@ -30,43 +30,39 @@ public class SceneSwitcher : MonoBehaviour
     }
 
 
-    //void OnGUI()
-    //{
-    //    // hide the UI during transitions
-    //    if (!_isUiVisible)
-    //        return;
+    void OnGUI()
+    {
+        if (GUILayout.Button("Fade to Scene"))
+        {
+            var fader = new FadeTransition()
+            {
+                nextScene = SceneManager.GetActiveScene().buildIndex == 1 ? 2 : 1,
+                fadedDelay = 0.2f,
+                fadeToColor = Color.black
+            };
+            TransitionKit.instance.transitionWithDelegate(fader);
+        }
 
-    //    if (GUILayout.Button("Fade to Scene"))
-    //    {
-    //        var fader = new FadeTransition()
-    //        {
-    //            nextScene = SceneManager.GetActiveScene().buildIndex == 1 ? 2 : 1,
-    //            fadedDelay = 0.2f,
-    //            fadeToColor = Color.black
-    //        };
-    //        TransitionKit.instance.transitionWithDelegate(fader);
-    //    }
+        if (GUILayout.Button("Wind to Scene"))
+        {
+            var wind = new WindTransition()
+            {
+                nextScene = SceneManager.GetActiveScene().buildIndex == 1 ? 2 : 1,
+                duration = 1.0f,
+                size = 0.3f
+            };
+            TransitionKit.instance.transitionWithDelegate(wind);
+        }
 
-    //    if (GUILayout.Button("Wind to Scene"))
-    //    {
-    //        var wind = new WindTransition()
-    //        {
-    //            nextScene = SceneManager.GetActiveScene().buildIndex == 1 ? 2 : 1,
-    //            duration = 1.0f,
-    //            size = 0.3f
-    //        };
-    //        TransitionKit.instance.transitionWithDelegate(wind);
-    //    }
-
-    //    if (GUILayout.Button("Mask to Scene"))
-    //    {
-    //        var mask = new ImageMaskTransition()
-    //        {
-    //            maskTexture = maskTexture,
-    //            backgroundColor = Color.yellow,
-    //            nextScene = SceneManager.GetActiveScene().buildIndex == 1 ? 2 : 1
-    //        };
-    //        TransitionKit.instance.transitionWithDelegate(mask);
-    //    }
-    //}
+        if (GUILayout.Button("Mask to Scene"))
+        {
+            var mask = new ImageMaskTransition()
+            {
+                maskTexture = maskTexture,
+                backgroundColor = Color.yellow,
+                nextScene = SceneManager.GetActiveScene().buildIndex == 1 ? 2 : 1
+            };
+            TransitionKit.instance.transitionWithDelegate(mask);
+        }
+    }
 }

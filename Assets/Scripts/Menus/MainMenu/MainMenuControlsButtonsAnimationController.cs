@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PauseMenuControlsButtonsAnimationController : MonoBehaviour
+public class MainMenuControlsButtonsAnimationController : MonoBehaviour
 {
     private Animator _animator;
 
@@ -11,7 +11,7 @@ public class PauseMenuControlsButtonsAnimationController : MonoBehaviour
 
     public void ShowControlsInterface()
     {
-        if (!_animator.GetCurrentAnimatorStateInfo(0).IsName(StaticObjects.GetAnimationTags().PauseMenuButtonsGroupActiveAnimation))
+        if (!_animator.GetCurrentAnimatorStateInfo(0).IsName(MainMenuStaticObjects.GetAnimationTags().MainMenuButtonsGroupActiveAnimation))
         {
             _animator.SetTrigger("Show");
         }

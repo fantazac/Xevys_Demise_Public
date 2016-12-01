@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PauseMenuSetActiveState : MonoBehaviour
+public class MainMenuSetActiveState : MonoBehaviour
 {
     private GameObject _firstButtonGameObject;
     private GameObject _OptionsButtonGameObject;
     private GameObject _ControlsButtonGameObject;
     private GameObject _AudioButtonGameObject;
     private EventSystem _eventSystem;
-    private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
-    private PauseMenuInputs _pauseMenuInputs;
+    private MainMenuCurrentInterfaceAnimator _mainMenuCurrentInterfaceAnimator;
 
     private void Start()
     {
@@ -18,17 +17,15 @@ public class PauseMenuSetActiveState : MonoBehaviour
         _ControlsButtonGameObject = transform.GetChild(1).gameObject;
         _AudioButtonGameObject = transform.GetChild(2).gameObject;
         _eventSystem = EventSystem.current;
-        _pauseMenuCurrentInterfaceAnimator = GetComponentInParent<PauseMenuCurrentInterfaceAnimator>();
-        _pauseMenuInputs = StaticObjects.GetPauseMenuPanel().GetComponentInChildren<PauseMenuInputs>();
+        _mainMenuCurrentInterfaceAnimator = GetComponentInParent<MainMenuCurrentInterfaceAnimator>();
 
         switch (gameObject.name)
         {
-            case "PauseMenuMainButtons":
-                _pauseMenuCurrentInterfaceAnimator.OnMainInterfaceIsCurrent += SetSelectedButton;
-                _pauseMenuInputs.OnMainInterfaceOpended += EnableGroupButtonOnFocus;
+            case "MainMenuMainButtons":
+                _mainMenuCurrentInterfaceAnimator.OnMainInterfaceIsCurrent += SetSelectedButton;
                 break;
-            case "PauseMenuOptionsButtons":
-                _pauseMenuCurrentInterfaceAnimator.OnOptionsInterfaceIsCurrent += SetSelectedButton;
+            case "MainMenuOptionsButtons":
+                _mainMenuCurrentInterfaceAnimator.OnOptionsInterfaceIsCurrent += SetSelectedButton;
                 break;
         }
     }
@@ -42,7 +39,7 @@ public class PauseMenuSetActiveState : MonoBehaviour
     {
         switch (from)
         {
-            case "Main":
+            case "Options":
                 SetOptionsSelectedButton();
                 break;
             case "Controls":
