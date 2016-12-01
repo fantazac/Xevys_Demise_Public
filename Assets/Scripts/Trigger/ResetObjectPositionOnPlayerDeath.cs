@@ -21,8 +21,13 @@ public class ResetObjectPositionOnPlayerDeath : MonoBehaviour
         transform.position = _initialPosition;
     }
 
-    private void OnDestroy()
+    public void DisableEvent()
     {
         _playerHealth.OnDeath -= ResetPosition;
+    }
+
+    private void OnDestroy()
+    {
+        DisableEvent();
     }
 }

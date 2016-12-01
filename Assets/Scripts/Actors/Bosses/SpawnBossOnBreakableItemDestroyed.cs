@@ -64,13 +64,12 @@ public class SpawnBossOnBreakableItemDestroyed : MonoBehaviour
     {
         if (_bossInstance != null)
         {
-            Destroy(_bossInstance);
-
-            _health.HealthPoint = _health.MaxHealth;
-            gameObject.SetActive(true);
-
-            OnBossFightDisabled();
+            Destroy(_bossInstance); 
         }
+        _health.HealthPoint = _health.MaxHealth;
+        gameObject.SetActive(true);
+
+        OnBossFightDisabled();
     }
 
     private void BossFightFinished()
