@@ -50,7 +50,7 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
         _pauseMenuInputs.OnAudioInterfaceIsCurrent += AudioInterfaceIsCurrent;
         _inputManager.OnBackButtonPressedInMenu += OnGamepadBackBtnPressed;
         //_playerHealth.OnDeath += OnPlayerDeath;
-        StaticObjects.GetPlayer().GetComponent<PlaySoundOnHealthChanged>().OnHitSoundFinished += OnPlayerDeath;
+        StaticObjects.GetPlayer().GetComponent<PlaySoundOnDeath>().OnDeathSoundFinished += OnPlayerDeath;
         _pauseMenuGroupButtonsFadeListener.OnAudioInterfaceFadingEnded += AudioInterfaceFadingEnded;
 
         _animator = GetComponent<Animator>();

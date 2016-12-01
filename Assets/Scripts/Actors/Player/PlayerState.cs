@@ -46,7 +46,7 @@ public class PlayerState : MonoBehaviour
         _invincibility.OnInvincibilityStarted += EnableInvincibility;
         _invincibility.OnInvincibilityFinished += DisableInvincibility;
 
-        StaticObjects.GetPlayer().GetComponent<PlaySoundOnHealthChanged>().OnHitSoundFinished += ResetState;
+        StaticObjects.GetPlayer().GetComponent<PlaySoundOnDeath>().OnDeathSoundFinished += ResetState;
 
         IsFloating = false;
     }
