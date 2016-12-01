@@ -43,7 +43,20 @@ public class PlayerState : MonoBehaviour
         _invincibility.OnInvincibilityStarted += EnableInvincibility;
         _invincibility.OnInvincibilityFinished += DisableInvincibility;
 
+        StaticObjects.GetPlayer().GetComponent<Health>().OnDeath += ResetState;
+
         IsFloating = false;
+    }
+
+    private void ResetState()
+    {
+        IsJumping = false;
+        IsFalling = false;
+        SetImmobile();
+        IsFloating = false;
+        IsCroutching = false;
+        IsAttacking = false;
+        IsKnockedBack = false;
     }
 
     private void EnableInvincibility(float invincibilityTime)
