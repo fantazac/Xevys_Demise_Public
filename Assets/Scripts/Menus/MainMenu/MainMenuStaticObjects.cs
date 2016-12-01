@@ -1,0 +1,42 @@
+﻿using UnityEngine;
+
+public class MainMenuStaticObjects : MonoBehaviour
+{
+    private static GameObject _mainMenuPanel;
+    private static GameObject _database;
+    private static GameObject _tags;
+    private static MainMenuFindTags _findTags;
+    private static MainMenuAnimationTags _animationTags;
+
+    private void Start()
+    {
+        //Je dois utiliser le string "Tags" ici car _findTags n'a pas encore de valeur
+        _tags = GameObject.Find("Tags");
+
+        _findTags = _tags.GetComponent<MainMenuFindTags>();
+        _animationTags = _tags.GetComponent<MainMenuAnimationTags>();
+
+        _mainMenuPanel = GameObject.Find(_findTags.MainMenuPanel);
+        _database = GameObject.Find(_findTags.Database);
+    }
+
+    public static GameObject GetMainMenuPanel()
+    {
+        return _mainMenuPanel;
+    }
+
+    public static GameObject GetDatabase()
+    {
+        return _database;
+    }
+
+    public static MainMenuFindTags GetFindTags()
+    {
+        return _findTags;
+    }
+
+    public static MainMenuAnimationTags GetAnimationTags()
+    {
+        return _animationTags;
+    }
+}
