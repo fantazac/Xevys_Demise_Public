@@ -44,7 +44,9 @@ public class PlaySoundOnHealthChanged : MonoBehaviour
     {
         yield return _delayHitSound;
 
-        OnHitSoundFinished();
+        if (OnHitSoundFinished != null)
+        {
+            OnHitSoundFinished();
+        }
     }
-
 }
