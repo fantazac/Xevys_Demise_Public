@@ -36,7 +36,7 @@ public class KeyboardInputs : MonoBehaviour
     public delegate void KeyboardOnThrowAttackChangeButtonPressedHandler();
     public event KeyboardOnThrowAttackChangeButtonPressedHandler OnThrowAttackChangeButtonPressed;
 
-    public delegate void KeyboardOnPauseHandler();
+    public delegate void KeyboardOnPauseHandler(bool isDead);
     public event KeyboardOnPauseHandler OnPause;
 
     public delegate void KeyboardOnFlipHandler(bool goesRight);
@@ -152,16 +152,16 @@ public class KeyboardInputs : MonoBehaviour
         }
     }
 
-    private void PlayerDied()
+    private void PlayerDied(bool isDead)
     {
-        _died = true;
+        _died = isDead;
     }
 
     private void UpdateStartButton()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            OnPause();
+            OnPause(false);
         }
     }
 

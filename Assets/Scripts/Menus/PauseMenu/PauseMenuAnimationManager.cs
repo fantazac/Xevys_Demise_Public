@@ -8,7 +8,7 @@ public class PauseMenuAnimationManager : MonoBehaviour
     public delegate void OnFadeTriggerHandler(string fade);
     public event OnFadeTriggerHandler OnFade;
 
-    public delegate void OnPauseMenuStateChangedHandler(bool isActive);
+    public delegate void OnPauseMenuStateChangedHandler(bool isActive, bool isDead);
     public event OnPauseMenuStateChangedHandler OnPauseMenuStateChanged;
 
     public delegate void OnPauseMenuOutOfScreenHandler(bool isActive);
@@ -38,19 +38,19 @@ public class PauseMenuAnimationManager : MonoBehaviour
         OnPauseMenuOutOfScreen(_active);
     }
 
-    private void AnimatePauseMenu()
+    private void AnimatePauseMenu(bool isDead)
     {
         if (!_active)
         {
             SlideIn();
             FadeIn();
-            OnPauseMenuStateChanged(_active);
+            OnPauseMenuStateChanged(_active, isDead);
         }
         else
         {
             SlideOut();
             FadeOut();
-            OnPauseMenuStateChanged(_active);
+            OnPauseMenuStateChanged(_active, isDead);
         }
     }
 

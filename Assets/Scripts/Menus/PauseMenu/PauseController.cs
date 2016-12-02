@@ -13,7 +13,7 @@ public class PauseController : MonoBehaviour
         _pauseMenuInputs.TriggerAnimations += ChangePauseState;
     }
 
-    private void ChangePauseState()
+    private void ChangePauseState(bool isDead)
     {
         Time.timeScale = _gameIsPaused ? 1 : 0;
         _gameIsPaused = !_gameIsPaused;

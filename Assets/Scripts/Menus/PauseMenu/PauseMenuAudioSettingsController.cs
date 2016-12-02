@@ -78,21 +78,24 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
     {
         _sfxVolumeSlider.value = volume;
     }
-    
-    private void FXVolumeStateInPauseMenu(bool menuIsActive)
+
+    private void FXVolumeStateInPauseMenu(bool menuIsActive, bool isDead)
     {
-        if (menuIsActive)
+        if (!isDead)
         {
-            _sfxVolumeBeforeDesactivate = _sfxVolumeSlider.value;
-            _sfxVolumeSlider.value = 0f;
-        }
-        else if (!_sfxVolumeChanged)
-        {
-            _sfxVolumeSlider.value = _sfxVolumeBeforeDesactivate;
-        }
-        else
-        {
-            _sfxVolumeChanged = false;
+            if (menuIsActive)
+            {
+                _sfxVolumeBeforeDesactivate = _sfxVolumeSlider.value;
+                _sfxVolumeSlider.value = 0f;
+            }
+            else if (!_sfxVolumeChanged)
+            {
+                _sfxVolumeSlider.value = _sfxVolumeBeforeDesactivate;
+            }
+            else
+            {
+                _sfxVolumeChanged = false;
+            }
         }
     }
 

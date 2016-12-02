@@ -23,10 +23,10 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
     public delegate void OnAudioInterfaceIsCurrentHandler(bool isCurrent);
     public event OnAudioInterfaceIsCurrentHandler OnAudioInterfaceIsCurrent;
 
-    public delegate void OnBackButtonPressedToClosePauseMenuHandler();
+    public delegate void OnBackButtonPressedToClosePauseMenuHandler(bool isDead);
     public event OnBackButtonPressedToClosePauseMenuHandler OnBackButtonPressedToClosePauseMenu;
 
-    public delegate void OnPlayerDeathShowDeathInterfaceHandler();
+    public delegate void OnPlayerDeathShowDeathInterfaceHandler(bool isDead);
     public event OnPlayerDeathShowDeathInterfaceHandler OnPlayerDeathShowDeathInterface;
 
     private PauseMenuInputs _pauseMenuInputs;
@@ -60,7 +60,7 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
     private void OnPlayerDeath()
     {
         _animator.SetTrigger("ShowDeathInterface");
-        OnPlayerDeathShowDeathInterface();
+        OnPlayerDeathShowDeathInterface(true);
     }
 
     private void OnGamepadBackBtnPressed()
@@ -68,7 +68,7 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
         switch (_currentInterface)
         {
             case "Main":
-                OnBackButtonPressedToClosePauseMenu();
+                OnBackButtonPressedToClosePauseMenu(false);
                 break;
             case "Options":
                 MainInterfaceIsCurrent("Main");

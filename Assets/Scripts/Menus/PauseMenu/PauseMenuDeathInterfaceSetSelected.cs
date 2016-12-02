@@ -18,7 +18,7 @@ public class PauseMenuDeathInterfaceSetSelected : MonoBehaviour
         _pauseMenuCurrentInterfaceAnimator.OnPlayerDeathShowDeathInterface += SetSelectedButton;
     }
 
-    private void SetSelectedButton()
+    private void SetSelectedButton(bool isDead)
     {
         _eventSystem.SetSelectedGameObject(_firstButtonGameObject);
     }

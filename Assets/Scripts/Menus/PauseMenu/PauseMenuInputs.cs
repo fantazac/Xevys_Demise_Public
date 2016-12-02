@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 public class PauseMenuInputs : MonoBehaviour
 {
 
-    public delegate void PauseMenuOntriggerHandler();
+    public delegate void PauseMenuOntriggerHandler(bool isDead);
     public event PauseMenuOntriggerHandler TriggerAnimations;
 
     public delegate void OnMainInterfaceIsCurrentHandler(string current);
@@ -51,11 +51,11 @@ public class PauseMenuInputs : MonoBehaviour
         _canSlide = true;
     }
 
-    public void PauseMenuTriggered()
+    public void PauseMenuTriggered(bool isDead)
     {
         if (CanSlide)
         {
-            TriggerAnimations();
+            TriggerAnimations(isDead);
         }
     }
 
@@ -94,7 +94,7 @@ public class PauseMenuInputs : MonoBehaviour
         OnOptionsInterfaceIsCurrent("Options");
     }
 
-    private void SyncFirstControlOnPauseMenuStateChanged(bool isActive)
+    private void SyncFirstControlOnPauseMenuStateChanged(bool isActive, bool isDead)
     {
         if (isActive)
         {
