@@ -4,22 +4,13 @@ using UnityEngine;
 
 public class LoadGame : MonoBehaviour
 {
-    private int scene = 3;
+    private int _scene = 3;
+    private int i = 0;
 
-    public void Start()
+    private IEnumerator Start()
     {
-        StartCoroutine(LoadNewScene());
-    }
-
-    private IEnumerator LoadNewScene()
-    {
-        yield return new WaitForSeconds(0f);
-        var fader = new FadeTransition()
-        {
-            nextScene = scene,
-            fadedDelay = 0.2f,
-            fadeToColor = Color.black
-        };
-        TransitionKit.instance.transitionWithDelegate(fader);
+        //Application.backgroundLoadingPriority = ThreadPriority.Low;
+        DontDestroyOnLoad(this);
+        yield return Application.LoadLevelAsync("MainLevel"); ;
     }
 }
