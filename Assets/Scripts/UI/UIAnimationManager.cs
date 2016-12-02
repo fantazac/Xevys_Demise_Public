@@ -16,7 +16,7 @@ public class UIAnimationManager : MonoBehaviour
         _active = true;
     }
 
-    private void FadeUI()
+    private void FadeUI(bool isDead)
     {
         if (!_active)
         {

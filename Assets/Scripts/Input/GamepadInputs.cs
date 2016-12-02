@@ -38,7 +38,7 @@ public class GamepadInputs : MonoBehaviour
     public delegate void GamepadOnThrowAttackChangeButtonPressedHandler();
     public event GamepadOnThrowAttackChangeButtonPressedHandler OnThrowAttackChangeButtonPressed;
 
-    public delegate void GamepadOnPauseHandler();
+    public delegate void GamepadOnPauseHandler(bool isDead);
     public event GamepadOnPauseHandler OnPause;
 
     public delegate void GamepadOnEnterPortalHandler();
@@ -125,9 +125,9 @@ public class GamepadInputs : MonoBehaviour
         }
     }
 
-    private void PlayerDied()
+    private void PlayerDied(bool isDead)
     {
-        _died = true;
+        _died = isDead;
     }
 
     private void UpdateStartButton()
@@ -139,7 +139,7 @@ public class GamepadInputs : MonoBehaviour
 
         if (_state.Buttons.Start == ButtonState.Pressed && _startButtonReady)
         {
-            OnPause();
+            OnPause(false);
             _startButtonReady = false;
         }
     }

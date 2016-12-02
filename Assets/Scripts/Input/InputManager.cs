@@ -38,7 +38,7 @@ public class InputManager : MonoBehaviour
     public delegate void OnThrowAttackChangeButtonPressedHandler();
     public event OnThrowAttackChangeButtonPressedHandler OnThrowAttackChangeButtonPressed;
 
-    public delegate void OnPauseHandler();
+    public delegate void OnPauseHandler(bool isDead);
     public event OnPauseHandler OnPause;
 
     public delegate void OnFlipHandler(bool goesRight);
@@ -201,9 +201,9 @@ public class InputManager : MonoBehaviour
         OnThrowAttackChangeButtonPressed();
     }
 
-    private void InputsOnPause()
+    private void InputsOnPause(bool isDead)
     {
-        OnPause();
+        OnPause(isDead);
     }
 
     private void InputsOnFlip(bool goesRight)
