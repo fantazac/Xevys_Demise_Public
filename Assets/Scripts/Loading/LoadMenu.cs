@@ -6,10 +6,10 @@ public class LoadMenu : MonoBehaviour {
 
     private void Start()
     {
-        StartCoroutine(waitForthreeSeconds());
+        StartCoroutine(WaitForThreeSeconds());
     }
 
-    private IEnumerator waitForthreeSeconds()
+    private IEnumerator WaitForThreeSeconds()
     {
         yield return new WaitForSeconds(3f);
 
