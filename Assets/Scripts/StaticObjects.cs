@@ -17,6 +17,8 @@ public class StaticObjects : MonoBehaviour
     private static UnityTags _unityTags;
     private static AnimationTags _animationTags;
     private static GameObject _respawnEnemy;
+    private static GameObject _cinematic;
+    private static GameObject _pause;
 
     private void Start()
     {
@@ -35,7 +37,9 @@ public class StaticObjects : MonoBehaviour
         _database = GameObject.Find(_findTags.Database);
         _mainCamera = GameObject.Find(_findTags.MainCamera);
         _respawnEnemy = GameObject.Find(_findTags.RespawnEnemy);
-        
+        _cinematic = GameObject.Find(_findTags.Cinematic);
+        _pause = GameObject.Find(_findTags.Pause);
+
         _playerState = _player.GetComponent<PlayerState>();
     }
 
@@ -97,5 +101,15 @@ public class StaticObjects : MonoBehaviour
     public static GameObject GetMainCamera()
     {
         return _mainCamera;
+    }
+
+    public static GameObject GetCinematic()
+    {
+        return _cinematic;
+    }
+
+    public static GameObject GetPause()
+    {
+        return _pause;
     }
 }

@@ -23,6 +23,8 @@ public class FindTags : MonoBehaviour
     public string CharacterGroundHitbox { get; private set; }
     public string CharacterRoofHitbox { get; private set; }
     public string RespawnEnemy { get; private set; }
+    public string Cinematic { get; private set; }
+    public string Pause { get; private set; }
 
     private void Start()
     {
@@ -46,5 +48,7 @@ public class FindTags : MonoBehaviour
         CharacterGroundHitbox = "CharacterTouchesGround";
         CharacterRoofHitbox = "CharacterTouchesRoof";
         RespawnEnemy = "RespawnEnemy";
+        Cinematic = "Cinematic";
+        Pause = "Pause";
     }
 }

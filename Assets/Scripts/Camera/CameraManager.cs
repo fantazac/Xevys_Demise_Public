@@ -23,13 +23,18 @@ public class CameraManager : MonoBehaviour
     [SerializeField]
     private List<GameObject> listAreaNodes = new List<GameObject>();
 
+    private CinematicManager _cinematicManager;
+    private bool _isInCinematic = false;
+    private Vector3 _positionBeforeCinematic;
+
     public delegate void OnAreaChangedHandler(int roomId);
     public event OnAreaChangedHandler OnAreaChanged;
 
     public int CurrentArea { get { return _currentArea; } }
 
-    void Start()
+    private void Start()
     {
+        _cinematicManager = StaticObjects.GetCinematic().GetComponent<CinematicManager>();
         focusObject = StaticObjects.GetPlayer();
 
         if (focusObject != null)
@@ -43,58 +48,76 @@ public class CameraManager : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
-        // Declare Vector3 for the new position
-        Vector3 newPosition;
-
-        if (focusObject != null)
+        if (_cinematicManager.MoveCameraToCinematic)
         {
-            followtarget = focusObject.transform.position;
+            if (!_isInCinematic)
+            {
+                _positionBeforeCinematic = transform.position;
+                _isInCinematic = true;
+            }
+            
+            transform.position = _cinematicManager.CinematicPosition;
+        }
+        else if (_isInCinematic)
+        {
+            transform.position = _positionBeforeCinematic;
+            _isInCinematic = false;
         }
         else
         {
-            followtarget = focusPosition;
-        }
+            // Declare Vector3 for the new position
+            Vector3 newPosition;
 
-        newPosition = followtarget;
-        newPosition.z = transform.position.z;
-
-        if (listAreaNodes.Count > 0)
-        {
-            // If the current room size is smaller than the camera, fix the camera in the center of the room only following the focusobject over the y-axis
-            if (GetAreaRect(_currentArea).width < (Camera.main.orthographicSize * Camera.main.aspect) * 2)
+            if (focusObject != null)
             {
-                newPosition.x = listAreaNodes[_currentArea].transform.GetChild(0).position.x + GetAreaRect(_currentArea).width / 2;
+                followtarget = focusObject.transform.position;
             }
             else
             {
-                newPosition.x = Mathf.Clamp(followtarget.x,
-                    listAreaNodes[_currentArea].transform.GetChild(0).position.x + (Camera.main.orthographicSize * Camera.main.aspect),
-                    listAreaNodes[_currentArea].transform.GetChild(1).position.x - (Camera.main.orthographicSize * Camera.main.aspect));
+                followtarget = focusPosition;
             }
 
-            // Same for rooms with a smaller height than the camera. Fix the camera in the center of the roomheight and follow focusobject over x-axis
-            if (GetAreaRect(_currentArea).height < Camera.main.orthographicSize * 2)
-            {
-                newPosition.y = listAreaNodes[_currentArea].transform.GetChild(0).position.y - GetAreaRect(_currentArea).height / 2;
-            }
-            else
-            {
-                newPosition.y = Mathf.Clamp(followtarget.y,
-                listAreaNodes[_currentArea].transform.GetChild(1).position.y + Camera.main.orthographicSize,
-                listAreaNodes[_currentArea].transform.GetChild(0).position.y - Camera.main.orthographicSize);
-            }
+            newPosition = followtarget;
+            newPosition.z = transform.position.z;
 
-            // Check wether the player is outside the boundaries of the camera. If so trigger a transition, else move towards the current set target position
-            if (!GetAreaRect(_currentArea).Contains(followtarget))
+            if (listAreaNodes.Count > 0)
             {
-                SetNewArea();
-            }
-        }
+                // If the current room size is smaller than the camera, fix the camera in the center of the room only following the focusobject over the y-axis
+                if (GetAreaRect(_currentArea).width < (Camera.main.orthographicSize * Camera.main.aspect) * 2)
+                {
+                    newPosition.x = listAreaNodes[_currentArea].transform.GetChild(0).position.x + GetAreaRect(_currentArea).width / 2;
+                }
+                else
+                {
+                    newPosition.x = Mathf.Clamp(followtarget.x,
+                        listAreaNodes[_currentArea].transform.GetChild(0).position.x + (Camera.main.orthographicSize * Camera.main.aspect),
+                        listAreaNodes[_currentArea].transform.GetChild(1).position.x - (Camera.main.orthographicSize * Camera.main.aspect));
+                }
 
-        // Adjust the camera's position to that of the newly determined position
-        transform.position = Vector3.Lerp(transform.position, newPosition, _smoothTime * Time.deltaTime);
+                // Same for rooms with a smaller height than the camera. Fix the camera in the center of the roomheight and follow focusobject over x-axis
+                if (GetAreaRect(_currentArea).height < Camera.main.orthographicSize * 2)
+                {
+                    newPosition.y = listAreaNodes[_currentArea].transform.GetChild(0).position.y - GetAreaRect(_currentArea).height / 2;
+                }
+                else
+                {
+                    newPosition.y = Mathf.Clamp(followtarget.y,
+                    listAreaNodes[_currentArea].transform.GetChild(1).position.y + Camera.main.orthographicSize,
+                    listAreaNodes[_currentArea].transform.GetChild(0).position.y - Camera.main.orthographicSize);
+                }
+
+                // Check wether the player is outside the boundaries of the camera. If so trigger a transition, else move towards the current set target position
+                if (!GetAreaRect(_currentArea).Contains(followtarget))
+                {
+                    SetNewArea();
+                }
+
+                // Adjust the camera's position to that of the newly determined position
+                transform.position = Vector3.Lerp(transform.position, newPosition, _smoothTime * Time.deltaTime);
+            }
+        } 
     }
 
     // Method to check what area the player has entered and sets the CurrentArea to this new area

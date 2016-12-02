@@ -27,18 +27,23 @@ public class MoveObjectOnEvent : MonoBehaviour
         _directionalVector = _directionalVectors[(int)_moveDirection];
     }
 
-    protected void StartObjectMovement()
+    protected virtual void StartObjectMovement()
     {
         _finalPosition = transform.position + (_directionalVector * _distanceToMoveObject);
         StartCoroutine(MoveObject());
+    }
+
+    protected virtual void DoMovement()
+    {
+        gameObject.transform.position += _directionalVector * _speedInUnitsPerSecond * Time.deltaTime;
+        _distanceMade += _speedInUnitsPerSecond * Time.deltaTime;
     }
 
     protected IEnumerator MoveObject()
     {
         while (true)
         {
-            gameObject.transform.position += _directionalVector * _speedInUnitsPerSecond * Time.deltaTime;
-            _distanceMade += _speedInUnitsPerSecond * Time.deltaTime;
+            DoMovement();
 
             if (_distanceMade >= _distanceToMoveObject)
             {

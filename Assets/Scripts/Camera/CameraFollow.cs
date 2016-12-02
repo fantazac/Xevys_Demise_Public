@@ -9,7 +9,7 @@ public class CameraFollow : MonoBehaviour
     private Transform _player;
     private BoxCollider2D _boundaryHitbox;
 
-	void Start ()
+	private void Start ()
 	{
 	    _cameraBox = GetComponent<BoxCollider2D>();
 	    _player = StaticObjects.GetPlayer().transform;
@@ -17,7 +17,7 @@ public class CameraFollow : MonoBehaviour
 
     }
 
-	void Update ()
+	private void Update ()
 	{
 	    AspectRatioBoxChange();
 	    FollowPlayer();
