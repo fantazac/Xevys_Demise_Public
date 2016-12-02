@@ -1,23 +1,25 @@
 ﻿using System.Collections;
+using Prime31.TransitionKit;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class LoadGame : MonoBehaviour
 {
     private int scene = 3;
 
-    public void StartGame()
+    public void Start()
     {
         StartCoroutine(LoadNewScene());
     }
 
     private IEnumerator LoadNewScene()
     {
-        AsyncOperation async = SceneManager.LoadSceneAsync(scene);
-        while (!async.isDone)
+        yield return new WaitForSeconds(0f);
+        var fader = new FadeTransition()
         {
-            yield return null;
-        }
+            nextScene = scene,
+            fadedDelay = 0.2f,
+            fadeToColor = Color.black
+        };
+        TransitionKit.instance.transitionWithDelegate(fader);
     }
 }
