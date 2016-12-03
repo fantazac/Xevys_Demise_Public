@@ -5,6 +5,15 @@ using System.Collections;
 
 public class AccountStats : DatabaseConnection
 {
+    /* BEN_CORRECTION
+     * 
+     * 
+     * AHHHHH!!!!!!! DES STATIC EVENTS!!!!!!! 
+     * 
+     * https://www.youtube.com/watch?v=Qn977W9HjWM
+     * 
+     * Dites vous que chaque fois que vous utilisez un évènement statique, un petit lapin meurt........BANDE DE MONSTRES!!!!
+     */
     public delegate void OnInventoryReloadedHandler(bool knifeEnabled, bool axeEnabled, bool featherEnabled, bool bootsEnabled, bool bubbleEnabled, bool armorEnabled, bool earthArtefactEnabled, bool airArtefactEnabled, bool waterArtefactEnabled, bool fireArtefactEnabled);
     public static event OnInventoryReloadedHandler OnInventoryReloaded;
     public delegate void OnAmmoReloadedHandler(int knifeAmmo, int axeAmmo);

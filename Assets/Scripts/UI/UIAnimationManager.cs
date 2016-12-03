@@ -1,6 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_CORRECTION
+ * 
+ * OK...regarde ce que cela fait. Cela fait un "FadeIn" suivi d'un "FadeOut". Pourtant, cela s'appelle "UIAnimationManager".
+ * 
+ * Hum....
+ * 
+ * Pourquoi pas "FadeInFadeOutUIAnimation" ?
+ * 
+ * Aussi, je ne puis m'empêcher de constater que ce component, dont le but est de géré une animation, sait exactement par qui il doit être
+ * déclanché. C'est pas des blagues, voir "Start". Vous avez un Controlleur pour votre "PauseMenu" (Controleur, Vue, tiens donc...) qui pourrait
+ * déclancher ces animations très certainement (ce serait "PauseControlleur" qui serait abbonné aux évènements de "PauseMenuInputs" et qui, ensuite,
+ * appèlerait "UIAnimationManager").
+ * 
+ * Enfin, je vois la classe "PauseMenuAnimationManager" qui, elle aussi, est une animation. N'est-il pas possible de faire de l'héritage à quelque part ?
+ * Genre, une classe abstraite "UIAnimation" ?
+ * 
+ */
 public class UIAnimationManager : MonoBehaviour
 {
     private PauseMenuInputs _pauseMenuInputs;

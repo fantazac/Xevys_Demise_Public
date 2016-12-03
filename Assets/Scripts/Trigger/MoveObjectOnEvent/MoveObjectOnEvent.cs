@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_CORRECTION
+ * 
+ * Cette classe devrait être abstraite, car c'est la base du pattern "Template Method".
+ * 
+ * Voir https://en.wikipedia.org/wiki/Template_method_pattern#Example_in_Java
+ */
 public class MoveObjectOnEvent : MonoBehaviour
 {
     [SerializeField]

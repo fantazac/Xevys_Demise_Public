@@ -2,6 +2,53 @@
 using System.Data;
 using UnityEngine;
 
+/* BEN_CORRECTION
+ * 
+ * OMG..........
+ * 
+ * 
+ * Ok, par où commencer..... Je vais commecner par vous dire que vous êtes la seule équipe qui n'a pas effectuée de séparation entre les components et la base de données.
+ * Je ne dit pas que vous aurez pas de component qui prend en charge la base de données, je dis seulement que vous avez tout mis dans les components Unity et que
+ * cela vous donne les monstres que j'ai devant moi actuellement.
+ * 
+ * Voilà ce que je vous propose : utiliser le "Repository Patern". Pour chaque table, créez vous un classe permettant d'effectuer des actions de lecture et d'écriture
+ * sur cette table dans la base de données. Par exemple, pour vos settings, vous auriez un "AccountSettingsRepository" ayant les méthodes suivantes :
+ *
+ *  - public AccountSettingsEntity Get(int accountId)
+ *  - public void Add(AccountSettingsEntity entity)
+ *  - public void Update(AccountSettingsEntity entity)
+ *  
+ *  Aussi, pour chaque table, cela va vous prendre aussi une classe représentant un enregistrement. Elle ne fait que servir de conteneur de données. Par exemple, vous auriez
+ *  une classe "AccountSettingsEntity" ressemblant à cela :
+ *  
+ *  public class AccountSettingsEntity {
+ *  
+ *      public int AccountID { get; set; }
+ *      public bool IsMusicPlaying { get; set; }
+ *      public int MusicVolume { get; set; }
+ *      public int SoundEffectsVolume { get; set; }
+ *      public int KeyboardControlSchemeId { get; set; }
+ *      public int GamepadControlSchemeId { get; set; }
+ *  
+ *  }
+ *  
+ *  Une fois que vous aurez tous vos repositories et leurs entités, vous pourrez vous créer des components qui les utilisent. Actuellement, vous avez un espèce
+ *  de mélange entre components et évènements statiques qui fait vraiment pitié. Ce qu'il vous faut, ce sont des components accessibles à partir de "StaticObjects"
+ *  et qui permetent d'effectuer divers manipulations sur les données. Par exemple, vous pourriez avoir un component nommé "SoundVolumeManager" (dans ce cas, le
+ *  mot "Manager" ne me dérange pas du tout) sur lequel vous pouvez modifier le volume de la musique et le volume des SFX. Ce component s'occupe ensuite
+ *  de modifier le volume comme il se doit. "SoundVolumeManager" expose aussi deux évènement : "OnMusicVolumeChanged" et "OnSFXVolumeChanged" (je vais y revenir).
+ *  
+ *  Enfin, la dernière chose à ajouter, ce sont des components qui déclanchent la sauvegarde et le chargement des données à partir des "repositories". Par exemple,
+ *  vous auriez un component "SoundVolumeDataHandler" qui, au "OnStart", charge les données à partir de la base de données et les place dans "SoundVolumeManager".
+ *  Il conserve l'entité en mémoire. Il s'enregistre aussi auprès des évènements "OnMusicVolumeChanged" et "OnSFXVolumeChanged" de "SoundVolumeManager" et modifie
+ *  alors l'entité qu'il possède en mémoire pour réfléter les changements de l'utilisateur. 
+ *  
+ *  Il reste alors à effectuer la sauvegarde des données. Rendu là, c'est vous qui voyez. Cela peut se faire dès que les données changent, ou cela peut se faire
+ *  uniquement lorsque le joueur atteint un checkpoint. Je vous laisse décider.
+ *  
+ *  Ouf....gros commentaire....je reprend ma correction.
+ *  
+ */
 public class AccountSettings : DatabaseConnection
 {
     public delegate void OnMusicVolumeReloadedHandler(float volume);

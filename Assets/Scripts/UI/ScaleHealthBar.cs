@@ -1,6 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_CORRECTION
+ * 
+ * Nom clair, mais pas représentatif de ce que c'est. C'est une vue n'est-ce-pas ? Quelque chose comme "HUDHealthBarView" serait mieux non ?
+ * 
+ * Aussi, je pense que cela peut-être fusionné avec "ColorHealthBar". Si vous désirez tout de même conserver la séparation entre les
+ * deux, j'ai cependant pas de solution qui me viennent à l'esprit et qui soit applicable sous Unity. J'avais pensé à une liste de "ViewBehaviour"
+ * que vous enoyez au compoenent, mais encore faut-il qu'ils vienent de quelque part.
+ */
 public class ScaleHealthBar : MonoBehaviour
 {
     [SerializeField]

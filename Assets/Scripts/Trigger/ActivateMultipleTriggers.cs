@@ -26,6 +26,10 @@ public class ActivateMultipleTriggers : MonoBehaviour
     {
         if (--_amountOfTriggersToActivate == 0)
         {
+            /* BEN_CORRECITON
+             * 
+             * Pourquoi ne pas jsute appeler cette méthode "Trigger" (anglais pour Déclancher) ?
+             */
             _trigger.MultipleTriggersActivated();
         }
     }

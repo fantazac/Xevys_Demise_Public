@@ -3,6 +3,12 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
+/* BEN_CORRECTION
+ * 
+ * Tout ce qui est component qui gère l'affichage est ce que l'on appelle une vue. Cela vous dit quelque chose ?
+ * 
+ * En fait, ce que je dit, c'est que le nom n'est pas clair. Quelque chose comme "HUDInventoryView" serait mieux non ?
+ */
 public class ShowItems : MonoBehaviour
 {
     private Text _knifeText;

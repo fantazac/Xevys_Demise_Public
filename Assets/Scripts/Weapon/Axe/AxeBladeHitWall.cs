@@ -2,6 +2,12 @@
 using System.Collections;
 using System.Linq;
 
+/* BEN_CORRECTION
+ * 
+ * Il est certainement possible d'améliorer l'architecture des projectiles. En fait, je regarde "AxeBladeHitWall", "AxeHandleHitWall" et 
+ * "KnifeHitWall" et je me dit qu'il serait certainement possible de faire de l'héritage à quelque part pour éviter de la duplication du
+ * code.
+ */
 public class AxeBladeHitWall : MonoBehaviour
 {
     [SerializeField]

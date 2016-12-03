@@ -3,6 +3,10 @@ using System.Collections;
 
 public class FindTags : MonoBehaviour
 {
+    /* BEN_REVIEW
+     * 
+     * Je crois qu'un « public const » aurait pu faire aussi. C'est vous qui voyez.
+     */
     public string NeptuneHead { get; private set; }
     public string Vulcan { get; private set; }
     public string CharacterBasicAttackBox { get; private set; }

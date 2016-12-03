@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_CORRECITON
+ * 
+ * Pourquoi pas jsute "Trigger" ?
+ */
 public class ActivateTrigger : MonoBehaviour
 {
     private enum ArtefactType
@@ -48,6 +52,10 @@ public class ActivateTrigger : MonoBehaviour
         }
     }
 
+    /* BEN_CORRECITON
+     * 
+     * Pourquoi ne pas jsute appeler cette méthode "Trigger" (anglais pour Déclancher) ?
+     */
     public void MultipleTriggersActivated()
     {
         OnTrigger();

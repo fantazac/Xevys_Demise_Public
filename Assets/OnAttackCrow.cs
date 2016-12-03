@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* BEN_CORRECTION
+ * 
+ * Mauvaise place. Mauvais dossier. Trop de responsabilités.
+ * 
+ * Aussi, je vais proposer un autre nom : OnCrowReceiveHit.
+ */
 public class OnAttackCrow : MonoBehaviour
 {
     private Animator _animator;
@@ -9,6 +15,13 @@ public class OnAttackCrow : MonoBehaviour
 
     private void Start ()
 	{
+        /* BEN_CORRECTION
+         * 
+         * Chiffre magique.
+         * 
+         * À la place d'attendre, pourquoi ne pas faire un appel de méthode à partir d'une animation pour indiquer que l'animation est
+         * terminée.
+         */
         _hitAnimationDelay = new WaitForSeconds(0.2f);
         _animator = GetComponent<Animator>();
 	    _audioSource = GetComponent<AudioSource>();

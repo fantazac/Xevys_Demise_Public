@@ -14,6 +14,11 @@ public class PauseMenuAudioSettingListener : MonoBehaviour
         {
             _isMusic = true;
         }
+        /* BEN_CORRECTION
+         * 
+         * Comme j'ai dit dans "AccountSettings", ici, vous appèleriez "SoundVolumeManager", obtenu à partir
+         * de "StaticObjects".
+         */
         AudioSource[] audioSources = GetComponents<AudioSource>();
         _audioSource = audioSources[_audioSourceID];
         _maxVolume = _audioSource.volume;

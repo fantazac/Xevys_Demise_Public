@@ -21,6 +21,11 @@ public class StaticObjects : MonoBehaviour
         //Je dois utiliser le string "Tags" ici car _findTags n'a pas encore de valeur
         _tags = GameObject.Find("Tags");
 
+        /* BEN_CORRECTION
+         * 
+         * J'ai de la difficulté à voir la différence enter FindTags et UnityTags. Pourquoi avoir séparer les deux ? En quoi
+         * leur responsabilité est différente ?
+         */
         _findTags = _tags.GetComponent<FindTags>();
         _unityTags = _tags.GetComponent<UnityTags>();
         _animationTags = _tags.GetComponent<AnimationTags>();
