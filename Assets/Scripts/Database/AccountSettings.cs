@@ -24,11 +24,10 @@ public class AccountSettings : DatabaseConnection
     private float _sfxVolume = 1;
     private int _musicState = 1;
 
-    protected override void Start()
+    protected void OnStart()
     {
-        base.Start();
-        _controller = GetComponent<DatabaseController>();
-        ControlSchemesManager controlSchemesManager = GameObject.Find(StaticObjects.GetFindTags().PauseMenuControlsOptionsButtons).GetComponent<ControlSchemesManager>();
+        //_controller = GetComponent<DatabaseController>();
+        //ControlSchemesManager controlSchemesManager = GameObject.Find(StaticObjects.GetFindTags().PauseMenuControlsOptionsButtons).GetComponent<ControlSchemesManager>();
         PauseMenuAudioSettingsManager.OnVolumeChanged += ChangeVolume;
         _audioSettingsManager = GameObject.Find("PauseMenuAudioOptionsButtons").GetComponent<PauseMenuAudioSettingsManager>();
         //controlSchemesManager.OnKeyboardControlChanged += ChangeKeyboardControl;

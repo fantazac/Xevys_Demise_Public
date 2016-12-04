@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class AccountStatsEntity : MonoBehaviour
+﻿public struct AccountStatsEntity
 {
     public int AccountId { get; set; }
     public int SecondsPlayed { get; set; }

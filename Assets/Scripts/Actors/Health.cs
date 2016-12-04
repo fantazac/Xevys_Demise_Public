@@ -29,7 +29,7 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
-        AccountStats.OnHealthReloaded += ReloadHealth;
+        StaticObjects.GetDatabase().GetComponent<AccountStatsDataHandler>().OnHealthReloaded += ReloadHealth;
         MaxHealth = _health;
     }
 

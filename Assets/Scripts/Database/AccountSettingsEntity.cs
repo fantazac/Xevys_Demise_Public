@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class AccountSettingsEntity : MonoBehaviour
+﻿public struct AccountSettingsEntity
 {
     public int AccountId { get; set; }
     public bool IsMusicPlaying { get; set; }

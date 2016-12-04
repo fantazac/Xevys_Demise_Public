@@ -3,19 +3,20 @@
 public class AccountStatsDataHandler : MonoBehaviour
 {
     public delegate void OnInventoryReloadedHandler(bool knifeEnabled, bool axeEnabled, bool featherEnabled, bool bootsEnabled, bool bubbleEnabled, bool armorEnabled, bool earthArtefactEnabled, bool airArtefactEnabled, bool waterArtefactEnabled, bool fireArtefactEnabled);
-    public static event OnInventoryReloadedHandler OnInventoryReloaded;
+    public event OnInventoryReloadedHandler OnInventoryReloaded;
     public delegate void OnAmmoReloadedHandler(int knifeAmmo, int axeAmmo);
-    public static event OnAmmoReloadedHandler OnAmmoReloaded;
+    public event OnAmmoReloadedHandler OnAmmoReloaded;
     public delegate void OnHealthReloadedHandler(int health);
-    public static event OnHealthReloadedHandler OnHealthReloaded;
+    public event OnHealthReloadedHandler OnHealthReloaded;
 
+    private AccountStatsEntity _temporaryEntity;
     private AccountStatsEntity _entity;
     private AccountStatsRepository _repository;
 
     private void Start()
     {
         _repository = new AccountStatsRepository();
-        _entity = _repository.Get(StaticObjects.AccountId);
+        _temporaryEntity = _repository.Get(StaticObjects.AccountId);
         InventoryManager inventory = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
         inventory.OnEnableKnife += EnableKnife;
         inventory.OnEnableAxe += EnableAxe;
@@ -30,6 +31,11 @@ public class AccountStatsDataHandler : MonoBehaviour
         DestroyEnemyOnDeath.OnEnemyDeath += EnemyKilled;
     }
 
+    public void UpdateEntity()
+    {
+        _entity = _temporaryEntity;
+    }
+
     public void UpdateRepository()
     {
         _repository.UpdateEntity(_entity);
@@ -39,65 +45,65 @@ public class AccountStatsDataHandler : MonoBehaviour
     {
         if (tag == StaticObjects.GetUnityTags().Scarab)
         {
-            _entity.NbScarabsKilled++;
+            _temporaryEntity.NbScarabsKilled++;
         }
         else if (tag == StaticObjects.GetUnityTags().Bat)
         {
-            _entity.NbBatsKilled++;
+            _temporaryEntity.NbBatsKilled++;
         }
         else if (tag == StaticObjects.GetUnityTags().Skeltal)
         {
-            _entity.NbSkeltalsKilled++;
+            _temporaryEntity.NbSkeltalsKilled++;
         }
     }
 
     private void EnableKnife()
     {
-        _entity.KnifeEnabled = true;
+        _temporaryEntity.KnifeEnabled = true;
     }
 
     private void EnableAxe()
     {
-        _entity.AxeEnabled = true;
+        _temporaryEntity.AxeEnabled = true;
     }
 
     private void EnableIronBoots()
     {
-        _entity.BootsEnabled = true;
+        _temporaryEntity.BootsEnabled = true;
     }
 
     private void EnableFeather()
     {
-        _entity.FeatherEnabled = true;
+        _temporaryEntity.FeatherEnabled = true;
     }
 
     private void EnableBubble()
     {
-        _entity.BubbleEnabled = true;
+        _temporaryEntity.BubbleEnabled = true;
     }
 
     private void EnableFireProofArmor()
     {
-        _entity.ArmorEnabled = true;
+        _temporaryEntity.ArmorEnabled = true;
     }
 
     private void EnableEarthArtefact()
     {
-        _entity.EarthArtefactEnabled = true;
+        _temporaryEntity.EarthArtefactEnabled = true;
     }
 
     private void EnableAirArtefact()
     {
-        _entity.AirArtefactEnabled = true;
+        _temporaryEntity.AirArtefactEnabled = true;
     }
 
     private void EnableWaterArtefact()
     {
-        _entity.WaterArtefactEnabled = true;
+        _temporaryEntity.WaterArtefactEnabled = true;
     }
 
     private void EnableFireArtefact()
     {
-        _entity.FireArtefactEnabled = true;
+        _temporaryEntity.FireArtefactEnabled = true;
     }
 }

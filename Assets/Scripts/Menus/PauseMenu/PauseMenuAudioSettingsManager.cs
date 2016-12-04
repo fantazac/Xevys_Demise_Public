@@ -22,14 +22,14 @@ public class PauseMenuAudioSettingsManager : MonoBehaviour
 
     private void Start()
     {
-        AccountSettings accountSettings = StaticObjects.GetDatabase().GetComponent<AccountSettings>();
+        AccountSettingsDataHandler accountSettingsDataHandler = StaticObjects.GetDatabase().GetComponent<AccountSettingsDataHandler>();
         _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
         _pauseMenuCurrentInterfaceAnimator = GameObject.Find(StaticObjects.GetFindTags().PauseMenuButtons).GetComponent<PauseMenuCurrentInterfaceAnimator>();
-        accountSettings.OnMusicVolumeReloaded += ReloadMusicVolume;
-        accountSettings.OnSfxVolumeReloaded += ReloadSfxVolume;
+        accountSettingsDataHandler.OnMusicVolumeReloaded += ReloadMusicVolume;
+        accountSettingsDataHandler.OnSfxVolumeReloaded += ReloadSfxVolume;
         _pauseMenuAnimationManager.OnPauseMenuStateChanged += FXVolumeStateInPauseMenu;
         _pauseMenuCurrentInterfaceAnimator.OnAudioInterfaceIsCurrent += FXVolumeInAudioInterface;
-        accountSettings.OnMusicStateReloaded += ReloadMusicState;
+        accountSettingsDataHandler.OnMusicStateReloaded += ReloadMusicState;
 
         _sfxVolume = 1f;
         _musicSwitch = GetComponentInChildren<Switch>();

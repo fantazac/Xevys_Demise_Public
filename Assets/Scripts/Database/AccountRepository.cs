@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
-using UnityEngine;
 
 public class AccountRepository : DatabaseConnection
 {
@@ -19,6 +19,25 @@ public class AccountRepository : DatabaseConnection
         reader.Close();
         _dbconnection.Close();
         return entity;
+    }
+
+    public List<AccountEntity> GetAll()
+    {
+        List<AccountEntity> entities = new List<AccountEntity>();
+        _dbconnection.Open();
+        string sqlQuery = String.Format("SELECT USERNAME" +
+             " FROM ACCOUNT");
+        _dbcommand.CommandText = sqlQuery;
+        IDataReader reader = _dbcommand.ExecuteReader();
+        while (reader.Read())
+        {
+            AccountEntity entity = new AccountEntity();
+            entity.Username = reader.GetString(0);
+            entities.Add(entity);
+        }
+        reader.Close();
+        _dbconnection.Close();
+        return entities;
     }
 
     public void Add(AccountEntity entity)

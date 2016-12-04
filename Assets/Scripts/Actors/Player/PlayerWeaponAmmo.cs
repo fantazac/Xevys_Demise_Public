@@ -20,7 +20,7 @@ public class PlayerWeaponAmmo : MonoBehaviour
 
     private void Start()
     {
-        AccountStats.OnAmmoReloaded += ReloadAmmo;
+        StaticObjects.GetDatabase().GetComponent<AccountStatsDataHandler>().OnAmmoReloaded += ReloadAmmo;
         _inventoryManager = GetComponent<InventoryManager>();
 
         _throwKnifeAttack = GetComponent<ThrowKnife>();

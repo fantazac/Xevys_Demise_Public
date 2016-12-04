@@ -14,9 +14,9 @@ public class ControlSchemesManager : MonoBehaviour
 
     private void Start()
     {
-        AccountSettingsDataHandler accountSettings = StaticObjects.GetDatabase().GetComponent<AccountSettingsDataHandler>();
-        accountSettings.OnKeyboardControlSchemeReloaded += ReloadKeyboardControlScheme;
-        accountSettings.OnGamepadControlSchemeReloaded += ReloadGamepadControlScheme;
+        AccountSettingsDataHandler accountSettingsDataHandler = StaticObjects.GetDatabase().GetComponent<AccountSettingsDataHandler>();
+        accountSettingsDataHandler.OnKeyboardControlSchemeReloaded += ReloadKeyboardControlScheme;
+        accountSettingsDataHandler.OnGamepadControlSchemeReloaded += ReloadGamepadControlScheme;
 
         Switch[] switches = GetComponentsInChildren<Switch>();
         _keyboardSwitch = switches[0];

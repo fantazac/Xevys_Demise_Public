@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class AchievementEntity : MonoBehaviour
+﻿public class AchievementEntity
 {
     public int AchievementId { get; set; }
     public string Name { get; set; }

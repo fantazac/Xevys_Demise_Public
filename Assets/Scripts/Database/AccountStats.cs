@@ -38,10 +38,9 @@ public class AccountStats : DatabaseConnection
     private int _waterArtefactEnabled = 0;
     private int _fireArtefactEnabled = 0;
 
-    protected override void Start()
+    protected void Start()
     {
-        base.Start();
-        _controller = GetComponent<DatabaseController>();
+        //_controller = GetComponent<DatabaseController>();
 
         _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
         _munitions = StaticObjects.GetPlayer().GetComponent<PlayerWeaponAmmo>();
@@ -145,7 +144,7 @@ public class AccountStats : DatabaseConnection
 
     private void StartCountingSecondsPlayed()
     {
-        StartCoroutine(CountSecondsPlayed());
+        //StartCoroutine(CountSecondsPlayed());
     }
 
     private IEnumerator CountSecondsPlayed()

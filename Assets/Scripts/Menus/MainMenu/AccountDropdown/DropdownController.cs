@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,11 @@ public class DropdownController : MonoBehaviour {
     private void PopulateDropdown()
     {
         //***ici fetch de la database***
+        List<String> usernames = MainMenuStaticObjects.GetDatabase().GetComponent<AccountDataHandler>().GetAllUsernames();
+        foreach (string username in usernames)
+        {
+            _nicknamesList.Add(username);
+        }
         _nicknamesList.Insert(0, "Xevy");
         _nicknamesList.Insert(0, "SpamGames");
         _nicknamesList.Insert(0, "Guest");

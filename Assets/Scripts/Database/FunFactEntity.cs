@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class FunFactEntity : MonoBehaviour
+﻿public class FunFactEntity
 {
     public string Description { get; set; }
 }
