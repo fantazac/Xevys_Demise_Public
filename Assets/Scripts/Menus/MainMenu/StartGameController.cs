@@ -13,13 +13,12 @@ public class StartGameController : MonoBehaviour
 
     private void StartGame()
     {
-        AsyncOperation async = Application.LoadLevelAsync("LoadingScreen");
-        /*var fader = new FadeTransition()
+        var fader = new FadeTransition()
         {
             nextScene = 2,
             fadedDelay = 0.2f,
             fadeToColor = Color.black
         };
-        TransitionKit.instance.transitionWithDelegate(fader);*/
+        TransitionKit.instance.transitionWithDelegate(fader);
     }
 }

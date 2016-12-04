@@ -21,7 +21,7 @@ public class InventoryManager : MonoBehaviour
     public bool WaterArtefactEnabled { get; private set; }
     public bool FireArtefactEnabled { get; private set; }
 
-    private ShowItems _showItems;
+    private UIInventoryView _inventoryView;
     private ThrowAxe _throwAxeAttack;
     private ThrowKnife _throwKnifeAttack;
 
@@ -59,7 +59,7 @@ public class InventoryManager : MonoBehaviour
     {
         AccountStats.OnInventoryReloaded += ReloadInventory;
 
-        _showItems = StaticObjects.GetItemCanvas().GetComponent<ShowItems>();
+        _inventoryView = StaticObjects.GetItemCanvas().GetComponent<UIInventoryView>();
         GetComponentInChildren<InputManager>().OnThrowAttackChangeButtonPressed += OnSwitchWeapon;
 
         _throwKnifeAttack = GetComponent<ThrowKnife>();
@@ -143,7 +143,7 @@ public class InventoryManager : MonoBehaviour
     private void SelectAxe()
     {
         SelectedThrowWeapon = WeaponType.Axe;
-        _showItems.SelectAxe();
+        _inventoryView.SelectAxe();
         _throwKnifeAttack.enabled = false;
         _throwAxeAttack.enabled = true;
     }
@@ -151,7 +151,7 @@ public class InventoryManager : MonoBehaviour
     private void SelectKnife()
     {
         SelectedThrowWeapon = WeaponType.Knife;
-        _showItems.SelectKnife();
+        _inventoryView.SelectKnife();
         _throwAxeAttack.enabled = false;
         _throwKnifeAttack.enabled = true;
     }

@@ -65,9 +65,7 @@ public class MoveBouncySkeltal : SkeltalBehaviour
         {
             _newXPosition = _startingPosition.x + (_horizontalSpeed * _timeInAirCount * _directionFactor);
 
-            //formule de physique pour calculer la hauteur à laquelle est rendu l'objet par rapport au temps, l'accélération verticale et la vitesse initiale
-            _newYPosition = _startingPosition.y + (_initialVerticalSpeed * _timeInAirCount) +
-                (HALF_VALUE * _verticalAcceleration * _timeInAirCount * _timeInAirCount);
+            _newYPosition = CalculateSkeltalVerticalPositionWhileInTheAir();
 
             transform.position += (Vector3.right * (_newXPosition - transform.position.x)) 
                 + (Vector3.up * (_newYPosition - transform.position.y));
@@ -76,6 +74,12 @@ public class MoveBouncySkeltal : SkeltalBehaviour
             yield return null;
         }
         SkeltalMovementFinished();
+    }
+
+    private float CalculateSkeltalVerticalPositionWhileInTheAir()
+    {
+        return _startingPosition.y + (_initialVerticalSpeed * _timeInAirCount) +
+                (HALF_VALUE * _verticalAcceleration * _timeInAirCount * _timeInAirCount);
     }
 
     protected override void SkeltalMovementFinished()
