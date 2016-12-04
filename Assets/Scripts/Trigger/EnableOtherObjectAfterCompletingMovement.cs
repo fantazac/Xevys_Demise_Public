@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnableObject : MonoBehaviour
+public class EnableOtherObjectAfterCompletingMovement : MonoBehaviour
 {
     [SerializeField]
     private GameObject _objectToEnable;

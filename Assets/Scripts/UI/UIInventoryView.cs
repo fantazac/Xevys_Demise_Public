@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
-public class ShowItems : MonoBehaviour
+public class UIInventoryView : MonoBehaviour
 {
     private Text _knifeText;
     private Text _axeText;

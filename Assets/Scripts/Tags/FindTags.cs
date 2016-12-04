@@ -20,8 +20,8 @@ public class FindTags : MonoBehaviour
     public string PauseMenuControlsOptionsButtons { get; private set; }
     public string PauseMenuButtons { get; private set; }
     public string PauseMenuAudioOptionsButtons { get; private set; }
-    public string CharacterGroundHitbox { get; private set; }
-    public string CharacterRoofHitbox { get; private set; }
+    public string CharacterTouchesGround { get; private set; }
+    public string CharacterTouchesRoof { get; private set; }
     public string RespawnEnemy { get; private set; }
     public string Cinematic { get; private set; }
     public string Pause { get; private set; }
@@ -45,8 +45,8 @@ public class FindTags : MonoBehaviour
         PauseMenuControlsOptionsButtons = "PauseMenuControlsOptionsButtons";
         PauseMenuButtons = "PauseMenuButtons";
         PauseMenuAudioOptionsButtons = "PauseMenuAudioOptionsButtons";
-        CharacterGroundHitbox = "CharacterTouchesGround";
-        CharacterRoofHitbox = "CharacterTouchesRoof";
+        CharacterTouchesGround = "CharacterTouchesGround";
+        CharacterTouchesRoof = "CharacterTouchesRoof";
         RespawnEnemy = "RespawnEnemy";
         Cinematic = "Cinematic";
         Pause = "Pause";

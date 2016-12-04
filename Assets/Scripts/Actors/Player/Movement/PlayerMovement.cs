@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     protected SpriteRenderer _playerSpriteRenderer;
     protected InventoryManager _inventoryManager;
     protected PlayerTouchesGround _playerTouchesGround;
-    protected ShowItems _showItems;
+    protected UIInventoryView _inventoryView;
     protected Health _playerHealth;
     protected PlayerBasicAttack _playerBasicAttack;
     protected PlayerTouchesFlyingPlatform _playerTouchesFlyingPlatform;
@@ -51,9 +51,9 @@ public class PlayerMovement : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _inputManager = GetComponentInChildren<InputManager>();
         _basicAttackBox = GameObject.Find(StaticObjects.GetFindTags().CharacterBasicAttackBox).GetComponent<BoxCollider2D>();
-        _playerGroundHitbox = GameObject.Find(StaticObjects.GetFindTags().CharacterGroundHitbox).GetComponent<BoxCollider2D>();
+        _playerGroundHitbox = GameObject.Find(StaticObjects.GetFindTags().CharacterTouchesGround).GetComponent<BoxCollider2D>();
         _playertouchesRoof = GetComponentInChildren<PlayerTouchesRoof>();
-        _showItems = StaticObjects.GetItemCanvas().GetComponent<ShowItems>();
+        _inventoryView = StaticObjects.GetItemCanvas().GetComponent<UIInventoryView>();
         _playerHealth = GetComponent<Health>();
         _playerTouchesGround = GetComponentInChildren<PlayerTouchesGround>();
         _playerBasicAttack = GetComponent<PlayerBasicAttack>();
@@ -111,7 +111,7 @@ public class PlayerMovement : MonoBehaviour
 
     protected virtual void OnIronBootsEquip()
     {
-        _showItems.IronBootsSelect();
+        _inventoryView.IronBootsSelect();
         _inventoryManager.IronBootsActive = !_inventoryManager.IronBootsActive;
     }
 

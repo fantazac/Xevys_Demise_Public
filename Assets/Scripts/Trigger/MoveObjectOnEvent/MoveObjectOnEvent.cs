@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MoveObjectOnEvent : MonoBehaviour
+public abstract class MoveObjectOnEvent : MonoBehaviour
 {
     [SerializeField]
     protected MoveDirection _moveDirection;
