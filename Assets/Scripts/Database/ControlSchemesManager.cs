@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class ControlsSchemeSettings : MonoBehaviour
+public class ControlSchemesManager : MonoBehaviour
 {
-    public delegate void OnKeyboardControlChangedHandler(bool scheme);
+    public delegate void OnKeyboardControlChangedHandler(int scheme);
     public event OnKeyboardControlChangedHandler OnKeyboardControlChanged;
-    public delegate void OnGamepadControlChangedHandler(bool scheme);
+    public delegate void OnGamepadControlChangedHandler(int scheme);
     public event OnGamepadControlChangedHandler OnGamepadControlChanged;
 
     private Switch _keyboardSwitch;
@@ -13,7 +14,7 @@ public class ControlsSchemeSettings : MonoBehaviour
 
     private void Start()
     {
-        AccountSettings accountSettings = StaticObjects.GetDatabase().GetComponent<AccountSettings>();
+        AccountSettingsDataHandler accountSettings = StaticObjects.GetDatabase().GetComponent<AccountSettingsDataHandler>();
         accountSettings.OnKeyboardControlSchemeReloaded += ReloadKeyboardControlScheme;
         accountSettings.OnGamepadControlSchemeReloaded += ReloadGamepadControlScheme;
 
@@ -24,21 +25,21 @@ public class ControlsSchemeSettings : MonoBehaviour
 
     public void ChangeKeyboardControl(bool scheme)
     {
-        OnKeyboardControlChanged(scheme);
+        OnKeyboardControlChanged(Convert.ToInt32(scheme));
     }
 
     public void ChangeGamepadControl(bool scheme)
     {
-        OnGamepadControlChanged(scheme);
+        OnGamepadControlChanged(Convert.ToInt32(scheme));
     }
 
-    private void ReloadKeyboardControlScheme(bool scheme)
+    private void ReloadKeyboardControlScheme(int scheme)
     {
-        _keyboardSwitch.isOn = scheme;
+        _keyboardSwitch.isOn = Convert.ToBoolean(scheme);
     }
 
-    private void ReloadGamepadControlScheme(bool scheme)
+    private void ReloadGamepadControlScheme(int scheme)
     {
-        _gamepadSwitch.isOn = scheme;
+        _gamepadSwitch.isOn = Convert.ToBoolean(scheme);
     }
 }

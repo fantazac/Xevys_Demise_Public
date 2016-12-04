@@ -16,7 +16,7 @@ public class AccountSettings : DatabaseConnection
     public event OnGamepadControlSchemeReloadedHandler OnGamepadControlSchemeReloaded;
 
     private DatabaseController _controller;
-    private PauseMenuAudioSettingsController _audioSettingsController;
+    private PauseMenuAudioSettingsManager _audioSettingsManager;
     
     private int _keyboardControlScheme = 1;
     private int _gamepadControlScheme = 1;
@@ -28,13 +28,13 @@ public class AccountSettings : DatabaseConnection
     {
         base.Start();
         _controller = GetComponent<DatabaseController>();
-        ControlsSchemeSettings controlsSchemeSettings = GameObject.Find(StaticObjects.GetFindTags().PauseMenuControlsOptionsButtons).GetComponent<ControlsSchemeSettings>();
-        PauseMenuAudioSettingsController.OnVolumeChanged += ChangeVolume;
-        _audioSettingsController = GameObject.Find("PauseMenuAudioOptionsButtons").GetComponent<PauseMenuAudioSettingsController>();
-        controlsSchemeSettings.OnKeyboardControlChanged += ChangeKeyboardControl;
-        controlsSchemeSettings.OnGamepadControlChanged += ChangeGamepadControl;
-        PauseMenuAudioSettingsController.OnVolumeChanged += ChangeVolume;
-        PauseMenuAudioSettingsController.OnMusicStateChanged += ChangeMusicState;
+        ControlSchemesManager controlSchemesManager = GameObject.Find(StaticObjects.GetFindTags().PauseMenuControlsOptionsButtons).GetComponent<ControlSchemesManager>();
+        PauseMenuAudioSettingsManager.OnVolumeChanged += ChangeVolume;
+        _audioSettingsManager = GameObject.Find("PauseMenuAudioOptionsButtons").GetComponent<PauseMenuAudioSettingsManager>();
+        //controlSchemesManager.OnKeyboardControlChanged += ChangeKeyboardControl;
+        //controlSchemesManager.OnGamepadControlChanged += ChangeGamepadControl;
+        PauseMenuAudioSettingsManager.OnVolumeChanged += ChangeVolume;
+        PauseMenuAudioSettingsManager.OnMusicStateChanged += ChangeMusicState;
     }
 
     public void CreateSettings()
@@ -49,7 +49,7 @@ public class AccountSettings : DatabaseConnection
 
     public void SaveSettings()
     {
-        _sfxVolume = _audioSettingsController._sfxVolumeBeforeDesactivate;
+        _sfxVolume = _audioSettingsManager._sfxVolumeBeforeDesactivate;
         _dbconnection.Open();
         string sqlQuery = String.Format("UPDATE SETTINGS SET MUSIC_PLAYING = {0}, KEYBOARD_CONTROL_SCHEME = {1}, GAMEPAD_CONTROL_SCHEME = {2}, MUSIC_VOLUME = {3}, SFX_VOLUME = {4}" +
             " WHERE ACCOUNT_ID = {5}", _musicState, _keyboardControlScheme, _gamepadControlScheme, _musicVolume, _sfxVolume, _controller.AccountID);

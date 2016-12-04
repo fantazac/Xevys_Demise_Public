@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System;
 
-public class PauseMenuAudioSettingsController : MonoBehaviour
+public class PauseMenuAudioSettingsManager : MonoBehaviour
 {
     public delegate void OnVolumeChangedHandler(bool isMusic, float volume);
     public static event OnVolumeChangedHandler OnVolumeChanged;

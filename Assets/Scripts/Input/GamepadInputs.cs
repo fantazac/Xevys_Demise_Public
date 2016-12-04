@@ -68,7 +68,7 @@ public class GamepadInputs : MonoBehaviour
 
     private void Start()
     {
-        GameObject.Find(StaticObjects.GetFindTags().PauseMenuControlsOptionsButtons).GetComponent<ControlsSchemeSettings>().OnGamepadControlChanged += SetUsingDPadControlsScheme;
+        GameObject.Find(StaticObjects.GetFindTags().PauseMenuControlsOptionsButtons).GetComponent<ControlSchemesManager>().OnGamepadControlChanged += SetUsingDPadControlsScheme;
         _pauseMenuCurrentInterfaceAnimator = GameObject.Find(StaticObjects.GetFindTags().PauseMenuButtons).GetComponent<PauseMenuCurrentInterfaceAnimator>();
         _state = GamePad.GetState(PlayerIndex.One);
         _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
@@ -306,8 +306,8 @@ public class GamepadInputs : MonoBehaviour
         }
     }
 
-    private void SetUsingDPadControlsScheme(bool control)
+    private void SetUsingDPadControlsScheme(int control)
     {
-        _usingDpadControlsScheme = !control;
+        _usingDpadControlsScheme = !Convert.ToBoolean(control);
     }
 }

@@ -7,73 +7,15 @@ public class DatabaseController : DatabaseConnection
 {
     [SerializeField]
     private bool _loadDB;
-
-    private AccountStats _accountStats;
-    private AccountSettings _accountSettings;
     public int AccountID { get; private set; }
 
     protected override void Start()
     {
         base.Start();
-        _accountStats = GetComponent<AccountStats>();
-        _accountSettings = GetComponent<AccountSettings>();
         if(!_loadDB || !File.Exists(Path.Combine(Application.persistentDataPath, "Database.db")))
         {
             File.Copy(Path.Combine(Application.streamingAssetsPath, "Database.db"), Path.Combine(Application.persistentDataPath, "Database.db"), true);
-            CreateAll();
         }
-        else
-        {
-            LoadAll();
-        }
-    }
-
-    private void CreateAll()
-    {
-        CreateAccount("Test");
-        _accountStats.CreateStatsRecord();
-        _accountSettings.CreateSettings();
-        CreateAllAchievements();
-        CreateAllFunFacts();
-    }
-
-    public void SaveAll()
-    {
-        _accountStats.SaveStats();
-        _accountSettings.SaveSettings();
-    }
-
-    private void LoadAll()
-    {
-        ChangeAccount("Test");
-        _accountStats.LoadStats();
-        _accountSettings.LoadSettings();
-    }
-
-    private void CreateAccount(string username)
-    {
-        _dbconnection.Open();
-        string sqlQuery = String.Format("INSERT INTO ACCOUNT (USERNAME)" +
-            "VALUES (\"{0}\")", username);
-        _dbcommand.CommandText = sqlQuery;
-        _dbcommand.ExecuteNonQuery();
-        _dbconnection.Close();
-        ChangeAccount(username);
-    }
-
-    private void ChangeAccount(string username)
-    {
-        _dbconnection.Open();
-        string sqlQuery = String.Format("SELECT ACCOUNT_ID" +
-             " FROM ACCOUNT WHERE USERNAME = \"{0}\"", username);
-        _dbcommand.CommandText = sqlQuery;
-        IDataReader reader = _dbcommand.ExecuteReader();
-        while (reader.Read())
-        {
-            AccountID = reader.GetInt32(0);
-        }
-        reader.Close();
-        _dbconnection.Close();
     } 
 
     private void CreateAllAchievements()

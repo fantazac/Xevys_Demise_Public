@@ -31,10 +31,10 @@ public class PauseMenuAudioSettingListener : MonoBehaviour
             }
             _audioListeners.Add(audioListener);
         }
-        PauseMenuAudioSettingsController.OnVolumeChanged += SetVolume;
+        PauseMenuAudioSettingsManager.OnVolumeChanged += SetVolume;
         if (!_audioListeners.First().isMusic)
         {
-            SetVolume(_audioListeners.First().isMusic, PauseMenuAudioSettingsController._sfxVolume);
+            SetVolume(_audioListeners.First().isMusic, PauseMenuAudioSettingsManager._sfxVolume);
         }
     }
 
@@ -51,6 +51,6 @@ public class PauseMenuAudioSettingListener : MonoBehaviour
 
     private void OnDestroy()
     {
-        PauseMenuAudioSettingsController.OnVolumeChanged -= SetVolume;
+        PauseMenuAudioSettingsManager.OnVolumeChanged -= SetVolume;
     }
 }

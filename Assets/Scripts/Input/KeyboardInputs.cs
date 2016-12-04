@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class KeyboardInputs : MonoBehaviour
 {
@@ -57,7 +58,7 @@ public class KeyboardInputs : MonoBehaviour
 
     private void Start()
     {
-        GameObject.Find(StaticObjects.GetFindTags().PauseMenuControlsOptionsButtons).GetComponent<ControlsSchemeSettings>().OnKeyboardControlChanged += SetUsingArrowControlsScheme;
+        GameObject.Find(StaticObjects.GetFindTags().PauseMenuControlsOptionsButtons).GetComponent<ControlSchemesManager>().OnKeyboardControlChanged += SetUsingArrowControlsScheme;
         _pauseMenuCurrentInterfaceAnimator = GameObject.Find(StaticObjects.GetFindTags().PauseMenuButtons).GetComponent<PauseMenuCurrentInterfaceAnimator>();
         _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
         _pauseMenuAnimationManager.OnPauseMenuOutOfScreen += IsInMenu;
@@ -302,8 +303,8 @@ public class KeyboardInputs : MonoBehaviour
         }
     }
 
-    private void SetUsingArrowControlsScheme(bool control)
+    private void SetUsingArrowControlsScheme(int control)
     {
-        _usingArrowControlsScheme = !control;
+        _usingArrowControlsScheme = !Convert.ToBoolean(control);
     }
 }
