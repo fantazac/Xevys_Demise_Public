@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using Prime31.TransitionKit;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LoadGame : MonoBehaviour
 {
@@ -9,6 +9,6 @@ public class LoadGame : MonoBehaviour
     private IEnumerator Start()
     {
         DontDestroyOnLoad(this);
-        yield return Application.LoadLevelAsync("MainLevel"); ;
+        yield return SceneManager.LoadSceneAsync(_scene);
     }
 }

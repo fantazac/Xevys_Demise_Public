@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 3add6f1c13a88ed4dbd3cb12b6bdc012
-timeCreated: 1480691723
+timeCreated: 1480799076
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -65,7 +65,7 @@ TextureImporter:
         width: 184
         height: 200
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -75,10 +75,10 @@ TextureImporter:
         serializedVersion: 2
         x: 184
         y: 0
-        width: 185
+        width: 184
         height: 200
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -86,12 +86,12 @@ TextureImporter:
       name: Spinner_2
       rect:
         serializedVersion: 2
-        x: 369
+        x: 368
         y: 0
         width: 184
         height: 200
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -99,12 +99,12 @@ TextureImporter:
       name: Spinner_3
       rect:
         serializedVersion: 2
-        x: 553
+        x: 552
         y: 0
         width: 184
         height: 200
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
