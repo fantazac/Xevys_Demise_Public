@@ -13,7 +13,7 @@ public class MainMenuSetActiveState : MonoBehaviour
     private void Start()
     {
         _firstButtonGameObject = transform.GetChild(0).gameObject;
-        _OptionsButtonGameObject = transform.GetChild(1).gameObject;
+        _OptionsButtonGameObject = transform.GetChild(2).gameObject;
         _ControlsButtonGameObject = transform.GetChild(1).gameObject;
         _AudioButtonGameObject = transform.GetChild(2).gameObject;
         _eventSystem = EventSystem.current;

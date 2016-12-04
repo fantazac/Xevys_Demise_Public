@@ -9,6 +9,8 @@ public class MainMenuFindTags : MonoBehaviour
     public string MainMenuButtons { get; private set; }
     public string MainMenuAudioOptionsButtons { get; private set; }
     public string GamepadInputs { get; private set; }
+    public string Dropdown { get; private set; }
+    public string NextBtn { get; private set; }
 
     private void Start()
     {
@@ -18,5 +20,7 @@ public class MainMenuFindTags : MonoBehaviour
         MainMenuButtons = "MainMenuButtons";
         MainMenuAudioOptionsButtons = "MainMenuAudioOptionsButtons";
         GamepadInputs = "GamepadInputs";
+        Dropdown = "Dropdown";
+        NextBtn = "NextBtn";
     }
 }
