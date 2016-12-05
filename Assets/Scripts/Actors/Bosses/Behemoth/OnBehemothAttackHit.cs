@@ -11,8 +11,7 @@ public class OnBehemothAttackHit : OnAttackHit
     protected override void Start()
     {
         _behemoth = GetComponent<BehemothAI>();
-
-        StaticObjects.GetPlayer().GetComponent<KnockbackPlayer>().EnableBehemothKnockback(gameObject);
+        
         enabled = false;
         base.Start();
     }
@@ -26,6 +25,7 @@ public class OnBehemothAttackHit : OnAttackHit
             {
                 _behemoth.SetChargeStatus();
                 _playerHealth.Hit(_baseDamage);
+                enabled = false;
             }
         }
     }
