@@ -10,14 +10,11 @@ public class EyeAnimationOnDeath : MonoBehaviour
     public event OnAnimationOverHandler OnAnimationOver;
 
     private Animator _anim;
-    private WaitForSeconds _finishedDeathAnimationDelay;
 
     private void Start()
 	{
 	    _anim = GetComponentInChildren<Animator>();
         GetComponent<ActivateTrigger>().OnTrigger += OnTrigger;
-
-        _finishedDeathAnimationDelay = new WaitForSeconds(_timeBeforeCallingDeathAnimation);
 	}
 
     private void OnTrigger()
@@ -29,7 +26,7 @@ public class EyeAnimationOnDeath : MonoBehaviour
 
     private IEnumerator FinishAnimation()
     {
-        yield return _finishedDeathAnimationDelay;
+        yield return new WaitForSecondsRealtime(_timeBeforeCallingDeathAnimation);
 
         OnAnimationOver();
     }
