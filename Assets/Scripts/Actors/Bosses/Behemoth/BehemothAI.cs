@@ -44,7 +44,7 @@ public class BehemothAI : MonoBehaviour
 
     private BehemothStatus _status;
     private System.Random _random;
-    private float _waitTimeLeft;
+    private float _waitingTimeLeft;
     private float _chargingTimeLeft;
     private bool _isCharging = false;
 
@@ -80,12 +80,12 @@ public class BehemothAI : MonoBehaviour
     {
         _rigidbody.velocity = Vector2.zero;
 
-        while (_waitTimeLeft >= _timeBeforeWarning)
+        while (_waitingTimeLeft >= _timeBeforeWarning)
         {
             yield return null;
 
             _bossOrientation.FlipTowardsPlayer();
-            _waitTimeLeft -= Time.deltaTime;
+            _waitingTimeLeft -= Time.deltaTime;
         }
         _attack.enabled = true;
         _animator.SetInteger(_animTags.State, 1);
@@ -151,7 +151,7 @@ public class BehemothAI : MonoBehaviour
         _animator.SetInteger(_animTags.State, 0);
 
         _polygonHitbox.enabled = false;
-        _waitTimeLeft = _random.Next(_chargeTime, _chargeTime * 2);
+        _waitingTimeLeft = _random.Next(_chargeTime, _chargeTime * 2);
 
         StartCoroutine(UpdateWhenWaiting());
     }

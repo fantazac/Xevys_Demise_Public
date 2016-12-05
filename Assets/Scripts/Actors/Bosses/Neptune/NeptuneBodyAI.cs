@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class NeptuneBodyAI : NeptuneHeadAI
 {
@@ -14,12 +15,18 @@ public class NeptuneBodyAI : NeptuneHeadAI
         _verticalLimit = _neptuneAI.VerticalLimit;
         InitializePoints();
         RotateAndFlip();
+        StartCoroutine(UpdateWhenLiving());
     }
 	
-	private void FixedUpdate()
+	private IEnumerator UpdateWhenLiving()
     {
-        MoveInTrajectory();
-	}
+        while (!_isDead)
+        {
+            yield return null;
+
+            MoveInTrajectory();
+        }
+    }
 
     protected override void RotateAndFlip()
     {
