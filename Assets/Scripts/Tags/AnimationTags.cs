@@ -19,6 +19,7 @@ public class AnimationTags : MonoBehaviour
     public string FadeOut { get; private set; }
     public string FadeIn { get; private set; }
     public string PauseMenuButtonsGroupActiveAnimation { get; private set; }
+    public string State { get; private set; }
 
     private void Start()
     {
@@ -38,5 +39,6 @@ public class AnimationTags : MonoBehaviour
         FadeOut = "FadeOut";
         FadeIn = "FadeIn";
         PauseMenuButtonsGroupActiveAnimation = "PauseMenuButtonsGroupActiveAnimation";
+        State = "State";
     }
 }
