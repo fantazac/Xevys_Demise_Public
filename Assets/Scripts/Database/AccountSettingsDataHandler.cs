@@ -15,6 +15,7 @@ public class AccountSettingsDataHandler : MonoBehaviour
 
     private AccountSettingsEntity _entity;
     private AccountSettingsRepository _repository;
+
     private void Start()
     {
         PauseMenuAudioSettingsManager.OnVolumeChanged += SetVolume;
@@ -23,9 +24,31 @@ public class AccountSettingsDataHandler : MonoBehaviour
         _entity = _repository.Get(StaticObjects.AccountId);
     }
 
+    public void CreateNewEntry(int accountId)
+    {
+        AccountSettingsEntity entity = new AccountSettingsEntity();
+        entity.AccountId = accountId;
+        entity.IsMusicPlaying = true;
+        entity.MusicVolume = 1;
+        entity.SoundEffectsVolume = 1;
+        entity.KeyboardControlSchemeId = 1;
+        entity.GamepadControlSchemeId = 1;
+        _repository.Add(entity);
+    }
+
     public void UpdateRepository()
     {
         _repository.UpdateEntity(_entity);
+    }
+
+    public void ChangeEntity(int accountId)
+    {
+        _entity = _repository.Get(accountId);
+        OnMusicVolumeReloaded(_entity.MusicVolume);
+        OnSfxVolumeReloaded(_entity.SoundEffectsVolume);
+        OnMusicStateReloaded(_entity.IsMusicPlaying);
+        OnKeyboardControlSchemeReloaded(_entity.KeyboardControlSchemeId);
+        OnGamepadControlSchemeReloaded(_entity.GamepadControlSchemeId);
     }
 
     private void SetVolume(bool isMusic, float volume)

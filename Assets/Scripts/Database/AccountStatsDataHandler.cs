@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class AccountStatsDataHandler : MonoBehaviour
 {
@@ -13,27 +14,30 @@ public class AccountStatsDataHandler : MonoBehaviour
     private AccountStatsEntity _entity;
     private AccountStatsRepository _repository;
 
+    private InventoryManager _inventory;
+
     private void Start()
     {
         _repository = new AccountStatsRepository();
         _temporaryEntity = _repository.Get(StaticObjects.AccountId);
-        InventoryManager inventory = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
-        inventory.OnEnableKnife += EnableKnife;
-        inventory.OnEnableAxe += EnableAxe;
-        inventory.OnEnableIronBoots += EnableIronBoots;
-        inventory.OnEnableFeather += EnableFeather;
-        inventory.OnEnableBubble += EnableBubble;
-        inventory.OnEnableFireProofArmor += EnableFireProofArmor;
-        inventory.OnEnableEarthArtefact += EnableEarthArtefact;
-        inventory.OnEnableAirArtefact += EnableAirArtefact;
-        inventory.OnEnableWaterArtefact += EnableWaterArtefact;
-        inventory.OnEnableFireArtefact += EnableFireArtefact;
         DestroyEnemyOnDeath.OnEnemyDeath += EnemyKilled;
+    }
+
+    public void CreateNewEntry(int accountId)
+    {
+        AccountStatsEntity entity = new AccountStatsEntity();
+        entity.AccountId = accountId;
+        _repository.Add(entity);
     }
 
     public void UpdateEntity()
     {
         _entity = _temporaryEntity;
+    }
+
+    public void ChangeEntity(int accountId)
+    {
+        _entity = _repository.Get(accountId);
     }
 
     public void UpdateRepository()
@@ -54,6 +58,38 @@ public class AccountStatsDataHandler : MonoBehaviour
         else if (tag == StaticObjects.GetUnityTags().Skeltal)
         {
             _temporaryEntity.NbSkeltalsKilled++;
+        }
+    }
+
+    public void ActivateInventory()
+    {
+        _inventory = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
+        _inventory.OnEnableKnife += EnableKnife;
+        _inventory.OnEnableAxe += EnableAxe;
+        _inventory.OnEnableIronBoots += EnableIronBoots;
+        _inventory.OnEnableFeather += EnableFeather;
+        _inventory.OnEnableBubble += EnableBubble;
+        _inventory.OnEnableFireProofArmor += EnableFireProofArmor;
+        _inventory.OnEnableEarthArtefact += EnableEarthArtefact;
+        _inventory.OnEnableAirArtefact += EnableAirArtefact;
+        _inventory.OnEnableWaterArtefact += EnableWaterArtefact;
+        _inventory.OnEnableFireArtefact += EnableFireArtefact;
+        OnInventoryReloaded(_entity.KnifeEnabled, _entity.AxeEnabled, _entity.FeatherEnabled, _entity.BootsEnabled, _entity.BubbleEnabled, _entity.ArmorEnabled, _entity.EarthArtefactEnabled, _entity.AirArtefactEnabled, _entity.WaterArtefactEnabled, _entity.FireArtefactEnabled);
+        OnAmmoReloaded(_entity.KnifeAmmo, _entity.AxeAmmo);
+        OnHealthReloaded(_entity.LifeRemaining);
+    }
+
+    private void StartSecondsPlayedCounter()
+    {
+        StartCoroutine(SecondsPlayedCounter());
+    }
+
+    private IEnumerator SecondsPlayedCounter()
+    {
+        while (true)
+        {
+            _temporaryEntity.SecondsPlayed++;
+            yield return new WaitForSeconds(1);
         }
     }
 

@@ -1,11 +1,16 @@
 ﻿using UnityEngine;
 using System.IO;
+using UnityEngine.UI;
 
 public class DatabaseController : MonoBehaviour
 {
     [SerializeField]
     private bool _loadDB;
-    public int AccountID { get; private set; }
+
+    private AccountDataHandler _accountDataHandler;
+    private AccountStatsDataHandler _accountStatsDataHandler;
+    private AccountSettingsDataHandler _accountSettingsDataHandler;
+    public int AccountId { get; set; }
 
     private void Start()
     {
@@ -13,7 +18,26 @@ public class DatabaseController : MonoBehaviour
         {
             File.Copy(Path.Combine(Application.streamingAssetsPath, "Database.db"), Path.Combine(Application.persistentDataPath, "Database.db"), true);
         }
-    } 
+        _accountDataHandler = GetComponent<AccountDataHandler>();
+        _accountStatsDataHandler = GetComponent<AccountStatsDataHandler>();
+        _accountSettingsDataHandler = GetComponent<AccountSettingsDataHandler>();
+        GameObject.Find(MainMenuStaticObjects.GetFindTags().InputField).GetComponent<NicknameAddRequestToDropdown>().OnNicknameEntered += CreateNewAccountEntries;
+    }
+
+    private void CreateNewAccountEntries(string username)
+    {
+        _accountDataHandler.CreateNewEntry(username);
+        _accountStatsDataHandler.CreateNewEntry(AccountId);
+        _accountSettingsDataHandler.CreateNewEntry(AccountId);
+    }
+
+    public void ChangeAccount()
+    {
+        Dropdown dropdown = GameObject.Find(MainMenuStaticObjects.GetFindTags().Dropdown).GetComponent<Dropdown>();
+        _accountDataHandler.ChangeEntity(dropdown.options[dropdown.value].text);
+        _accountStatsDataHandler.ChangeEntity(AccountId);
+        _accountSettingsDataHandler.ChangeEntity(AccountId);
+    }
 
     //private void CreateAllAchievements()
     //{

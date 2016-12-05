@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 
 public class AccountDataHandler : MonoBehaviour
@@ -11,11 +12,17 @@ public class AccountDataHandler : MonoBehaviour
         _repository = new AccountRepository();
     }
 
-    public void CreateNewAccount(string username)
+    public void CreateNewEntry(string username)
     {
         _entity = new AccountEntity();
         _entity.Username = username;
         _repository.Add(_entity);
+    }
+
+    public void ChangeEntity(string username)
+    {
+        _entity = _repository.Get(username);
+        GetComponent<DatabaseController>().AccountId = _entity.AccountId;
     }
 
     public List<string> GetAllUsernames()

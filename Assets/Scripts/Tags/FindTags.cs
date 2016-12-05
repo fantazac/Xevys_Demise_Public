@@ -16,7 +16,6 @@ public class FindTags : MonoBehaviour
     public string PauseMenuPanel { get; private set; }
     public string HealthBar { get; private set; }
     public string ItemCanvas { get; private set; }
-    public string Database { get; private set; }
     public string PauseMenuControlsOptionsButtons { get; private set; }
     public string PauseMenuButtons { get; private set; }
     public string PauseMenuAudioOptionsButtons { get; private set; }
@@ -41,7 +40,6 @@ public class FindTags : MonoBehaviour
         PauseMenuPanel = "PauseMenuPanel";
         HealthBar = "HealthBar";
         ItemCanvas = "ItemCanvas";
-        Database = "Database";
         PauseMenuControlsOptionsButtons = "PauseMenuControlsOptionsButtons";
         PauseMenuButtons = "PauseMenuButtons";
         PauseMenuAudioOptionsButtons = "PauseMenuAudioOptionsButtons";

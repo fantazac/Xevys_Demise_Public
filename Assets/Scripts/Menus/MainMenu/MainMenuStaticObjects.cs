@@ -3,7 +3,6 @@
 public class MainMenuStaticObjects : MonoBehaviour
 {
     private static GameObject _mainMenuPanel;
-    private static GameObject _database;
     private static GameObject _tags;
     private static MainMenuFindTags _findTags;
     private static MainMenuAnimationTags _animationTags;
@@ -17,17 +16,11 @@ public class MainMenuStaticObjects : MonoBehaviour
         _animationTags = _tags.GetComponent<MainMenuAnimationTags>();
 
         _mainMenuPanel = GameObject.Find(_findTags.MainMenuPanel);
-        _database = GameObject.Find(_findTags.Database);
     }
 
     public static GameObject GetMainMenuPanel()
     {
         return _mainMenuPanel;
-    }
-
-    public static GameObject GetDatabase()
-    {
-        return _database;
     }
 
     public static MainMenuFindTags GetFindTags()
