@@ -13,7 +13,7 @@ public class CameraFollow : MonoBehaviour
 	{
 	    _cameraBox = GetComponent<BoxCollider2D>();
 	    _player = StaticObjects.GetPlayer().transform;
-        _boundaryHitbox = GameObject.Find(StaticObjects.GetFindTags().Boundary).GetComponent<BoxCollider2D>();
+        _boundaryHitbox = GameObject.Find(StaticObjects.GetMainObjects().Boundary).GetComponent<BoxCollider2D>();
 
     }
 

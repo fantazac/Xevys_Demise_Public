@@ -88,7 +88,7 @@ public class Health : MonoBehaviour
 
     private void ReloadHealth(int health)
     {
-        if (tag == StaticObjects.GetUnityTags().Player)
+        if (tag == StaticObjects.GetObjectTags().Player)
         {
             _health -= (_health - health);
         }

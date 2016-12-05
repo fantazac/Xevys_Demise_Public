@@ -18,7 +18,7 @@ public class EnterPortal : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == StaticObjects.GetUnityTags().Player)
+        if (collider.gameObject.tag == StaticObjects.GetObjectTags().Player)
         {
             _playerIsOnPortal = true;
         }
@@ -26,7 +26,7 @@ public class EnterPortal : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == StaticObjects.GetUnityTags().Player)
+        if (collider.gameObject.tag == StaticObjects.GetObjectTags().Player)
         {
             _playerIsOnPortal = false;
         }

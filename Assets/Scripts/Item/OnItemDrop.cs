@@ -46,8 +46,8 @@ public class OnItemDrop : MonoBehaviour
 
     private bool EnemyMustDropItemsStraightDown(Collider2D collider)
     {
-        return (collider.gameObject.tag == StaticObjects.GetUnityTags().Bat && collider.GetComponent<BatMovement>().IsCloseToTop())
-            || (collider.gameObject.tag == StaticObjects.GetUnityTags().Scarab && collider.GetComponent<ScarabMovement>().IsNotOnTopOfPlatform());
+        return (collider.gameObject.tag == StaticObjects.GetObjectTags().Bat && collider.GetComponent<BatMovement>().IsCloseToTop())
+            || (collider.gameObject.tag == StaticObjects.GetObjectTags().Scarab && collider.GetComponent<ScarabMovement>().IsNotOnTopOfPlatform());
     }
 
     private IEnumerator DropToTheGround()
@@ -97,8 +97,8 @@ public class OnItemDrop : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (_target == Vector3.zero && (collision.gameObject.tag == StaticObjects.GetUnityTags().Wall || collision.gameObject.tag == StaticObjects.GetUnityTags().Spike ||
-            (collision.gameObject.tag == StaticObjects.GetUnityTags().FlyingPlatform && collision.transform.position.y + FLYING_PLATFORM_MARGIN < transform.position.y)))
+        if (_target == Vector3.zero && (collision.gameObject.tag == StaticObjects.GetObjectTags().Wall || collision.gameObject.tag == StaticObjects.GetObjectTags().Spike ||
+            (collision.gameObject.tag == StaticObjects.GetObjectTags().FlyingPlatform && collision.transform.position.y + FLYING_PLATFORM_MARGIN < transform.position.y)))
         {
             Destroy(_rigidbody);
             _target = new Vector3(transform.position.x, transform.position.y + DISTANCE_BETWEEN_ITEMS, transform.position.z);

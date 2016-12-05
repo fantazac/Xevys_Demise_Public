@@ -129,15 +129,15 @@ public class AccountStats : DatabaseConnection
 
     private void EnemyKilled(string tag)
     {
-        if (tag == StaticObjects.GetUnityTags().Scarab)
+        if (tag == StaticObjects.GetObjectTags().Scarab)
         {
             _tempNbScarabsKilled++;
         }
-        else if (tag == StaticObjects.GetUnityTags().Bat)
+        else if (tag == StaticObjects.GetObjectTags().Bat)
         {
             _tempNbBatsKilled++;
         }
-        else if (tag == StaticObjects.GetUnityTags().Skeltal)
+        else if (tag == StaticObjects.GetObjectTags().Skeltal)
         {
             _tempNbSkeltalsKilled++;
         }

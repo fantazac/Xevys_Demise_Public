@@ -24,7 +24,7 @@ public class PauseMenuAudioSettingsController : MonoBehaviour
     {
         AccountSettings accountSettings = StaticObjects.GetDatabase().GetComponent<AccountSettings>();
         _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
-        _pauseMenuCurrentInterfaceAnimator = GameObject.Find(StaticObjects.GetFindTags().PauseMenuButtons).GetComponent<PauseMenuCurrentInterfaceAnimator>();
+        _pauseMenuCurrentInterfaceAnimator = GameObject.Find(StaticObjects.GetMainObjects().PauseMenuButtons).GetComponent<PauseMenuCurrentInterfaceAnimator>();
         accountSettings.OnMusicVolumeReloaded += ReloadMusicVolume;
         accountSettings.OnSfxVolumeReloaded += ReloadSfxVolume;
         _pauseMenuAnimationManager.OnPauseMenuStateChanged += FXVolumeStateInPauseMenu;

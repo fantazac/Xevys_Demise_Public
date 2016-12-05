@@ -50,16 +50,16 @@ public class PlayerMovement : MonoBehaviour
         _playerBoxCollider = GetComponent<BoxCollider2D>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _inputManager = GetComponentInChildren<InputManager>();
-        _basicAttackBox = GameObject.Find(StaticObjects.GetFindTags().CharacterBasicAttackBox).GetComponent<BoxCollider2D>();
-        _playerGroundHitbox = GameObject.Find(StaticObjects.GetFindTags().CharacterTouchesGround).GetComponent<BoxCollider2D>();
+        _basicAttackBox = GameObject.Find(StaticObjects.GetMainObjects().CharacterBasicAttackBox).GetComponent<BoxCollider2D>();
+        _playerGroundHitbox = GameObject.Find(StaticObjects.GetMainObjects().CharacterTouchesGround).GetComponent<BoxCollider2D>();
         _playertouchesRoof = GetComponentInChildren<PlayerTouchesRoof>();
         _inventoryView = StaticObjects.GetItemCanvas().GetComponent<UIInventoryView>();
         _playerHealth = GetComponent<Health>();
         _playerTouchesGround = GetComponentInChildren<PlayerTouchesGround>();
         _playerBasicAttack = GetComponent<PlayerBasicAttack>();
         _orientation = GetComponent<ActorOrientation>();
-        _playerCroutchHitbox = GameObject.Find(StaticObjects.GetFindTags().CharacterCroutchedHitbox).GetComponent<BoxCollider2D>();
-        _playerFloating = GameObject.Find(StaticObjects.GetFindTags().CharacterFloatingHitbox).GetComponent<PlayerFloatingInteraction>();
+        _playerCroutchHitbox = GameObject.Find(StaticObjects.GetMainObjects().CharacterCroutchedHitbox).GetComponent<BoxCollider2D>();
+        _playerFloating = GameObject.Find(StaticObjects.GetMainObjects().CharacterFloatingHitbox).GetComponent<PlayerFloatingInteraction>();
         _playerState = GetComponent<PlayerState>();
 
         _playerGroundMovement = GetComponent<PlayerGroundMovement>();

@@ -11,13 +11,13 @@ public class HubCameraSwitch : MonoBehaviour {
 
     protected virtual void Start()
     {
-        _cameraManager = GameObject.Find(StaticObjects.GetFindTags().MainCamera).GetComponent<CameraManager>();
+        _cameraManager = GameObject.Find(StaticObjects.GetMainObjects().MainCamera).GetComponent<CameraManager>();
         _resetingCameraNodeDelay = new WaitForSeconds(_resetingNodeTime);
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == StaticObjects.GetUnityTags().Player)
+        if (collider.gameObject.tag == StaticObjects.GetObjectTags().Player)
         {
             if (_cameraManager.CurrentArea == _nbNode1)
             {

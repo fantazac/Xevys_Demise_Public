@@ -18,7 +18,7 @@ public class PlayerTouchesRoof : MonoBehaviour
 
     private void SetTouchesRoof(Collider2D collider, bool touchesRoof)
     {
-        if (collider.gameObject.tag == StaticObjects.GetUnityTags().Wall)
+        if (collider.gameObject.tag == StaticObjects.GetObjectTags().Wall)
         {
             TouchesRoof = touchesRoof;
         }

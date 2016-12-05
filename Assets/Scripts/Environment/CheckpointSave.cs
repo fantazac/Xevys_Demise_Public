@@ -19,7 +19,7 @@ public class CheckpointSave : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == StaticObjects.GetUnityTags().Player)
+        if (coll.gameObject.tag == StaticObjects.GetObjectTags().Player)
         {
             _accountStats.SaveTemporaryStats();
             _checkpointSpawn.SaveCheckpoint(_checkpoint);

@@ -136,7 +136,7 @@ public class CameraManager : MonoBehaviour
                     return;
                 }
                 _currentArea = previousArea;
-                if (gameObject.name == StaticObjects.GetFindTags().MainCamera && OnAreaChanged != null)
+                if (gameObject.name == StaticObjects.GetMainObjects().MainCamera && OnAreaChanged != null)
                 {
                     OnAreaChanged(listAreaNodes.IndexOf(n));
                 }

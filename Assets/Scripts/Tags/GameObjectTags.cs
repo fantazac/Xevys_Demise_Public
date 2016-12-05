@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UnityTags : MonoBehaviour
+public class GameObjectTags : MonoBehaviour
 {
 
     public string Player { get; private set; }

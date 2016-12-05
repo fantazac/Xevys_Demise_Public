@@ -26,7 +26,7 @@ public class ActivateTrigger : MonoBehaviour
 
     private InventoryManager _playerInventory;
 
-    private UnityTags _unityTags;
+    private GameObjectTags _unityTags;
     private BoxCollider2D _hitbox;
 
     public delegate void OnTriggerHandler();
@@ -36,7 +36,7 @@ public class ActivateTrigger : MonoBehaviour
     {
         _hitbox = GetComponent<BoxCollider2D>();
         _playerInventory = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
-        _unityTags = StaticObjects.GetUnityTags();
+        _unityTags = StaticObjects.GetObjectTags();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)

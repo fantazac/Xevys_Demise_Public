@@ -4,13 +4,13 @@ using System.Collections;
 public class PickUpEquip : MonoBehaviour
 {
     private InventoryManager _inventoryManager;
-    private UnityTags _unityTags;
+    private GameObjectTags _unityTags;
 
     private void Start()
     {
         _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
         GetComponent<ActivateTrigger>().OnTrigger += EnableEquipsInInventory;
-        _unityTags = StaticObjects.GetUnityTags();
+        _unityTags = StaticObjects.GetObjectTags();
     }
 
     private void EnableEquipsInInventory()
