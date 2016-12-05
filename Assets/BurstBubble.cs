@@ -19,7 +19,7 @@ public class BurstBubble : MonoBehaviour
 	    _animator = GetComponent<Animator>();
 	    _playerOxygen = StaticObjects.GetPlayer().GetComponent<PlayerOxygen>();
         _playerFloating = StaticObjects.GetPlayer().GetComponentInChildren<PlayerFloatingInteraction>();
-        _timeBeforeDissapear = new WaitForSeconds(0.5f);
+        _timeBeforeDissapear = new WaitForSeconds(0.2f);
 	    _playerOxygen.OnOxygenCount += OnOxygenCount;
 
 	    _playerFloating.OnPlayerOutOfWater += OnPlayerOutOfWater;
