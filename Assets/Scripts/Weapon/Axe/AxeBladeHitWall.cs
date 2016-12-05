@@ -64,7 +64,7 @@ public class AxeBladeHitWall : MonoBehaviour
 
     private bool IsFlyingPlatform(Collider2D collider)
     {
-        return _canHitFlyingPlatform && collider.gameObject.tag == StaticObjects.GetUnityTags().FlyingPlatform
+        return _canHitFlyingPlatform && collider.gameObject.tag == StaticObjects.GetObjectTags().FlyingPlatform
             && _rigidbody.velocity.y < 0 && transform.position.y > collider.transform.position.y + FLYING_PLATFORM_OFFSET;
     }
 }

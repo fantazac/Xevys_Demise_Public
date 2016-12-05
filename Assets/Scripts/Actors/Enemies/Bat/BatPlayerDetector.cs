@@ -15,7 +15,7 @@ public class BatPlayerDetector : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == StaticObjects.GetUnityTags().Player)
+        if (collider.gameObject.tag == StaticObjects.GetObjectTags().Player)
         {
             DisableHitbox();
             OnDetectedPlayer();

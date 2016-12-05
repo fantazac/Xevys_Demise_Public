@@ -42,7 +42,7 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
         _pauseMenuInputs = StaticObjects.GetPauseMenuPanel().GetComponentInChildren<PauseMenuInputs>();
         _inputManager = StaticObjects.GetPlayer().GetComponentInChildren<InputManager>();
         _playeHealth = StaticObjects.GetPlayer().GetComponent<Health>();
-        _pauseMenuGroupButtonsFadeListener = GameObject.Find(StaticObjects.GetFindTags().PauseMenuAudioOptionsButtons).GetComponent<PauseMenuGroupButtonsFadeListener>();
+        _pauseMenuGroupButtonsFadeListener = GameObject.Find(StaticObjects.GetMainObjects().PauseMenuAudioOptionsButtons).GetComponent<PauseMenuGroupButtonsFadeListener>();
 
         _pauseMenuInputs.OnOptionsInterfaceIsCurrent += OptionsInterfaceIsCurrent;
         _pauseMenuInputs.OnMainInterfaceIsCurrent += MainInterfaceIsCurrent;

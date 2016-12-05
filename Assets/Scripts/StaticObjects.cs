@@ -13,8 +13,8 @@ public class StaticObjects : MonoBehaviour
     private static GameObject _tags;
     private static GameObject _mainCamera;
     private static PlayerState _playerState;
-    private static FindTags _findTags;
-    private static UnityTags _unityTags;
+    private static MainGameObjects _mainObjects;
+    private static GameObjectTags _objectTags;
     private static AnimationTags _animationTags;
     private static GameObject _respawnEnemy;
     private static GameObject _cinematic;
@@ -26,20 +26,20 @@ public class StaticObjects : MonoBehaviour
         //Je dois utiliser le string "Tags" ici car _findTags n'a pas encore de valeur
         _tags = GameObject.Find("Tags");
 
-        _findTags = _tags.GetComponent<FindTags>();
-        _unityTags = _tags.GetComponent<UnityTags>();
+        _mainObjects = _tags.GetComponent<MainGameObjects>();
+        _objectTags = _tags.GetComponent<GameObjectTags>();
         _animationTags = _tags.GetComponent<AnimationTags>();
 
-        _player = GameObject.Find(_findTags.Character);
-        _panelUI = GameObject.Find(_findTags.PanelUI);
-        _pauseMenuPanel = GameObject.Find(_findTags.PauseMenuPanel);
-        _healthBar = GameObject.Find(_findTags.HealthBar);
-        _itemCanvas = GameObject.Find(_findTags.ItemCanvas);
-        _database = GameObject.Find(_findTags.Database);
-        _mainCamera = GameObject.Find(_findTags.MainCamera);
-        _respawnEnemy = GameObject.Find(_findTags.RespawnEnemy);
-        _cinematic = GameObject.Find(_findTags.Cinematic);
-        _pause = GameObject.Find(_findTags.Pause);
+        _player = GameObject.Find(_mainObjects.Character);
+        _panelUI = GameObject.Find(_mainObjects.PanelUI);
+        _pauseMenuPanel = GameObject.Find(_mainObjects.PauseMenuPanel);
+        _healthBar = GameObject.Find(_mainObjects.HealthBar);
+        _itemCanvas = GameObject.Find(_mainObjects.ItemCanvas);
+        _database = GameObject.Find(_mainObjects.Database);
+        _mainCamera = GameObject.Find(_mainObjects.MainCamera);
+        _respawnEnemy = GameObject.Find(_mainObjects.RespawnEnemy);
+        _cinematic = GameObject.Find(_mainObjects.Cinematic);
+        _pause = GameObject.Find(_mainObjects.Pause);
 
         _playerState = _player.GetComponent<PlayerState>();
     }
@@ -79,14 +79,14 @@ public class StaticObjects : MonoBehaviour
         return _database;
     }
 
-    public static FindTags GetFindTags()
+    public static MainGameObjects GetMainObjects()
     {
-        return _findTags;
+        return _mainObjects;
     }
 
-    public static UnityTags GetUnityTags()
+    public static GameObjectTags GetObjectTags()
     {
-        return _unityTags;
+        return _objectTags;
     }
 
     public static AnimationTags GetAnimationTags()

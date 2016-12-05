@@ -12,7 +12,7 @@ public class PlayMusicZone : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if(collider.gameObject.tag == StaticObjects.GetUnityTags().Player)
+        if(collider.gameObject.tag == StaticObjects.GetObjectTags().Player)
         {
             _audioSource.Play();
         }
@@ -20,7 +20,7 @@ public class PlayMusicZone : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == StaticObjects.GetUnityTags().Player)
+        if (collider.gameObject.tag == StaticObjects.GetObjectTags().Player)
         {
             _audioSource.Stop();
         }

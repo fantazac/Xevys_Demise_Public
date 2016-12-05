@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FindTags : MonoBehaviour
+public class MainGameObjects : MonoBehaviour
 {
     public string NeptuneHead { get; private set; }
     public string Vulcan { get; private set; }

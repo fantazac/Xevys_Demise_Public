@@ -28,7 +28,7 @@ public class PlayerFloatingInteraction : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == StaticObjects.GetUnityTags().Water && collider.transform.position.y > transform.position.y && _rigidbody.velocity.y < 0)
+        if (collider.gameObject.tag == StaticObjects.GetObjectTags().Water && collider.transform.position.y > transform.position.y && _rigidbody.velocity.y < 0)
         {
             EnterWater();
         }
@@ -36,7 +36,7 @@ public class PlayerFloatingInteraction : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == StaticObjects.GetUnityTags().Water && collider.transform.position.y < transform.position.y)
+        if (collider.gameObject.tag == StaticObjects.GetObjectTags().Water && collider.transform.position.y < transform.position.y)
         {
             ExitWater();
         }

@@ -16,11 +16,11 @@ public class PickUpWeaponAmmo : MonoBehaviour
 
     private void AddAmmoToMunitionsInventory()
     {
-        if (gameObject.tag == StaticObjects.GetUnityTags().KnifePickableItem)
+        if (gameObject.tag == StaticObjects.GetObjectTags().KnifePickableItem)
         {
             _munitions.AddKnifeAmmo(_ammoOnDrop);
         }
-        else if (gameObject.tag == StaticObjects.GetUnityTags().AxePickableItem)
+        else if (gameObject.tag == StaticObjects.GetObjectTags().AxePickableItem)
         {
             _munitions.AddAxeAmmo(_ammoOnDrop);
         }

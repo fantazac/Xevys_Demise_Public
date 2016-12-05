@@ -68,11 +68,11 @@ public class DropItems : MonoBehaviour
 
     private bool CanDropKnife(GameObject item)
     {
-        return _inventoryManager.KnifeEnabled && item.tag == StaticObjects.GetUnityTags().KnifeDrop;
+        return _inventoryManager.KnifeEnabled && item.tag == StaticObjects.GetObjectTags().KnifeDrop;
     }
 
     private bool CanDropAxe(GameObject item)
     {
-        return _inventoryManager.AxeEnabled && item.tag == StaticObjects.GetUnityTags().AxeDrop;
+        return _inventoryManager.AxeEnabled && item.tag == StaticObjects.GetObjectTags().AxeDrop;
     }
 }
