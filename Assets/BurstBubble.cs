@@ -10,7 +10,7 @@ public class BurstBubble : MonoBehaviour
     private Animator _animator;
     private PlayerOxygen _playerOxygen;
     private PlayerFloatingInteraction _playerFloating;
-    private WaitForSeconds _timeBeforeDissapear;
+    private WaitForSeconds _timeBeforeDisappear;
 
 	private void Start ()
 	{
@@ -19,7 +19,7 @@ public class BurstBubble : MonoBehaviour
 	    _animator = GetComponent<Animator>();
 	    _playerOxygen = StaticObjects.GetPlayer().GetComponent<PlayerOxygen>();
         _playerFloating = StaticObjects.GetPlayer().GetComponentInChildren<PlayerFloatingInteraction>();
-        _timeBeforeDissapear = new WaitForSeconds(0.2f);
+        _timeBeforeDisappear = new WaitForSeconds(0.2f);
 	    _playerOxygen.OnOxygenCount += OnOxygenCount;
 
 	    _playerFloating.OnPlayerOutOfWater += OnPlayerOutOfWater;
@@ -48,7 +48,7 @@ public class BurstBubble : MonoBehaviour
 
     private IEnumerator TimerBeforeDisappearCoroutine()
     {
-        yield return _timeBeforeDissapear;
+        yield return _timeBeforeDisappear;
         GetComponent<Image>().enabled = false;
     }
 }
