@@ -1,25 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AttackHubTooltip : MonoBehaviour
+public class KnifeTooltip : MonoBehaviour
 {
-    private WaitForSeconds _delayBeforeFadeIn;
     private WaitForSeconds _delayBeforeFadeOut;
     private Animator _animator;
 
     private void Start()
     {
         _animator = GetComponent<Animator>();
-        _delayBeforeFadeIn = new WaitForSeconds(5);
         _delayBeforeFadeOut = new WaitForSeconds(4);
-        StartCoroutine(FadeInFadeOutCoroutine());
-
     }
 
-    private IEnumerator FadeInFadeOutCoroutine()
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        yield return _delayBeforeFadeIn;
-        _animator.SetTrigger("FadeIn");
+        if (collider.tag == "Player")
+        {
+            _animator.SetTrigger("FadeIn");
+            StartCoroutine(FadeOutCoroutine());
+        }    
+    }
+
+    private IEnumerator FadeOutCoroutine()
+    {
         yield return _delayBeforeFadeOut;
         _animator.SetTrigger("FadeOut");
     }
