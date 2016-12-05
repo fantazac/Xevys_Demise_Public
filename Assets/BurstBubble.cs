@@ -42,11 +42,11 @@ public class BurstBubble : MonoBehaviour
         if (_bubbleIndex == index)
         {
             _animator.SetBool("IsBurst", true);
-            StartCoroutine(TimerBeforeDissapearCoroutine());
+            StartCoroutine(TimerBeforeDisappearCoroutine());
         }
     }
 
-    private IEnumerator TimerBeforeDissapearCoroutine()
+    private IEnumerator TimerBeforeDisappearCoroutine()
     {
         yield return _timeBeforeDissapear;
         GetComponent<Image>().enabled = false;
