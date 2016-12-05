@@ -40,6 +40,12 @@ public class DatabaseController : MonoBehaviour
         _accountSettingsDataHandler.ChangeEntity(AccountId);
     }
 
+    public void SaveAccount()
+    {
+        _accountStatsDataHandler.UpdateRepository();
+        _accountSettingsDataHandler.UpdateRepository();
+    }
+
     //private void CreateAllAchievements()
     //{
     //    _dbconnection.Open();

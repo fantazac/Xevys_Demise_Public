@@ -27,6 +27,7 @@ public class AccountStatsDataHandler : MonoBehaviour
     {
         AccountStatsEntity entity = new AccountStatsEntity();
         entity.AccountId = accountId;
+        entity.LifeRemaining = 1000;
         _repository.Add(entity);
     }
 
@@ -37,11 +38,13 @@ public class AccountStatsDataHandler : MonoBehaviour
 
     public void ChangeEntity(int accountId)
     {
-        _entity = _repository.Get(accountId);
+        _temporaryEntity = _repository.Get(accountId);
+        UpdateEntity();
     }
 
     public void UpdateRepository()
     {
+        _entity.LifeRemaining = StaticObjects.GetPlayer().GetComponent<Health>().HealthPoint;
         _repository.UpdateEntity(_entity);
     }
 

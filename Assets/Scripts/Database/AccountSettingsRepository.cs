@@ -22,6 +22,7 @@ public class AccountSettingsRepository : DatabaseConnection
         }
         reader.Close();
         _dbconnection.Close();
+        entity.AccountId = accountId;
         return entity;
     }
 

@@ -66,6 +66,7 @@ public class PauseMenuInputs : MonoBehaviour
 
     public void QuitBtnOnClick()
     {
+        DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<DatabaseController>().SaveAccount();
         Application.Quit();
     }
 

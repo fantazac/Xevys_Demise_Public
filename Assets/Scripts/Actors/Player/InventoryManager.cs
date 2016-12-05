@@ -57,8 +57,6 @@ public class InventoryManager : MonoBehaviour
 
     public void Start()
     {
-        DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountStatsDataHandler>().OnInventoryReloaded += ReloadInventory;
-
         _inventoryView = StaticObjects.GetItemCanvas().GetComponent<UIInventoryView>();
         GetComponentInChildren<InputManager>().OnThrowAttackChangeButtonPressed += OnSwitchWeapon;
 
@@ -66,6 +64,10 @@ public class InventoryManager : MonoBehaviour
         _throwAxeAttack = GetComponent<ThrowAxe>();
 
         SelectedThrowWeapon = WeaponType.None;
+
+        AccountStatsDataHandler accountStatsDataHandler = DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountStatsDataHandler>();
+        accountStatsDataHandler.OnInventoryReloaded += ReloadInventory;
+        accountStatsDataHandler.ActivateInventory();
     }
 
     public void ReloadInventory(bool knifeEnabled, bool axeEnabled, bool featherEnabled, bool bootsEnabled, bool bubbleEnabled, bool armorEnabled, bool earthArtefactEnabled, bool airArtefactEnabled, bool waterArtefactEnabled, bool fireArtefactEnabled)

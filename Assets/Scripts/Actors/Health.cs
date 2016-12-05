@@ -90,6 +90,7 @@ public class Health : MonoBehaviour
     {
         if (tag == StaticObjects.GetObjectTags().Player)
         {
+            OnHealthChanged(-(_health - health));
             _health -= (_health - health);
         }
     }
