@@ -57,7 +57,7 @@ public class InventoryManager : MonoBehaviour
 
     public void Start()
     {
-        StaticObjects.GetDatabase().GetComponent<AccountStatsDataHandler>().OnInventoryReloaded += ReloadInventory;
+        DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountStatsDataHandler>().OnInventoryReloaded += ReloadInventory;
 
         _inventoryView = StaticObjects.GetItemCanvas().GetComponent<UIInventoryView>();
         GetComponentInChildren<InputManager>().OnThrowAttackChangeButtonPressed += OnSwitchWeapon;

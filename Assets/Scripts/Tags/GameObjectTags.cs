@@ -32,6 +32,7 @@ public class GameObjectTags : MonoBehaviour
     public string AxePickableItem { get; private set; }
     public string LevelWall { get; private set; }
     public string Spike { get; private set; }
+    public string DontDestroyOnLoadStaticObjects { get; set; }
 
     private void Start()
     {
@@ -63,5 +64,6 @@ public class GameObjectTags : MonoBehaviour
         AxePickableItem = "AxePickableItem";
         LevelWall = "LevelWall";
         Spike = "Spike";
+        DontDestroyOnLoadStaticObjects = "DontDestroyOnLoadStaticObjects";
     }
 }

@@ -47,15 +47,15 @@ public class AccountStatsDataHandler : MonoBehaviour
 
     private void EnemyKilled(string tag)
     {
-        if (tag == StaticObjects.GetUnityTags().Scarab)
+        if (tag == StaticObjects.GetObjectTags().Scarab)
         {
             _temporaryEntity.NbScarabsKilled++;
         }
-        else if (tag == StaticObjects.GetUnityTags().Bat)
+        else if (tag == StaticObjects.GetObjectTags().Bat)
         {
             _temporaryEntity.NbBatsKilled++;
         }
-        else if (tag == StaticObjects.GetUnityTags().Skeltal)
+        else if (tag == StaticObjects.GetObjectTags().Skeltal)
         {
             _temporaryEntity.NbSkeltalsKilled++;
         }

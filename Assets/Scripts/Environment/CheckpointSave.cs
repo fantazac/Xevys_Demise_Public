@@ -11,7 +11,7 @@ public class CheckpointSave : MonoBehaviour
     private void Start()
     {
         _checkpointSpawn = StaticObjects.GetPlayer().GetComponent<SpawnToCheckpointAfterDeath>();
-        _accountStatsDataHandler = StaticObjects.GetDatabase().GetComponent<AccountStatsDataHandler>();
+        _accountStatsDataHandler = DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountStatsDataHandler>();
     }
 
     private void OnTriggerEnter2D(Collider2D coll)

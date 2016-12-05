@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class MainMenuFindTags : MonoBehaviour
+public class MainMenuGameObjectTags : MonoBehaviour
 {
     public string MainMenuPanel { get; private set; }
     public string MainMenuControlsOptionsButtons { get; private set; }
@@ -11,6 +10,7 @@ public class MainMenuFindTags : MonoBehaviour
     public string Dropdown { get; private set; }
     public string NextBtn { get; private set; }
     public string InputField { get; set; }
+    public string DontDestroyOnLoadTags { get; set; }
 
     private void Start()
     {
@@ -22,5 +22,6 @@ public class MainMenuFindTags : MonoBehaviour
         Dropdown = "Dropdown";
         NextBtn = "NextBtn";
         InputField = "InputField";
+        DontDestroyOnLoadTags = "DontDestroyOnLoadTags";
     }
 }

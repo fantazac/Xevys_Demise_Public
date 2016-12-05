@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor.VersionControl;
+using UnityEngine;
 
 public class AccountSettingsDataHandler : MonoBehaviour
 {
@@ -18,10 +19,13 @@ public class AccountSettingsDataHandler : MonoBehaviour
 
     private void Start()
     {
-        PauseMenuAudioSettingsManager.OnVolumeChanged += SetVolume;
-        PauseMenuAudioSettingsManager.OnMusicStateChanged += SetMusicState;
+        MainMenuAudioSettingsManager.OnVolumeChanged += SetVolume;
+        MainMenuAudioSettingsManager.OnMusicStateChanged += SetMusicState;
+        ControlSchemesManager.OnKeyboardControlChanged += SetKeyboardControl;
+        ControlSchemesManager.OnGamepadControlChanged += SetGamepadControl;
         _repository = new AccountSettingsRepository();
-        _entity = _repository.Get(StaticObjects.AccountId);
+
+        GameObject.Find(MainMenuStaticObjects.GetFindTags().MainMenuButtons).GetComponent<MainMenuCurrentInterfaceAnimator>().OnOptionsInterfaceQuit += UpdateRepository;
     }
 
     public void CreateNewEntry(int accountId)

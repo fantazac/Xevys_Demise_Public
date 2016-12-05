@@ -22,7 +22,7 @@ public class DropdownController : MonoBehaviour {
     private void PopulateDropdown()
     {
         //***ici fetch de la database***
-        List<String> usernames = MainMenuStaticObjects.GetDatabase().GetComponent<AccountDataHandler>().GetAllUsernames();
+        List<String> usernames = DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountDataHandler>().GetAllUsernames();
         foreach (string username in usernames)
         {
             _nicknamesList.Add(username);

@@ -14,13 +14,13 @@ public class MainMenuAudioSettingsManager : MonoBehaviour
     protected Switch _musicSwitch;
 
     protected float _musicVolumeBeforeDesactivate;
-    public float _sfxVolumeBeforeDesactivate { get; private set; }
+    public float _sfxVolumeBeforeDesactivate { get; protected set; }
     protected bool _sfxVolumeChanged;
-    private AccountSettingsDataHandler _accountSettingsDataHandler;
+    protected AccountSettingsDataHandler _accountSettingsDataHandler;
 
     protected virtual void Start()
     {
-        _accountSettingsDataHandler = GameObject.Find(DontDestroyOnLoadTags)
+        _accountSettingsDataHandler = DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountSettingsDataHandler>();
         _accountSettingsDataHandler.OnMusicVolumeReloaded += ReloadMusicVolume;
         _accountSettingsDataHandler.OnSfxVolumeReloaded += ReloadSfxVolume;
         _accountSettingsDataHandler.OnMusicStateReloaded += ReloadMusicState;

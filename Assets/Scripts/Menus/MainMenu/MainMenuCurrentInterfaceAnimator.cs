@@ -23,6 +23,9 @@ public class MainMenuCurrentInterfaceAnimator : MonoBehaviour
     public delegate void OnOptionsInterfaceIsCurrentHandler(string from);
     public event OnOptionsInterfaceIsCurrentHandler OnOptionsInterfaceIsCurrent;
 
+    public delegate void OnOptionsInterfaceQuitHandler();
+    public event OnOptionsInterfaceQuitHandler OnOptionsInterfaceQuit;
+
     private MainMenuInputs _mainMenuInputs;
     private Animator _animator;
     private string _currentInterface;
@@ -80,6 +83,7 @@ public class MainMenuCurrentInterfaceAnimator : MonoBehaviour
             _currentInterface = target;
             OnOptionsInterfaceFade();
             OnMainInterfaceIsCurrent("Options");
+            OnOptionsInterfaceQuit();
         }
         else if(target != _currentInterface && _currentInterface == "Account")
         {

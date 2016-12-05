@@ -9,7 +9,6 @@ public class StaticObjects : MonoBehaviour
     private static GameObject _pauseMenuPanel;
     private static GameObject _healthBar;
     private static GameObject _itemCanvas;
-    private static GameObject _database;
     private static GameObject _tags;
     private static GameObject _mainCamera;
     private static PlayerState _playerState;
@@ -35,7 +34,6 @@ public class StaticObjects : MonoBehaviour
         _pauseMenuPanel = GameObject.Find(_mainObjects.PauseMenuPanel);
         _healthBar = GameObject.Find(_mainObjects.HealthBar);
         _itemCanvas = GameObject.Find(_mainObjects.ItemCanvas);
-        _database = GameObject.Find(_mainObjects.Database);
         _mainCamera = GameObject.Find(_mainObjects.MainCamera);
         _respawnEnemy = GameObject.Find(_mainObjects.RespawnEnemy);
         _cinematic = GameObject.Find(_mainObjects.Cinematic);
@@ -72,11 +70,6 @@ public class StaticObjects : MonoBehaviour
     public static GameObject GetItemCanvas()
     {
         return _itemCanvas;
-    }
-
-    public static GameObject GetDatabase()
-    {
-        return _database;
     }
 
     public static MainGameObjects GetMainObjects()

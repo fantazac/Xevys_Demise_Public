@@ -5,16 +5,16 @@ using UnityEngine.UI;
 public class ControlSchemesManager : MonoBehaviour
 {
     public delegate void OnKeyboardControlChangedHandler(int scheme);
-    public event OnKeyboardControlChangedHandler OnKeyboardControlChanged;
+    public static event OnKeyboardControlChangedHandler OnKeyboardControlChanged;
     public delegate void OnGamepadControlChangedHandler(int scheme);
-    public event OnGamepadControlChangedHandler OnGamepadControlChanged;
+    public static event OnGamepadControlChangedHandler OnGamepadControlChanged;
 
     private Switch _keyboardSwitch;
     private Switch _gamepadSwitch;
 
     private void Start()
     {
-        AccountSettingsDataHandler accountSettingsDataHandler = StaticObjects.GetDatabase().GetComponent<AccountSettingsDataHandler>();
+        AccountSettingsDataHandler accountSettingsDataHandler = DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountSettingsDataHandler>();
         accountSettingsDataHandler.OnKeyboardControlSchemeReloaded += ReloadKeyboardControlScheme;
         accountSettingsDataHandler.OnGamepadControlSchemeReloaded += ReloadGamepadControlScheme;
 

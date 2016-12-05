@@ -27,6 +27,7 @@ public class DatabaseController : MonoBehaviour
     private void CreateNewAccountEntries(string username)
     {
         _accountDataHandler.CreateNewEntry(username);
+        _accountDataHandler.ChangeEntity(username);
         _accountStatsDataHandler.CreateNewEntry(AccountId);
         _accountSettingsDataHandler.CreateNewEntry(AccountId);
     }
