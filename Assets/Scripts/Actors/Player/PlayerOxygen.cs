@@ -4,7 +4,7 @@ using System.Collections;
 public class PlayerOxygen : MonoBehaviour
 {
     [SerializeField]
-    private float _timeBeforeOxygenMissing = 5;
+    private float _timeBeforeOxygenMissing = 5f;
 
     [SerializeField]
     private float _intervalBetweenHits = 1.5f;
@@ -12,8 +12,10 @@ public class PlayerOxygen : MonoBehaviour
     [SerializeField]
     private int _damageOnHit = 50;
 
+    public delegate void OnOxygenCountHandler(int index);
+    public event OnOxygenCountHandler OnOxygenCount;
+
     private WaitForSeconds _delayBetweenHits;
-    private WaitForSeconds _delayBeforeLosingHealth;
 
     private PlayerFloatingInteraction _playerFloating;
     private PlayerWaterMovement _playerWaterMovement;
@@ -31,7 +33,6 @@ public class PlayerOxygen : MonoBehaviour
         _inventoryManager = GetComponent<InventoryManager>();
 
         _delayBetweenHits = new WaitForSeconds(_intervalBetweenHits);
-        _delayBeforeLosingHealth = new WaitForSeconds(_timeBeforeOxygenMissing);
 
         _playerFloating = GetComponentInChildren<PlayerFloatingInteraction>();
         _playerFloating.OnPlayerUnderWater += OnPlayerUnderWater;
@@ -53,8 +54,23 @@ public class PlayerOxygen : MonoBehaviour
 
     private IEnumerator DamageIfMissingOxygen()
     {
-        yield return _delayBeforeLosingHealth;
+        // J'ai du utiliser un compteur manuel au lieu d'un Time.deltatime
+        // car il faut pouvoir connaître la valeur du compteur à un moment donné
 
+        float counter = 0;
+        int nbOfSecondsPassed = 0;
+        while (nbOfSecondsPassed <= _timeBeforeOxygenMissing)
+        {           
+            counter += Time.deltaTime;
+            if (counter >= 1)
+            {               
+                nbOfSecondsPassed++;
+                counter = 0;
+                OnOxygenCount(nbOfSecondsPassed);
+            }
+            yield return null;
+        }
+        
         while (_playerWaterMovement.enabled && !_playerState.IsFloating)
         {
             _playerHealth.Hit(_damageOnHit, Vector2.zero);
