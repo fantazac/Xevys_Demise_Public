@@ -21,14 +21,7 @@ public class BossOrientation : ActorOrientation
             {
                 OnBossFlipped();
             }
-            //return true;
         }
-        /*else if (point.x < transform.position.x && IsFacingRight)
-        {
-            Flip();
-            return true;
-        }*/
-        //return false;
     }
 
     public void FlipTowardsPlayer()

@@ -1,16 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class VulcanAI : MonoBehaviour
 {
-    private enum VulcanStatus
-    {
-        LOWERED,
-        RAISING,
-        STANDING,
-        RETREATING,
-        DEAD,
-    }
-
     [SerializeField]
     GameObject _fireball;
 
@@ -36,64 +28,44 @@ public class VulcanAI : MonoBehaviour
     private PolygonCollider2D _polygonHitbox;
 
     private System.Random _random = new System.Random();
-    private VulcanStatus _status;
     private bool _criticalStatus = true;
     private float[] _positionsForRaise;
     private float _attackCooldownTimeLeft;
     private float _bodyHeight;
     private float _initialHeight;
-    private float _timeLeft;
+    private float _standingTimeLeft;
     private float _halfHealth;
     private bool _hasShotFireball = false;
+
+    private WaitForSeconds _delayLowered;
 
     public int CurrentIndex { get; private set; }
 
     private void Start()
     {
+        _delayLowered = new WaitForSeconds(_loweredTime);
+
         _health = GetComponent<Health>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _bossOrientation = GetComponent<BossOrientation>();
         _health.OnDeath += OnVulcanDefeated;
         _polygonHitbox = GetComponent<PolygonCollider2D>();
         InitializeVulcan();
+
+        SetLoweredStatus();
     }
 
     private void InitializeVulcan()
     {
-        _timeLeft = _loweredTime;
         _health.HealthPoint = _health.MaxHealth;
         _halfHealth = _health.HealthPoint / 2;
         _polygonHitbox.enabled = false;
-        _status = VulcanStatus.LOWERED;
         _initialHeight = transform.position.y;
         _bodyHeight = transform.localScale.y;
         _positionsForRaise = new float[5];
         for (int x = -2; x < 3; x++)
         {
             _positionsForRaise[x + 2] = transform.position.x + x * transform.localScale.x;
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        switch (_status)
-        {
-            //Vulcan attend au fond du cratère.
-            case VulcanStatus.LOWERED:
-                UpdateWhenLowered();
-                break;
-            //Vulcan remonte à la surface pour affronter Bimon.
-            case VulcanStatus.RAISING:
-                UpdateWhenRaising();
-                break;
-            //Vulcan surveille Bimon pour lui lancer un projectile.
-            case VulcanStatus.STANDING:
-                UpdateWhenStanding();
-                break;
-            //Vulcan redescend au fond du cratère pour démarrer une autre manche.
-            case VulcanStatus.RETREATING:
-                UpdateWhenRetreating();
-                break;
         }
     }
 
@@ -113,48 +85,26 @@ public class VulcanAI : MonoBehaviour
         transform.position = new Vector3(_positionsForRaise[closestPointIndex], transform.position.y);
     }
 
-    private void UpdateWhenLowered()
+    private IEnumerator UpdateWhenLowered()
     {
-        if (_timeLeft > 0)
-        {
-            _timeLeft -= Time.fixedDeltaTime;
-        }
-        else
-        {
-            _criticalStatus = (_health.HealthPoint <= _halfHealth);
-            if (_criticalStatus)
-            {
-                SelectPointClosestToPlayer();
-            }
-            else
-            {
-                CurrentIndex = _random.Next() % 2 * 2 + 1;
-                transform.position = new Vector3(_positionsForRaise[CurrentIndex], transform.position.y, transform.position.z);
-            }
-            _bossOrientation.FlipTowardsPlayer();
-            _rigidbody.isKinematic = false;
-            _rigidbody.AddForce(transform.up * _raisingUpwardForce);
-            _timeLeft = _standingTime;
-            _status = VulcanStatus.RAISING;
-        }
+        yield return _delayLowered;
+
+        SetRaisingStatus();
     }
 
-    private void UpdateWhenRaising()
+    private IEnumerator UpdateWhenRaising()
     {
-        if (transform.position.y >= _initialHeight + _bodyHeight)
+        while (transform.position.y < _initialHeight + _bodyHeight)
         {
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
-            _rigidbody.isKinematic = true;
-            _status = VulcanStatus.STANDING;
+            yield return null;
         }
+        SetStandingStatus();
     }
-
-    private void UpdateWhenStanding()
+    private IEnumerator UpdateWhenStanding()
     {
-        if (_timeLeft > 0)
+        while (_standingTimeLeft > 0)
         {
-            _timeLeft -= Time.fixedDeltaTime;
-            if (_timeLeft < 2 && !_hasShotFireball)
+            if (_standingTimeLeft < 2 && !_hasShotFireball)
             {
                 GameObject fireball = (GameObject)Instantiate(_fireball, new Vector3(transform.position.x + _bossOrientation.Orientation * 4.5f,
                     transform.position.y + 1.7f + (_criticalStatus ? 0 : 1.8f)), Quaternion.identity);
@@ -162,45 +112,83 @@ public class VulcanAI : MonoBehaviour
                 if (!_criticalStatus)
                 {
                     fireball.transform.Rotate(0, 0, 60 * _bossOrientation.Orientation);
+                    fireball.GetComponent<SpriteRenderer>().flipX = !_bossOrientation.IsFacingRight;
                 }
                 fireball.GetComponent<MoveFireball>().Vulcan = gameObject;
                 fireball.SetActive(true);
                 _hasShotFireball = true;
             }
+            _standingTimeLeft -= Time.deltaTime;
+
+            yield return null;
         }
-        else
-        {
-            _hasShotFireball = false;
-            _rigidbody.isKinematic = false;
-            _polygonHitbox.enabled = true;
-            _status = VulcanStatus.RETREATING;
-        }
+
+        SetRetreatingStatus();
     }
 
-    private void UpdateWhenRetreating()
+    private IEnumerator UpdateWhenRetreating()
     {
-        //Lorsque Vulcan est dans un état critique, il se met à foncer sur Bimon.
-        if (transform.position.y > _initialHeight)
+        while (transform.position.y > _initialHeight)
         {
             if (_health.HealthPoint <= _halfHealth)
             {
                 _bossOrientation.FlipTowardsPlayer();
                 _rigidbody.AddForce(transform.right * _bossOrientation.Orientation * _horizontalSpeed);
             }
+
+            yield return null;
+        }
+        SetLoweredStatus();
+    }
+
+    private void SetRaisingStatus()
+    {
+        StopAllCoroutines();
+        _criticalStatus = (_health.HealthPoint <= _halfHealth);
+        if (_criticalStatus)
+        {
+            SelectPointClosestToPlayer();
         }
         else
         {
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
-            _timeLeft = _loweredTime;
-            _rigidbody.isKinematic = true;
-            _polygonHitbox.enabled = false;
-            _status = VulcanStatus.LOWERED;
+            CurrentIndex = _random.Next() % 2 * 2 + 1;
+            transform.position = new Vector3(_positionsForRaise[CurrentIndex], transform.position.y, transform.position.z);
         }
+        _bossOrientation.FlipTowardsPlayer();
+        _rigidbody.isKinematic = false;
+        _rigidbody.AddForce(transform.up * _raisingUpwardForce);
+        _standingTimeLeft = _standingTime;
+        StartCoroutine(UpdateWhenRaising());
+    }
+
+    private void SetStandingStatus()
+    {
+        StopAllCoroutines();
+        _rigidbody.velocity = Vector2.zero;
+        _rigidbody.isKinematic = true;
+        StartCoroutine(UpdateWhenStanding());
+    }
+
+    private void SetRetreatingStatus()
+    {
+        StopAllCoroutines();
+        _hasShotFireball = false;
+        _rigidbody.isKinematic = false;
+        _polygonHitbox.enabled = true;
+        StartCoroutine(UpdateWhenRetreating());
+    }
+
+    private void SetLoweredStatus()
+    {
+        StopAllCoroutines();
+        _rigidbody.velocity = Vector2.zero;
+        _rigidbody.isKinematic = true;
+        _polygonHitbox.enabled = false;
+        StartCoroutine(UpdateWhenLowered());
     }
 
     private void OnVulcanDefeated()
     {
-        _status = VulcanStatus.DEAD;
         _rigidbody.isKinematic = false;
     }
 }

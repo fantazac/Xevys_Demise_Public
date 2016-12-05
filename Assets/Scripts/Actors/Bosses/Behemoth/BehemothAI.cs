@@ -3,15 +3,6 @@ using System.Collections;
 
 public class BehemothAI : MonoBehaviour
 {
-    private enum BehemothStatus
-    {
-        WAIT,
-        CHARGE,
-        STRUCK,
-        STUN,
-        DEAD,
-    }
-
     [SerializeField]
     private GameObject _leftWall;
 
@@ -28,7 +19,7 @@ public class BehemothAI : MonoBehaviour
     private float _stunTime = 3;
 
     [SerializeField]
-    private float _chargeTime = 5;
+    private int _chargeTime = 5;
 
     [SerializeField]
     private float _feignTime = 0.33f;
@@ -48,155 +39,164 @@ public class BehemothAI : MonoBehaviour
     private BossOrientation _bossOrientation;
     private PolygonCollider2D _polygonHitbox;
     private Vector3 _initialPosition;
+    private SpriteRenderer _spriteRenderer;
+    private AnimationTags _animTags;
 
-    private System.Random _random = new System.Random();
-    private BehemothStatus _status = BehemothStatus.WAIT;
-    private float _timeLeft;
-    private bool _isCharging;
+    private BehemothStatus _status;
+    private System.Random _random;
+    private float _waitingTimeLeft;
+    private float _chargingTimeLeft;
+    private bool _isCharging = false;
+
+    private WaitForSeconds _delayCharging;
+    private WaitForSeconds _delayStruck;
+    private WaitForSeconds _delayStun;
 
     private void Start()
     {
+        _random = new System.Random();
+
+        StaticObjects.GetPlayer().GetComponent<KnockbackPlayer>().EnableBehemothKnockback(gameObject);
+
+        _delayCharging = new WaitForSeconds(_timeBeforeWarning);
+        _delayStruck = new WaitForSeconds(_struckTime);
+        _delayStun = new WaitForSeconds(_stunTime);
+
         _health = GetComponent<Health>();
+        _health.OnDeath += OnBehemothDefeated;
+
         _rigidbody = GetComponent<Rigidbody2D>();
         _bossOrientation = GetComponent<BossOrientation>();
         _animator = GetComponent<Animator>();
         _polygonHitbox = GetComponent<PolygonCollider2D>();
         _attack = GetComponent<OnBehemothAttackHit>();
-        _health.OnDeath += OnBehemothDefeated;
-        _timeLeft = _chargeTime;
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _animTags = StaticObjects.GetAnimationTags();
+
+        SetWaitStatus();
     }
 
-    private void FixedUpdate()
+    private IEnumerator UpdateWhenWaiting()
     {
-        switch (_status)
+        _rigidbody.velocity = Vector2.zero;
+
+        while (_waitingTimeLeft >= _timeBeforeWarning)
         {
-            //Permet à Behemoth de se préparer à charger tout en faisant face au joueur.
-            case BehemothStatus.WAIT:
-                UpdateWhenWaiting();
-                break;
-            //Behemoth fonce tout droit dans un mur pour un certains temps donné.
-            //Une feinte près du mur fera une collision quand même.
-            case BehemothStatus.CHARGE:
-                UpdateWhenCharging();
-                break;
-            //Recul de Behemoth pendant une seconde avant d'être assomé.
-            case BehemothStatus.STRUCK:
-                UpdateWhenStruckWall();
-                break;
-            //Permet à Bimon de frapper Behemoth pendant le temps spécifié dans STUN_TIME.
-            case BehemothStatus.STUN:
-                UpdateWhenStunned();
-                break;
+            yield return null;
+
+            _bossOrientation.FlipTowardsPlayer();
+            _waitingTimeLeft -= Time.deltaTime;
         }
+        _attack.enabled = true;
+        _animator.SetInteger(_animTags.State, 1);
+
+        yield return _delayCharging;
+
+        SetChargeStatus();
     }
 
-    private bool CheckWallCollision()
+    private IEnumerator UpdateWhenCharging()
     {
-        return _aimedWall.transform.position.x - (_bossOrientation.Orientation * _aimedWall.transform.localScale.x / 2) >=
-            transform.position.x + (_bossOrientation.Orientation * GetComponent<SpriteRenderer>().bounds.size.x / 2) ^
-            _bossOrientation.IsFacingRight;
-    }
+        _rigidbody.velocity = (Vector2.right * _speed * _bossOrientation.Orientation) + 
+            (Vector2.up * _rigidbody.velocity.y);
 
-    private void UpdateWhenWaiting()
-    {
-        _bossOrientation.FlipTowardsPlayer();
-        if (_timeLeft > 0)
+        while (_chargingTimeLeft > 0)
         {
-            _timeLeft -= Time.fixedDeltaTime;
-            if (_timeLeft < _timeBeforeWarning)
-            {
-                _attack.enabled = true;
-                _animator.SetInteger("State", 1);
-            }
-        }
-        else
-        {
-            SetChargeStatus();
-        }
-    }
-
-    private void UpdateWhenCharging()
-    {
-        _timeLeft -= Time.fixedDeltaTime;
-        if (_timeLeft > 0)
-        {
-            _rigidbody.velocity = new Vector2(_speed * _bossOrientation.Orientation, _rigidbody.velocity.y);
             if (CheckWallCollision())
             {
                 SetStruckStatus();
             }
+            _chargingTimeLeft -= Time.deltaTime;
+
+            yield return null;
         }
-        else
-        {
-            _attack.enabled = false;
-            SetWaitStatus();
-        }
+
+        _attack.enabled = false;
+        SetWaitStatus();
     }
 
-    private void UpdateWhenStruckWall()
+    private IEnumerator UpdateWhenStruckWall()
     {
-        if (_timeLeft > 0)
-        {
-            _timeLeft -= Time.fixedDeltaTime;
-            _rigidbody.velocity = new Vector2(-_speed * _stunSpeedModifier * _bossOrientation.Orientation, _rigidbody.velocity.y);
-        }
-        else
-        {
-            SetStunnedStatus();
-        }
+        _rigidbody.velocity = (Vector2.up * _rigidbody.velocity.y) + 
+            (Vector2.left * _speed * _stunSpeedModifier * _bossOrientation.Orientation);
+
+        yield return _delayStruck;
+
+        SetStunnedStatus();
     }
 
-    private void UpdateWhenStunned()
+    private IEnumerator UpdateWhenStunned()
     {
-        _timeLeft -= Time.deltaTime;
-        if (_timeLeft <= 0)
-        {
-            _polygonHitbox.enabled = false;
-            SetWaitStatus();
-        }
+        _rigidbody.velocity = Vector2.zero;
+
+        yield return _delayStun;
+
+        SetWaitStatus();
+    }
+
+    private bool CheckWallCollision()
+    {
+        return HasTouchedWall() ^ _bossOrientation.IsFacingRight;
+    }
+
+    private bool HasTouchedWall()
+    {
+        return _aimedWall.transform.position.x - (_bossOrientation.Orientation * _aimedWall.transform.localScale.x * 0.5f) >=
+            transform.position.x + (_bossOrientation.Orientation * _spriteRenderer.bounds.size.x * 0.5f);
+    }
+
+    private void SetWaitStatus()
+    {
+        _status = BehemothStatus.WAIT;
+        _animator.SetInteger(_animTags.State, 0);
+
+        _polygonHitbox.enabled = false;
+        _waitingTimeLeft = _random.Next(_chargeTime, _chargeTime * 2);
+
+        StartCoroutine(UpdateWhenWaiting());
     }
 
     public void SetChargeStatus()
     {
         if (_status == BehemothStatus.WAIT)
         {
-            _animator.SetInteger("State", 2);
-            _isCharging = (_random.Next() % 2 == 0 ? true : false);
-            _timeLeft = _feignTime + (_isCharging ? _chargeTime : 0);
-            _status = BehemothStatus.CHARGE;
-            _aimedWall = (_bossOrientation.IsFacingRight ? _rightWall : _leftWall);
-        }
-    }
+            StopAllCoroutines();
 
-    private void SetWaitStatus()
-    {
-        _animator.SetInteger("State", 0);
-        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-        _status = BehemothStatus.WAIT;
-        _timeLeft = _random.Next(5, 10);
+            _status = BehemothStatus.CHARGE;
+            _animator.SetInteger(_animTags.State, 2);
+
+            _isCharging = (_random.Next(0, 10) < 5 ? true : false);
+            _chargingTimeLeft = _feignTime + (_isCharging ? _chargeTime : 0);
+            _aimedWall = (_bossOrientation.IsFacingRight ? _rightWall : _leftWall);
+
+            StartCoroutine(UpdateWhenCharging());
+        }
     }
 
     private void SetStruckStatus()
     {
-        _timeLeft = _struckTime;
-        _polygonHitbox.enabled = true;
-        _animator.SetInteger("State", 3);
-        _attack.enabled = false;
+        StopAllCoroutines();
+
         _status = BehemothStatus.STRUCK;
+        _animator.SetInteger(_animTags.State, 3);
+
+        _attack.enabled = false;
+        _polygonHitbox.enabled = true;
+
+        StartCoroutine(UpdateWhenStruckWall());
     }
 
     private void SetStunnedStatus()
     {
-        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-        _timeLeft = _stunTime;
-        _animator.SetInteger("State", 4);
         _status = BehemothStatus.STUN;
+        _animator.SetInteger(_animTags.State, 4);
+
+        StartCoroutine(UpdateWhenStunned());
     }
 
-    public void OnBehemothDefeated()
+    private void OnBehemothDefeated()
     {
-        _status = BehemothStatus.DEAD;
-        _animator.SetBool("IsDead", true);
+        _animator.SetBool(_animTags.IsDead, true);
         Destroy(_rigidbody);
     }
 }
