@@ -54,11 +54,6 @@ public class NeptuneHeadAI : MonoBehaviour
     [SerializeField]
     private GameObject[] _bodyParts;
 
-    /* BEN COUNTER-CORRECTION
-     *
-     * À moins de vouloir réinventer la roue inutilement, cette variable doit
-     * OBLIGATOIREMENT demeurer constante sans possibilité d'édition par un individu externe.
-     */
     protected const float RADIAN_TO_DEGREE = 57.2958f;
 
     protected Vector2 _origin;
@@ -70,11 +65,11 @@ public class NeptuneHeadAI : MonoBehaviour
     protected BossOrientation _bossOrientation;
     protected DisableCollidersOnBossDefeated _onBossDefeated;
 
+    protected bool _isDead = false;
     protected int _targetedPointIndex;
     private int numberBodyPartsSpawned;
     private float _spawnBodyPartTimeLeft;
     private float _attackCooldownTimeLeft;
-    private bool _isDead = false;
 
     public float HorizontalLimit { get { return _horizontalLimit; } }
 
@@ -88,6 +83,7 @@ public class NeptuneHeadAI : MonoBehaviour
         _onBossDefeated = GetComponent<DisableCollidersOnBossDefeated>();
         _health.OnDeath += OnNeptuneDefeated;
         InitializeNeptune();
+        StartCoroutine(UpdateWhenLiving());
     }
 
     private void InitializeNeptune()
@@ -123,6 +119,32 @@ public class NeptuneHeadAI : MonoBehaviour
         _bossOrientation.FlipTowardsSpecificPoint(_pointsToReach[_targetedPointIndex]);
     }
 
+    private IEnumerator UpdateWhenLiving()
+    {
+        while (!_isDead)
+        {
+            yield return null;
+
+            SpawnOtherBodyParts();
+            _attackCooldownTimeLeft -= Time.deltaTime;
+            if (_attackCooldownTimeLeft <= 0)
+            {
+                _attackCooldownTimeLeft = _attackDelay;
+                SetFlamesAroundHead();
+            }
+            else if (_attackCooldownTimeLeft < _warningDelay)
+            {
+                _animator.SetBool("IsAttacking", true);
+            }
+            else
+            {
+                _animator.SetBool("IsAttacking", false);
+            }
+            MoveInTrajectory();
+        }
+
+    }
+    /*
     private void FixedUpdate()
     {
         if (!_isDead)
@@ -144,7 +166,7 @@ public class NeptuneHeadAI : MonoBehaviour
             }
             MoveInTrajectory();
         }
-    }
+    }*/
 
     private void SpawnOtherBodyParts()
     {
