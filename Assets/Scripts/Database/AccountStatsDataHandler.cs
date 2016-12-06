@@ -14,8 +14,6 @@ public class AccountStatsDataHandler : MonoBehaviour
     private AccountStatsEntity _entity;
     private AccountStatsRepository _repository;
 
-    private InventoryManager _inventory;
-
     private void Start()
     {
         _repository = new AccountStatsRepository();
@@ -44,8 +42,12 @@ public class AccountStatsDataHandler : MonoBehaviour
 
     public void UpdateRepository()
     {
-        _entity.LifeRemaining = StaticObjects.GetPlayer().GetComponent<Health>().HealthPoint;
         _repository.UpdateEntity(_entity);
+    }
+
+    private void HealthChanged(int heal)
+    {
+        _temporaryEntity.LifeRemaining += heal;
     }
 
     private void EnemyKilled(string tag)
@@ -66,17 +68,25 @@ public class AccountStatsDataHandler : MonoBehaviour
 
     public void ActivateInventory()
     {
-        _inventory = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
-        _inventory.OnEnableKnife += EnableKnife;
-        _inventory.OnEnableAxe += EnableAxe;
-        _inventory.OnEnableIronBoots += EnableIronBoots;
-        _inventory.OnEnableFeather += EnableFeather;
-        _inventory.OnEnableBubble += EnableBubble;
-        _inventory.OnEnableFireProofArmor += EnableFireProofArmor;
-        _inventory.OnEnableEarthArtefact += EnableEarthArtefact;
-        _inventory.OnEnableAirArtefact += EnableAirArtefact;
-        _inventory.OnEnableWaterArtefact += EnableWaterArtefact;
-        _inventory.OnEnableFireArtefact += EnableFireArtefact;
+        GameObject player = StaticObjects.GetPlayer();
+        InventoryManager inventory = player.GetComponent<InventoryManager>();
+        inventory.OnEnableKnife += EnableKnife;
+        inventory.OnEnableAxe += EnableAxe;
+        inventory.OnEnableIronBoots += EnableIronBoots;
+        inventory.OnEnableFeather += EnableFeather;
+        inventory.OnEnableBubble += EnableBubble;
+        inventory.OnEnableFireProofArmor += EnableFireProofArmor;
+        inventory.OnEnableEarthArtefact += EnableEarthArtefact;
+        inventory.OnEnableAirArtefact += EnableAirArtefact;
+        inventory.OnEnableWaterArtefact += EnableWaterArtefact;
+        inventory.OnEnableFireArtefact += EnableFireArtefact;
+
+        player.GetComponent<Health>().OnHealthChanged += HealthChanged;
+
+        PlayerWeaponAmmo playerWeaponAmmo = player.GetComponent<PlayerWeaponAmmo>();
+        playerWeaponAmmo.OnKnifeAmmoChanged += ChangeKnifeAmmo;
+        playerWeaponAmmo.OnAxeAmmoChanged += ChangeAxeAmmo;
+
         OnInventoryReloaded(_entity.KnifeEnabled, _entity.AxeEnabled, _entity.FeatherEnabled, _entity.BootsEnabled, _entity.BubbleEnabled, _entity.ArmorEnabled, _entity.EarthArtefactEnabled, _entity.AirArtefactEnabled, _entity.WaterArtefactEnabled, _entity.FireArtefactEnabled);
         OnAmmoReloaded(_entity.KnifeAmmo, _entity.AxeAmmo);
         OnHealthReloaded(_entity.LifeRemaining);
@@ -101,9 +111,19 @@ public class AccountStatsDataHandler : MonoBehaviour
         _temporaryEntity.KnifeEnabled = true;
     }
 
+    private void ChangeKnifeAmmo(int ammo)
+    {
+        _temporaryEntity.KnifeAmmo = ammo;
+    }
+
     private void EnableAxe()
     {
         _temporaryEntity.AxeEnabled = true;
+    }
+
+    private void ChangeAxeAmmo(int ammo)
+    {
+        _temporaryEntity.AxeAmmo = ammo;
     }
 
     private void EnableIronBoots()

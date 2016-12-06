@@ -8,6 +8,8 @@ public class ControlSchemesManager : MonoBehaviour
     public static event OnKeyboardControlChangedHandler OnKeyboardControlChanged;
     public delegate void OnGamepadControlChangedHandler(int scheme);
     public static event OnGamepadControlChangedHandler OnGamepadControlChanged;
+    public delegate void OnNewMenuStartedHandler();
+    public static event OnNewMenuStartedHandler OnNewMenuStarted;
 
     private Switch _keyboardSwitch;
     private Switch _gamepadSwitch;
@@ -21,6 +23,11 @@ public class ControlSchemesManager : MonoBehaviour
         Switch[] switches = GetComponentsInChildren<Switch>();
         _keyboardSwitch = switches[0];
         _gamepadSwitch = switches[1];
+
+        if (OnNewMenuStarted != null)
+        {
+            OnNewMenuStarted();
+        }
     }
 
     public void ChangeKeyboardControl(bool scheme)

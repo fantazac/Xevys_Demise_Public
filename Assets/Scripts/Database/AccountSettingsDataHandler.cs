@@ -22,6 +22,7 @@ public class AccountSettingsDataHandler : MonoBehaviour
         MainMenuAudioSettingsManager.OnMusicStateChanged += SetMusicState;
         ControlSchemesManager.OnKeyboardControlChanged += SetKeyboardControl;
         ControlSchemesManager.OnGamepadControlChanged += SetGamepadControl;
+        ControlSchemesManager.OnNewMenuStarted += ReloadSettings;
         _repository = new AccountSettingsRepository();
 
         GameObject.Find(MainMenuStaticObjects.GetFindTags().MainMenuButtons).GetComponent<MainMenuCurrentInterfaceAnimator>().OnOptionsInterfaceQuit += UpdateRepository;
@@ -47,6 +48,11 @@ public class AccountSettingsDataHandler : MonoBehaviour
     public void ChangeEntity(int accountId)
     {
         _entity = _repository.Get(accountId);
+        ReloadSettings();
+    }
+
+    private void ReloadSettings()
+    {
         OnMusicVolumeReloaded(_entity.MusicVolume);
         OnSfxVolumeReloaded(_entity.SoundEffectsVolume);
         OnMusicStateReloaded(_entity.IsMusicPlaying);
