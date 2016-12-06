@@ -66,6 +66,8 @@ public class PauseMenuInputs : MonoBehaviour
 
     public void QuitBtnOnClick()
     {
+        PauseMenuAudioSettingsManager audioSettingsManager = GameObject.Find(StaticObjects.GetMainObjects().PauseMenuAudioOptionsButtons).GetComponent<PauseMenuAudioSettingsManager>();
+        audioSettingsManager.SetSoundVolume(audioSettingsManager._sfxVolumeBeforeDesactivate);
         DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<DatabaseController>().SaveAccount();
         Application.Quit();
     }
