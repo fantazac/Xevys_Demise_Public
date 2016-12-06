@@ -23,6 +23,9 @@ public class PauseMenuInputs : MonoBehaviour
     public delegate void OnMainInterfaceOpendedHandler();
     public event OnMainInterfaceOpendedHandler OnMainInterfaceOpended;
 
+    public delegate void OnReturnToMenuButtonPressedHandler();
+    public event OnReturnToMenuButtonPressedHandler OnReturnToMenuButtonPressed;
+
     private InputManager _inputManager;
     private PauseMenuAnimationManager _pauseMenuAnimationManager;
     private EventSystem _pauseMenuEventSystem;
@@ -67,7 +70,7 @@ public class PauseMenuInputs : MonoBehaviour
     public void QuitBtnOnClick()
     {
         DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<DatabaseController>().SaveAccount();
-        Application.Quit();
+        OnReturnToMenuButtonPressed();
     }
 
     public void ControlsBtnOnClick()
