@@ -20,6 +20,7 @@ public class AnimationTags : MonoBehaviour
     public string FadeIn { get; private set; }
     public string PauseMenuButtonsGroupActiveAnimation { get; private set; }
     public string State { get; private set; }
+    public string IsHit { get; private set; }
 
     private void Start()
     {
@@ -40,5 +41,6 @@ public class AnimationTags : MonoBehaviour
         FadeIn = "FadeIn";
         PauseMenuButtonsGroupActiveAnimation = "PauseMenuButtonsGroupActiveAnimation";
         State = "State";
+        IsHit = "IsHit";
     }
 }

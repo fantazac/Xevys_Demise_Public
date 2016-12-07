@@ -24,6 +24,10 @@ public class AxeHandleHitWall : WeaponHitWall
         _hitbox.isTrigger = false;
         _bladeHitbox.isTrigger = false;
         _rigidbody.drag = _axeDrag;
-        _destroyProjectile.TouchedWall();
+
+        if (_destroyProjectile != null)
+        {
+            _destroyProjectile.TouchedWall();
+        }
     }
 }
