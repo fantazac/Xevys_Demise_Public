@@ -25,7 +25,11 @@ public class AxeBladeHitWall : WeaponHitWall
         _rigidbody.velocity = Vector2.zero;
         _rigidbody.gravityScale = 0;
         _hitbox.isTrigger = false;
-        _destroyProjectile.TouchedWall();
+
+        if(_destroyProjectile != null)
+        {
+            _destroyProjectile.TouchedWall();
+        }
 
         StartCoroutine(DisableRigidbody());
     }
