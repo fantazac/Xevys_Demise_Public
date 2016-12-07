@@ -8,22 +8,28 @@ public class MenuFocusManager : MonoBehaviour
 
     private GameObject _lastSelectedGameObject;
 
+    private bool _checking;
+
     private void Start()
     {
         _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
         _pauseMenuAnimationManager.OnPauseMenuStateChanged += CheckLostOfFocusWhenInPauseMenu;
 
         _lastSelectedGameObject = EventSystem.current.firstSelectedGameObject;
+
+        _checking = false;
     }
 
     private void CheckLostOfFocusWhenInPauseMenu(bool isActive, bool isDead)
     {
-        if (isActive || isDead)
+        if ((isActive || isDead) && !_checking)
         {
+            _checking = true;
             StartCoroutine(CheckLostOfFocus());
         }
         else
         {
+            _checking = false;
             StopAllCoroutines();
         }
     }
