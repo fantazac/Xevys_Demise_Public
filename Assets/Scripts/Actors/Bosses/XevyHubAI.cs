@@ -154,8 +154,9 @@ public class XevyHubAI : MonoBehaviour
     private void OnXevyHubDefeated()
     {
         _status = XevyHubStatus.DEAD;
-        _animator.SetInteger(_animTags.State, 0);
+        _animator.SetInteger(_animTags.State, 1);
         _xevySpell.SetActive(false);
         _xevySword.SetActive(false);
+        _collisionBox.enabled = false;
     }
 }
