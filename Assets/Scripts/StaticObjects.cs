@@ -18,6 +18,7 @@ public class StaticObjects : MonoBehaviour
     private static GameObject _respawnEnemy;
     private static GameObject _cinematic;
     private static GameObject _pause;
+
     public static int AccountId { get; set; }
 
     private void Start()
