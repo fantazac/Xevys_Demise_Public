@@ -51,6 +51,7 @@ public class PauseMenuInputs : MonoBehaviour
         _inputManager.OnPause += PauseMenuTriggered;
         _pauseMenuCurrentInterfaceAnimator.OnBackButtonPressedToClosePauseMenu += PauseMenuTriggered;
         _pauseMenuCurrentInterfaceAnimator.OnPlayerDeathShowDeathInterface += PauseMenuTriggered;
+        _pauseMenuCurrentInterfaceAnimator.OnEndShowEndInterface += PauseMenuTriggered;
         _canSlide = true;
     }
 

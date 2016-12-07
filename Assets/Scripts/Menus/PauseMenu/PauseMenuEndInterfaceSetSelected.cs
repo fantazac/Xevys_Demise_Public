@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PauseMenuDeathInterfaceSetSelected : MonoBehaviour
+public class PauseMenuEndInterfaceSetSelected : MonoBehaviour
 {
 
     private GameObject _firstButtonGameObject;
@@ -14,10 +14,10 @@ public class PauseMenuDeathInterfaceSetSelected : MonoBehaviour
         _eventSystem = EventSystem.current;
         _pauseMenuCurrentInterfaceAnimator = GetComponentInParent<PauseMenuCurrentInterfaceAnimator>();
 
-        _pauseMenuCurrentInterfaceAnimator.OnPlayerDeathShowDeathInterface += SetSelectedButton;
+        _pauseMenuCurrentInterfaceAnimator.OnEndShowEndInterface += SetSelectedButton;
     }
 
-    private void SetSelectedButton(bool isDead)
+    private void SetSelectedButton(bool isFinished)
     {
         _eventSystem.SetSelectedGameObject(_firstButtonGameObject);
     }

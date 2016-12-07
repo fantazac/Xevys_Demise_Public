@@ -29,6 +29,9 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
     public delegate void OnPlayerDeathShowDeathInterfaceHandler(bool isDead);
     public event OnPlayerDeathShowDeathInterfaceHandler OnPlayerDeathShowDeathInterface;
 
+    public delegate void OnEndShowEndInterfaceHandler(bool isDead);
+    public event OnEndShowEndInterfaceHandler OnEndShowEndInterface;
+
     private PauseMenuInputs _pauseMenuInputs;
     private InputManager _inputManager;
     private Animator _animator;
@@ -55,6 +58,14 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
         _animator = GetComponent<Animator>();
 
         _currentInterface = "Main";
+
+        //OnEndShowEndInterface(true);
+    }
+
+    private void OnPlayerFinishedTheGame()
+    {
+        _animator.SetTrigger("ShowEndInterface");
+        OnEndShowEndInterface(true);
     }
 
     private void OnPlayerDeath()

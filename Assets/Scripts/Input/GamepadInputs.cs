@@ -64,6 +64,7 @@ public class GamepadInputs : MonoBehaviour
     private GamePadState _state;
     private bool _inMenu;
     private bool _died;
+    private bool _finished;
     private bool _pressedEnterPortal = false;
 
     private void Start()
@@ -74,10 +75,12 @@ public class GamepadInputs : MonoBehaviour
         _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
         _pauseMenuAnimationManager.OnPauseMenuOutOfScreen += IsInMenu;
         _pauseMenuCurrentInterfaceAnimator.OnPlayerDeathShowDeathInterface += PlayerDied;
+        _pauseMenuCurrentInterfaceAnimator.OnEndShowEndInterface += PlayerFinished;
 
         _usingDpadControlsScheme = false;
         _inMenu = false;
         _died = false;
+        _finished = false;
     }
 
     private void Update()
@@ -99,7 +102,7 @@ public class GamepadInputs : MonoBehaviour
             CheckAllButtonsPressed();
             UpdateStartButton();
         }
-        else if(!_died)
+        else if(!_died || !_finished)
         {
             if (_state.Buttons.B == ButtonState.Released && !_bButtonReady)
             {
@@ -128,6 +131,11 @@ public class GamepadInputs : MonoBehaviour
     private void PlayerDied(bool isDead)
     {
         _died = isDead;
+    }
+
+    private void PlayerFinished(bool isFinished)
+    {
+        _finished = isFinished;
     }
 
     private void UpdateStartButton()
