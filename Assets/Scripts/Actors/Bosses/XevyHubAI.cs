@@ -80,7 +80,7 @@ public class XevyHubAI : MonoBehaviour
             }
             else
             {
-                transform.position = Vector3.right * _bossOrientation.Orientation * _actorDirection.Direction * _speed * Time.deltaTime;
+                transform.position += Vector3.right * _bossOrientation.Orientation * _actorDirection.Direction * _speed * Time.deltaTime;
             }
         }
         _animator.SetInteger(_animTags.State, 0);
@@ -104,7 +104,6 @@ public class XevyHubAI : MonoBehaviour
                 }
                 else if (_status == XevyHubStatus.VULNERABLE)
                 {
-                    Debug.Log(2);
                     _timer = _attackingTimerCooldown;
                     _animator.SetInteger(_animTags.State, 3);
                     _collisionBox.enabled = false;
