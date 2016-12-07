@@ -18,6 +18,7 @@ public class DatabaseController : MonoBehaviour
         {
             File.Copy(Path.Combine(Application.streamingAssetsPath, "Database.db"), Path.Combine(Application.persistentDataPath, "Database.db"), true);
             GetComponent<AchievementDataHandler>().CreateAllAchievements();
+            GetComponent<FunFactDataHandler>().CreateAllFunFacts();
         }
         _accountDataHandler = GetComponent<AccountDataHandler>();
         _accountStatsDataHandler = GetComponent<AccountStatsDataHandler>();
@@ -46,24 +47,4 @@ public class DatabaseController : MonoBehaviour
         _accountStatsDataHandler.UpdateRepository();
         _accountSettingsDataHandler.UpdateRepository();
     }
-
-    //private void CreateAllFunFacts()
-    //{
-    //    _dbconnection.Open();
-    //    //Dummie fun facts.
-    //    CreateFunFact("All achievement names are actually parodies of song titles.");
-    //    CreateFunFact("Xevy is actually a very sensitive guy.");
-    //    CreateFunFact("The Game. You lost it.");
-    //    CreateFunFact("No skeltals were hurt in the making of this game.");
-    //    CreateFunFact("Spam Games' original name was Pawn V.");
-    //    _dbconnection.Close();
-    //}
-    //
-    //private void CreateFunFact(string description)
-    //{
-    //    string sqlQuery = String.Format("INSERT INTO FUN_FACT (DESCRIPTION)" +
-    //        "VALUES (\"{0}\")", description);
-    //    _dbcommand.CommandText = sqlQuery;
-    //    _dbcommand.ExecuteNonQuery();
-    //}
 }
