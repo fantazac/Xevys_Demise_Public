@@ -95,7 +95,7 @@ public class OnItemDrop : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (_target == Vector3.zero && (collider.gameObject.tag == StaticObjects.GetObjectTags().Wall || collider.gameObject.tag == StaticObjects.GetObjectTags().Spike ||
+        if (_target == Vector3.zero && ((collider.gameObject.tag == StaticObjects.GetObjectTags().Wall && transform.position.y > collider.transform.position.y) || collider.gameObject.tag == StaticObjects.GetObjectTags().Spike ||
             (collider.gameObject.tag == StaticObjects.GetObjectTags().FlyingPlatform && collider.transform.position.y + FLYING_PLATFORM_MARGIN < transform.position.y)))
         {
             Destroy(_rigidbody);
