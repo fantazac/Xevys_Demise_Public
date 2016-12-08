@@ -19,8 +19,8 @@ public abstract class WeaponHitWall : MonoBehaviour
 
     protected virtual void Start()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _destroyProjectile = GetComponent<DestroyPlayerProjectile>();
+        _rigidbody = gameObject.tag == StaticObjects.GetObjectTags().Knife ? GetComponent<Rigidbody2D>() : GetComponentInParent<Rigidbody2D>();
+        _destroyProjectile = gameObject.tag == StaticObjects.GetObjectTags().Knife ? GetComponent<DestroyPlayerProjectile>() : GetComponentInParent<DestroyPlayerProjectile>();
     }
 
     protected void OnTriggerEnter2D(Collider2D collider)

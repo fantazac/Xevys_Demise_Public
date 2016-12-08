@@ -80,8 +80,7 @@ public class XevyHubAI : MonoBehaviour
             }
             else
             {
-                transform.position = new Vector3(transform.position.x +
-                    _bossOrientation.Orientation * _actorDirection.Direction * _speed * Time.deltaTime, transform.position.y);
+                transform.position += Vector3.right * _bossOrientation.Orientation * _actorDirection.Direction * _speed * Time.deltaTime;
             }
         }
         _animator.SetInteger(_animTags.State, 0);
@@ -121,7 +120,7 @@ public class XevyHubAI : MonoBehaviour
                     _hasAttacked = true;
                 }
             }
-            _timer -= Time.fixedDeltaTime;
+            _timer -= Time.deltaTime;
             yield return null;
         }
 
@@ -154,8 +153,9 @@ public class XevyHubAI : MonoBehaviour
     private void OnXevyHubDefeated()
     {
         _status = XevyHubStatus.DEAD;
-        _animator.SetInteger(_animTags.State, 0);
+        _animator.SetInteger(_animTags.State, 1);
         _xevySpell.SetActive(false);
         _xevySword.SetActive(false);
+        _collisionBox.enabled = false;
     }
 }
