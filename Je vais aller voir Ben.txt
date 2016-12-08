@@ -1,4 +1,0 @@
-difference entre UnityTags et FindTags
-on ne peut pas se servir de const dans des ==
-Triggers: methode + classe ca marche pas, multiple
-vérifier: abstract = on ne peut pas créer d'instance?
