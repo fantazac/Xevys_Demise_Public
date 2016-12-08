@@ -1,21 +1,36 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* 
+ * SPAG ALERT : Ne pas corriger
+ * Ce sont des features de dernières minutes volontairement faites à la vite
+ * sans trop réfléchir 
+*/
+
 public class ArtefactTooltip : MonoBehaviour
 {
+    [SerializeField]
+    private int _index;
+
     private Animator _animator;
-    private ActivateTrigger _trigger;
+    private bool[] _artefactsObtained;
 
     private void Start ()
     {
         _animator = GetComponent<Animator>();
-        _trigger = transform.parent.FindChild("Door Trigger").GetComponent<ActivateTrigger>();
-        _trigger.OnTrigger += OnTrigger;
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.tag == "Player")
+        _artefactsObtained[0] = StaticObjects.GetPlayer().GetComponent<InventoryManager>().EarthArtefactEnabled;
+        _artefactsObtained[1] = StaticObjects.GetPlayer().GetComponent<InventoryManager>().AirArtefactEnabled;
+        _artefactsObtained[2] = StaticObjects.GetPlayer().GetComponent<InventoryManager>().WaterArtefactEnabled;
+
+        if (_artefactsObtained[_index])
+        {
+            GetComponent<BoxCollider2D>().enabled = false;
+        }
+        else if (collider.tag == "Player" && !_artefactsObtained[_index])
         {
             _animator.SetTrigger("FadeIn");
         }
@@ -27,11 +42,5 @@ public class ArtefactTooltip : MonoBehaviour
         {
             _animator.SetTrigger("FadeOut");
         }
-    }
-
-    private void OnTrigger()
-    {
-        _animator.SetTrigger(("FadeOut"));
-        GetComponent<BoxCollider2D>().enabled = false;
     }
 }
