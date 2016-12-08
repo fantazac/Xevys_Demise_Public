@@ -58,8 +58,6 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
         _animator = GetComponent<Animator>();
 
         _currentInterface = "Main";
-
-        //OnEndShowEndInterface(true);
     }
 
     private void OnPlayerFinishedTheGame()

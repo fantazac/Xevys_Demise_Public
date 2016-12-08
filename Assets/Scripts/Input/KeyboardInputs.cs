@@ -164,6 +164,7 @@ public class KeyboardInputs : MonoBehaviour
     private void PlayerFinished(bool isFinished)
     {
         _finished = isFinished;
+        _died = true;
     }
 
     private void UpdateStartButton()
