@@ -10,6 +10,7 @@ public class DatabaseController : MonoBehaviour
     private AccountDataHandler _accountDataHandler;
     private AccountStatsDataHandler _accountStatsDataHandler;
     private AccountSettingsDataHandler _accountSettingsDataHandler;
+    private AccountRoomStateDataHandler _accountRoomStateDataHandler;
     public int AccountId { get; set; }
 
     private void Start()
@@ -23,7 +24,10 @@ public class DatabaseController : MonoBehaviour
         _accountDataHandler = GetComponent<AccountDataHandler>();
         _accountStatsDataHandler = GetComponent<AccountStatsDataHandler>();
         _accountSettingsDataHandler = GetComponent<AccountSettingsDataHandler>();
+        _accountRoomStateDataHandler = GetComponent<AccountRoomStateDataHandler>();
         GameObject.Find(MainMenuStaticObjects.GetFindTags().InputField).GetComponent<NicknameAddRequestToDropdown>().OnNicknameEntered += CreateNewAccountEntries;
+
+        RoomsStateCollector.OnMainLevelStarted += ChangeAccountRoomState;
     }
 
     private void CreateNewAccountEntries(string username)
@@ -32,6 +36,7 @@ public class DatabaseController : MonoBehaviour
         _accountDataHandler.ChangeEntity(username);
         _accountStatsDataHandler.CreateNewEntry(AccountId);
         _accountSettingsDataHandler.CreateNewEntry(AccountId);
+        _accountRoomStateDataHandler.CreateNewEntry(AccountId);
     }
 
     public void ChangeAccount()
@@ -42,9 +47,15 @@ public class DatabaseController : MonoBehaviour
         _accountSettingsDataHandler.ChangeEntity(AccountId);
     }
 
+    private void ChangeAccountRoomState()
+    {
+        _accountRoomStateDataHandler.ChangeEntity(AccountId);
+    }
+
     public void SaveAccount()
     {
         _accountStatsDataHandler.UpdateRepository();
         _accountSettingsDataHandler.UpdateRepository();
+        _accountRoomStateDataHandler.UpdateRepository();
     }
 }

@@ -43,9 +43,18 @@ public class ActivateTrigger : MonoBehaviour
     {
         if (TriggerIsValid(collider) && ArtefactIsUnlocked())
         {
-            _hitbox.enabled = false;
-            OnTrigger();
+            DisableTrigger();
         }
+    }
+
+    public void DisableTrigger()
+    {
+        if (!gameObject.activeInHierarchy)
+        {
+            Start();
+        }
+        _hitbox.enabled = false;
+        OnTrigger();
     }
 
     public void MultipleTriggersActivated()

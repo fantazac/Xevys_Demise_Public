@@ -24,6 +24,7 @@ public class MainGameObjects : MonoBehaviour
     public string RespawnEnemy { get; private set; }
     public string Cinematic { get; private set; }
     public string Pause { get; private set; }
+    public string RoomsStateCollector { get; private set; }
 
     private void Start()
     {
@@ -48,5 +49,6 @@ public class MainGameObjects : MonoBehaviour
         RespawnEnemy = "RespawnEnemy";
         Cinematic = "Cinematic";
         Pause = "Pause";
+        RoomsStateCollector = "RoomsStateCollector";
     }
 }
