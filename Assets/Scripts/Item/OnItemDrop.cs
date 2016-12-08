@@ -3,10 +3,6 @@ using System.Collections;
 
 public class OnItemDrop : MonoBehaviour
 {
-
-    [SerializeField]
-    private GameObject _pickableItem;
-
     private const float TERMINAL_SPEED = -10;
     private const float INITIAL_SPEED = 5.5f;
     private const float ROTATE_SPEED = 420;
@@ -22,9 +18,11 @@ public class OnItemDrop : MonoBehaviour
     private int _itemId = 0;
     private int _amountofItemsDropped = 0;
     private Collider2D _enemyKilled;
+    private Animator _animator;
 
     private void Start()
     {
+        _animator = GetComponentInChildren<Animator>();
         _rigidbody = GetComponent<Rigidbody2D>();
 
         _rigidbody.velocity = new Vector2(((_amountofItemsDropped - 1) * (-DISTANCE_BETWEEN_ITEMS / 2) +
@@ -69,8 +67,8 @@ public class OnItemDrop : MonoBehaviour
         {
             if (_target == transform.position && transform.rotation.eulerAngles.z == 0)
             {
-                GameObject.Instantiate(_pickableItem, transform.position, new Quaternion());
-                Destroy(gameObject);
+                _animator.enabled = true;
+                enabled = false;
             }
             else
             {
