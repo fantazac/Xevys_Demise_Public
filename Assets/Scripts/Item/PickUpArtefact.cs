@@ -6,8 +6,8 @@ public class PickUpArtefact : MonoBehaviour
     private InventoryManager _inventoryManager;
     private GameObjectTags _unityTags;
 
-    private delegate void OnGameEndedHandler();
-    private event OnGameEndedHandler OnGameEnded;
+    public delegate void OnGameEndedHandler();
+    public event OnGameEndedHandler OnGameEnded;
 
     private void Start()
     {
