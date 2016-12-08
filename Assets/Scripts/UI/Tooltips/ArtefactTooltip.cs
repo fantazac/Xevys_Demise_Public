@@ -13,7 +13,7 @@ public class ArtefactTooltip : MonoBehaviour
     private int _index;
 
     private Animator _animator;
-    private bool[] _artefactsObtained;
+    private bool[] _artefactsObtained = {false, false, false};
 
     private void Start ()
     {
@@ -22,17 +22,20 @@ public class ArtefactTooltip : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        _artefactsObtained[0] = StaticObjects.GetPlayer().GetComponent<InventoryManager>().EarthArtefactEnabled;
-        _artefactsObtained[1] = StaticObjects.GetPlayer().GetComponent<InventoryManager>().AirArtefactEnabled;
-        _artefactsObtained[2] = StaticObjects.GetPlayer().GetComponent<InventoryManager>().WaterArtefactEnabled;
+        if (collider.tag == "Player")
+        {
+            _artefactsObtained[0] = StaticObjects.GetPlayer().GetComponent<InventoryManager>().EarthArtefactEnabled;
+            _artefactsObtained[1] = StaticObjects.GetPlayer().GetComponent<InventoryManager>().AirArtefactEnabled;
+            _artefactsObtained[2] = StaticObjects.GetPlayer().GetComponent<InventoryManager>().WaterArtefactEnabled;
 
-        if (_artefactsObtained[_index])
-        {
-            GetComponent<BoxCollider2D>().enabled = false;
-        }
-        else if (collider.tag == "Player" && !_artefactsObtained[_index])
-        {
-            _animator.SetTrigger("FadeIn");
+            if (!_artefactsObtained[_index])
+            {
+                _animator.SetTrigger("FadeIn");
+            }
+            else
+            {
+                GetComponent<BoxCollider2D>().enabled = false;
+            }       
         }
     }
 

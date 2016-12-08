@@ -27,8 +27,6 @@ public class DropdownController : MonoBehaviour {
         {
             _nicknamesList.Add(username);
         }
-        _nicknamesList.Insert(0, "Xevy");
-        _nicknamesList.Insert(0, "SpamGames");
         _nicknamesList.Insert(0, "Guest");
 
         _dropdown.AddOptions(_nicknamesList);

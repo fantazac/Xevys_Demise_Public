@@ -6,12 +6,14 @@ public class CheckpointSave : MonoBehaviour
     private int _checkpoint = 0;
 
     private AccountStatsDataHandler _accountStatsDataHandler;
+    private AccountRoomStateDataHandler _accountRoomStateDataHandler;
     private SpawnToCheckpointAfterDeath _checkpointSpawn;
 
     private void Start()
     {
         _checkpointSpawn = StaticObjects.GetPlayer().GetComponent<SpawnToCheckpointAfterDeath>();
         _accountStatsDataHandler = DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountStatsDataHandler>();
+        _accountRoomStateDataHandler = DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountRoomStateDataHandler>();
     }
 
     private void OnTriggerEnter2D(Collider2D coll)
@@ -19,6 +21,7 @@ public class CheckpointSave : MonoBehaviour
         if (coll.gameObject.tag == StaticObjects.GetObjectTags().Player)
         {
             _accountStatsDataHandler.UpdateEntity();
+            _accountRoomStateDataHandler.UpdateEntity();
             _checkpointSpawn.SaveCheckpoint(_checkpoint);
         }
     }

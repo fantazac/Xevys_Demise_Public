@@ -55,6 +55,7 @@ public class KeyboardInputs : MonoBehaviour
     private bool _usingArrowControlsScheme;
     private bool _inMenu;
     private bool _died;
+    private bool _finished;
 
     private void Start()
     {
@@ -63,10 +64,12 @@ public class KeyboardInputs : MonoBehaviour
         _pauseMenuAnimationManager = StaticObjects.GetPauseMenuPanel().GetComponent<PauseMenuAnimationManager>();
         _pauseMenuAnimationManager.OnPauseMenuOutOfScreen += IsInMenu;
         _pauseMenuCurrentInterfaceAnimator.OnPlayerDeathShowDeathInterface += PlayerDied;
+        _pauseMenuCurrentInterfaceAnimator.OnEndShowEndInterface += PlayerFinished;
 
         _usingArrowControlsScheme = false;
         _inMenu = false;
         _died = false;
+        _finished = false;
     }
 
     private void Update()
@@ -86,7 +89,7 @@ public class KeyboardInputs : MonoBehaviour
             CheckAllKeysPressed();
             UpdateStartButton();
         }
-        else if (!_died)
+        else if (!_died || !_finished)
         {
             UpdateStartButton();
         }
@@ -156,6 +159,12 @@ public class KeyboardInputs : MonoBehaviour
     private void PlayerDied(bool isDead)
     {
         _died = isDead;
+    }
+
+    private void PlayerFinished(bool isFinished)
+    {
+        _finished = isFinished;
+        _died = true;
     }
 
     private void UpdateStartButton()
