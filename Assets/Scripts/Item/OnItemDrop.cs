@@ -93,10 +93,10 @@ public class OnItemDrop : MonoBehaviour
                     && transform.rotation.eulerAngles.z < ROTATE_SPEED * Time.deltaTime;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (_target == Vector3.zero && (collision.gameObject.tag == StaticObjects.GetObjectTags().Wall || collision.gameObject.tag == StaticObjects.GetObjectTags().Spike ||
-            (collision.gameObject.tag == StaticObjects.GetObjectTags().FlyingPlatform && collision.transform.position.y + FLYING_PLATFORM_MARGIN < transform.position.y)))
+        if (_target == Vector3.zero && (collider.gameObject.tag == StaticObjects.GetObjectTags().Wall || collider.gameObject.tag == StaticObjects.GetObjectTags().Spike ||
+            (collider.gameObject.tag == StaticObjects.GetObjectTags().FlyingPlatform && collider.transform.position.y + FLYING_PLATFORM_MARGIN < transform.position.y)))
         {
             Destroy(_rigidbody);
             _target = new Vector3(transform.position.x, transform.position.y + DISTANCE_BETWEEN_ITEMS, transform.position.z);

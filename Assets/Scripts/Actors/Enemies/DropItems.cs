@@ -55,6 +55,7 @@ public class DropItems : MonoBehaviour
         {
             if (CanDropItem(itemToDrop))
             {
+                Debug.Log(1);
                 GameObject item = (GameObject)Instantiate(itemToDrop, transform.position, new Quaternion());
                 item.GetComponent<OnItemDrop>().Initialise(_itemsToDrop.Count, itemToDropCount++, GetComponent<Collider2D>());
             }
@@ -68,11 +69,11 @@ public class DropItems : MonoBehaviour
 
     private bool CanDropKnife(GameObject item)
     {
-        return _inventoryManager.KnifeEnabled && item.tag == StaticObjects.GetObjectTags().KnifeDrop;
+        return _inventoryManager.KnifeEnabled && item.tag == StaticObjects.GetObjectTags().KnifePickableItem;
     }
 
     private bool CanDropAxe(GameObject item)
     {
-        return _inventoryManager.AxeEnabled && item.tag == StaticObjects.GetObjectTags().AxeDrop;
+        return _inventoryManager.AxeEnabled && item.tag == StaticObjects.GetObjectTags().AxePickableItem;
     }
 }
