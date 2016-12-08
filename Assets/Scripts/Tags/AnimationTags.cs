@@ -3,6 +3,7 @@
 public class AnimationTags : MonoBehaviour
 {
 
+    public string IsGoingForward { get; private set; }
     public string IsDying { get; private set; }
     public string IsJumping { get; private set; }
     public string IsMoving { get; private set; }
@@ -24,6 +25,7 @@ public class AnimationTags : MonoBehaviour
 
     private void Start()
     {
+        IsGoingForward = "IsGoingForward";
         IsDying = "IsDying";
         IsJumping = "IsJumping";
         IsDamaged = "IsDamaged";

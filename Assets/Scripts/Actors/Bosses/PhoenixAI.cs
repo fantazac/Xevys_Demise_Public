@@ -87,7 +87,7 @@ public class PhoenixAI : MonoBehaviour
     {
         if (_flightTimeLeft > 0)
         {
-            _flightTimeLeft -= Time.fixedDeltaTime;
+            _flightTimeLeft -= Time.deltaTime;
         }
         else
         {
@@ -149,7 +149,7 @@ public class PhoenixAI : MonoBehaviour
             yield return null;
 
             _bossOrientation.FlipTowardsPlayer();
-            _attackCooldownTimeLeft += Time.fixedDeltaTime;
+            _attackCooldownTimeLeft += Time.deltaTime;
             if (CheckIfPlayerIsTooClose())
             {
                 FindAdjacentPoint();
@@ -168,7 +168,7 @@ public class PhoenixAI : MonoBehaviour
     {
         while (Vector2.Distance(_closestPoint, transform.position) > 1)
         {
-            transform.position = Vector2.MoveTowards(transform.position, _closestPoint, _flyingSpeed * Time.fixedDeltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, _closestPoint, _flyingSpeed * Time.deltaTime);
             yield return null;
         }
         SetFlyStatus();
@@ -178,7 +178,7 @@ public class PhoenixAI : MonoBehaviour
     {
         while (Vector2.Distance(transform.position, _playerPosition) > 1)
         {
-            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _playerPosition, _flyingSpeed * Time.fixedDeltaTime);
+            transform.position = Vector2.MoveTowards(new Vector2(transform.position.x, transform.position.y), _playerPosition, _flyingSpeed * Time.deltaTime);
             yield return null;
         }
         _closestPoint = _currentPoint;

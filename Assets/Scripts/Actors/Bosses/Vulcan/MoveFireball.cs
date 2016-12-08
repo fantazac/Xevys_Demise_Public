@@ -31,21 +31,13 @@ public class MoveFireball : MonoBehaviour
         _rigidbody.isKinematic = _criticalStatus;
         if (_criticalStatus)
         {
-            _direction = new Vector3(_vulcanBossOrientation.Orientation * _horizontalSpeed * Time.fixedDeltaTime, 0, 0);
+            _rigidbody.velocity = Vector2.right * (_vulcanBossOrientation.Orientation * _horizontalSpeed);
         }
         else
         {
             _rigidbody.velocity = new Vector2(_vulcanBossOrientation.Orientation * _horizontalSpeed,
                 ((Vulcan.GetComponent<VulcanAI>().CurrentIndex == _vulcanRightPitIndex ? -1 : 1) *
                 _vulcanBossOrientation.Orientation * _verticalSpeed));
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (_criticalStatus)
-        {
-            transform.position += _direction;
         }
     }
 }

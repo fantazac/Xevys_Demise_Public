@@ -3,30 +3,33 @@ using System.Collections;
 
 public class MoveStalactite : MonoBehaviour
 {
-    private const float SPEED = 2.5f;
+    [SerializeField]
+    public float _speed = 2.5f;
+
     private float maximumHeight;
     private float initialHeight;
 
-    private bool IsGoingUp { get; set; }
-    private int VerticalDirection { get { return (IsGoingUp ? 1 : -1); } }
+    private Rigidbody2D _rigidBody;
 
 	private void Start ()
     {
+        _rigidBody = GetComponent<Rigidbody2D>();
         initialHeight = transform.position.y;
         maximumHeight = initialHeight + transform.parent.transform.localScale.y;
-        IsGoingUp = true;
+        _rigidBody.velocity = Vector2.up * _speed;
+        StartCoroutine(UpdateStalactite());
 	}
 	
-	public void UpdateEarthThorn()
+    private IEnumerator UpdateStalactite()
     {
-        transform.position = new Vector2(transform.position.x, transform.position.y + VerticalDirection * Time.fixedDeltaTime * SPEED);
-        if (transform.position.y >= maximumHeight)
+        while (transform.position.y >= initialHeight)
         {
-            IsGoingUp = false; 
+            yield return null;
+            if (transform.position.y >= maximumHeight)
+            {
+                _rigidBody.velocity = Vector2.down * _speed;
+            }
         }
-        else if (transform.position.y <= initialHeight)
-        {
-            Destroy(gameObject);
-        }
-	}
+        Destroy(gameObject);
+    }
 }

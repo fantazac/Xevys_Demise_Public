@@ -6,15 +6,16 @@ public class UpdateStalactites : MonoBehaviour
     private const float DELAY_BETWEEN_STALACTITE_ACTIVATION = 0.25f;
     private float _stalactiteActivatorTimer = 0;
 
-    private void Update()
+    private void Start()
     {
-        if (transform.childCount == 0)
+        StartCoroutine(MoveStalactites());
+    }
+
+    private IEnumerator MoveStalactites()
+    {
+        while (transform.childCount > 0)
         {
-            Destroy(gameObject);
-        }
-        else
-        {
-            _stalactiteActivatorTimer += Time.fixedDeltaTime;
+            yield return null;
             int index = 0;
             foreach (Transform child in transform)
             {
@@ -25,12 +26,10 @@ public class UpdateStalactites : MonoBehaviour
                         child.gameObject.SetActive(true);
                     }
                 }
-                else
-                {
-                    child.GetComponent<MoveStalactite>().UpdateEarthThorn();
-                }
                 index++;
             }
+            _stalactiteActivatorTimer += Time.deltaTime;
         }
+        Destroy(gameObject);
     }
 }
