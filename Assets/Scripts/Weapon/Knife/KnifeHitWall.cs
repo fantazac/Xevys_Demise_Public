@@ -2,31 +2,15 @@
 using System.Collections;
 using System.Linq;
 
-public class KnifeHitWall : MonoBehaviour
+public class KnifeHitWall : WeaponHitWall
 {
-    [SerializeField]
-    private string[] _canHitObjects;
-
-    private BoxCollider2D _hitbox;
-    private Rigidbody2D _rigidbody;
-    private DestroyPlayerProjectile _destroyProjectile;
-
-    private void Start()
+    protected override void Start()
     {
         _hitbox = GetComponent<BoxCollider2D>();
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _destroyProjectile = GetComponent<DestroyPlayerProjectile>();
+        base.Start();
     }
 
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (CanHitObject(collider))
-        {
-            StopKnife();
-        }
-    }
-
-    private void StopKnife()
+    protected override void Stop()
     {
         _hitbox.isTrigger = false;
         _rigidbody.velocity = Vector2.zero;
@@ -34,7 +18,7 @@ public class KnifeHitWall : MonoBehaviour
         _destroyProjectile.TouchedWall();
     }
 
-    private bool CanHitObject(Collider2D collider)
+    protected override bool CanHitObject(Collider2D collider)
     {
         return _canHitObjects.Contains(collider.gameObject.tag);
     }

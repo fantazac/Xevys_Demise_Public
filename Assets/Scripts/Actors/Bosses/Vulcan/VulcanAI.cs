@@ -23,6 +23,7 @@ public class VulcanAI : MonoBehaviour
 
     private Health _health;
     private Rigidbody2D _rigidbody;
+    private GameObject _vulcanSkull;
     private BossOrientation _bossOrientation;
     private DisableCollidersOnBossDefeated _onBossDefeated;
     private PolygonCollider2D _polygonHitbox;
@@ -50,6 +51,7 @@ public class VulcanAI : MonoBehaviour
         _bossOrientation = GetComponent<BossOrientation>();
         _health.OnDeath += OnVulcanDefeated;
         _polygonHitbox = GetComponent<PolygonCollider2D>();
+        _vulcanSkull = transform.FindChild("Vulcan Skull").gameObject;
         InitializeVulcan();
 
         SetLoweredStatus();
@@ -172,6 +174,7 @@ public class VulcanAI : MonoBehaviour
     private void SetRetreatingStatus()
     {
         StopAllCoroutines();
+        _vulcanSkull.SetActive(true);
         _hasShotFireball = false;
         _rigidbody.isKinematic = false;
         _polygonHitbox.enabled = true;
@@ -182,6 +185,7 @@ public class VulcanAI : MonoBehaviour
     {
         StopAllCoroutines();
         _rigidbody.velocity = Vector2.zero;
+        _vulcanSkull.SetActive(false);
         _rigidbody.isKinematic = true;
         _polygonHitbox.enabled = false;
         StartCoroutine(UpdateWhenLowered());
@@ -189,6 +193,7 @@ public class VulcanAI : MonoBehaviour
 
     private void OnVulcanDefeated()
     {
+        _vulcanSkull.SetActive(false);
         _rigidbody.isKinematic = false;
     }
 }

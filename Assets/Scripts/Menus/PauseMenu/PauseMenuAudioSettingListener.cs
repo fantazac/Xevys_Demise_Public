@@ -25,7 +25,7 @@ public class PauseMenuAudioSettingListener : MonoBehaviour
             audioListener.audioSourceID = i;
             audioListener.audioSource = audioSource;
             audioListener.maxVolume = audioSource.volume;
-            if (tag == "MusicZone")
+            if (gameObject.tag == "MusicZone")
             {
                 audioListener.isMusic = true;
             }

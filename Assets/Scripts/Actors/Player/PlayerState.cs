@@ -45,7 +45,7 @@ public class PlayerState : MonoBehaviour
 
         StaticObjects.GetPlayer().GetComponent<Health>().OnDeath += ResetState;
 
-        IsFloating = false;
+        ResetState();
     }
 
     private void ResetState()
@@ -98,6 +98,7 @@ public class PlayerState : MonoBehaviour
 
     public void EnableFloating()
     {
+        Debug.Log(1);
         IsFloating = true;
         OnChangedFloating();
     }

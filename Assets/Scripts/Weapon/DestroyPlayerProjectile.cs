@@ -6,6 +6,8 @@ public class DestroyPlayerProjectile : MonoBehaviour
     [SerializeField]
     private  float _wallCollisionDuration = 0.833f;
 
+    private bool _isBeingDestroyed = false;
+
     private WaitForSeconds _delayAfterWallCollision;
 
     public delegate void OnProjectileDestroyedHandler(GameObject projectile);
@@ -18,7 +20,11 @@ public class DestroyPlayerProjectile : MonoBehaviour
 
     public void TouchedWall()
     {
-        StartCoroutine(DestroyProjectile(_delayAfterWallCollision));
+        if (!_isBeingDestroyed)
+        {
+            _isBeingDestroyed = true;
+            StartCoroutine(DestroyProjectile(_delayAfterWallCollision));
+        }
     }
 
     public void DestroyNow()
