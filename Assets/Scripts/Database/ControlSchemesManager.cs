@@ -23,11 +23,6 @@ public class ControlSchemesManager : MonoBehaviour
         Switch[] switches = GetComponentsInChildren<Switch>();
         _keyboardSwitch = switches[0];
         _gamepadSwitch = switches[1];
-
-        if (OnNewMenuStarted != null)
-        {
-            OnNewMenuStarted();
-        }
     }
 
     public void ChangeKeyboardControl(bool scheme)
