@@ -1,6 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/* 
+ * SPAG ALERT : Ne pas corriger
+ * Ce sont des features de dernières minutes volontairement faites à la vite
+ * sans trop réfléchir 
+*/
+
 public class GenericOnTriggerEnterTooltip : MonoBehaviour
 {
     private WaitForSeconds _delayBeforeFadeOut;

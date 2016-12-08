@@ -106,6 +106,7 @@ public class VulcanAI : MonoBehaviour
     {
         while (_standingTimeLeft > 0)
         {
+            _bossOrientation.FlipTowardsPlayer();
             if (_standingTimeLeft < 2 && !_hasShotFireball)
             {
                 GameObject fireball = (GameObject)Instantiate(_fireball, new Vector3(transform.position.x + _bossOrientation.Orientation * 4.5f,

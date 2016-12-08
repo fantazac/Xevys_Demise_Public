@@ -33,6 +33,7 @@ public class GameObjectTags : MonoBehaviour
     public string LevelWall { get; private set; }
     public string Spike { get; private set; }
     public string DontDestroyOnLoadStaticObjects { get; set; }
+    public string VoidArtefactItem { get; private set; }
 
     private void Start()
     {
@@ -65,5 +66,6 @@ public class GameObjectTags : MonoBehaviour
         LevelWall = "LevelWall";
         Spike = "Spike";
         DontDestroyOnLoadStaticObjects = "DontDestroyOnLoadStaticObjects";
+        VoidArtefactItem = "VoidArtefactItem";
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using UnityEngine;
+using System.Data;
 
 public class FunFactRepository : DatabaseConnection
 {
@@ -10,6 +10,16 @@ public class FunFactRepository : DatabaseConnection
             "VALUES (\"{0}\")", entity.Description);
         _dbcommand.CommandText = sqlQuery;
         _dbcommand.ExecuteNonQuery();
+
+        sqlQuery = String.Format("SELECT ACHIEVEMENT_ID" +
+             " FROM ACHIEVEMENT WHERE DESCRIPTION = \"{0}\"", entity.Description);
+        _dbcommand.CommandText = sqlQuery;
+        IDataReader reader = _dbcommand.ExecuteReader();
+        while (reader.Read())
+        {
+            entity.FunFactId = reader.GetInt32(0);
+        }
+        reader.Close();
         _dbconnection.Close();
     }
 }

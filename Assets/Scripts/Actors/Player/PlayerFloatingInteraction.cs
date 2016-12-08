@@ -23,7 +23,7 @@ public class PlayerFloatingInteraction : MonoBehaviour
 
         OnPlayerUnderWater += StaticObjects.GetPlayerState().EnableFloating;
 
-        StaticObjects.GetPlayer().GetComponent<Health>().OnDeath += ExitWater;
+        StaticObjects.GetPlayer().GetComponent<Health>().OnDeath += RespawnOutOfWaterOnDeath;
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -50,6 +50,11 @@ public class PlayerFloatingInteraction : MonoBehaviour
         _playerGroundMovement.enabled = false;
 
         _playerState.DisableFloating();
+    }
+
+    private void RespawnOutOfWaterOnDeath()
+    {
+        OnPlayerOutOfWater();
     }
 
     private void ExitWater()

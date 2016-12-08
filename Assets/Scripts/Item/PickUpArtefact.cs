@@ -6,6 +6,9 @@ public class PickUpArtefact : MonoBehaviour
     private InventoryManager _inventoryManager;
     private GameObjectTags _unityTags;
 
+    private delegate void OnGameEndedHandler();
+    private event OnGameEndedHandler OnGameEnded;
+
     private void Start()
     {
         _inventoryManager = StaticObjects.GetPlayer().GetComponent<InventoryManager>();
@@ -30,6 +33,10 @@ public class PickUpArtefact : MonoBehaviour
         else if (gameObject.tag == _unityTags.FireArtefactItem)
         {
             _inventoryManager.EnableFireArtefact();
+        }
+        else if (gameObject.tag == _unityTags.VoidArtefactItem)
+        {
+            OnGameEnded();
         }
     }
 }

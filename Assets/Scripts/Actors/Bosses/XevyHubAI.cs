@@ -62,6 +62,7 @@ public class XevyHubAI : MonoBehaviour
         _bossOrientation.OnBossFlipped += OnBossFlipped;
         _xevySpell = transform.FindChild("Xevy Spell").gameObject;
         GetComponent<Health>().OnDeath += OnXevyHubDefeated;
+        _animator.SetBool(_animTags.IsGoingForward, true);
         StartCoroutine(UpdateWhenMoving());
     }
 
@@ -101,6 +102,7 @@ public class XevyHubAI : MonoBehaviour
                     _xevySpell.SetActive(_hasAttacked);
                     _status = (_hasAttacked ? XevyHubStatus.DEFENSIVE : XevyHubStatus.VULNERABLE);
                     _isMoving = _hasAttacked;
+                    _animator.SetBool(_animTags.IsGoingForward, _actorDirection.IsGoingForward);
                 }
                 else if (_status == XevyHubStatus.VULNERABLE)
                 {
@@ -148,6 +150,7 @@ public class XevyHubAI : MonoBehaviour
     private void OnBossFlipped()
     {
         _actorDirection.FlipDirection();
+        _animator.SetBool(_animTags.IsGoingForward, _actorDirection.IsGoingForward);
     }
 
     private void OnXevyHubDefeated()

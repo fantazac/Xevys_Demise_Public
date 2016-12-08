@@ -144,35 +144,12 @@ public class NeptuneHeadAI : MonoBehaviour
         }
 
     }
-    /*
-    private void FixedUpdate()
-    {
-        if (!_isDead)
-        {
-            SpawnOtherBodyParts();
-            _attackCooldownTimeLeft -= Time.deltaTime;
-            if (_attackCooldownTimeLeft <= 0)
-            {
-                _attackCooldownTimeLeft = _attackDelay;
-                SetFlamesAroundHead();
-            }
-            else if (_attackCooldownTimeLeft < _warningDelay)
-            {
-                _animator.SetBool("IsAttacking", true);
-            }
-            else
-            {
-                _animator.SetBool("IsAttacking", false);
-            }
-            MoveInTrajectory();
-        }
-    }*/
 
     private void SpawnOtherBodyParts()
     {
         if (numberBodyPartsSpawned < _bodyParts.Length)
         {
-            _spawnBodyPartTimeLeft -= Time.fixedDeltaTime;
+            _spawnBodyPartTimeLeft -= Time.deltaTime;
             if (_spawnBodyPartTimeLeft <= 0)
             {
                 _spawnBodyPartTimeLeft = _bodyPartSpawnDelay;
@@ -217,7 +194,7 @@ public class NeptuneHeadAI : MonoBehaviour
 
     protected void MoveInTrajectory()
     {
-        transform.position = Vector2.MoveTowards(transform.position, _pointsToReach[_targetedPointIndex], _speed * Time.fixedDeltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, _pointsToReach[_targetedPointIndex], _speed * Time.deltaTime);
         if (CheckIfHasReachedTargetedPoint(_pointsToReach[_targetedPointIndex]))
         {
             _targetedPointIndex = (_targetedPointIndex + 1) % _pointsToReach.Length;

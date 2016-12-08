@@ -22,7 +22,6 @@ public class AccountSettingsDataHandler : MonoBehaviour
         MainMenuAudioSettingsManager.OnMusicStateChanged += SetMusicState;
         ControlSchemesManager.OnKeyboardControlChanged += SetKeyboardControl;
         ControlSchemesManager.OnGamepadControlChanged += SetGamepadControl;
-        ControlSchemesManager.OnNewMenuStarted += ReloadSettings;
         _repository = new AccountSettingsRepository();
 
         GameObject.Find(MainMenuStaticObjects.GetFindTags().MainMenuButtons).GetComponent<MainMenuCurrentInterfaceAnimator>().OnOptionsInterfaceQuit += UpdateRepository;
