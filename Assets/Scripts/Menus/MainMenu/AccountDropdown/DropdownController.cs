@@ -21,15 +21,15 @@ public class DropdownController : MonoBehaviour {
 
     private void PopulateDropdown()
     {
-        //***ici fetch de la database***
+        _nicknamesList.Insert(0, "Guest");
         List<String> usernames = DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountDataHandler>().GetAllUsernames();
         foreach (string username in usernames)
         {
             _nicknamesList.Add(username);
         }
-        _nicknamesList.Insert(0, "Guest");
-
+        
         _dropdown.AddOptions(_nicknamesList);
+        _dropdown.value = DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<DatabaseController>().AccountId;
     }
 
     private void AddNicknameToDropdown(string nickname)
