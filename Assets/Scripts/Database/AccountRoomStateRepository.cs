@@ -26,7 +26,7 @@ public class AccountRoomStateRepository : DatabaseConnection
     {
         _dbconnection.Open();
         string sqlQuery = String.Format("INSERT INTO ROOM_STATE (ROOM_STATES, ACCOUNT_ID)" +
-            " VALUES (\"{0}\", {1})", Convert.ToInt32(entity.RoomStates), entity.AccountId);
+            " VALUES (\"{0}\", {1})", entity.RoomStates, entity.AccountId);
         _dbcommand.CommandText = sqlQuery;
         _dbcommand.ExecuteNonQuery();
         _dbconnection.Close();
