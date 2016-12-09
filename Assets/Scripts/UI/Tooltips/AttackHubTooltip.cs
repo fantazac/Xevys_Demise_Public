@@ -9,17 +9,23 @@ using System.Collections;
 
 public class AttackHubTooltip : MonoBehaviour
 {
+    [SerializeField]
+    private bool _isKeyboardScheme;
+
     private WaitForSeconds _delayBeforeFadeIn;
     private WaitForSeconds _delayBeforeFadeOut;
     private Animator _animator;
+    private InputManager _inputManager;
 
     private void Start()
     {
         _animator = GetComponent<Animator>();
+        _inputManager = GameObject.Find("InputsManager").GetComponent<InputManager>();
         _delayBeforeFadeIn = new WaitForSeconds(5);
         _delayBeforeFadeOut = new WaitForSeconds(4);
-        StartCoroutine(FadeInFadeOutCoroutine());
+        _inputManager.OnInputSchemeChanged += OnInputSchemeChanged;
 
+        StartCoroutine(FadeInFadeOutCoroutine());
     }
 
     private IEnumerator FadeInFadeOutCoroutine()
@@ -28,6 +34,11 @@ public class AttackHubTooltip : MonoBehaviour
         _animator.SetTrigger("FadeIn");
         yield return _delayBeforeFadeOut;
         _animator.SetTrigger("FadeOut");
+    }
+
+    private void OnInputSchemeChanged()
+    {
+        GetComponent<SpriteRenderer>().enabled = !GetComponent<SpriteRenderer>().enabled;
     }
 
     private void OnDestroy()
