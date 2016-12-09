@@ -98,7 +98,6 @@ public class PlayerState : MonoBehaviour
 
     public void EnableFloating()
     {
-        Debug.Log(1);
         IsFloating = true;
         OnChangedFloating();
     }

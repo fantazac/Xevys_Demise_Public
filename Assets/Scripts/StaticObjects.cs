@@ -17,7 +17,8 @@ public class StaticObjects : MonoBehaviour
     private static AnimationTags _animationTags;
     private static GameObject _respawnEnemy;
     private static GameObject _cinematic;
-    private static GameObject _pause;               
+    private static GameObject _pause;
+    private static GameObject _waterCamera;             
 
     public static int AccountId { get; set; }
 
@@ -39,6 +40,7 @@ public class StaticObjects : MonoBehaviour
         _respawnEnemy = GameObject.Find(_mainObjects.RespawnEnemy);
         _cinematic = GameObject.Find(_mainObjects.Cinematic);
         _pause = GameObject.Find(_mainObjects.Pause);
+        _waterCamera = GameObject.Find(_mainObjects.WaterCamera);
 
         _playerState = _player.GetComponent<PlayerState>();
     }
@@ -108,6 +110,11 @@ public class StaticObjects : MonoBehaviour
         return _pause;
     }
 
+    public static GameObject GetWaterCamera()
+    {
+        return _waterCamera;
+    }
+
     private void OnDestroy()
     {
         _player = null;
@@ -124,5 +131,6 @@ public class StaticObjects : MonoBehaviour
         _respawnEnemy = null;
         _cinematic = null;
         _pause = null;
+        _waterCamera = null;
     }
 }
