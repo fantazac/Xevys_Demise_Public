@@ -20,8 +20,17 @@ public class AccountDataHandler : MonoBehaviour
 
     public void ChangeEntity(string username)
     {
-        _entity = _repository.Get(username);
-        GetComponent<DatabaseController>().AccountId = _entity.AccountId;
+        DatabaseController controller = GetComponent<DatabaseController>();
+        if (username != "Guest")
+        {
+            controller.IsGuest = false;
+            _entity = _repository.Get(username);
+            controller.AccountId = _entity.AccountId;
+        }
+        else
+        {
+            controller.IsGuest = true;
+        }
     }
 
     public List<string> GetAllUsernames()

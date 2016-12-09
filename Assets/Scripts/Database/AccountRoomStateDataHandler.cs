@@ -29,7 +29,14 @@ public class AccountRoomStateDataHandler : MonoBehaviour
 
     public void ChangeEntity(int accountId)
     {
-        _entity = _repository.Get(accountId);
+        if (!GetComponent<DatabaseController>().IsGuest)
+        {
+            _entity = _repository.Get(accountId);
+        }
+        else
+        {
+            _entity = new AccountRoomStateEntity();    
+        }
         ReloadRoomsState(_entity.RoomStates);
     }
 

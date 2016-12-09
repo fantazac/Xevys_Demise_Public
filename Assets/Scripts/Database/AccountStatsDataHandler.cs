@@ -25,7 +25,6 @@ public class AccountStatsDataHandler : MonoBehaviour
     {
         AccountStatsEntity entity = new AccountStatsEntity();
         entity.AccountId = accountId;
-        entity.LifeRemaining = 1000;
         _repository.Add(entity);
     }
 
@@ -36,7 +35,14 @@ public class AccountStatsDataHandler : MonoBehaviour
 
     public void ChangeEntity(int accountId)
     {
-        _temporaryEntity = _repository.Get(accountId);
+        if (!GetComponent<DatabaseController>().IsGuest)
+        {
+            _temporaryEntity = _repository.Get(accountId);
+        }
+        else
+        {
+            _temporaryEntity = new AccountStatsEntity();
+        }
         UpdateEntity();
     }
 
