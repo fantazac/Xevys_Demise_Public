@@ -60,4 +60,9 @@ public class FlickerSprite : MonoBehaviour
             _sprite.color = _initialColor;
         }
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

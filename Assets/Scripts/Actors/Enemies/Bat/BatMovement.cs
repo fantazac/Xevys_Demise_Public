@@ -107,4 +107,9 @@ public class BatMovement : MonoBehaviour
     {
         return _initialPosition.y - transform.position.y < 1;
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

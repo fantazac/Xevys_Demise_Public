@@ -31,4 +31,9 @@ public class RotateAxe : MonoBehaviour
             yield return null;
         }
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

@@ -42,4 +42,9 @@ public class PlaySoundOnEnemyDeath : MonoBehaviour
             OnDeathSoundFinished();
         }
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

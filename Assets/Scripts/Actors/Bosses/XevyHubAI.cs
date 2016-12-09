@@ -161,4 +161,9 @@ public class XevyHubAI : MonoBehaviour
         _xevySword.SetActive(false);
         _collisionBox.enabled = false;
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

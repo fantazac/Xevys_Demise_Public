@@ -226,4 +226,9 @@ public class NeptuneHeadAI : MonoBehaviour
         _animator.SetBool("IsDead", true);
         _isDead = true;
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

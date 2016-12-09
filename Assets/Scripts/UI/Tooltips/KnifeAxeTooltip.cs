@@ -43,4 +43,9 @@ public class KnifeAxeTooltip : MonoBehaviour
             _changeWeaponAnimator.SetBool("FadeOut", true);
         }
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

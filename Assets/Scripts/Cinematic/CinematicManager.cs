@@ -33,4 +33,9 @@ public class CinematicManager : MonoBehaviour
         CinematicIsPlaying = false;
         CinematicPosition = Vector3.zero;
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

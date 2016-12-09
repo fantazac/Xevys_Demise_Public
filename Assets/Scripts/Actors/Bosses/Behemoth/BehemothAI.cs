@@ -199,4 +199,9 @@ public class BehemothAI : MonoBehaviour
         _animator.SetBool(_animTags.IsDead, true);
         Destroy(_rigidbody);
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

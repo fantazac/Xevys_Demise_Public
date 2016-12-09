@@ -52,4 +52,9 @@ public class MoveObjectOnCinematicStarted : MoveObjectOnEvent
         gameObject.transform.position += _directionalVector * _speedInUnitsPerSecond * Time.unscaledDeltaTime;
         _distanceMade += _speedInUnitsPerSecond * Time.unscaledDeltaTime;
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

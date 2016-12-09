@@ -103,4 +103,9 @@ public class OnItemDrop : MonoBehaviour
             transform.rotation = _currentAngles;
         }
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

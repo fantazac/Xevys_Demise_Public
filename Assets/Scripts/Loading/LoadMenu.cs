@@ -21,4 +21,9 @@ public class LoadMenu : MonoBehaviour {
         };
         TransitionKit.instance.transitionWithDelegate(fader);
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

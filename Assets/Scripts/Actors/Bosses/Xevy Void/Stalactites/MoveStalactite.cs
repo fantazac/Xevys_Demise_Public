@@ -32,4 +32,9 @@ public class MoveStalactite : MonoBehaviour
         }
         Destroy(gameObject);
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

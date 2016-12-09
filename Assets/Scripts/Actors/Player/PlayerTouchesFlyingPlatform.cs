@@ -72,4 +72,9 @@ public class PlayerTouchesFlyingPlatform : MonoBehaviour
     {
         return _flyingPlatform != null;
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

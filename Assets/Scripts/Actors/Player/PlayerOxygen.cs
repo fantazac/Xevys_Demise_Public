@@ -78,4 +78,9 @@ public class PlayerOxygen : MonoBehaviour
             yield return _delayBetweenHits;
         }
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

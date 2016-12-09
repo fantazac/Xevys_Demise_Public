@@ -43,4 +43,9 @@ public class DestroyPlayerProjectile : MonoBehaviour
 
         DestroyNow();
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

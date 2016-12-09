@@ -70,4 +70,9 @@ public class PlayerBasicAttack : MonoBehaviour
 
         _canAttack = true;
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

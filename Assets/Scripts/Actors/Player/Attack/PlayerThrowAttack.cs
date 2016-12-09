@@ -52,4 +52,9 @@ public class PlayerThrowAttack : MonoBehaviour
     }
 
     protected virtual void Throw() { }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

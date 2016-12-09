@@ -41,6 +41,11 @@ public class AxeBladeHitWall : WeaponHitWall
 
         _rigidbody.isKinematic = true;
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }
 
 

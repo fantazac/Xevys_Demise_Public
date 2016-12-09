@@ -51,4 +51,9 @@ public class MoveFlame : MonoBehaviour
             transform.position += _direction * Time.deltaTime;
         }
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

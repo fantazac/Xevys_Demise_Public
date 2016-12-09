@@ -82,4 +82,9 @@ public class KnockbackPlayer : MonoBehaviour
     {
         behemoth.GetComponent<OnBehemothAttackHit>().OnKnockback += KnockbackOnBehemothHit;
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

@@ -165,4 +165,9 @@ public class AccountStatsDataHandler : MonoBehaviour
     {
         _temporaryEntity.FireArtefactEnabled = true;
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

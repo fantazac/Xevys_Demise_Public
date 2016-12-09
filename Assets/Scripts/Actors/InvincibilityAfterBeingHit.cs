@@ -41,4 +41,9 @@ public class InvincibilityAfterBeingHit : MonoBehaviour
         
         StartCoroutine(DisableInvincibility());
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

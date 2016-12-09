@@ -47,4 +47,9 @@ public class AnimateCrowOnPlayerHit : MonoBehaviour
     {
         return collider.gameObject.tag == _objectTags.BasicAttackHitbox || collider.gameObject.tag == _objectTags.Knife || collider.gameObject.tag == _objectTags.AxeBlade;
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

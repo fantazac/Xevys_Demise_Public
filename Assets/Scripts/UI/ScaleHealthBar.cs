@@ -45,4 +45,9 @@ public class ScaleHealthBar : MonoBehaviour
         }
         _healthBar.localScale = _finalSize;
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

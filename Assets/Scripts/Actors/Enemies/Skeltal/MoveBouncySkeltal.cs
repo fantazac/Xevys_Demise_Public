@@ -88,4 +88,9 @@ public class MoveBouncySkeltal : SkeltalBehaviour
         _timeInAirCount = 0;
         base.SkeltalMovementFinished();
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

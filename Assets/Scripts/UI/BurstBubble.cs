@@ -51,4 +51,9 @@ public class BurstBubble : MonoBehaviour
         yield return _timeBeforeDisappear;
         GetComponent<Image>().enabled = false;
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

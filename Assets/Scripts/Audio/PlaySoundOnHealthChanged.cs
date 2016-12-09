@@ -49,4 +49,9 @@ public class PlaySoundOnHealthChanged : MonoBehaviour
             OnHitSoundFinished();
         }
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

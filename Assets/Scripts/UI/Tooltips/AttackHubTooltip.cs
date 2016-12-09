@@ -29,4 +29,9 @@ public class AttackHubTooltip : MonoBehaviour
         yield return _delayBeforeFadeOut;
         _animator.SetTrigger("FadeOut");
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

@@ -32,4 +32,9 @@ public class UpdateStalactites : MonoBehaviour
         }
         Destroy(gameObject);
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

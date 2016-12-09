@@ -35,4 +35,9 @@ public class HubCameraSwitch : MonoBehaviour {
 
         _cameraManager.getListNodes()[_nbNode1] = backupNode;
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

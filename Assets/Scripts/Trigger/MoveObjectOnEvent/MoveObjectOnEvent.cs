@@ -59,4 +59,9 @@ public abstract class MoveObjectOnEvent : MonoBehaviour
             OnFinishedMoving();
         }
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

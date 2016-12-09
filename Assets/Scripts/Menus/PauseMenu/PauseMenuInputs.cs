@@ -122,4 +122,9 @@ public class PauseMenuInputs : MonoBehaviour
 
         OnMainInterfaceIsCurrent("ShowMainInterface");
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

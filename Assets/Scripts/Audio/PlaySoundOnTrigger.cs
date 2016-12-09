@@ -35,4 +35,8 @@ public class PlaySoundOnTrigger : MonoBehaviour
         OnSoundFinished();
     }
 
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

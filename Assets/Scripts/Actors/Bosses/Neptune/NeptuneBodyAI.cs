@@ -36,4 +36,9 @@ public class NeptuneBodyAI : NeptuneHeadAI
         transform.Rotate(0, 0, RADIAN_TO_DEGREE * Mathf.Atan((_pointsToReach[_targetedPointIndex].y - transform.position.y) /
             (_pointsToReach[_targetedPointIndex].x - transform.position.x)));
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

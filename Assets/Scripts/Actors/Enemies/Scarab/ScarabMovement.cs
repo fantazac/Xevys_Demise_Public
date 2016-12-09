@@ -151,4 +151,9 @@ public class ScarabMovement : MonoBehaviour
     {
         return transform.rotation.eulerAngles.z != 0;
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

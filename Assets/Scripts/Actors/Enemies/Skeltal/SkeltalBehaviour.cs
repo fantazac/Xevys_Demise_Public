@@ -90,4 +90,9 @@ public class SkeltalBehaviour : MonoBehaviour
     {
         OnSkeltalMovementFinished();
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

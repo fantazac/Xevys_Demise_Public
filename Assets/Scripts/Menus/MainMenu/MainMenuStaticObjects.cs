@@ -32,4 +32,12 @@ public class MainMenuStaticObjects : MonoBehaviour
     {
         return _animationTags;
     }
+
+    private void OnDestroy()
+    {
+        _mainMenuPanel = null;
+        _tags = null;
+        _findTags = null;
+        _animationTags = null;
+    }
 }

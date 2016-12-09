@@ -76,4 +76,9 @@ public class DropItems : MonoBehaviour
     {
         return _inventoryManager.AxeEnabled && item.tag == StaticObjects.GetObjectTags().AxePickableItem;
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

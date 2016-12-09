@@ -30,4 +30,9 @@ public class EyeAnimationOnDeath : MonoBehaviour
 
         OnAnimationOver();
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

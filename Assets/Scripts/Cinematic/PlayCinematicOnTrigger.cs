@@ -34,4 +34,8 @@ public class PlayCinematicOnTrigger : MonoBehaviour
         _cinematicManager.StartCinematic(_cinematicPosition, _cinematicDuration);
     }
 
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }

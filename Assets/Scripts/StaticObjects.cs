@@ -17,7 +17,7 @@ public class StaticObjects : MonoBehaviour
     private static AnimationTags _animationTags;
     private static GameObject _respawnEnemy;
     private static GameObject _cinematic;
-    private static GameObject _pause;
+    private static GameObject _pause;               
 
     public static int AccountId { get; set; }
 
@@ -106,5 +106,23 @@ public class StaticObjects : MonoBehaviour
     public static GameObject GetPause()
     {
         return _pause;
+    }
+
+    private void OnDestroy()
+    {
+        _player = null;
+        _panelUI = null;
+        _pauseMenuPanel = null;
+        _healthBar = null;
+        _itemCanvas = null;
+        _tags = null;
+        _mainCamera = null;
+        _playerState = null;
+        _mainObjects = null;
+        _objectTags = null;
+        _animationTags = null;
+        _respawnEnemy = null;
+        _cinematic = null;
+        _pause = null;
     }
 }

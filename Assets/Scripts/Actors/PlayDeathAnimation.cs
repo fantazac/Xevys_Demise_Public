@@ -31,4 +31,9 @@ public class PlayDeathAnimation : MonoBehaviour
             OnDyingAnimationFinished();
         }
     }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
 }
