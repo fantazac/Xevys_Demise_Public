@@ -26,6 +26,9 @@ public class MainMenuInputs : MonoBehaviour
     public delegate void OnStartButtonPressedHandler();
     public event OnStartButtonPressedHandler OnStartButtonPressed;
 
+    public delegate void OnAchievementsButtonPressedHandler();
+    public event OnAchievementsButtonPressedHandler OnAchievementsButtonPressed;
+
     private MainMenuGamepadInputs _mainMenuGamepadInputs;
 
     private void Start()
@@ -38,6 +41,11 @@ public class MainMenuInputs : MonoBehaviour
     private void GamepadBackBtnPressed()
     {
         OnGamepadBackButtonPressed();
+    }
+
+    public void AcheivementsBtnOnClick()
+    {
+        OnAchievementsButtonPressed();
     }
 
     public void StartBtnOnClick()
