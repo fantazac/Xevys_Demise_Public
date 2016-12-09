@@ -16,6 +16,9 @@ public class SetActiveControlToNextButton : MonoBehaviour
 
     public void SetCurrentButtonToNext()
     {
-        EventSystem.current.SetSelectedGameObject(_nextButton);
+        if (!EventSystem.current.alreadySelecting)
+        {
+            EventSystem.current.SetSelectedGameObject(_nextButton);
+        }
     }
 }
