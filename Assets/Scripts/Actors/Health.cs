@@ -29,7 +29,10 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
-        DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountStatsDataHandler>().OnHealthReloaded += ReloadHealth;
+        if (tag == StaticObjects.GetObjectTags().Player)
+        {
+            DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountStatsDataHandler>().OnHealthReloaded += ReloadHealth;
+        }
         MaxHealth = _health;
     }
 
@@ -88,11 +91,8 @@ public class Health : MonoBehaviour
 
     private void ReloadHealth(int health)
     {
-        if (tag == StaticObjects.GetObjectTags().Player)
-        {
-            OnHealthChanged(-(_health - health));
-            _health -= (_health - health);
-        }
+        OnHealthChanged(-(_health - health));
+        _health -= (_health - health);
     }
 
     public bool IsDead()
