@@ -24,6 +24,11 @@ public class AccountSettingsDataHandler : MonoBehaviour
         ControlSchemesManager.OnGamepadControlChanged += SetGamepadControl;
         _repository = new AccountSettingsRepository();
 
+        MainMenuInputs.OnMainMenuLoaded += ConnectToOptionsInterfaceQuitEvent;
+    }
+
+    private void ConnectToOptionsInterfaceQuitEvent()
+    {
         GameObject.Find(MainMenuStaticObjects.GetFindTags().MainMenuButtons).GetComponent<MainMenuCurrentInterfaceAnimator>().OnOptionsInterfaceQuit += UpdateRepository;
     }
 

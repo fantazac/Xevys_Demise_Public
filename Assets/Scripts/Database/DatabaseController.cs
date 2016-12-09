@@ -25,9 +25,14 @@ public class DatabaseController : MonoBehaviour
         _accountStatsDataHandler = GetComponent<AccountStatsDataHandler>();
         _accountSettingsDataHandler = GetComponent<AccountSettingsDataHandler>();
         _accountRoomStateDataHandler = GetComponent<AccountRoomStateDataHandler>();
-        GameObject.Find(MainMenuStaticObjects.GetFindTags().InputField).GetComponent<NicknameAddRequestToDropdown>().OnNicknameEntered += CreateNewAccountEntries;
 
+        MainMenuInputs.OnMainMenuLoaded += ConnectToNicknameEnteredEvent;
         RoomsStateCollector.OnMainLevelStarted += ChangeAccountRoomState;
+    }
+
+    private void ConnectToNicknameEnteredEvent()
+    {
+        GameObject.Find(MainMenuStaticObjects.GetFindTags().InputField).GetComponent<NicknameAddRequestToDropdown>().OnNicknameEntered += CreateNewAccountEntries;
     }
 
     private void CreateNewAccountEntries(string username)

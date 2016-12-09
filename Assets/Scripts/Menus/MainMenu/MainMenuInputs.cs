@@ -2,6 +2,9 @@
 
 public class MainMenuInputs : MonoBehaviour
 {
+    public delegate void OnMainMenuLoadedHandler();
+    public static event OnMainMenuLoadedHandler OnMainMenuLoaded;
+
     public delegate void OnAccountInterfaceIsCurrentHandler(string current);
     public event OnAccountInterfaceIsCurrentHandler OnAccountInterfaceIsCurrent;
 
@@ -29,6 +32,7 @@ public class MainMenuInputs : MonoBehaviour
     {
         _mainMenuGamepadInputs = GameObject.Find(MainMenuStaticObjects.GetFindTags().GamepadInputs).GetComponent<MainMenuGamepadInputs>();
         _mainMenuGamepadInputs.OnBackButtonPressedInMenu += GamepadBackBtnPressed;
+        OnMainMenuLoaded();
     }
 
     private void GamepadBackBtnPressed()
