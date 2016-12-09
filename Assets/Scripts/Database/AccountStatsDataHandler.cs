@@ -90,6 +90,9 @@ public class AccountStatsDataHandler : MonoBehaviour
         OnInventoryReloaded(_entity.KnifeEnabled, _entity.AxeEnabled, _entity.FeatherEnabled, _entity.BootsEnabled, _entity.BubbleEnabled, _entity.ArmorEnabled, _entity.EarthArtefactEnabled, _entity.AirArtefactEnabled, _entity.WaterArtefactEnabled, _entity.FireArtefactEnabled);
         OnAmmoReloaded(_entity.KnifeAmmo, _entity.AxeAmmo);
         OnHealthReloaded(_entity.LifeRemaining);
+        OnInventoryReloaded = null;
+        OnAmmoReloaded = null;
+        OnHealthReloaded = null;
     }
 
     private void StartSecondsPlayedCounter()
