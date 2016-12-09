@@ -53,6 +53,9 @@ public class InputManager : MonoBehaviour
     public delegate void OnCheatHandler(int item);
     public event OnCheatHandler OnCheat;
 
+    public delegate void OnInputSchemeChangedHandler();
+    public event OnInputSchemeChangedHandler OnInputSchemeChanged;
+
     private KeyboardInputs _keyboardInputs;
     private GamepadInputs _gamepadInputs;
 
@@ -101,7 +104,8 @@ public class InputManager : MonoBehaviour
 
         if ((!_keyboardInputs.enabled && _gamepadInputs.enabled && PlayerIsUsingKeyboard()) ||
             (!_gamepadInputs.enabled && _keyboardInputs.enabled && PlayerIsUsingGamepad()))
-        {    
+        {
+            OnInputSchemeChanged();
             _keyboardInputs.enabled = !_keyboardInputs.enabled;
             _gamepadInputs.enabled = !_gamepadInputs.enabled;
         }
