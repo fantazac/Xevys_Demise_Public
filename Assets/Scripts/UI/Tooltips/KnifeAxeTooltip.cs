@@ -9,15 +9,37 @@ using System.Collections;
 
 public class KnifeAxeTooltip : MonoBehaviour
 {
+    [SerializeField]
+    private bool _isKeyboardScheme;
+    [SerializeField]
+    private GameObject _xboxChangeWeapon;
+    [SerializeField]
+    private GameObject _keyboardChangeWeapon;
+
     private WaitForSeconds _delayBeforeFadeOut;
     private Animator _animator;
-    private Animator _changeWeaponAnimator;
+    private InputManager _inputManager;
 
     private void Start()
     {
         _animator = GetComponent<Animator>();
+        _inputManager = GameObject.Find("InputsManager").GetComponent<InputManager>();
         _delayBeforeFadeOut = new WaitForSeconds(2);
-        _changeWeaponAnimator = transform.parent.FindChild("ChangeWeaponTooltip").GetComponent<Animator>();
+
+        _inputManager.OnInputSchemeChanged += OnInputSchemeChanged;
+    }
+
+    private void OnInputSchemeChanged()
+    {
+        GetComponent<SpriteRenderer>().enabled = !GetComponent<SpriteRenderer>().enabled;
+
+        // Juste pour que ça rentre une fois...
+        // Ce script est un mess lol
+        if (_isKeyboardScheme)
+        {
+            _xboxChangeWeapon.GetComponent<SpriteRenderer>().enabled = !_xboxChangeWeapon.GetComponent<SpriteRenderer>().enabled;
+            _keyboardChangeWeapon.GetComponent<SpriteRenderer>().enabled = !_keyboardChangeWeapon.GetComponent<SpriteRenderer>().enabled;
+        }    
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
@@ -38,9 +60,11 @@ public class KnifeAxeTooltip : MonoBehaviour
         if (StaticObjects.GetPlayer().GetComponent<InventoryManager>().KnifeEnabled &&
             StaticObjects.GetPlayer().GetComponent<InventoryManager>().AxeEnabled)
         {
-            _changeWeaponAnimator.SetBool("FadeIn", true);
+            _xboxChangeWeapon.GetComponent<Animator>().SetBool("FadeIn", true);
+            _keyboardChangeWeapon.GetComponent<Animator>().SetBool("FadeIn", true);
             yield return _delayBeforeFadeOut;
-            _changeWeaponAnimator.SetBool("FadeOut", true);
+            _xboxChangeWeapon.GetComponent<Animator>().SetBool("FadeOut", true);
+            _keyboardChangeWeapon.GetComponent<Animator>().SetBool("FadeOut", true);
         }
     }
 

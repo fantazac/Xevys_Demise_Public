@@ -19,11 +19,9 @@ public class MoveFlame : MonoBehaviour
     private int _leftDirectionAngle = 315;
 
     private Vector3 _direction;
-    private Rigidbody2D _rigidbody;
 
     private void Start()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
         if (transform.eulerAngles.z <= _upwardDirectionAngle + 1 || transform.eulerAngles.z >= _leftDirectionAngle)
         {
             _direction = Vector2.up * _speed;

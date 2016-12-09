@@ -11,7 +11,8 @@ public class DatabaseController : MonoBehaviour
     private AccountStatsDataHandler _accountStatsDataHandler;
     private AccountSettingsDataHandler _accountSettingsDataHandler;
     private AccountRoomStateDataHandler _accountRoomStateDataHandler;
-    public int AccountId { get; set; }
+    public int AccountId;
+    public bool IsGuest;
 
     private void Start()
     {
@@ -59,8 +60,11 @@ public class DatabaseController : MonoBehaviour
 
     public void SaveAccount()
     {
-        _accountStatsDataHandler.UpdateRepository();
-        _accountSettingsDataHandler.UpdateRepository();
-        _accountRoomStateDataHandler.UpdateRepository();
+        if (!IsGuest)
+        {
+            _accountStatsDataHandler.UpdateRepository();
+            _accountSettingsDataHandler.UpdateRepository();
+            _accountRoomStateDataHandler.UpdateRepository();
+        }
     }
 }

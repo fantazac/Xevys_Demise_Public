@@ -36,11 +36,6 @@ public class AccountSettingsDataHandler : MonoBehaviour
     {
         AccountSettingsEntity entity = new AccountSettingsEntity();
         entity.AccountId = accountId;
-        entity.IsMusicPlaying = true;
-        entity.MusicVolume = 1;
-        entity.SoundEffectsVolume = 1;
-        entity.KeyboardControlSchemeId = 1;
-        entity.GamepadControlSchemeId = 1;
         _repository.Add(entity);
     }
 
@@ -51,7 +46,14 @@ public class AccountSettingsDataHandler : MonoBehaviour
 
     public void ChangeEntity(int accountId)
     {
-        _entity = _repository.Get(accountId);
+        if (!GetComponent<DatabaseController>().IsGuest)
+        {
+            _entity = _repository.Get(accountId);
+        }
+        else
+        {
+            _entity = new AccountSettingsEntity();
+        }
         ReloadSettings();
     }
 

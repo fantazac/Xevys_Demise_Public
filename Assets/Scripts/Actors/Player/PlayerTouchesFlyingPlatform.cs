@@ -4,7 +4,7 @@ using System.Collections;
 public class PlayerTouchesFlyingPlatform : MonoBehaviour
 {
     [SerializeField]
-    private float _enableHitboxCD = 0.3f;
+    private float _enableHitboxCD = 0.32f;
 
     private GameObject _flyingPlatform;
 

@@ -25,7 +25,6 @@ public class AccountStatsDataHandler : MonoBehaviour
     {
         AccountStatsEntity entity = new AccountStatsEntity();
         entity.AccountId = accountId;
-        entity.LifeRemaining = 1000;
         _repository.Add(entity);
     }
 
@@ -36,7 +35,14 @@ public class AccountStatsDataHandler : MonoBehaviour
 
     public void ChangeEntity(int accountId)
     {
-        _temporaryEntity = _repository.Get(accountId);
+        if (!GetComponent<DatabaseController>().IsGuest)
+        {
+            _temporaryEntity = _repository.Get(accountId);
+        }
+        else
+        {
+            _temporaryEntity = new AccountStatsEntity();
+        }
         UpdateEntity();
     }
 
@@ -90,6 +96,9 @@ public class AccountStatsDataHandler : MonoBehaviour
         OnInventoryReloaded(_entity.KnifeEnabled, _entity.AxeEnabled, _entity.FeatherEnabled, _entity.BootsEnabled, _entity.BubbleEnabled, _entity.ArmorEnabled, _entity.EarthArtefactEnabled, _entity.AirArtefactEnabled, _entity.WaterArtefactEnabled, _entity.FireArtefactEnabled);
         OnAmmoReloaded(_entity.KnifeAmmo, _entity.AxeAmmo);
         OnHealthReloaded(_entity.LifeRemaining);
+        OnInventoryReloaded = null;
+        OnAmmoReloaded = null;
+        OnHealthReloaded = null;
     }
 
     private void StartSecondsPlayedCounter()
