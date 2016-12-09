@@ -39,7 +39,7 @@ public class PhoenixAI : MonoBehaviour
     private float _hitFlyingSpeed = 3;
 
     private const float FLAP_DELAY = 0.5f;
-    private const float WING_FLAP = 2.275f;
+    private const float WING_FLAP = 2.75f;
     private const float RADIAN_TO_DEGREE = 57.2958f;
 
     private Vector2 _currentPoint;
