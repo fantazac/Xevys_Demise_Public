@@ -55,7 +55,6 @@ public class DropItems : MonoBehaviour
         {
             if (CanDropItem(itemToDrop))
             {
-                Debug.Log(1);
                 GameObject item = (GameObject)Instantiate(itemToDrop, transform.position, new Quaternion());
                 item.GetComponent<OnItemDrop>().Initialise(_itemsToDrop.Count, itemToDropCount++, GetComponent<Collider2D>());
             }

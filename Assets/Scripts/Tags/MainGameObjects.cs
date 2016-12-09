@@ -25,6 +25,7 @@ public class MainGameObjects : MonoBehaviour
     public string Cinematic { get; private set; }
     public string Pause { get; private set; }
     public string RoomsStateCollector { get; private set; }
+    public string WaterCamera { get; private set; }
 
     private void Start()
     {
@@ -50,5 +51,6 @@ public class MainGameObjects : MonoBehaviour
         Cinematic = "Cinematic";
         Pause = "Pause";
         RoomsStateCollector = "RoomsStateCollector";
+        WaterCamera = "Water Camera";
     }
 }

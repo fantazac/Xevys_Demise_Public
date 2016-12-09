@@ -48,6 +48,12 @@ public class CameraManager : MonoBehaviour
         }
     }
 
+    public void SetCameraOnPlayer(Vector3 position, int cameraDimensionId)
+    {
+        _currentArea = cameraDimensionId;
+        transform.position = position;
+    }
+
     private void Update()
     {
         if (_cinematicManager.MoveCameraToCinematic)

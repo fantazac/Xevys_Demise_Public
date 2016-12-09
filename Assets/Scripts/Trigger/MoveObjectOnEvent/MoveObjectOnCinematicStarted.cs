@@ -9,18 +9,11 @@ public class MoveObjectOnCinematicStarted : MoveObjectOnEvent
     [SerializeField]
     private float _timeBeforeCinematicStart = 1f;
 
-    [SerializeField]
-    private bool _pauseGameOnCinematicStart = true;
-
-    private PauseGame _pauseGame;
-
     public delegate void OnStartedMovingHandler();
     public event OnStartedMovingHandler OnStartedMoving;
 
     protected override void Start()
     {
-        _pauseGame = StaticObjects.GetPause().GetComponent<PauseGame>();
-
         _triggerActivationObject.GetComponent<ActivateTrigger>().OnTrigger += StartObjectMovement;
 
         base.Start();
@@ -28,10 +21,6 @@ public class MoveObjectOnCinematicStarted : MoveObjectOnEvent
 
     protected override void StartObjectMovement()
     {
-        if (_pauseGameOnCinematicStart)
-        {
-            _pauseGame.Pause();
-        }
         StartCoroutine(StartMovementWhenCinematicIsRunning());
     }
 
