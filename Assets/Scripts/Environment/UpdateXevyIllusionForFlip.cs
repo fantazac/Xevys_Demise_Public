@@ -8,6 +8,7 @@ public class UpdateXevyIllusionForFlip : MonoBehaviour
 	private void Start ()
     {
         StartCoroutine(UpdateXevyIllusion());
+        _bossOrientation = GetComponent<BossOrientation>();
 	}
 
     private IEnumerator UpdateXevyIllusion()

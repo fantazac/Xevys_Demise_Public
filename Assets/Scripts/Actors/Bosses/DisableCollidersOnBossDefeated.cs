@@ -19,5 +19,6 @@ public class DisableCollidersOnBossDefeated : MonoBehaviour
     {
         _boxCollider.enabled = false;
         _polygonCollider.enabled = false;
+        GetComponent<FadeOutAfterDeath>().enabled = true;
     }
 }

@@ -40,9 +40,6 @@ public class NeptuneHeadAI : MonoBehaviour
     private float _attackDelay = 5;
 
     [SerializeField]
-    private float _warningDelay = 2;
-
-    [SerializeField]
     private float _rotationByFlame = 45;
 
     [SerializeField]
