@@ -6,11 +6,10 @@ public class RoomsStateCollector : MonoBehaviour
     [SerializeField]
     public List<TriggerRoomStateListener> RoomCleanerTriggers;
 
-    public delegate void OnMainLevelStartedHandler();
-    public static event OnMainLevelStartedHandler OnMainLevelStarted;
-
     private void Start()
     {
-        OnMainLevelStarted();
+        GameObject database = DontDestroyOnLoadStaticObjects.GetDatabase();
+        database.GetComponent<AccountRoomStateDataHandler>().LoadRoomsWithTrigger();
+        database.GetComponent<DatabaseController>().ChangeAccountRoomState();
     }
 }

@@ -11,8 +11,8 @@ public class DatabaseController : MonoBehaviour
     private AccountStatsDataHandler _accountStatsDataHandler;
     private AccountSettingsDataHandler _accountSettingsDataHandler;
     private AccountRoomStateDataHandler _accountRoomStateDataHandler;
-    public int AccountId;
-    public bool IsGuest;
+    public int AccountId { get; set; }
+    public bool IsGuest { get; set; }
 
     private void Start()
     {
@@ -28,7 +28,6 @@ public class DatabaseController : MonoBehaviour
         _accountRoomStateDataHandler = GetComponent<AccountRoomStateDataHandler>();
 
         MainMenuInputs.OnMainMenuLoaded += ConnectToNicknameEnteredEvent;
-        RoomsStateCollector.OnMainLevelStarted += ChangeAccountRoomState;
     }
 
     private void ConnectToNicknameEnteredEvent()
@@ -53,7 +52,7 @@ public class DatabaseController : MonoBehaviour
         _accountSettingsDataHandler.ChangeEntity(AccountId);
     }
 
-    private void ChangeAccountRoomState()
+    public void ChangeAccountRoomState()
     {
         _accountRoomStateDataHandler.ChangeEntity(AccountId);
     }

@@ -12,10 +12,9 @@ public class AccountRoomStateDataHandler : MonoBehaviour
     {
         _entity = new AccountRoomStateEntity();
         _repository = new AccountRoomStateRepository();
-        RoomsStateCollector.OnMainLevelStarted += LoadRoomsWithTrigger;
     }
 
-    private void LoadRoomsWithTrigger()
+    public void LoadRoomsWithTrigger()
     {
         _roomsWithTrigger = GameObject.Find(StaticObjects.GetMainObjects().RoomsStateCollector).GetComponent<RoomsStateCollector>().RoomCleanerTriggers;
     }
