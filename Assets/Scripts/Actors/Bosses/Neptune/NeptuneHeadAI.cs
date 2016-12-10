@@ -48,13 +48,14 @@ public class NeptuneHeadAI : MonoBehaviour
     [SerializeField]
     private float _flameSpawnDistanceFromHead = 1.5f;
 
-    [SerializeField]
-    private float _bodyPartSpawnDelay = 1.8f;
 
     [SerializeField]
     private GameObject[] _bodyParts;
 
     protected const float RADIAN_TO_DEGREE = 57.2958f;
+    protected const float BODY_PART_TRANSFORM_AJUSTMENT = 0.5f;
+    protected const float BODY_PART_ODD_INDEX_SPAWN_DELAY = 1.8f;
+    protected const float BODY_PART_EVEN_INDEX_SPAWN_DELAY = 1.0f;
 
     protected Vector2 _origin;
     protected Vector2[] _pointsToReach;
@@ -67,7 +68,8 @@ public class NeptuneHeadAI : MonoBehaviour
 
     protected bool _isDead = false;
     protected int _targetedPointIndex;
-    private int numberBodyPartsSpawned;
+    protected int _numberOfPointsReached = 0;
+    private int _numberBodyPartsSpawned;
     private float _spawnBodyPartTimeLeft;
     private float _attackCooldownTimeLeft;
 
@@ -89,10 +91,10 @@ public class NeptuneHeadAI : MonoBehaviour
     private void InitializeNeptune()
     {
         _attackCooldownTimeLeft = _attackDelay;
-        _spawnBodyPartTimeLeft = _bodyPartSpawnDelay;
-        numberBodyPartsSpawned = 0;
+        _spawnBodyPartTimeLeft = BODY_PART_ODD_INDEX_SPAWN_DELAY;
+        _numberBodyPartsSpawned = 0;
         _health.HealthPoint = _health.MaxHealth;
-        for(int i = 0; i < _bodyParts.Length; i++)
+        for (int i = 0; i < _bodyParts.Length; i++)
         {
             _bodyParts[i] = (GameObject)Instantiate(_bodyParts[i], transform.position, new Quaternion());
             _bodyParts[i].transform.parent = gameObject.transform.parent;
@@ -132,14 +134,6 @@ public class NeptuneHeadAI : MonoBehaviour
                 _attackCooldownTimeLeft = _attackDelay;
                 SetFlamesAroundHead();
             }
-            else if (_attackCooldownTimeLeft < _warningDelay)
-            {
-                _animator.SetBool("IsAttacking", true);
-            }
-            else
-            {
-                _animator.SetBool("IsAttacking", false);
-            }
             MoveInTrajectory();
         }
 
@@ -147,19 +141,27 @@ public class NeptuneHeadAI : MonoBehaviour
 
     private void SpawnOtherBodyParts()
     {
-        if (numberBodyPartsSpawned < _bodyParts.Length)
+        if (_numberBodyPartsSpawned < _bodyParts.Length)
         {
             _spawnBodyPartTimeLeft -= Time.deltaTime;
             if (_spawnBodyPartTimeLeft <= 0)
             {
-                _spawnBodyPartTimeLeft = _bodyPartSpawnDelay;
-                _bodyParts[numberBodyPartsSpawned].SetActive(true);
-                if (numberBodyPartsSpawned % 2 == 1)
+                _bodyParts[_numberBodyPartsSpawned].SetActive(true);
+                _bodyParts[_numberBodyPartsSpawned].GetComponent<NeptuneBodyAI>().SetIndex(_numberBodyPartsSpawned);
+                if (_numberBodyPartsSpawned % 2 == 1)
                 {
-                    _bodyParts[numberBodyPartsSpawned].transform.localScale = new Vector2(_bodyParts[numberBodyPartsSpawned].transform.localScale.x,
-                        -_bodyParts[numberBodyPartsSpawned].transform.localScale.y);
+                    _bodyParts[_numberBodyPartsSpawned].transform.localScale = new Vector2(_bodyParts[_numberBodyPartsSpawned].transform.localScale.x,
+                        -_bodyParts[_numberBodyPartsSpawned].transform.localScale.y);
+                    _bodyParts[_numberBodyPartsSpawned].transform.position += Vector3.up * BODY_PART_TRANSFORM_AJUSTMENT;
+                    _spawnBodyPartTimeLeft = BODY_PART_ODD_INDEX_SPAWN_DELAY;
                 }
-                numberBodyPartsSpawned++;
+                else
+                {
+                    _bodyParts[_numberBodyPartsSpawned].transform.position += Vector3.down * BODY_PART_TRANSFORM_AJUSTMENT;
+                    _spawnBodyPartTimeLeft = BODY_PART_EVEN_INDEX_SPAWN_DELAY;
+                }
+                _bodyParts[_numberBodyPartsSpawned].GetComponent<NeptuneBodyAI>().IsTail = (_numberBodyPartsSpawned == _bodyParts.Length - 1);
+                _numberBodyPartsSpawned++;
             }
         }
     }
@@ -192,17 +194,18 @@ public class NeptuneHeadAI : MonoBehaviour
         }
     }
 
-    protected void MoveInTrajectory()
+    protected virtual void MoveInTrajectory()
     {
         transform.position = Vector2.MoveTowards(transform.position, _pointsToReach[_targetedPointIndex], _speed * Time.deltaTime);
         if (CheckIfHasReachedTargetedPoint(_pointsToReach[_targetedPointIndex]))
         {
             _targetedPointIndex = (_targetedPointIndex + 1) % _pointsToReach.Length;
+            _numberOfPointsReached++;
             RotateAndFlip();
         }
     }
 
-    private bool CheckIfHasReachedTargetedPoint(Vector2 point)
+    protected virtual bool CheckIfHasReachedTargetedPoint(Vector2 point)
     {
         return 0 == Vector2.Distance(transform.position, _pointsToReach[_targetedPointIndex]);
     }
