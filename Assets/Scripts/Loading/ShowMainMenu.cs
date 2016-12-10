@@ -3,13 +3,7 @@ using Prime31.TransitionKit;
 
 public class ShowMainMenu : MonoBehaviour
 {
-
-    private void Start()
-    {
-
-    }
-
-    private void ShowMenu()
+    public void ShowMenu()
     {
         var fader = new FadeTransition()
         {
