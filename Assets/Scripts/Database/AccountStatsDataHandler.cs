@@ -3,6 +3,13 @@ using UnityEngine;
 
 public class AccountStatsDataHandler : MonoBehaviour
 {
+    [SerializeField]
+    private int _scarabsToKillForAchievement = 20;
+    [SerializeField]
+    private int _batsToKillForAchievement = 20;
+    [SerializeField]
+    private int _skeltalsToKillForAchievement = 20;
+
     public delegate void OnInventoryReloadedHandler(bool knifeEnabled, bool axeEnabled, bool featherEnabled, bool bootsEnabled, bool bubbleEnabled, bool armorEnabled, bool earthArtefactEnabled, bool airArtefactEnabled, bool waterArtefactEnabled, bool fireArtefactEnabled);
     public event OnInventoryReloadedHandler OnInventoryReloaded;
     public delegate void OnAmmoReloadedHandler(int knifeAmmo, int axeAmmo);
@@ -63,14 +70,26 @@ public class AccountStatsDataHandler : MonoBehaviour
         if (tag == StaticObjects.GetObjectTags().Scarab)
         {
             _temporaryEntity.NbScarabsKilled++;
+            if (_temporaryEntity.NbScarabsKilled == _scarabsToKillForAchievement)
+            {
+                _accountAchievementDataHandler.EnoughScarabsKilled();
+            }
         }
         else if (tag == StaticObjects.GetObjectTags().Bat)
         {
             _temporaryEntity.NbBatsKilled++;
+            if (_temporaryEntity.NbBatsKilled == _batsToKillForAchievement)
+            {
+                _accountAchievementDataHandler.EnoughBatsKilled();
+            }
         }
         else if (tag == StaticObjects.GetObjectTags().Skeltal)
         {
             _temporaryEntity.NbSkeltalsKilled++;
+            if (_temporaryEntity.NbSkeltalsKilled == _skeltalsToKillForAchievement)
+            {
+                _accountAchievementDataHandler.EnoughSkeltalsKilled();
+            }
         }
     }
 

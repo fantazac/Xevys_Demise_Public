@@ -14,7 +14,7 @@ public class AccountHasAchievementRepository : DatabaseConnection
         _dbconnection.Close();
     }
 
-    public List<int> GetAllAchievementIdsFromAccount(int accountId)
+    public List<int> GetAllAchievementIdsFromAccount(int accountId)    
     {
         List<int> achievementIds = new List<int>();
         _dbconnection.Open();

@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class AccountHasAchievementDataHandler : MonoBehaviour
 {
+    public delegate void OnAchievementUnlockedHandler(int index);
+    public event OnAchievementUnlockedHandler OnAchievementUnlocked;
+
     private AccountHasAchievementRepository _repository;
 
     private void Start()
@@ -58,6 +61,7 @@ public class AccountHasAchievementDataHandler : MonoBehaviour
         entity.AccountId = GetComponent<DatabaseController>().AccountId;
         entity.AchievementId = achievementId;
         _repository.Add(entity);
+        OnAchievementUnlocked(achievementId);
     }
 
     private void BehemothKilled()

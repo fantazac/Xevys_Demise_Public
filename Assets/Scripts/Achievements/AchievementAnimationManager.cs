@@ -8,7 +8,7 @@ public class AchievementAnimationManager : MonoBehaviour
 
     private void Start()
     {
-        //S'abonner à un ou des event qui call TriggerAchievement avec l'index de l'achievement
+        DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountHasAchievementDataHandler>().OnAchievementUnlocked += TriggerAchievement;
     }
 
     private void TriggerAchievement(int index)
