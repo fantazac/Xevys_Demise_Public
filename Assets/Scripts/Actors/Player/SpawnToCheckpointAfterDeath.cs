@@ -48,7 +48,7 @@ public class SpawnToCheckpointAfterDeath : MonoBehaviour
 
     private void RestartPlayer()
     {
-        _playerHealth.FullHeal();
+        _playerHealth.HealAfterDeath();
         _animator.SetBool(StaticObjects.GetAnimationTags().IsDying, false);
     }
 }

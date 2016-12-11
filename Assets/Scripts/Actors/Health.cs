@@ -55,9 +55,9 @@ public class Health : MonoBehaviour
         }
     }
 
-    public void FullHeal()
+    public void HealAfterDeath()
     {
-        Heal(MaxHealth - _health);
+        Heal(((int)(MaxHealth * 0.5f)) - _health);
     }
 
     public void Hit(int hitPoints, Vector2 attackerPosition)

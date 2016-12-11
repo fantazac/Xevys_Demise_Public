@@ -21,4 +21,9 @@ public class HealthItemHeal : MonoBehaviour
             Destroy(gameObject);
         }
     } 
+
+    public void SetHealPoints(int healPoints)
+    {
+        _healPoints = healPoints;
+    }
 }

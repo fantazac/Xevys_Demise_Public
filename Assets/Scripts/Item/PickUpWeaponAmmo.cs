@@ -25,4 +25,9 @@ public class PickUpWeaponAmmo : MonoBehaviour
             _munitions.AddAxeAmmo(_ammoOnDrop);
         }
     }
+
+    public void SetAmmoOnDrop(int amount)
+    {
+        _ammoOnDrop = amount;
+    }
 }
