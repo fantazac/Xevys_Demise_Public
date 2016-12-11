@@ -16,7 +16,7 @@ public class MoveSoulTowardsPortal : MonoBehaviour
 
     private IEnumerator MoveTowardsPortal()
     {
-        while (Vector2.Distance(_portal.transform.position, transform.position) == 0)
+        while (Vector2.Distance(_portal.transform.position, transform.position) > 0)
         {
             transform.position = Vector2.MoveTowards(transform.position, _portal.transform.position, _speed * Time.deltaTime);
             yield return null;

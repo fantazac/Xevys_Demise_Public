@@ -36,6 +36,7 @@ public class XevyHubAI : MonoBehaviour
 
     private GameObject _xevySword;
     private GameObject _xevySpell;
+    private GameObject _xevySoul;
     private PolygonCollider2D _collisionBox;
 
     private XevyHubStatus _status = XevyHubStatus.DEFENSIVE;
@@ -63,6 +64,7 @@ public class XevyHubAI : MonoBehaviour
         _xevySpell = transform.FindChild("Xevy Spell").gameObject;
         GetComponent<Health>().OnDeath += OnXevyHubDefeated;
         _animator.SetBool(_animTags.IsGoingForward, true);
+        _xevySoul = transform.FindChild("Xevy Soul").gameObject;
         StartCoroutine(UpdateWhenMoving());
     }
 
@@ -159,6 +161,7 @@ public class XevyHubAI : MonoBehaviour
         _animator.SetBool(_animTags.IsDead, true);
         _xevySpell.SetActive(false);
         _xevySword.SetActive(false);
+        _xevySoul.SetActive(true);
         _collisionBox.enabled = false;
     }
 
