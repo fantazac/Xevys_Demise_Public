@@ -36,6 +36,7 @@ public class PauseMenuInputs : MonoBehaviour
     private GameObject _resumeBtnGameObject;
     private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
     private WaitForSeconds _waitForOneSecond;
+    private HideAndLockMouseCursor _hideAndLockMouseCursor;
 
     private void Start()
     {
@@ -44,11 +45,13 @@ public class PauseMenuInputs : MonoBehaviour
         _pauseMenuCurrentInterfaceAnimator = GameObject.Find(StaticObjects.GetMainObjects().PauseMenuButtons).GetComponent<PauseMenuCurrentInterfaceAnimator>();
         _pauseMenuEventSystem = EventSystem.current;
         _resumeBtnGameObject = GameObject.Find(StaticObjects.GetMainObjects().ResumeBtn);
+        _hideAndLockMouseCursor = GameObject.Find("MouseManager").GetComponent<HideAndLockMouseCursor>();
 
         _waitForOneSecond = new WaitForSeconds(0.3f);
 
         _pauseMenuAnimationManager.OnPauseMenuStateChanged += SyncFirstControlOnPauseMenuStateChanged;
         _inputManager.OnPause += PauseMenuTriggered;
+        _hideAndLockMouseCursor.OnApplicationLosesFocus += PauseMenuTriggered;
         _pauseMenuCurrentInterfaceAnimator.OnBackButtonPressedToClosePauseMenu += PauseMenuTriggered;
         _pauseMenuCurrentInterfaceAnimator.OnPlayerDeathShowDeathInterface += PauseMenuTriggered;
         _pauseMenuCurrentInterfaceAnimator.OnEndShowEndInterface += PauseMenuTriggered;
