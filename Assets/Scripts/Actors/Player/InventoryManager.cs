@@ -57,6 +57,9 @@ public class InventoryManager : MonoBehaviour
 
     public void Start()
     {
+        // Ne devrait pas être ici, mais on est dans le rush...
+        GetComponentInChildren<Animator>().SetBool("HasSword", false);
+
         _inventoryView = StaticObjects.GetItemCanvas().GetComponent<UIInventoryView>();
         GetComponentInChildren<InputManager>().OnThrowAttackChangeButtonPressed += OnSwitchWeapon;
 
