@@ -5,8 +5,11 @@ public class FallDamage: MonoBehaviour
 {
     [SerializeField]
     private float _timeBeforeHit = 0.75f;
+
     [SerializeField]
-    private float _damageMultiplier = 100f;
+    private int _damageMultiplier = 100;
+
+    private int _damageToPlayer = 0;
 
     private Health _playerHealth;
     private PlayerMovement _playerMovement;
@@ -40,11 +43,12 @@ public class FallDamage: MonoBehaviour
     {
         if (_fallingCount > _timeBeforeHit && !StaticObjects.GetPlayerState().IsInvincible)
         {
-            _playerHealth.Hit((int)Mathf.Clamp(_fallingCount * _damageMultiplier, 
-                _fallingCount * _damageMultiplier, _playerHealth.HealthPoint), 
-                transform.position + Vector3.down);
+            _damageToPlayer = (int)Mathf.Clamp(_fallingCount * _damageMultiplier,
+                _fallingCount * _damageMultiplier, _playerHealth.HealthPoint);
+            _damageToPlayer -= _damageToPlayer % _damageMultiplier;
+            _playerHealth.Hit(_damageToPlayer, transform.position + Vector3.down);
         }
-
+        _damageToPlayer = 0;
         _fallingCount = 0;
     }
 }
