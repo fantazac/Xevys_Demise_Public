@@ -32,12 +32,14 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
     public delegate void OnEndShowEndInterfaceHandler(bool isDead);
     public event OnEndShowEndInterfaceHandler OnEndShowEndInterface;
 
+    [SerializeField] 
+    private PickUpArtefact _voidArtefact;
+
     private PauseMenuInputs _pauseMenuInputs;
     private InputManager _inputManager;
     private Animator _animator;
     private Health _playeHealth;
     private PauseMenuGroupButtonsFadeListener _pauseMenuGroupButtonsFadeListener;
-    //private PickUpArtefact _pickUpXevyArtefact;
 
     private string _currentInterface;
 
@@ -47,7 +49,6 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
         _inputManager = StaticObjects.GetPlayer().GetComponentInChildren<InputManager>();
         _playeHealth = StaticObjects.GetPlayer().GetComponent<Health>();
         _pauseMenuGroupButtonsFadeListener = GameObject.Find(StaticObjects.GetMainObjects().PauseMenuAudioOptionsButtons).GetComponent<PauseMenuGroupButtonsFadeListener>();
-        //_pickUpXevyArtefact = GameObject.Find(StaticObjects.GetObjectTags().AirArtefactItem).GetComponent<PickUpArtefact>();
 
         _pauseMenuInputs.OnOptionsInterfaceIsCurrent += OptionsInterfaceIsCurrent;
         _pauseMenuInputs.OnMainInterfaceIsCurrent += MainInterfaceIsCurrent;
@@ -56,7 +57,7 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
         _inputManager.OnBackButtonPressedInMenu += OnGamepadBackBtnPressed;
         _playeHealth.OnDeath += OnPlayerDeath;
         _pauseMenuGroupButtonsFadeListener.OnAudioInterfaceFadingEnded += AudioInterfaceFadingEnded;
-        //_pickUpXevyArtefact.OnGameEnded += OnPlayerFinishedTheGame;
+        _voidArtefact.OnGameEnded += OnPlayerFinishedTheGame;
 
         _animator = GetComponent<Animator>();
 
