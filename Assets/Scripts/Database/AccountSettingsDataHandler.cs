@@ -57,7 +57,7 @@ public class AccountSettingsDataHandler : MonoBehaviour
         ReloadSettings();
     }
 
-    private void ReloadSettings()
+    public void ReloadSettings()
     {
         OnMusicVolumeReloaded(_entity.MusicVolume);
         OnSfxVolumeReloaded(_entity.SoundEffectsVolume);
