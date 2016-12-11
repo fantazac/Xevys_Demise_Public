@@ -94,12 +94,12 @@ public class AccountHasAchievementDataHandler : MonoBehaviour
         UnlockAchievement(5);
     }
 
-    public void EnoughBatsKilled()
+    public void EnoughScarabsKilled()
     {
         UnlockAchievement(6);
     }
 
-    public void EnoughScarabsKilled()
+    public void EnoughBatsKilled()
     {
         UnlockAchievement(7);
     }
