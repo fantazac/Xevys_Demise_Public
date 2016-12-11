@@ -23,6 +23,9 @@ public class MainMenuCurrentInterfaceAnimator : MonoBehaviour
     public delegate void OnOptionsInterfaceIsCurrentHandler(string from);
     public event OnOptionsInterfaceIsCurrentHandler OnOptionsInterfaceIsCurrent;
 
+    public delegate void OnAccountsInterfaceIsCurrentHandler(string from);
+    public event OnAccountsInterfaceIsCurrentHandler OnAccountsInterfaceIsCurrent;
+
     public delegate void OnOptionsInterfaceQuitHandler();
     public event OnOptionsInterfaceQuitHandler OnOptionsInterfaceQuit;
 
@@ -72,6 +75,7 @@ public class MainMenuCurrentInterfaceAnimator : MonoBehaviour
             _animator.SetTrigger("AccountSlideIn");
             _currentInterface = target;
             OnMainInterfaceFade();
+            OnAccountsInterfaceIsCurrent("");
         }
     }
 

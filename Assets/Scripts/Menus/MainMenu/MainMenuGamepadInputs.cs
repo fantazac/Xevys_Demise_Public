@@ -9,6 +9,8 @@ public class MainMenuGamepadInputs : MonoBehaviour
 
     private GamePadState _state;
 
+    private bool _bButtonReady = true;
+
     private void Start()
     {
         _state = GamePad.GetState(PlayerIndex.One);
@@ -18,8 +20,14 @@ public class MainMenuGamepadInputs : MonoBehaviour
     {
         _state = GamePad.GetState(PlayerIndex.One);
 
-        if (_state.Buttons.B == ButtonState.Pressed)
+        if (_state.Buttons.B == ButtonState.Released && !_bButtonReady)
         {
+            _bButtonReady = true;
+        }
+
+        if (_state.Buttons.B == ButtonState.Pressed && _bButtonReady)
+        {
+            _bButtonReady = false;
             OnBackButtonPressedInMenu();
         }
     }

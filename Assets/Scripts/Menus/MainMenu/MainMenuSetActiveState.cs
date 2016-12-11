@@ -27,6 +27,9 @@ public class MainMenuSetActiveState : MonoBehaviour
             case "MainMenuOptionsButtons":
                 _mainMenuCurrentInterfaceAnimator.OnOptionsInterfaceIsCurrent += SetSelectedButton;
                 break;
+            case "MainMenuAccountsButtons":
+                _mainMenuCurrentInterfaceAnimator.OnAccountsInterfaceIsCurrent += SetSelectedButton;
+                break;
         }
     }
 
