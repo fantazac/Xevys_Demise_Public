@@ -71,7 +71,7 @@ public class XevyAction: MonoBehaviour
         var thunderBall = Instantiate(_thunderBall, transform.position, transform.rotation);
         ((GameObject)thunderBall).SetActive(true);
         ((GameObject)thunderBall).GetComponent<Rigidbody2D>().velocity = new Vector2(horizontalForce * _thunderBallSpeed,
-            (verticalForce * _thunderBallSpeed) + (horizontalForce / _horizontalAxisModifier ));
+            (verticalForce * _thunderBallSpeed) + (Mathf.Abs(horizontalForce) / _horizontalAxisModifier ));
         return XevyAttackType.FIRE;
     }
 
