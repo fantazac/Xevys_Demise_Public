@@ -16,7 +16,6 @@ public class PauseMenuAudioSettingsManager : MainMenuAudioSettingsManager
         _pauseMenuAnimationManager.OnPauseMenuStateChanged += FXVolumeStateInPauseMenu;
         _pauseMenuCurrentInterfaceAnimator.OnAudioInterfaceIsCurrent += FXVolumeInAudioInterface;
         DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountSettingsDataHandler>().ReloadSettings();
-        _sfxVolume = 1f;
     }
 
     private void FXVolumeStateInPauseMenu(bool menuIsActive, bool isDead)
