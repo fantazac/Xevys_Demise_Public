@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
-public class UnlockAchievement : MonoBehaviour
+public class UnlockAchievementInGame : MonoBehaviour
 {
-    private LockStateController _lockStateController;
-    
+    private AchievementAnimationManager _achievementAnimationManager;
+
     private void Start()
     {
-        _lockStateController = GameObject.Find("LockStateController").GetComponent<LockStateController>();
-        _lockStateController.OnUnlockAchievement += Unlock;
+        _achievementAnimationManager = GetComponentInParent<AchievementAnimationManager>();
+        _achievementAnimationManager.OnUnlockAchievementInGame += Unlock;
     }
 
     private void Unlock(int index)
