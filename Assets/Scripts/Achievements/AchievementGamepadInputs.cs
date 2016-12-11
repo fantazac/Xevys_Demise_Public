@@ -8,6 +8,8 @@ public class AchievementGamepadInputs : MonoBehaviour
 
     private GamePadState _state;
 
+    private bool _bButtonReady = true;
+
     private void Start()
     {
         _state = GamePad.GetState(PlayerIndex.One);
@@ -22,8 +24,14 @@ public class AchievementGamepadInputs : MonoBehaviour
 
     private void UpdateStartButton()
     {
-        if (_state.Buttons.B == ButtonState.Pressed)
+        if (_state.Buttons.B == ButtonState.Released && !_bButtonReady)
         {
+            _bButtonReady = true;
+        }
+
+        if (_state.Buttons.B == ButtonState.Pressed && _bButtonReady)
+        {
+            _bButtonReady = false;
             GamepadOnBackButtonPressed();
         }
     }
