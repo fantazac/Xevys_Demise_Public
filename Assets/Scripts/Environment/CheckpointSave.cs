@@ -5,6 +5,9 @@ public class CheckpointSave : MonoBehaviour
     [SerializeField]
     private int _checkpoint = 0;
 
+    public delegate void OnCheckpointReachedHandler();
+    public event OnCheckpointReachedHandler OnCheckpointReached;
+
     private AccountStatsDataHandler _accountStatsDataHandler;
     private AccountRoomStateDataHandler _accountRoomStateDataHandler;
     private SpawnToCheckpointAfterDeath _checkpointSpawn;
@@ -23,6 +26,7 @@ public class CheckpointSave : MonoBehaviour
             _accountStatsDataHandler.UpdateEntity();
             _accountRoomStateDataHandler.UpdateEntity();
             _checkpointSpawn.SaveCheckpoint(_checkpoint);
+            OnCheckpointReached();
         }
     }
 }
