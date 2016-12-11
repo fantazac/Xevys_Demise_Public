@@ -15,7 +15,17 @@ public class PauseMenuAudioSettingsManager : MainMenuAudioSettingsManager
         _pauseMenuCurrentInterfaceAnimator = GameObject.Find(StaticObjects.GetMainObjects().PauseMenuButtons).GetComponent<PauseMenuCurrentInterfaceAnimator>();
         _pauseMenuAnimationManager.OnPauseMenuStateChanged += FXVolumeStateInPauseMenu;
         _pauseMenuCurrentInterfaceAnimator.OnAudioInterfaceIsCurrent += FXVolumeInAudioInterface;
+        _sfxVolume = 1f;
+        OnVolumeChanged += ChangeSfxVolume;
         DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountSettingsDataHandler>().ReloadSettings();
+    }
+
+    private void ChangeSfxVolume(bool isMusic, float volume)
+    {
+        if (!isMusic)
+        {
+            _sfxVolume = volume;
+        }
     }
 
     private void FXVolumeStateInPauseMenu(bool menuIsActive, bool isDead)
