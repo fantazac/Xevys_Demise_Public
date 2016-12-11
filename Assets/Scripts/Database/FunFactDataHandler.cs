@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class FunFactDataHandler : MonoBehaviour
 {
-    FunFactEntity _entity;
-    FunFactRepository _repository;
+    private FunFactEntity _entity;
+    private FunFactRepository _repository;
 
     private void Start()
     {

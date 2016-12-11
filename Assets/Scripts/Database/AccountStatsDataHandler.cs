@@ -13,11 +13,13 @@ public class AccountStatsDataHandler : MonoBehaviour
     private AccountStatsEntity _temporaryEntity;
     private AccountStatsEntity _entity;
     private AccountStatsRepository _repository;
+    private AccountHasAchievementDataHandler _accountAchievementDataHandler;
 
     private void Start()
     {
         _repository = new AccountStatsRepository();
         _temporaryEntity = _repository.Get(StaticObjects.AccountId);
+        _accountAchievementDataHandler = GetComponent<AccountHasAchievementDataHandler>();
         DestroyEnemyOnDeath.OnEnemyDeath += EnemyKilled;
     }
 

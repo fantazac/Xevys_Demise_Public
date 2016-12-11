@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Security.Cryptography.X509Certificates;
 
 public class MainGameObjects : MonoBehaviour
 {
@@ -26,6 +27,9 @@ public class MainGameObjects : MonoBehaviour
     public string Pause { get; private set; }
     public string RoomsStateCollector { get; private set; }
     public string WaterCamera { get; private set; }
+    public string Behemoth { get; set; }
+    public string Phoenix { get; set; }
+    public string Xevy { get; set; }
 
     private void Start()
     {
@@ -52,5 +56,8 @@ public class MainGameObjects : MonoBehaviour
         Pause = "Pause";
         RoomsStateCollector = "RoomsStateCollector";
         WaterCamera = "Water Camera";
+        Behemoth = "Behemoth";
+        Phoenix = "Phoenix";
+        Xevy = "Xevy";
     }
 }

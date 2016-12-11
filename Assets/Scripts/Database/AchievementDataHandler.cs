@@ -18,8 +18,8 @@ public class AchievementDataHandler : MonoBehaviour
         CreateAchievement("Highway to Hell", "Kill Vulcan in World 4");
         CreateAchievement("Bimon and the Beast", "Finally kill Xevy");
         CreateAchievement("Skeltals in the closet", "Kill 15 skeltals");
-        CreateAchievement("Kill 'Em All", "Kill 15 scarabs");
         CreateAchievement("Bat country", "Kill 30 bats");
+        CreateAchievement("Kill 'Em All", "Kill 15 scarabs");
         CreateAchievement("In too deep", "Get the boots");
         CreateAchievement("I believe I can fly", "Get the feather");
         CreateAchievement("Bubble Pop!", "Get the bubble");

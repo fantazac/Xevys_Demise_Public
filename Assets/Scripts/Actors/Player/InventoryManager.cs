@@ -71,6 +71,7 @@ public class InventoryManager : MonoBehaviour
         AccountStatsDataHandler accountStatsDataHandler = DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountStatsDataHandler>();
         accountStatsDataHandler.OnInventoryReloaded += ReloadInventory;
         accountStatsDataHandler.ActivateInventory();
+        DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountHasAchievementDataHandler>().SubscribeToMainLevelEvents();
     }
 
     public void ReloadInventory(bool knifeEnabled, bool axeEnabled, bool featherEnabled, bool bootsEnabled, bool bubbleEnabled, bool armorEnabled, bool earthArtefactEnabled, bool airArtefactEnabled, bool waterArtefactEnabled, bool fireArtefactEnabled)

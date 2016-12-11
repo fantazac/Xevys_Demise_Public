@@ -27,6 +27,9 @@ public class Health : MonoBehaviour
     public delegate void OnDeathHandler();
     public event OnDeathHandler OnDeath;
 
+    public delegate void OnHealthStartedHandler(Health health);
+    public static event OnHealthStartedHandler OnHealthStarted;
+
     private void Start()
     {
         if (tag == StaticObjects.GetObjectTags().Player)
@@ -34,6 +37,7 @@ public class Health : MonoBehaviour
             DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountStatsDataHandler>().OnHealthReloaded += ReloadHealth;
         }
         MaxHealth = _health;
+        OnHealthStarted(this);
     }
 
     public void Heal(int healPoints)

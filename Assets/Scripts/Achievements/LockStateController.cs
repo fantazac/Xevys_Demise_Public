@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LockStateController : MonoBehaviour
@@ -13,14 +14,18 @@ public class LockStateController : MonoBehaviour
 
     private void Start()
     {
+        GameObject database = DontDestroyOnLoadStaticObjects.GetDatabase();
+        List <int> obtainedAchievements = database.GetComponent<AccountHasAchievementDataHandler>().GetAllObtainedAchievements(database.GetComponent<DatabaseController>().AccountId);
         _achievementsArray = new bool[ACHIEVEMENT_NUM];
-
-        ///////////////////Ici build le tableau à partir de la database.
+        
         for (int i = 0; i < ACHIEVEMENT_NUM; i++)
         {
-            _achievementsArray[i] = true;
+            _achievementsArray[i] = false;
         }
-        //////////////////
+        foreach (int achievement in obtainedAchievements)
+        {
+            _achievementsArray[achievement] = true;
+        }
 
         StartCoroutine(CallUnlockedAchievementContainer());
     }
