@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlaySoundOnEnemyDeath : MonoBehaviour
+public class PlaySoundOnDeath : MonoBehaviour
 {
     [SerializeField]
     private int _deathSoundIndex = -1;
