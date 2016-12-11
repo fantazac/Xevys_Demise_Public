@@ -109,7 +109,7 @@ public class Health : MonoBehaviour
         return _health < MaxHealth;
     }
 
-    private bool HealWouldGiveTooMuchHealth(float healPoints)
+    private bool HealWouldGiveTooMuchHealth(int healPoints)
     {
         return _health + healPoints > MaxHealth;
     }
