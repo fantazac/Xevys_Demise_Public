@@ -203,8 +203,6 @@ public class XevyAI : MonoBehaviour
 
     private void OnXevyDefeated()
     {
-        Debug.Log("Wololo");
         _status = XevyStatus.DEAD;
-        GetComponent<Rigidbody2D>().isKinematic = true;
     }
 }

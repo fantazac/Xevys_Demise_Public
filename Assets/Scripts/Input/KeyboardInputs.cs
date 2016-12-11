@@ -145,6 +145,10 @@ public class KeyboardInputs : MonoBehaviour
         {
             OnCheat(11);
         }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            OnCheat(12);
+        }
     }
 
     private void IsInMenu(bool isActive)
