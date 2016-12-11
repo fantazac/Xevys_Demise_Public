@@ -57,10 +57,14 @@ public class AccountHasAchievementDataHandler : MonoBehaviour
 
     private void UnlockAchievement(int achievementId)
     {
-        AccountHasAchievementEntity entity = new AccountHasAchievementEntity();
-        entity.AccountId = GetComponent<DatabaseController>().AccountId;
-        entity.AchievementId = achievementId;
-        _repository.Add(entity);
+        int accountId = GetComponent<DatabaseController>().AccountId;
+        if (accountId != 0)
+        {
+            AccountHasAchievementEntity entity = new AccountHasAchievementEntity();
+            entity.AccountId = accountId;
+            entity.AchievementId = achievementId;
+            _repository.Add(entity);
+        }
         OnAchievementUnlocked(achievementId);
     }
 
