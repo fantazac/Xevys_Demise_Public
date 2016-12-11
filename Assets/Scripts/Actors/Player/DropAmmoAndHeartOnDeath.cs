@@ -13,9 +13,11 @@ public class DropAmmoAndHeartOnDeath : MonoBehaviour
     private GameObject _heart;
 
     private const int MAXIMUM_AMMO_AFTER_DEATH = 10;
+    private const int NB_OF_ITEMS_DROPPED = 3;
 
     private PlayerWeaponAmmo _ammo;
     private Health _health;
+    private int _ammoToGiveBack = 0;
 
     private void Start()
     {
@@ -28,21 +30,30 @@ public class DropAmmoAndHeartOnDeath : MonoBehaviour
     {
         if(_ammo.KnifeAmmo > MAXIMUM_AMMO_AFTER_DEATH)
         {
-            GameObject item = (GameObject)Instantiate(_knife, transform.position, new Quaternion());
-            item.GetComponent<OnItemDrop>().Initialise(3, 0, GetComponent<Collider2D>());
-            item.GetComponent<PickUpWeaponAmmo>().SetAmmoOnDrop((int)((_ammo.KnifeAmmo - MAXIMUM_AMMO_AFTER_DEATH) * 0.5f));
+            DropWeaponAmmo(_ammo.KnifeAmmo, _knife, 0);
             _ammo.AddKnifeAmmo(-_ammo.KnifeAmmo + MAXIMUM_AMMO_AFTER_DEATH);
-            
         }
         if (_ammo.AxeAmmo > MAXIMUM_AMMO_AFTER_DEATH)
         {
-            GameObject item2 = (GameObject)Instantiate(_axe, transform.position, new Quaternion());
-            item2.GetComponent<OnItemDrop>().Initialise(3, 1, GetComponent<Collider2D>());
-            item2.GetComponent<PickUpWeaponAmmo>().SetAmmoOnDrop((int)((_ammo.AxeAmmo - MAXIMUM_AMMO_AFTER_DEATH) * 0.5f));
+            DropWeaponAmmo(_ammo.AxeAmmo, _axe, 2);
             _ammo.AddAxeAmmo(-_ammo.AxeAmmo + MAXIMUM_AMMO_AFTER_DEATH);
         }
-        GameObject item3 = (GameObject)Instantiate(_heart, transform.position, new Quaternion());
-        item3.GetComponent<HealthItemHeal>().SetHealPoints((int)(_health.MaxHealth * 0.5f));
+        GameObject healthItem = (GameObject)Instantiate(_heart, transform.position, new Quaternion());
+        healthItem.GetComponent<HealthItemHeal>().SetHealPoints((int)(_health.MaxHealth * 0.5f));
     }
 
+    private void DropWeaponAmmo(int initialAmmo, GameObject item, int itemId)
+    {
+        GameObject itemToDrop = (GameObject)Instantiate(item, transform.position, new Quaternion());
+        _ammoToGiveBack = (int)((initialAmmo - MAXIMUM_AMMO_AFTER_DEATH) * 0.5f);
+        if (_ammoToGiveBack > 0)
+        {
+            itemToDrop.GetComponent<OnItemDrop>().Initialise(NB_OF_ITEMS_DROPPED, itemId, GetComponent<Collider2D>());
+            itemToDrop.GetComponent<PickUpWeaponAmmo>().SetAmmoOnDrop(_ammoToGiveBack);
+        }
+        else
+        {
+            Destroy(itemToDrop);
+        }
+    }
 }
