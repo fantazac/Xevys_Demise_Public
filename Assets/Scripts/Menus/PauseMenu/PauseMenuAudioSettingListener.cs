@@ -32,6 +32,7 @@ public class PauseMenuAudioSettingListener : MonoBehaviour
             _audioListeners.Add(audioListener);
         }
         MainMenuAudioSettingsManager.OnVolumeChanged += SetVolume;
+        SetVolume(false, PauseMenuAudioSettingsManager._sfxVolume);
     }
 
     private void SetVolume(bool isMusic, float volume)
