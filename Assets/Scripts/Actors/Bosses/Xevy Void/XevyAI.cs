@@ -48,6 +48,7 @@ public class XevyAI : MonoBehaviour
         _movement = GetComponent<XevyMovement>();
         _playerInteraction = GetComponent<XevyPlayerInteraction>();
         _projectileInteraction = GetComponent<XevyProjectileInteraction>();
+        _health.OnDeath += OnXevyDefeated;
     }
 
     private void FixedUpdate()
@@ -198,5 +199,12 @@ public class XevyAI : MonoBehaviour
         _action.Block();
         _playerInteraction.IsFocusedOnPlayer = true;
         _status = XevyStatus.BLOCKING;
+    }
+
+    private void OnXevyDefeated()
+    {
+        Debug.Log("Wololo");
+        _status = XevyStatus.DEAD;
+        GetComponent<Rigidbody2D>().isKinematic = true;
     }
 }
