@@ -22,22 +22,25 @@ public class MoveFlame : MonoBehaviour
 
     private void Start()
     {
-        if (transform.eulerAngles.z <= _upwardDirectionAngle + 1 || transform.eulerAngles.z >= _leftDirectionAngle)
+        float mathematicalRotation = transform.eulerAngles.z;
+        if (mathematicalRotation <= _upwardDirectionAngle + 1 || mathematicalRotation >= _leftDirectionAngle)
         {
             _direction = Vector2.up * _speed;
         }
-        if (transform.eulerAngles.z >= _rightDirectionAngle && transform.eulerAngles.z <= _downwardDirectionAngle)
+        if (mathematicalRotation >= _rightDirectionAngle && mathematicalRotation <= _downwardDirectionAngle)
         {
             _direction = Vector2.down * _speed;
         }
-        if (transform.eulerAngles.z >= _upwardDirectionAngle && transform.eulerAngles.z <= _rightDirectionAngle)
+        if (mathematicalRotation >= _upwardDirectionAngle && mathematicalRotation <= _rightDirectionAngle)
         {
             _direction = new Vector3(_speed, _direction.y);
         }
-        if (transform.eulerAngles.z >= _downwardDirectionAngle - 1 && transform.eulerAngles.z <= _leftDirectionAngle)
+        if (mathematicalRotation >= _downwardDirectionAngle - 1 && mathematicalRotation <= _leftDirectionAngle)
         {
             _direction = new Vector3(-_speed, _direction.y);
         }
+        transform.rotation = Quaternion.identity;
+        transform.Rotate(0, 0, -mathematicalRotation);
         StartCoroutine(Move());
     }
 
