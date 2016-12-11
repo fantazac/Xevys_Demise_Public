@@ -57,11 +57,26 @@ public class MovementAnimationManager : MonoBehaviour
         _anim.SetBool(_animationTags.IsCrouching, _playerState.IsCroutching);
         if (_playerState.IsAttacking && _playerState.IsCroutching)
         {
-            _anim.Play(_animationTags.Character_Crouch_Attack, 0, _anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            if (_anim.GetBool("HasSword"))
+            {
+                _anim.Play(_animationTags.Character_Crouch_Attack, 0, _anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            }
+            else
+            {
+                _anim.Play(_animationTags.Character_Crouch_Attack_NoSword, 0, _anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            }
+            
         }
         else if (_playerState.IsAttacking)
         {
-            _anim.Play(_animationTags.Character_Attack, 0, _anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            if (_anim.GetBool("HasSword"))
+            {
+                _anim.Play(_animationTags.Character_Attack, 0, _anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            }
+            else
+            {
+                _anim.Play(_animationTags.Character_Attack_NoSword, 0, _anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            }                
         }
     }
 

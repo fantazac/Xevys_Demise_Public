@@ -13,6 +13,7 @@ public class ActivateObjectsOnTrigger : MonoBehaviour
 
     private void Activate()
     {
+        GameObject.Find("CharacterSprite").GetComponent<Animator>().SetBool("HasSword", true);
         foreach (GameObject objectToActivate in _objectsToActivate)
         {
             objectToActivate.SetActive(true);
