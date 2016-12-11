@@ -74,7 +74,6 @@ public class SpawnBossOnBreakableItemDestroyed : MonoBehaviour
     private void BossFightFinished()
     {
         OnBossFightFinished();
-        Destroy(_bossInstance);
 
         if (_destroyOnBossDefeated)
         {
