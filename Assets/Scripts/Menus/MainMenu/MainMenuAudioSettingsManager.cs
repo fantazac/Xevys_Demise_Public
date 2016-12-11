@@ -14,6 +14,7 @@ public class MainMenuAudioSettingsManager : MonoBehaviour
     protected Switch _musicSwitch;
 
     protected float _musicVolumeBeforeDesactivate;
+    public static float _sfxVolume { get; protected set; }
     public float _sfxVolumeBeforeDesactivate { get; protected set; }
     protected bool _sfxVolumeChanged;
     protected AccountSettingsDataHandler _accountSettingsDataHandler;
@@ -30,6 +31,8 @@ public class MainMenuAudioSettingsManager : MonoBehaviour
         _sfxVolumeSlider = sliders[0];
         _musicVolumeSlider = sliders[1];
         _sfxVolumeChanged = false;
+
+        _sfxVolume = 1f;
     }
 
     public void SetMusicVolume(Single volume)

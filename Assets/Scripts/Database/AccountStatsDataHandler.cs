@@ -21,6 +21,7 @@ public class AccountStatsDataHandler : MonoBehaviour
     private AccountStatsEntity _entity;
     private AccountStatsRepository _repository;
     private AccountHasAchievementDataHandler _accountAchievementDataHandler;
+    private GameObject _player;
 
     private void Start()
     {
@@ -39,6 +40,10 @@ public class AccountStatsDataHandler : MonoBehaviour
 
     public void UpdateEntity()
     {
+        if (_player != null)
+        {
+            _temporaryEntity.LifeRemaining = _player.GetComponent<Health>().HealthPoint;
+        }
         _entity = _temporaryEntity;
     }
 
@@ -58,11 +63,6 @@ public class AccountStatsDataHandler : MonoBehaviour
     public void UpdateRepository()
     {
         _repository.UpdateEntity(_entity);
-    }
-
-    private void HealthChanged(int heal)
-    {
-        _temporaryEntity.LifeRemaining += heal;
     }
 
     private void EnemyKilled(string tag)
@@ -95,8 +95,8 @@ public class AccountStatsDataHandler : MonoBehaviour
 
     public void ActivateInventory()
     {
-        GameObject player = StaticObjects.GetPlayer();
-        InventoryManager inventory = player.GetComponent<InventoryManager>();
+        _player = StaticObjects.GetPlayer();
+        InventoryManager inventory = _player.GetComponent<InventoryManager>();
         inventory.OnEnableKnife += EnableKnife;
         inventory.OnEnableAxe += EnableAxe;
         inventory.OnEnableIronBoots += EnableIronBoots;
@@ -108,9 +108,7 @@ public class AccountStatsDataHandler : MonoBehaviour
         inventory.OnEnableWaterArtefact += EnableWaterArtefact;
         inventory.OnEnableFireArtefact += EnableFireArtefact;
 
-        player.GetComponent<Health>().OnHealthChanged += HealthChanged;
-
-        PlayerWeaponAmmo playerWeaponAmmo = player.GetComponent<PlayerWeaponAmmo>();
+        PlayerWeaponAmmo playerWeaponAmmo = _player.GetComponent<PlayerWeaponAmmo>();
         playerWeaponAmmo.OnKnifeAmmoChanged += ChangeKnifeAmmo;
         playerWeaponAmmo.OnAxeAmmoChanged += ChangeAxeAmmo;
 

@@ -4,7 +4,7 @@ using System;
 
 public class PauseMenuAudioSettingsManager : MainMenuAudioSettingsManager
 {
-    public static float _sfxVolume { get; private set; }
+    
     private PauseMenuAnimationManager _pauseMenuAnimationManager;
     private PauseMenuCurrentInterfaceAnimator _pauseMenuCurrentInterfaceAnimator;
 
@@ -15,7 +15,6 @@ public class PauseMenuAudioSettingsManager : MainMenuAudioSettingsManager
         _pauseMenuCurrentInterfaceAnimator = GameObject.Find(StaticObjects.GetMainObjects().PauseMenuButtons).GetComponent<PauseMenuCurrentInterfaceAnimator>();
         _pauseMenuAnimationManager.OnPauseMenuStateChanged += FXVolumeStateInPauseMenu;
         _pauseMenuCurrentInterfaceAnimator.OnAudioInterfaceIsCurrent += FXVolumeInAudioInterface;
-        _sfxVolume = 1f;
         OnVolumeChanged += ChangeSfxVolume;
         DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountSettingsDataHandler>().ReloadSettings();
     }
