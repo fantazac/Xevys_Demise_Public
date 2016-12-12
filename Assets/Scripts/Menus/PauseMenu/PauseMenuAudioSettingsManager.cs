@@ -28,7 +28,7 @@ public class PauseMenuAudioSettingsManager : MainMenuAudioSettingsManager
     {
         _sfxVolumeBeforeDesactivate = _sfxVolume;
         SetSoundVolume(0);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3.5f);
         SetSoundVolume(_sfxVolumeBeforeDesactivate);
     }
 
