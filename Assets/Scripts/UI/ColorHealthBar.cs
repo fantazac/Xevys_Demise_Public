@@ -19,7 +19,7 @@ public class ColorHealthBar : MonoBehaviour
         _health.OnHealthChanged += OnHealthChanged;
 	}
 
-    private void OnHealthChanged(int hitPoints)
+    private void OnHealthChanged(int hitPoints, bool isReload)
     {
         if (_health.HealthPoint >= _halfHealth)
         {

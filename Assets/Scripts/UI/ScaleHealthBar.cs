@@ -28,11 +28,18 @@ public class ScaleHealthBar : MonoBehaviour
         _health.OnHealthChanged += OnHealthChanged;
     }
 
-    private void OnHealthChanged(int hitPoints)
+    private void OnHealthChanged(int hitPoints, bool isReload)
     {
         _finalSize -= Vector3.left * hitPoints * _initialRectangleX * _healthBarLosingHealthFactor;
-        StopAllCoroutines();
-        StartCoroutine(SetHealthBarSize());
+        if (isReload)
+        {
+            _healthBar.localScale = _finalSize;
+        }
+        else
+        {
+            StopAllCoroutines();
+            StartCoroutine(SetHealthBarSize());
+        }
     }
 
     private IEnumerator SetHealthBarSize()
