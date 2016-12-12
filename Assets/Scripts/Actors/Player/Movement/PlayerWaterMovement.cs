@@ -150,7 +150,7 @@ public class PlayerWaterMovement : PlayerMovement
             }
             else if (_playerState.IsFloating)
             {
-                if (_rigidbody.velocity.y > MINIMUM_SPEED_TO_CONTINUE_JUMPING)
+                if (_rigidbody.velocity.y > MINIMUM_SPEED_TO_CONTINUE_JUMPING && _waterYSpeed <= INITIAL_WATER_FALLING_SPEED)
                 {
                     ExitWater();
                     ChangePlayerVerticalVelocity(_rigidbody.velocity.y - MINIMUM_SPEED_TO_CONTINUE_JUMPING - (PRECISION_MARGIN * 2));
