@@ -47,6 +47,7 @@ public class VulcanAI : MonoBehaviour
         _delayLowered = new WaitForSeconds(_loweredTime);
 
         _health = GetComponent<Health>();
+        _health.OnDamageTaken += GotHitByPlayer;
         _rigidbody = GetComponent<Rigidbody2D>();
         _bossOrientation = GetComponent<BossOrientation>();
         _health.OnDeath += OnVulcanDefeated;
@@ -69,6 +70,12 @@ public class VulcanAI : MonoBehaviour
         {
             _positionsForRaise[x + 2] = transform.position.x + x * transform.localScale.x;
         }
+    }
+
+    private void GotHitByPlayer(int hitPoints)
+    {
+        _polygonHitbox.enabled = false;
+        _vulcanSkull.SetActive(false);
     }
 
     private void SelectPointClosestToPlayer()
