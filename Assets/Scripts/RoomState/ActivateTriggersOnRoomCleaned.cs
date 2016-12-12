@@ -22,6 +22,10 @@ public class ActivateTriggersOnRoomCleaned : MonoBehaviour
         {          
             foreach (GameObject trigger in _triggersToActivate)
             {
+                if(trigger.GetComponent<PlayCinematicOnTrigger>() != null)
+                {
+                    trigger.GetComponent<PlayCinematicOnTrigger>().DisableCinematicOnReload();
+                }
                 if (trigger.GetComponent<ActivateMultipleTriggers>() != null)
                 {
                     trigger.GetComponent<ActivateTrigger>().MultipleTriggersActivated();
@@ -54,13 +58,14 @@ public class ActivateTriggersOnRoomCleaned : MonoBehaviour
 
             GameObject.Find("Xevy Spell").SetActive(false);
             GameObject.Find("Xevy Hub").SetActive(false);
-            StartCoroutine(SpagCoroutine());
+            StartCoroutine(WaitForNextFrameToActivateSword());
         }
     }
 
-    private IEnumerator SpagCoroutine()
+    private IEnumerator WaitForNextFrameToActivateSword()
     {
-        yield return new WaitForEndOfFrame();
+        yield return null;
+
         _sword.SetActive(true);
     }
 }
