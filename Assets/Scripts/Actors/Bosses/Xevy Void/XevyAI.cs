@@ -73,6 +73,8 @@ public class XevyAI : MonoBehaviour
             case XevyStatus.HEALING:
                 UpdateWhenHealing();
                 break;
+            default:
+                break;
         }
     }
 
