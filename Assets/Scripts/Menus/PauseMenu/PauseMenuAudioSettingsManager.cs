@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using System;
+using System.Collections;
 
 public class PauseMenuAudioSettingsManager : MainMenuAudioSettingsManager
 {
@@ -17,6 +16,20 @@ public class PauseMenuAudioSettingsManager : MainMenuAudioSettingsManager
         _pauseMenuCurrentInterfaceAnimator.OnAudioInterfaceIsCurrent += FXVolumeInAudioInterface;
         OnVolumeChanged += ChangeSfxVolume;
         DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountSettingsDataHandler>().ReloadSettings();
+        StartWaitForUnlockSounds();
+    }
+
+    private void StartWaitForUnlockSounds()
+    {
+        StartCoroutine(WaitForUnlockSoundsToPlay());
+    }
+
+    private IEnumerator WaitForUnlockSoundsToPlay()
+    {
+        _sfxVolumeBeforeDesactivate = _sfxVolume;
+        SetSoundVolume(0);
+        yield return new WaitForSeconds(2);
+        SetSoundVolume(_sfxVolumeBeforeDesactivate);
     }
 
     private void ChangeSfxVolume(bool isMusic, float volume)
