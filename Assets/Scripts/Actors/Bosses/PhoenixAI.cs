@@ -231,9 +231,4 @@ public class PhoenixAI : MonoBehaviour
         _animator.SetBool(_animTags.IsDead, true);
         _rigidbody.isKinematic = false;
     }
-
-    private void OnDestroy()
-    {
-        StopAllCoroutines();
-    }
 }

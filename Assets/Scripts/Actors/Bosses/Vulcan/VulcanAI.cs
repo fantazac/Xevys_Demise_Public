@@ -196,10 +196,6 @@ public class VulcanAI : MonoBehaviour
     {
         _vulcanSkull.SetActive(false);
         _rigidbody.isKinematic = false;
-    }
-
-    private void OnDestroy()
-    {
         StopAllCoroutines();
     }
 }

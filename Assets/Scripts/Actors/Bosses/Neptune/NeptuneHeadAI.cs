@@ -225,10 +225,6 @@ public class NeptuneHeadAI : MonoBehaviour
         _rigidbody.isKinematic = false;
         _animator.SetBool("IsDead", true);
         _isDead = true;
-    }
-
-    private void OnDestroy()
-    {
         StopAllCoroutines();
     }
 }
