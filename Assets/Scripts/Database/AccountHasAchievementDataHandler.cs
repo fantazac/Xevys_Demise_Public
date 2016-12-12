@@ -63,9 +63,12 @@ public class AccountHasAchievementDataHandler : MonoBehaviour
             AccountHasAchievementEntity entity = new AccountHasAchievementEntity();
             entity.AccountId = accountId;
             entity.AchievementId = achievementId;
-            _repository.Add(entity);
+            if (!_repository.Exists(entity))
+            {
+                _repository.Add(entity);
+                OnAchievementUnlocked(achievementId);
+            }
         }
-        OnAchievementUnlocked(achievementId);
     }
 
     private void BehemothKilled()

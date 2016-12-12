@@ -35,5 +35,6 @@ public class AchievementAnimationManager : MonoBehaviour
     private void OnDestroy()
     {
         StopAllCoroutines();
+        DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountHasAchievementDataHandler>().OnAchievementUnlocked -= TriggerAchievement;
     }
 }

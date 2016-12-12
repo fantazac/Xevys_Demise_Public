@@ -18,19 +18,6 @@ public class PauseMenuAudioSettingsManager : MainMenuAudioSettingsManager
         DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountSettingsDataHandler>().ReloadSettings();
     }
 
-    public void StartWaitForUnlockSounds()
-    {
-        StartCoroutine(WaitForUnlockSoundsToPlay());
-    }
-
-    private IEnumerator WaitForUnlockSoundsToPlay()
-    {
-        _sfxVolumeBeforeDesactivate = _sfxVolume;
-        SetSoundVolume(0);
-        yield return new WaitForSeconds(3.5f);
-        SetSoundVolume(_sfxVolumeBeforeDesactivate);
-    }
-
     private void ChangeSfxVolume(bool isMusic, float volume)
     {
         if (!isMusic)

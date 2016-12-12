@@ -14,6 +14,23 @@ public class AccountHasAchievementRepository : DatabaseConnection
         _dbconnection.Close();
     }
 
+    public bool Exists(AccountHasAchievementEntity entity)
+    {
+        bool exists = false;
+        _dbconnection.Open();
+        string sqlQuery = String.Format("SELECT ACCOUNT_ID " +
+             "FROM ACCOUNT_ACHIEVEMENT WHERE ACCOUNT_ID = {0} AND ACHIEVEMENT_ID = {1}", entity.AccountId, entity.AchievementId);
+        _dbcommand.CommandText = sqlQuery;
+        IDataReader reader = _dbcommand.ExecuteReader();
+        while (reader.Read())
+        {
+            exists = true;
+        }
+        reader.Close();
+        _dbconnection.Close();
+        return exists;
+    }
+
     public List<int> GetAllAchievementIdsFromAccount(int accountId)    
     {
         List<int> achievementIds = new List<int>();
