@@ -53,6 +53,7 @@ public class XevyMovement : MonoBehaviour
     private float _bounceModifier = -0.09467455f;
 
     private Animator _animator;
+    private AnimationTags _animTags;
     private BossOrientation _bossOrientation;
     private BossDirection _actorDirection;
     private Rigidbody2D _rigidbody;
@@ -79,6 +80,7 @@ public class XevyMovement : MonoBehaviour
         
         _commandStack = new Stack<XevyMovementCommand>();
         _animator = GetComponent<Animator>();
+        _animTags = StaticObjects.GetAnimationTags();
         _rigidbody = GetComponent<Rigidbody2D>();
         _actorDirection = GetComponent<BossDirection>();
         _bossOrientation = GetComponent<BossOrientation>();
@@ -111,9 +113,11 @@ public class XevyMovement : MonoBehaviour
         _referencePointsConnections[4].Add(5);
         _referencePointsConnections[5].Add(4);
         _startPosition = _referencePoints[_currentPositionIndex];
+
+        GetComponent<Health>().OnDeath += OnXevyDefeated;
     }
 
-    public void MovementUpdate()
+    public void UpdateMovement()
     {
         switch (MovementStatus)
         {
@@ -134,7 +138,7 @@ public class XevyMovement : MonoBehaviour
 
     public void StepBack()
     {
-        _animator.SetInteger("State", 3);
+        _animator.SetInteger(_animTags.State, 3);
         _actorDirection.IsGoingForward = false;
         _arrivalPosition = new Vector2(transform.position.x - (_bossOrientation.Orientation * _stepBackDistance), transform.position.y);
         MovementStatus = XevyMovementStatus.RETREATING;
@@ -169,7 +173,7 @@ public class XevyMovement : MonoBehaviour
 
     private void Bounce()
     {
-        _animator.SetInteger("State", 4);
+        _animator.SetInteger(_animTags.State, 4);
         _rigidbody.isKinematic = true;
         _bossOrientation.FlipTowardsSpecificPoint(_arrivalPosition);
         MovementStatus = XevyMovementStatus.BOUNCING;
@@ -177,7 +181,7 @@ public class XevyMovement : MonoBehaviour
 
     private void Flee()
     {
-        _animator.SetInteger("State", 3);
+        _animator.SetInteger(_animTags.State, 3);
         _bossOrientation.FlipTowardsSpecificPoint(_arrivalPosition);
         MovementStatus = XevyMovementStatus.FLEEING;
     }
@@ -290,9 +294,14 @@ public class XevyMovement : MonoBehaviour
             _bossOrientation.FlipTowardsSpecificPoint(_arrivalPosition);
             if (MovementStatus == XevyMovementStatus.BOUNCING)
             {
-                _animator.SetInteger("State", 4);
+                _animator.SetInteger(_animTags.State, 4);
                 _rigidbody.isKinematic = true;
             }
         }
+    }
+
+    private void OnXevyDefeated()
+    {
+        MovementStatus = XevyMovementStatus.NONE;
     }
 }

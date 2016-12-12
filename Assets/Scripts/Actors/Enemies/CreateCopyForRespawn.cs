@@ -10,6 +10,7 @@ public class CreateCopyForRespawn : MonoBehaviour
         _copy = (GameObject)Instantiate(gameObject, gameObject.transform.position, gameObject.transform.rotation);
         _copy.transform.parent = gameObject.transform.parent;
         _copy.name = gameObject.name;
+        _copy.GetComponent<PauseMenuAudioSettingListener>().InitialiseVolume(GetComponent<PauseMenuAudioSettingListener>().AudioListeners);
         _copy.SetActive(false);
     }
 }

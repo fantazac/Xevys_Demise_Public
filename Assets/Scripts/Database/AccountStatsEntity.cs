@@ -1,4 +1,4 @@
-﻿public class AccountStatsEntity
+﻿public struct AccountStatsEntity
 {
     public int AccountId { get; set; }
     public int SecondsPlayed { get; set; }
@@ -21,9 +21,4 @@
     public bool AirArtefactEnabled { get; set; }
     public bool WaterArtefactEnabled { get; set; }
     public bool FireArtefactEnabled { get; set; }
-
-    public AccountStatsEntity()
-    {
-        LifeRemaining = 1000;
-    }
 }

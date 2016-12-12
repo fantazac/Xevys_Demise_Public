@@ -34,6 +34,7 @@ public class GameObjectTags : MonoBehaviour
     public string Spike { get; private set; }
     public string DontDestroyOnLoadStaticObjects { get; set; }
     public string VoidArtefactItem { get; private set; }
+    public string MusicZone { get; private set; }
 
     private void Start()
     {
@@ -67,5 +68,6 @@ public class GameObjectTags : MonoBehaviour
         Spike = "Spike";
         DontDestroyOnLoadStaticObjects = "DontDestroyOnLoadStaticObjects";
         VoidArtefactItem = "VoidArtefactItem";
+        MusicZone = "MusicZone";
     }
 }

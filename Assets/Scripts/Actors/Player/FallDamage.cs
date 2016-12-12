@@ -46,7 +46,10 @@ public class FallDamage: MonoBehaviour
             _damageToPlayer = (int)Mathf.Clamp(_fallingCount * _damageMultiplier,
                 _fallingCount * _damageMultiplier, _playerHealth.HealthPoint);
             _damageToPlayer -= _damageToPlayer % _damageMultiplier;
-            _playerHealth.Hit(_damageToPlayer, transform.position + Vector3.down);
+            if(_damageToPlayer > 0)
+            {
+                _playerHealth.Hit(_damageToPlayer, transform.position + Vector3.down);
+            }
         }
         _damageToPlayer = 0;
         _fallingCount = 0;
