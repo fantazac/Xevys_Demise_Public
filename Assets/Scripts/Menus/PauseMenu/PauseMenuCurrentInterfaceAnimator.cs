@@ -39,6 +39,7 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
     private InputManager _inputManager;
     private Animator _animator;
     private Health _playeHealth;
+    private ShowCreditsScene _credits;
     private PauseMenuGroupButtonsFadeListener _pauseMenuGroupButtonsFadeListener;
 
     private string _currentInterface;
@@ -49,6 +50,7 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
         _inputManager = StaticObjects.GetPlayer().GetComponentInChildren<InputManager>();
         _playeHealth = StaticObjects.GetPlayer().GetComponent<Health>();
         _pauseMenuGroupButtonsFadeListener = GameObject.Find(StaticObjects.GetMainObjects().PauseMenuAudioOptionsButtons).GetComponent<PauseMenuGroupButtonsFadeListener>();
+        _credits = StaticObjects.GetPauseMenuPanel().GetComponentInChildren<ShowCreditsScene>();
 
         _pauseMenuInputs.OnOptionsInterfaceIsCurrent += OptionsInterfaceIsCurrent;
         _pauseMenuInputs.OnMainInterfaceIsCurrent += MainInterfaceIsCurrent;
@@ -66,8 +68,7 @@ public class PauseMenuCurrentInterfaceAnimator : MonoBehaviour
 
     private void OnPlayerFinishedTheGame()
     {
-        _animator.SetTrigger("ShowEndInterface");
-        OnEndShowEndInterface(true);
+        _credits.ShowCredits();
     }
 
     private void OnPlayerDeath()

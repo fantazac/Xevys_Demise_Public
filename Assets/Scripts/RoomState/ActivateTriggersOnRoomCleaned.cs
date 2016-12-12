@@ -66,7 +66,7 @@ public class ActivateTriggersOnRoomCleaned : MonoBehaviour
     private IEnumerator WaitForNextFrameToActivateSword()
     {
         yield return null;
-
+        
         _sword.SetActive(true);
     }
 }
