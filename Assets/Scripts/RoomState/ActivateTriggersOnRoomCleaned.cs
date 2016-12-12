@@ -20,10 +20,12 @@ public class ActivateTriggersOnRoomCleaned : MonoBehaviour
             {
                 if (trigger.GetComponent<ActivateMultipleTriggers>() != null)
                 {
+                    trigger.GetComponent<PauseMenuAudioSettingListener>().SetVolume(false, 0);
                     trigger.GetComponent<ActivateTrigger>().MultipleTriggersActivated();
                 }
                 else
                 {
+                    trigger.GetComponent<PauseMenuAudioSettingListener>().SetVolume(false, 0);
                     trigger.GetComponent<ActivateTrigger>().DisableTrigger();
                 }
             }

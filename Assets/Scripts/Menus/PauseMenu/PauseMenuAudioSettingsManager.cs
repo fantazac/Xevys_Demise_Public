@@ -16,10 +16,9 @@ public class PauseMenuAudioSettingsManager : MainMenuAudioSettingsManager
         _pauseMenuCurrentInterfaceAnimator.OnAudioInterfaceIsCurrent += FXVolumeInAudioInterface;
         OnVolumeChanged += ChangeSfxVolume;
         DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountSettingsDataHandler>().ReloadSettings();
-        StartWaitForUnlockSounds();
     }
 
-    private void StartWaitForUnlockSounds()
+    public void StartWaitForUnlockSounds()
     {
         StartCoroutine(WaitForUnlockSoundsToPlay());
     }
