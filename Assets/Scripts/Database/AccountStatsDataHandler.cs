@@ -35,6 +35,7 @@ public class AccountStatsDataHandler : MonoBehaviour
     {
         AccountStatsEntity entity = new AccountStatsEntity();
         entity.AccountId = accountId;
+        entity.LifeRemaining = 1000;
         _repository.Add(entity);
     }
 
