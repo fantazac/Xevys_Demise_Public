@@ -35,6 +35,7 @@ public class AccountStatsDataHandler : MonoBehaviour
     {
         AccountStatsEntity entity = new AccountStatsEntity();
         entity.AccountId = accountId;
+        entity.LifeRemaining = 1000;
         _repository.Add(entity);
     }
 
@@ -137,11 +138,13 @@ public class AccountStatsDataHandler : MonoBehaviour
     private void EnableKnife()
     {
         _temporaryEntity.KnifeEnabled = true;
+        AccountRoomStateEntity test = new AccountRoomStateEntity();
     }
 
     private void ChangeKnifeAmmo(int ammo)
     {
         _temporaryEntity.KnifeAmmo = ammo;
+        AccountRoomStateEntity test = new AccountRoomStateEntity();
     }
 
     private void EnableAxe()
