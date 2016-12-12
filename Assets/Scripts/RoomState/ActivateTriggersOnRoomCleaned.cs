@@ -52,6 +52,7 @@ public class ActivateTriggersOnRoomCleaned : MonoBehaviour
         if (_bossToKill != null)
         {
             // SPAGAT
+            _bossToKill.GetComponent<ChangeMusicZoneOnDeath>().ChangeMusicZone();
             GameObject.Find("XevyTooltip").SetActive(false);
             GameObject.Find("XboxAttackTooltip").SetActive(false);
             GameObject.Find("KeyboardAttackTooltip").SetActive(false);
@@ -67,6 +68,5 @@ public class ActivateTriggersOnRoomCleaned : MonoBehaviour
         yield return null;
 
         _sword.SetActive(true);
-        _sword.GetComponent<PauseMenuAudioSettingListener>().SetVolume(false, 0);
     }
 }

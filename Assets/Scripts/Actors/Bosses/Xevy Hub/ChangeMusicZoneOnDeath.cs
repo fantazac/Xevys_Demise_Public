@@ -15,7 +15,7 @@ public class ChangeMusicZoneOnDeath : MonoBehaviour
         _bossbattleMusicZone.GetComponent<AudioSourcePlayer>().Play();
     }
 
-    private void ChangeMusicZone()
+    public void ChangeMusicZone()
     {
         _bossbattleMusicZone.GetComponent<AudioSourcePlayer>().Stop();
         _musicZone.SetActive(true);
