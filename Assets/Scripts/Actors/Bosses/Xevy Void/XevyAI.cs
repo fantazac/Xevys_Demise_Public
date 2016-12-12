@@ -209,5 +209,6 @@ public class XevyAI : MonoBehaviour
     {
         _status = XevyStatus.DEAD;
         _animator.SetBool(_animTags.IsDead, true);
+        Destroy(GetComponent<Rigidbody2D>());
     }
 }

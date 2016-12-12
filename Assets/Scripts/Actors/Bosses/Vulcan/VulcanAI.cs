@@ -202,7 +202,7 @@ public class VulcanAI : MonoBehaviour
     private void OnVulcanDefeated()
     {
         _vulcanSkull.SetActive(false);
-        _rigidbody.isKinematic = false;
+        _rigidbody.isKinematic = true;
         StopAllCoroutines();
     }
 }

@@ -67,5 +67,6 @@ public class ActivateTriggersOnRoomCleaned : MonoBehaviour
         yield return null;
 
         _sword.SetActive(true);
+        _sword.GetComponent<PauseMenuAudioSettingListener>().SetVolume(false, 0);
     }
 }
