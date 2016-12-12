@@ -227,8 +227,8 @@ public class PhoenixAI : MonoBehaviour
 
     private void OnPhoenixDefeated()
     {
-        StopAllCoroutines();
         _animator.SetBool(_animTags.IsDead, true);
         _rigidbody.isKinematic = false;
+        StopAllCoroutines();
     }
 }
