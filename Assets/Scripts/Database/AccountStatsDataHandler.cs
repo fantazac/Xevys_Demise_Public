@@ -53,11 +53,11 @@ public class AccountStatsDataHandler : MonoBehaviour
         if (!GetComponent<DatabaseController>().IsGuest)
         {
             _temporaryEntity = _repository.Get(accountId);
-            _temporaryEntity.LifeRemaining = 1000;
         }
         else
         {
             _temporaryEntity = new AccountStatsEntity();
+            _temporaryEntity.LifeRemaining = 1000;
         }
         UpdateEntity();
     }
