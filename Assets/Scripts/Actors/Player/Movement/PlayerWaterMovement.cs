@@ -115,7 +115,7 @@ public class PlayerWaterMovement : PlayerMovement
 
     public override bool IsJumping()
     {
-        return !(_playerState.IsFloating || _playerTouchesGround.OnGround);
+        return !(_playerState.IsFloating || _playerTouchesGround.OnGround || _rigidbody.velocity.y == 0);
     }
 
     protected override void UpdateMovement()
