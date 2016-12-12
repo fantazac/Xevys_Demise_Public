@@ -21,7 +21,7 @@ public class Health : MonoBehaviour
     public delegate void OnHealHandler(int healPoints);
     public event OnHealHandler OnHeal;
 
-    public delegate void OnHealthChangedHandler(int healPoints);
+    public delegate void OnHealthChangedHandler(int healPoints, bool isReload);
     public event OnHealthChangedHandler OnHealthChanged;
 
     public delegate void OnDeathHandler();
@@ -51,7 +51,7 @@ public class Health : MonoBehaviour
         OnHeal(healPoints);
         if (OnHealthChanged != null)
         {
-            OnHealthChanged(healPoints);
+            OnHealthChanged(healPoints, false);
         }
     }
 
@@ -83,7 +83,7 @@ public class Health : MonoBehaviour
 
             if (OnHealthChanged != null)
             {
-                OnHealthChanged(-hitPoints);
+                OnHealthChanged(-hitPoints, false);
             }
 
             if (IsDead())
@@ -96,8 +96,7 @@ public class Health : MonoBehaviour
     private void ReloadHealth(int health)
     {
         _health -= (_health - health);
-        OnHealthChanged(-(MaxHealth - health));
-        
+        OnHealthChanged(-(MaxHealth - health), true);
     }
 
     public bool IsDead()
