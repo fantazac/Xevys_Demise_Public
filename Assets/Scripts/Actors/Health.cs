@@ -32,7 +32,7 @@ public class Health : MonoBehaviour
 
     private void Start()
     {
-        if (tag == StaticObjects.GetObjectTags().Player)
+        if (gameObject.tag == StaticObjects.GetObjectTags().Player)
         {
             DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountStatsDataHandler>().OnHealthReloaded += ReloadHealth;
         }
@@ -95,8 +95,9 @@ public class Health : MonoBehaviour
 
     private void ReloadHealth(int health)
     {
-        OnHealthChanged(-(_health - health));
         _health -= (_health - health);
+        OnHealthChanged(-(MaxHealth - health));
+        
     }
 
     public bool IsDead()
