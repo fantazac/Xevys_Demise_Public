@@ -15,8 +15,6 @@ public class PauseMenuAudioSettingListener : MonoBehaviour
     private List<SingleAudioListener> _audioListeners;
     private AudioSourcePlayer _audioSourcePlayer;
 
-    public List<SingleAudioListener> AudioListeners { get { return _audioListeners; } }
-
     private void Start()
     {
         InitialiseVolume(null);
@@ -56,6 +54,12 @@ public class PauseMenuAudioSettingListener : MonoBehaviour
                 audioListener.audioSource.volume = volume * audioListener.maxVolume;
             }
         }
+    }
+
+    public List<SingleAudioListener> GetAudioListeners()
+    {
+        InitialiseVolume(_audioListeners);
+        return _audioListeners;
     }
 
     private void OnDestroy()

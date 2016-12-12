@@ -130,4 +130,14 @@ public class AccountHasAchievementDataHandler : MonoBehaviour
     {
         UnlockAchievement(11);
     }
+
+    public void ClearOnAchievementUnlocked()
+    {
+        OnAchievementUnlocked = null;
+    }
+
+    private void OnDestroy()
+    {
+        ClearOnAchievementUnlocked();
+    }
 }
