@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using Prime31.TransitionKit;
 
 public class EnterPortal : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class EnterPortal : MonoBehaviour
 
     [SerializeField]
     private int _cameraDimensionsId = 0;
+
+    [SerializeField]
+    private Texture2D maskTexture;
 
     private GameObject _player;
     private bool _playerIsOnPortal = false;
@@ -43,9 +47,27 @@ public class EnterPortal : MonoBehaviour
     {
         if (_playerIsOnPortal)
         {
-            _player.transform.position = _otherPortal.transform.position + (Vector3.forward * _player.transform.position.z);
-            _mainCameraManager.SetCameraOnPlayer(_otherPortal.transform.position + (Vector3.back * 10), _cameraDimensionsId);
-            _waterCameraManager.SetCameraOnPlayer(_otherPortal.transform.position + (Vector3.back * 10), _cameraDimensionsId);
+            var mask = new ImageMaskTransition()
+            {
+                maskTexture = maskTexture,
+                backgroundColor = Color.black
+            };
+            TransitionKit.instance.transitionWithDelegate(mask);
+            StartCoroutine(WaitOneSecond());
         }
+    }
+
+    private IEnumerator WaitOneSecond()
+    {
+        yield return new WaitForSeconds(1f);
+
+        _player.transform.position = _otherPortal.transform.position + (Vector3.forward * _player.transform.position.z);
+        _mainCameraManager.SetCameraOnPlayer(_otherPortal.transform.position + (Vector3.back * 10), _cameraDimensionsId);
+        _waterCameraManager.SetCameraOnPlayer(_otherPortal.transform.position + (Vector3.back * 10), _cameraDimensionsId);
+    }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
     }
 }
