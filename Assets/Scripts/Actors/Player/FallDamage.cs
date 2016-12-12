@@ -4,7 +4,7 @@ using System.Collections;
 public class FallDamage: MonoBehaviour
 {
     [SerializeField]
-    private float _timeBeforeHit = 0.75f;
+    private int _timeBeforeHit = 1;
 
     [SerializeField]
     private int _damageMultiplier = 100;
@@ -41,7 +41,7 @@ public class FallDamage: MonoBehaviour
 
     private void OnLanding()
     {
-        if (_fallingCount > _timeBeforeHit && !StaticObjects.GetPlayerState().IsInvincible)
+        if (_fallingCount >= _timeBeforeHit && !StaticObjects.GetPlayerState().IsInvincible)
         {
             _damageToPlayer = (int)Mathf.Clamp(_fallingCount * _damageMultiplier,
                 _fallingCount * _damageMultiplier, _playerHealth.HealthPoint);
