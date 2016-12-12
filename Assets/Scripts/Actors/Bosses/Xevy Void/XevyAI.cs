@@ -25,6 +25,7 @@ public class XevyAI : MonoBehaviour
 
     private Health _health;
     private Animator _animator;
+    private AnimationTags _animTags;
     private XevyAction _action;
     private XevyMovement _movement;
     private XevyPlayerInteraction _playerInteraction;
@@ -44,6 +45,7 @@ public class XevyAI : MonoBehaviour
         _status = XevyStatus.IDLE;
         _health = GetComponent<Health>();
         _animator = GetComponent<Animator>();
+        _animTags = StaticObjects.GetAnimationTags();
         _action = GetComponent<XevyAction>();
         _movement = GetComponent<XevyMovement>();
         _playerInteraction = GetComponent<XevyPlayerInteraction>();
@@ -53,7 +55,7 @@ public class XevyAI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _movement.MovementUpdate();
+        _movement.UpdateMovement();
         _playerInteraction.UpdatePlayerInteraction();
         switch (_status)
         {
@@ -180,7 +182,7 @@ public class XevyAI : MonoBehaviour
 
     private void SetIdleStatus()
     {
-        _animator.SetInteger("State", 0);
+        _animator.SetInteger(_animTags.State, 0);
         _statusTimer = _idleStatusCooldown;
         _action.LowerGuard();
         _playerInteraction.IsFocusedOnPlayer = true;
@@ -189,7 +191,7 @@ public class XevyAI : MonoBehaviour
 
     private void SetVulnerableStatus()
     {
-        _animator.SetInteger("State", 1);
+        _animator.SetInteger(_animTags.State, 1);
         _statusTimer = _vulnerableStatusCooldown;
         _playerInteraction.IsFocusedOnPlayer = false;
         _status = XevyStatus.VULNERABLE;
@@ -197,7 +199,7 @@ public class XevyAI : MonoBehaviour
 
     private void SetBlockingStatus()
     {
-        _animator.SetInteger("State", 2);
+        _animator.SetInteger(_animTags.State, 2);
         _action.Block();
         _playerInteraction.IsFocusedOnPlayer = true;
         _status = XevyStatus.BLOCKING;
@@ -206,5 +208,6 @@ public class XevyAI : MonoBehaviour
     private void OnXevyDefeated()
     {
         _status = XevyStatus.DEAD;
+        _animator.SetBool(_animTags.IsDead, true);
     }
 }
