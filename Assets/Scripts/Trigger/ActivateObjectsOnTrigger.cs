@@ -13,6 +13,9 @@ public class ActivateObjectsOnTrigger : MonoBehaviour
 
     private void Activate()
     {
+
+        // SPAG ALERT
+
         GameObject.Find("CharacterSprite").GetComponent<Animator>().SetBool("HasSword", true);
 
         foreach (GameObject objectToActivate in _objectsToActivate)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ActivateTriggersOnRoomCleaned : MonoBehaviour
@@ -12,10 +13,13 @@ public class ActivateTriggersOnRoomCleaned : MonoBehaviour
     [SerializeField]
     private GameObject _bossToKill;
 
+    [SerializeField]
+    private GameObject _sword;
+
     public void ReactivateTriggers()
     {
         if (_triggersToActivate != null)
-        {
+        {          
             foreach (GameObject trigger in _triggersToActivate)
             {
                 if (trigger.GetComponent<ActivateMultipleTriggers>() != null)
@@ -43,8 +47,20 @@ public class ActivateTriggersOnRoomCleaned : MonoBehaviour
 
         if (_bossToKill != null)
         {
-            Health bossHealth = _bossToKill.GetComponent<Health>();
-            bossHealth.Hit(bossHealth.MaxHealth);
+            // SPAGAT
+            GameObject.Find("XevyTooltip").SetActive(false);
+            GameObject.Find("XboxAttackTooltip").SetActive(false);
+            GameObject.Find("KeyboardAttackTooltip").SetActive(false);
+
+            GameObject.Find("Xevy Spell").SetActive(false);
+            GameObject.Find("Xevy Hub").SetActive(false);
+            StartCoroutine(SpagCoroutine());
         }
+    }
+
+    private IEnumerator SpagCoroutine()
+    {
+        yield return new WaitForEndOfFrame();
+        _sword.SetActive(true);
     }
 }
