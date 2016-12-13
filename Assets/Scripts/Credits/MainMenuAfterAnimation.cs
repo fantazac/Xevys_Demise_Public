@@ -3,8 +3,22 @@ using System.Collections;
 
 public class MainMenuAfterAnimation : MonoBehaviour
 {
-    public void OnAnimEnded()
+    private ShowMainMenu _showMainMenu;
+
+    private void Start()
     {
-        GameObject.Find("Transition").GetComponent<ShowMainMenu>().ShowMenu();
+        _showMainMenu = GetComponent<ShowMainMenu>();
+        StartCoroutine(OnAnimEnded());
+    }
+
+    private IEnumerator OnAnimEnded()
+    {
+        yield return new WaitForSeconds(30f);
+        _showMainMenu.ShowMenu();
+    }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
     }
 }
