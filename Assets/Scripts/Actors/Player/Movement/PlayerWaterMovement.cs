@@ -11,7 +11,9 @@ public class PlayerWaterMovement : PlayerMovement
     private const float WATER_ACCELERATION_FACTOR = 1.4f;
     private const float SPEED_REDUCTION_FACTOR_IN_WATER = 0.3f;
     private const float WATER_DECELARATION = 95f;
+    private const float NO_MOVEMENT_MARGIN = 0.01f;
 
+    private float _previousYPosition = 0;
     private float _waterYSpeed;
 
     private AudioReverbZone _audioReverbZone;
@@ -113,9 +115,21 @@ public class PlayerWaterMovement : PlayerMovement
         return IsJumping() && _rigidbody.velocity.y >= 0;
     }
 
+    private bool PlayerDidNotMoveMuchInY()
+    {
+        return transform.position.y - _previousYPosition < NO_MOVEMENT_MARGIN && transform.position.y - _previousYPosition > -NO_MOVEMENT_MARGIN;
+    }
+
     public override bool IsJumping()
     {
-        return !(_playerState.IsFloating || _playerTouchesGround.OnGround || _rigidbody.velocity.y == 0);
+        if (_inventoryManager.IronBootsActive)
+        {
+            return !(_playerTouchesGround.OnGround || PlayerDidNotMoveMuchInY());
+        }
+        else
+        {
+            return !(_playerState.IsFloating);
+        }
     }
 
     protected override void UpdateMovement()
@@ -177,6 +191,8 @@ public class PlayerWaterMovement : PlayerMovement
             {
                 _waterYSpeed = INITIAL_WATER_FALLING_SPEED;
             }
+
+            _previousYPosition = transform.position.y;
         }
     }
 
