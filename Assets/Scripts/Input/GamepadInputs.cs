@@ -102,7 +102,7 @@ public class GamepadInputs : MonoBehaviour
             CheckAllButtonsPressed();
             UpdateStartButton();
         }
-        else if(!_died || !_finished)
+        else if(!_died)
         {
             if (_state.Buttons.B == ButtonState.Released && !_bButtonReady)
             {
