@@ -16,6 +16,8 @@ public class PlayCinematicOnTrigger : MonoBehaviour
 
     private CinematicManager _cinematicManager;
 
+    private bool _canPlayCinematic = true;
+
     private void Start()
     {
         _pauseGame = StaticObjects.GetPause().GetComponent<PauseGame>();
@@ -23,17 +25,25 @@ public class PlayCinematicOnTrigger : MonoBehaviour
         GetComponent<ActivateTrigger>().OnTrigger += StartCinematic;
     }
 
+    public void DisableCinematicOnReload()
+    {
+        _canPlayCinematic = false;
+    }
+
     private void StartCinematic()
     {
-        _pauseGame.Pause();
-        _cinematicManager.CinematicIsPlaying = true;
-        StartCoroutine(PlayCinematicAfterInitialDelay());
+        if (_canPlayCinematic)
+        {
+            _pauseGame.Pause();
+            _cinematicManager.CinematicIsPlaying = true;
+            StartCoroutine(PlayCinematicAfterInitialDelay());
+        }
     }
 
     private IEnumerator PlayCinematicAfterInitialDelay()
     {
         yield return new WaitForSecondsRealtime(_timeBeforeCinematic);
-        
+
         _cinematicManager.StartCinematic(_cinematicPosition, _cinematicDuration);
     }
 

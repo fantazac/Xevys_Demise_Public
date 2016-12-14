@@ -59,6 +59,10 @@ public class AudioSourcePlayer : MonoBehaviour
 
     public int GetAudioSourcesLength()
     {
+        if(_audioSources == null)
+        {
+            _audioSources = GetComponents<AudioSource>();
+        }
         return _audioSources.Length;
     }
 }

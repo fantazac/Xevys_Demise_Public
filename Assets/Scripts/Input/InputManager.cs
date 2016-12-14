@@ -217,6 +217,9 @@ public class InputManager : MonoBehaviour
 
     private void InputsOnCheat(int item)
     {
-        OnCheat(item);
+        if(OnCheat != null)
+        {
+            OnCheat(item);
+        }
     }
 }

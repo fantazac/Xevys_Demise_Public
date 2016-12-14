@@ -6,9 +6,12 @@ public class AchievementAnimationManager : MonoBehaviour
     public delegate void OnUnlockAchievementInGameHandler(int index);
     public event OnUnlockAchievementInGameHandler OnUnlockAchievementInGame;
 
+    private AccountHasAchievementDataHandler _accountHasAchievement;
+
     private void Start()
     {
-        DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountHasAchievementDataHandler>().OnAchievementUnlocked += TriggerAchievement;
+        _accountHasAchievement = DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountHasAchievementDataHandler>();
+        _accountHasAchievement.OnAchievementUnlocked += TriggerAchievement;
     }
 
     private void TriggerAchievement(int index)
@@ -29,12 +32,12 @@ public class AchievementAnimationManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
-        transform.GetChild(index).GetComponent<Animator>().SetTrigger("FadeOut");
+        transform.GetChild(index).GetComponent<Animator>().SetTrigger(StaticObjects.GetAnimationTags().FadeOut);
     }
 
     private void OnDestroy()
     {
         StopAllCoroutines();
-        DontDestroyOnLoadStaticObjects.GetDatabase().GetComponent<AccountHasAchievementDataHandler>().OnAchievementUnlocked -= TriggerAchievement;
+        _accountHasAchievement.ClearOnAchievementUnlocked();
     }
 }

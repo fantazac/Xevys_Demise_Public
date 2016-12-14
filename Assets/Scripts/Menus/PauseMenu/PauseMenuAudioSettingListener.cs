@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-struct SingleAudioListener
+public struct SingleAudioListener
 {
     public int audioSourceID;
     public AudioSource audioSource;
@@ -13,26 +13,36 @@ struct SingleAudioListener
 public class PauseMenuAudioSettingListener : MonoBehaviour
 {
     private List<SingleAudioListener> _audioListeners;
+    private AudioSourcePlayer _audioSourcePlayer;
 
     private void Start()
     {
-        _audioListeners = new List<SingleAudioListener>();
-        AudioSourcePlayer audioSourcePlayer = GetComponent<AudioSourcePlayer>();
-        for(int i = 0; i < audioSourcePlayer.GetAudioSourcesLength(); i++)
-        {
-            SingleAudioListener audioListener = new SingleAudioListener();
-            AudioSource audioSource = audioSourcePlayer.GetAudioSource(i);
-            audioListener.audioSourceID = i;
-            audioListener.audioSource = audioSource;
-            audioListener.maxVolume = audioSource.volume;
-            if (gameObject.tag == "MusicZone")
-            {
-                audioListener.isMusic = true;
-            }
-            _audioListeners.Add(audioListener);
-        }
+        InitialiseVolume(null);
         MainMenuAudioSettingsManager.OnVolumeChanged += SetVolume;
         SetVolume(false, PauseMenuAudioSettingsManager._sfxVolume);
+    }
+
+    public void InitialiseVolume(List<SingleAudioListener> singleAudioListeners)
+    {
+        if(_audioListeners == null)
+        {
+            _audioListeners = new List<SingleAudioListener>();
+            _audioSourcePlayer = GetComponent<AudioSourcePlayer>();
+            for (int i = 0; i < _audioSourcePlayer.GetAudioSourcesLength(); i++)
+            {
+                SingleAudioListener audioListener = new SingleAudioListener();
+                AudioSource audioSource = _audioSourcePlayer.GetAudioSource(i);
+                audioListener.audioSourceID = i;
+                audioListener.audioSource = audioSource;
+                audioListener.maxVolume = singleAudioListeners == null ? 
+                    audioSource.volume : singleAudioListeners[i].maxVolume;
+                if (gameObject.tag == StaticObjects.GetObjectTags().MusicZone)
+                {
+                    audioListener.isMusic = true;
+                }
+                _audioListeners.Add(audioListener);
+            }
+        }
     }
 
     public void SetVolume(bool isMusic, float volume)
@@ -44,6 +54,12 @@ public class PauseMenuAudioSettingListener : MonoBehaviour
                 audioListener.audioSource.volume = volume * audioListener.maxVolume;
             }
         }
+    }
+
+    public List<SingleAudioListener> GetAudioListeners()
+    {
+        InitialiseVolume(_audioListeners);
+        return _audioListeners;
     }
 
     private void OnDestroy()

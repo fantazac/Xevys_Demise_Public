@@ -157,16 +157,12 @@ public class XevyHubAI : MonoBehaviour
 
     private void OnXevyHubDefeated()
     {
+        StopAllCoroutines();
         _status = XevyHubStatus.DEAD;
         _animator.SetBool(_animTags.IsDead, true);
         _xevySpell.SetActive(false);
         _xevySword.SetActive(false);
         _xevySoul.SetActive(true);
         _collisionBox.enabled = false;
-    }
-
-    private void OnDestroy()
-    {
-        StopAllCoroutines();
     }
 }

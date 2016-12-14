@@ -38,5 +38,6 @@ public class DropdownController : MonoBehaviour {
 
         _dropdown.ClearOptions();
         _dropdown.AddOptions(_nicknamesList);
+        _dropdown.value = 0;
     }
 }

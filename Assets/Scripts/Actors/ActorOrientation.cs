@@ -11,7 +11,7 @@ public class ActorOrientation : MonoBehaviour
     protected void Flip()
     {
         _isFacingRight = !_isFacingRight;
-        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y);
+        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
     }
 
     public bool Flip(bool goesRight)

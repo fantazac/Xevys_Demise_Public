@@ -89,7 +89,7 @@ public class KeyboardInputs : MonoBehaviour
             CheckAllKeysPressed();
             UpdateStartButton();
         }
-        else if (!_died || !_finished)
+        else if (!_died)
         {
             UpdateStartButton();
         }
