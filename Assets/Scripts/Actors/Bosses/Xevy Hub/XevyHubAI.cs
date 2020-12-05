@@ -55,16 +55,16 @@ public class XevyHubAI : MonoBehaviour
         _timer = _defensiveTimerCooldown;
         _actorDirection = GetComponent<BossDirection>();
         _bossOrientation = GetComponent<BossOrientation>();
-        _xevySword = transform.FindChild("Xevy Sword").gameObject;
+        _xevySword = transform.Find("Xevy Sword").gameObject;
         _collisionBox = GetComponent<PolygonCollider2D>();
         _animTags = StaticObjects.GetAnimationTags();
         _animator = GetComponent<Animator>();
         _animator.SetInteger(_animTags.State, 1);
         _bossOrientation.OnBossFlipped += OnBossFlipped;
-        _xevySpell = transform.FindChild("Xevy Spell").gameObject;
+        _xevySpell = transform.Find("Xevy Spell").gameObject;
         GetComponent<Health>().OnDeath += OnXevyHubDefeated;
         _animator.SetBool(_animTags.IsGoingForward, true);
-        _xevySoul = transform.FindChild("Xevy Soul").gameObject;
+        _xevySoul = transform.Find("Xevy Soul").gameObject;
         StartCoroutine(UpdateWhenMoving());
     }
 

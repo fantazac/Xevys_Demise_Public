@@ -1,159 +1,444 @@
 fileFormatVersion: 2
 guid: 5809655de86a85648a208902a16f077c
-timeCreated: 1479392492
-licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: fire_0
-    21300002: fire_1
-    21300004: fire_2
-    21300006: fire_3
-    21300008: fire_4
-    21300010: fire_5
-    21300012: fire_6
-    21300014: fire_7
-    21300016: fire_8
-    21300018: fire_9
-    21300020: fire_10
-    21300022: fire_11
-    21300024: fire_12
-    21300026: fire_13
-    21300028: fire_14
-    21300030: fire_15
-    21300032: fire_16
-    21300034: fire_17
-    21300036: fire_18
-    21300038: fire_19
-    21300040: fire_20
-    21300042: fire_21
-    21300044: fire_22
-    21300046: fire_23
-    21300048: fire_24
-    21300050: fire_25
-    21300052: fire_26
-    21300054: fire_27
-    21300056: fire_28
-    21300058: fire_29
-    21300060: fire_30
-    21300062: fire_31
-    21300064: fire_32
-    21300066: fire_33
-    21300068: fire_34
-    21300070: fire_35
-    21300072: fire_36
-    21300074: fire_37
-    21300076: fire_38
-    21300078: fire_39
-    21300080: fire_40
-    21300082: fire_41
-    21300084: fire_42
-    21300086: fire_43
-    21300088: fire_44
-    21300090: fire_45
-    21300092: fire_46
-    21300094: fire_47
-    21300096: fire_48
-    21300098: fire_49
-    21300100: fire_50
-    21300102: fire_51
-    21300104: fire_52
-    21300106: fire_53
-    21300108: fire_54
-    21300110: fire_55
-    21300112: fire_56
-    21300114: fire_57
-    21300116: fire_58
-    21300118: fire_59
-    21300120: fire_60
-    21300122: fire_61
-    21300124: fire_62
-    21300126: fire_63
-    21300128: fire_64
-    21300130: fire_65
-    21300132: fire_66
-    21300134: fire_67
-    21300136: fire_68
-    21300138: fire_69
-    21300140: fire_70
-    21300142: fire_71
-    21300144: fire_72
-    21300146: fire_73
-    21300148: fire_74
-    21300150: fire_75
-    21300152: fire_76
-    21300154: fire_77
-    21300156: fire_78
-    21300158: fire_79
-    21300160: fire_80
-    21300162: fire_81
-    21300164: fire_82
-    21300166: fire_83
-    21300168: fire_84
-    21300170: fire_85
-    21300172: fire_86
-    21300174: fire_87
-    21300176: fire_88
-    21300178: fire_89
-    21300180: fire_90
-    21300182: fire_91
-    21300184: fire_92
-    21300186: fire_93
-    21300188: fire_94
-    21300190: fire_95
-    21300192: fire_96
-    21300194: fire_97
-    21300196: fire_98
-    21300198: fire_99
-    21300200: fire_100
-    21300202: fire_101
-    21300204: fire_102
-    21300206: fire_103
-    21300208: fire_104
-    21300210: fire_105
-    21300212: fire_106
-    21300214: fire_107
-    21300216: fire_108
-    21300218: fire_109
-    21300220: fire_110
-    21300222: fire_111
-    21300224: fire_112
-    21300226: fire_113
-    21300228: fire_114
-    21300230: fire_115
-    21300232: fire_116
-    21300234: fire_117
-    21300236: fire_118
-    21300238: fire_119
-    21300240: fire_120
-    21300242: fire_121
-    21300244: fire_122
-    21300246: fire_123
-    21300248: fire_124
-    21300250: fire_125
-    21300252: fire_126
-    21300254: fire_127
-    21300256: fire_128
-    21300258: fire_129
-    21300260: fire_130
-    21300262: fire_131
-    21300264: fire_132
-    21300266: fire_133
-    21300268: fire_134
-    21300270: fire_135
-    21300272: fire_136
-    21300274: fire_137
-    21300276: fire_138
-    21300278: fire_139
-    21300280: fire_140
-    21300282: fire_141
-  serializedVersion: 2
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: fire_0
+  - first:
+      213: 21300002
+    second: fire_1
+  - first:
+      213: 21300004
+    second: fire_2
+  - first:
+      213: 21300006
+    second: fire_3
+  - first:
+      213: 21300008
+    second: fire_4
+  - first:
+      213: 21300010
+    second: fire_5
+  - first:
+      213: 21300012
+    second: fire_6
+  - first:
+      213: 21300014
+    second: fire_7
+  - first:
+      213: 21300016
+    second: fire_8
+  - first:
+      213: 21300018
+    second: fire_9
+  - first:
+      213: 21300020
+    second: fire_10
+  - first:
+      213: 21300022
+    second: fire_11
+  - first:
+      213: 21300024
+    second: fire_12
+  - first:
+      213: 21300026
+    second: fire_13
+  - first:
+      213: 21300028
+    second: fire_14
+  - first:
+      213: 21300030
+    second: fire_15
+  - first:
+      213: 21300032
+    second: fire_16
+  - first:
+      213: 21300034
+    second: fire_17
+  - first:
+      213: 21300036
+    second: fire_18
+  - first:
+      213: 21300038
+    second: fire_19
+  - first:
+      213: 21300040
+    second: fire_20
+  - first:
+      213: 21300042
+    second: fire_21
+  - first:
+      213: 21300044
+    second: fire_22
+  - first:
+      213: 21300046
+    second: fire_23
+  - first:
+      213: 21300048
+    second: fire_24
+  - first:
+      213: 21300050
+    second: fire_25
+  - first:
+      213: 21300052
+    second: fire_26
+  - first:
+      213: 21300054
+    second: fire_27
+  - first:
+      213: 21300056
+    second: fire_28
+  - first:
+      213: 21300058
+    second: fire_29
+  - first:
+      213: 21300060
+    second: fire_30
+  - first:
+      213: 21300062
+    second: fire_31
+  - first:
+      213: 21300064
+    second: fire_32
+  - first:
+      213: 21300066
+    second: fire_33
+  - first:
+      213: 21300068
+    second: fire_34
+  - first:
+      213: 21300070
+    second: fire_35
+  - first:
+      213: 21300072
+    second: fire_36
+  - first:
+      213: 21300074
+    second: fire_37
+  - first:
+      213: 21300076
+    second: fire_38
+  - first:
+      213: 21300078
+    second: fire_39
+  - first:
+      213: 21300080
+    second: fire_40
+  - first:
+      213: 21300082
+    second: fire_41
+  - first:
+      213: 21300084
+    second: fire_42
+  - first:
+      213: 21300086
+    second: fire_43
+  - first:
+      213: 21300088
+    second: fire_44
+  - first:
+      213: 21300090
+    second: fire_45
+  - first:
+      213: 21300092
+    second: fire_46
+  - first:
+      213: 21300094
+    second: fire_47
+  - first:
+      213: 21300096
+    second: fire_48
+  - first:
+      213: 21300098
+    second: fire_49
+  - first:
+      213: 21300100
+    second: fire_50
+  - first:
+      213: 21300102
+    second: fire_51
+  - first:
+      213: 21300104
+    second: fire_52
+  - first:
+      213: 21300106
+    second: fire_53
+  - first:
+      213: 21300108
+    second: fire_54
+  - first:
+      213: 21300110
+    second: fire_55
+  - first:
+      213: 21300112
+    second: fire_56
+  - first:
+      213: 21300114
+    second: fire_57
+  - first:
+      213: 21300116
+    second: fire_58
+  - first:
+      213: 21300118
+    second: fire_59
+  - first:
+      213: 21300120
+    second: fire_60
+  - first:
+      213: 21300122
+    second: fire_61
+  - first:
+      213: 21300124
+    second: fire_62
+  - first:
+      213: 21300126
+    second: fire_63
+  - first:
+      213: 21300128
+    second: fire_64
+  - first:
+      213: 21300130
+    second: fire_65
+  - first:
+      213: 21300132
+    second: fire_66
+  - first:
+      213: 21300134
+    second: fire_67
+  - first:
+      213: 21300136
+    second: fire_68
+  - first:
+      213: 21300138
+    second: fire_69
+  - first:
+      213: 21300140
+    second: fire_70
+  - first:
+      213: 21300142
+    second: fire_71
+  - first:
+      213: 21300144
+    second: fire_72
+  - first:
+      213: 21300146
+    second: fire_73
+  - first:
+      213: 21300148
+    second: fire_74
+  - first:
+      213: 21300150
+    second: fire_75
+  - first:
+      213: 21300152
+    second: fire_76
+  - first:
+      213: 21300154
+    second: fire_77
+  - first:
+      213: 21300156
+    second: fire_78
+  - first:
+      213: 21300158
+    second: fire_79
+  - first:
+      213: 21300160
+    second: fire_80
+  - first:
+      213: 21300162
+    second: fire_81
+  - first:
+      213: 21300164
+    second: fire_82
+  - first:
+      213: 21300166
+    second: fire_83
+  - first:
+      213: 21300168
+    second: fire_84
+  - first:
+      213: 21300170
+    second: fire_85
+  - first:
+      213: 21300172
+    second: fire_86
+  - first:
+      213: 21300174
+    second: fire_87
+  - first:
+      213: 21300176
+    second: fire_88
+  - first:
+      213: 21300178
+    second: fire_89
+  - first:
+      213: 21300180
+    second: fire_90
+  - first:
+      213: 21300182
+    second: fire_91
+  - first:
+      213: 21300184
+    second: fire_92
+  - first:
+      213: 21300186
+    second: fire_93
+  - first:
+      213: 21300188
+    second: fire_94
+  - first:
+      213: 21300190
+    second: fire_95
+  - first:
+      213: 21300192
+    second: fire_96
+  - first:
+      213: 21300194
+    second: fire_97
+  - first:
+      213: 21300196
+    second: fire_98
+  - first:
+      213: 21300198
+    second: fire_99
+  - first:
+      213: 21300200
+    second: fire_100
+  - first:
+      213: 21300202
+    second: fire_101
+  - first:
+      213: 21300204
+    second: fire_102
+  - first:
+      213: 21300206
+    second: fire_103
+  - first:
+      213: 21300208
+    second: fire_104
+  - first:
+      213: 21300210
+    second: fire_105
+  - first:
+      213: 21300212
+    second: fire_106
+  - first:
+      213: 21300214
+    second: fire_107
+  - first:
+      213: 21300216
+    second: fire_108
+  - first:
+      213: 21300218
+    second: fire_109
+  - first:
+      213: 21300220
+    second: fire_110
+  - first:
+      213: 21300222
+    second: fire_111
+  - first:
+      213: 21300224
+    second: fire_112
+  - first:
+      213: 21300226
+    second: fire_113
+  - first:
+      213: 21300228
+    second: fire_114
+  - first:
+      213: 21300230
+    second: fire_115
+  - first:
+      213: 21300232
+    second: fire_116
+  - first:
+      213: 21300234
+    second: fire_117
+  - first:
+      213: 21300236
+    second: fire_118
+  - first:
+      213: 21300238
+    second: fire_119
+  - first:
+      213: 21300240
+    second: fire_120
+  - first:
+      213: 21300242
+    second: fire_121
+  - first:
+      213: 21300244
+    second: fire_122
+  - first:
+      213: 21300246
+    second: fire_123
+  - first:
+      213: 21300248
+    second: fire_124
+  - first:
+      213: 21300250
+    second: fire_125
+  - first:
+      213: 21300252
+    second: fire_126
+  - first:
+      213: 21300254
+    second: fire_127
+  - first:
+      213: 21300256
+    second: fire_128
+  - first:
+      213: 21300258
+    second: fire_129
+  - first:
+      213: 21300260
+    second: fire_130
+  - first:
+      213: 21300262
+    second: fire_131
+  - first:
+      213: 21300264
+    second: fire_132
+  - first:
+      213: 21300266
+    second: fire_133
+  - first:
+      213: 21300268
+    second: fire_134
+  - first:
+      213: 21300270
+    second: fire_135
+  - first:
+      213: 21300272
+    second: fire_136
+  - first:
+      213: 21300274
+    second: fire_137
+  - first:
+      213: 21300276
+    second: fire_138
+  - first:
+      213: 21300278
+    second: fire_139
+  - first:
+      213: 21300280
+    second: fire_140
+  - first:
+      213: 21300282
+    second: fire_141
+  externalObjects: {}
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -162,35 +447,56 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -1
   maxTextureSize: 2048
   textureSettings:
+    serializedVersion: 2
     filterMode: 0
     aniso: 16
-    mipBias: -1
-    wrapMode: 1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 12
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings: []
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 1
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -206,7 +512,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 02305410000000000800000000000000
+      internalID: 21300000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: fire_1
       rect:
@@ -219,7 +533,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 22305410000000000800000000000000
+      internalID: 21300002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: fire_2
       rect:
@@ -232,7 +554,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 42305410000000000800000000000000
+      internalID: 21300004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: fire_3
       rect:
@@ -245,7 +575,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 62305410000000000800000000000000
+      internalID: 21300006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: fire_4
       rect:
@@ -258,7 +596,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 82305410000000000800000000000000
+      internalID: 21300008
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: fire_5
       rect:
@@ -271,7 +617,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a2305410000000000800000000000000
+      internalID: 21300010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: fire_6
       rect:
@@ -284,7 +638,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c2305410000000000800000000000000
+      internalID: 21300012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: fire_7
       rect:
@@ -297,7 +659,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: e2305410000000000800000000000000
+      internalID: 21300014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: fire_12
       rect:
@@ -310,7 +680,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 83305410000000000800000000000000
+      internalID: 21300024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: fire_13
       rect:
@@ -323,7 +701,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a3305410000000000800000000000000
+      internalID: 21300026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: fire_14
       rect:
@@ -336,7 +722,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c3305410000000000800000000000000
+      internalID: 21300028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: fire_15
       rect:
@@ -349,7 +743,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: e3305410000000000800000000000000
+      internalID: 21300030
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: fire_16
       rect:
@@ -362,7 +764,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 04305410000000000800000000000000
+      internalID: 21300032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: fire_17
       rect:
@@ -375,7 +785,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 24305410000000000800000000000000
+      internalID: 21300034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: fire_18
       rect:
@@ -388,7 +806,15 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 44305410000000000800000000000000
+      internalID: 21300036
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: fire_19
       rect:
@@ -401,9 +827,28 @@ TextureImporter:
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 64305410000000000800000000000000
+      internalID: 21300038
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
   spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

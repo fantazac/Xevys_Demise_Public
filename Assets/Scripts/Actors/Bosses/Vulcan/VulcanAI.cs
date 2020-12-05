@@ -52,7 +52,7 @@ public class VulcanAI : MonoBehaviour
         _bossOrientation = GetComponent<BossOrientation>();
         _health.OnDeath += OnVulcanDefeated;
         _polygonHitbox = GetComponent<PolygonCollider2D>();
-        _vulcanSkull = transform.FindChild("Vulcan Skull").gameObject;
+        _vulcanSkull = transform.Find("Vulcan Skull").gameObject;
         InitializeVulcan();
 
         SetLoweredStatus();

@@ -42,7 +42,7 @@ public class XevyAction: MonoBehaviour
     {
         _xevyHitbox = GetComponent<PolygonCollider2D>();
         _bossOrientation = GetComponent<BossOrientation>();
-        _clawHitbox = transform.FindChild("Claw").gameObject;
+        _clawHitbox = transform.Find("Claw").gameObject;
     }
 
     public void LowerGuard()
